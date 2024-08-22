@@ -1,0 +1,468 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f5e3;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ddddacc3;
+    border: 2px solid rgb(186, 184, 184);
+    border-radius: 10px;
+    color: #8b4513;
+    font-family: 'Georgia', serif;
+    padding: 1rem 0;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+.menu-icon {
+    cursor: pointer;
+    font-size: 2.2em;
+}
+
+.title {
+    font-family: 'Georgia', serif;
+    font-size: 2em;
+}
+
+.logo-img {
+    padding: -20px;
+    width: 60px; /* Logonun genişliği */
+    height: auto; /* Oranını koruyarak yüksekliği otomatik ayarlar */
+}
+
+
+nav {
+    position: absolute;
+    top: 121%; /* Menü ikonunun hemen altında başlar */
+    left: -2px;
+    width: 250px;
+    background-color: #cabe80;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    display: none;
+    z-index: 1000; /* Menü ikonunun üstünde görünmesi için */
+}
+
+nav ul {
+    margin-left: 20px;
+    list-style: disc;
+    padding: 0;
+}
+
+nav ul li {
+    text-align: left;
+    margin-left: 13px; 
+    margin-bottom: 13px;
+}
+
+nav ul li a {
+    color: #8b4513;
+    font-size: 1.2em;
+    font-family: 'Georgia', serif;
+    text-decoration: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+    background-size: cover;
+}
+
+hr {
+    border: 1.4px solid #862F1B;
+    width: 100%;
+    margin-top: -10px;
+    /* margin: 20px 0; */
+}
+
+h1{
+    font-family: 'Georgia', serif;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #8b4513;
+}
+h2 {
+    font-family: 'Georgia', serif;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #8b4513;
+}
+
+
+p span {
+    font-weight: bold;
+    color: #555;
+}
+
+form p {
+    margin-bottom: 10px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+#statList{
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: calc(100% - 60px);
+    margin-left: 60px;
+}
+
+#statList li{
+    padding: 8px;
+    margin: 4px;
+    cursor: move;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
+
+}
+#statList li:hover {
+    background-color: #ffffff57;
+}
+
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f5e3;
+}
+
+#sortable {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#sortable li {
+    padding: 5px;
+    background-color: #f9f5e3;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    margin: 2px;
+    transition: background-color 0.3s;
+    flex: 1 1 calc(50% - 10px); /* Her bir öğenin genişliğini %50 olarak ayarla ve aralarındaki boşluk */
+    box-sizing: border-box;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+#sortable li:hover {
+    background-color: #cece9127;
+}
+
+#sortableStat {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#sortableStat li {
+    padding: 5px;
+    background-color: #f5f5ebd6;
+    /* border: 1px solid #aaa; */
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s;
+    flex: 1 1 calc(50% - 15px); /* Her bir öğenin genişliğini %50 olarak ayarla ve aralarındaki boşluk */
+    box-sizing: border-box;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+#sortableStat li:hover {
+    background-color: #ebebd88e;
+}
+
+.sagayasla{
+    padding: 5px;
+    padding-top: 10px;
+    float: right;
+}
+#skill-slot-eksi{
+    color: red;
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: -5px;
+}
+
+
+
+
+#background-info, #class-info, #race-info {
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    /* padding-top: 10px;
+    padding-bottom: 10px; */
+    background-color: #FBF1DE;
+    border: 2px solid #DB9D43;
+    border-radius: 7px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Convergence', sans-serif;
+    margin-top: 20px;
+    /* padding: 15px;
+    background-color: #f5f5dc;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+#race-variant-H{
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    /* padding-top: 10px;
+    padding-bottom: 10px; */
+    background-color: #FBF1DE;
+    border: 2px solid #DB9D43;
+    border-radius: 7px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Convergence', sans-serif;
+    margin-top: 20px;
+    /* padding: 15px;
+    background-color: #f5f5dc;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+#race-variant-E{
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    /* padding-top: 10px;
+    padding-bottom: 10px; */
+    background-color: #FBF1DE;
+    border: 2px solid #DB9D43;
+    border-radius: 7px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Convergence', sans-serif;
+    margin-top: 20px;
+    /* padding: 15px;
+    background-color: #f5f5dc;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+#background-info h3, #class-info h3, #race-info h3, #race-variant-H h3, #race-variant-E h3{
+    margin-top: 0;
+    color: #8b4513;
+}
+
+#background-info p, #class-info p, #race-info p {
+    font-size: 1.1em;
+    color: #333;
+}
+.bold {
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'Convergence', sans-serif;
+    color: #000;
+}
+.ciz {
+    text-decoration: underline;
+}
+.skillButton {
+    background-color: #8b4513;
+    color: white;
+    border: solid 1px #000000;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 2px 5px 3px 2px;
+    margin-top: 5px;
+    font-size: 1em;
+    transition: background-color 0.1s;
+}
+
+.skillButton.active {
+    background-color: #d21919;
+    color: #fff;
+}
+.footer{
+    font-size: 0.8em;
+}
+
+.summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* ----------------------------------------------------------------------------------------- */
+#character-form{
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 5px;
+    padding-bottom: 15px;
+    background-color: #fff8e1;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    
+}
+label {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+input[type="number"], select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #d3c0a3;
+    border-radius: 4px;
+    background-color: #fdf5e6;
+}
+
+input[type="button"] {
+    background-color: #8c4f5f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+input[type="button"]:hover {
+    background-color: #a36273;
+}
+/* Tablodaki sütunlar arası boşluğu artırmak için */
+table {
+    /* max-width: 400px; */
+    border-collapse: separate;
+    border-spacing: 0px; /* Sütunlar arası boşluk miktarını ayarlar */
+    width: 100%;
+    margin-bottom: 20px;
+    /* border:solid #000; */
+}
+
+th, td {
+    /* padding: 5px 8px; */
+    text-align: center;
+    border:solid #e7c89ab4;
+}
+
+th {
+
+    font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px;
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+        background-size: cover;
+    }
+}
+@media screen and (max-width: 695px) {
+    body {
+        transform: scale(0.8);
+        transform-origin: 0 0;
+        width: 125%;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px;
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+        background-size: cover;
+    }
+    #skillsyazı {
+        font-size: 0.7em;
+    }
+    .title {
+        font-family: 'Georgia', serif;
+        font-size: 1.3em;
+    }
+    #skills {
+        margin-top: 5px;
+        padding: 5px;
+        background-color: #f5f5dc;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    #sortable li {
+        flex: 1 1 100%; /* Her bir öğenin genişliğini %100 yaparak alt alta sıralama */
+        padding:0 0px 0 5px;
+        background-color: #f9f5e3;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        margin: 2px;
+        transition: background-color 0.3s;
+        box-sizing: border-box;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    #sortableStat li {
+        flex: 1 1 100%; /* Her bir öğenin genişliğini %100 yaparak alt alta sıralama */
+        padding: 5px;
+        background-color: #f5f5ebd6;
+        /* border: 1px solid #aaa; */
+        border-radius: 5px;
+        margin: 2px;
+        transition: background-color 0.3s;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    /* table {
+        max-width: 400pxs;
+        border-collapse: separate;
+        border-spacing: 0px;  Sütunlar arası boşluk miktarını ayarlar 
+        width: 100%;
+        margin-bottom: 20px;
+         border:solid #000; 
+    } */
+}

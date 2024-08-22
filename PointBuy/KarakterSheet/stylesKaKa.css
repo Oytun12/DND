@@ -1,0 +1,885 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f5e3;
+    color: #333;
+    margin: 0;
+    min-width: 500px;
+    transform: scale(0.8);
+    transform-origin: 0 0;
+    width: 125%;
+}
+
+.container {
+    max-width: 900px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+    background-size: cover;
+}
+
+/* div{
+    border: solid 3px #333;
+    padding: 10px;
+} */
+/* hr {
+    border: 2px solid #862F1B;
+    width: 100%;
+} */
+.checkbox {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.checkbox.checked {
+    background-color: #333; /* İçi dolu olduğunda yeşil renkte olacak */
+}
+#noteArea {
+    font-family: Arial, sans-serif;
+    margin: 5px;
+    width: calc(100% - 45px);
+    height: calc(100% - 70px); /* Yüksekliği istediğiniz gibi ayarlayın */
+    font-size: 0.8em;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize:vertical; /* Kullanıcı boyutunu değiştirebilir */
+    overflow: auto; /* İçerik kutudan taşarsa kaydırma çubuğu göster */
+}
+th{
+    border: solid 1px #333;
+}
+td{
+    border: solid 1px #3333335f;
+}
+table{
+    font-size: 0.8em;
+}
+/* ----------------------------------------------------------------------------------------------------- */
+#ust{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: solid 3px #333;
+}
+#ust-isim{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#isim{
+    text-align: center;
+    padding: 10px 0 0 0;
+    width: 100%;
+    height: 100%;
+}
+#noteArea-isim {
+    margin: 5px 0 5px 0;
+    width: calc(100% - 55px);
+    height: calc(100% - 70px); /* Yüksekliği istediğiniz gibi ayarlayın */
+    font-size: 0.8em;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize:vertical; /* Kullanıcı boyutunu değiştirebilir */
+    overflow: auto; /* İçerik kutudan taşarsa kaydırma çubuğu göster */
+}
+#noteArea-ust {
+    margin: 5px 0 5px 0;
+    width: calc(100% - 35px);
+    height: 10px; /* Yüksekliği istediğiniz gibi ayarlayın */
+    font-size: 0.8em;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize:vertical; /* Kullanıcı boyutunu değiştirebilir */
+    overflow: auto; /* İçerik kutudan taşarsa kaydırma çubuğu göster */
+}
+#noteArea-alt {
+    margin: 5px 0 5px 0;
+    width: calc(100% - 35px);
+    height: 10px; /* Yüksekliği istediğiniz gibi ayarlayın */
+    font-size: 0.8em;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize:vertical; /* Kullanıcı boyutunu değiştirebilir */
+    overflow: auto; /* İçerik kutudan taşarsa kaydırma çubuğu göster */
+}
+#ozellikler{
+    padding-left: 5px;
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-left: solid 3px #333;
+}
+#ozellikler-ust{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: solid 1px #333;
+    margin-bottom: 3px;
+}
+#ozellikler-alt{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: -5px;
+}
+/* ----------------------------------------------------------------------------------------------------- */
+#alt{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* ----------------------------------------------------------------------------------------------------- */
+
+#sol{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#sol-ust{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: -5px;
+}
+#sol-ust-sol{
+    width: 50%;
+    margin-bottom: 15px;
+    align-items: center;
+}
+#inspration{
+    margin-top: 7px;
+    white-space: pre;
+    display: flex; /* Flexbox modelini etkinleştirir */
+    justify-content: center; /* Yatayda ortalar */
+    align-items: center; /* Dikeyde ortalar */
+    height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+    width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+    width: 140pt;
+    height: 45pt;
+    margin-bottom: 7px;
+    margin-left: 3px;
+    text-align: center;
+    background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+    background-clip: border-box;
+    background-image: url('svg/İnspration2.svg'); /* SVG dosyanızın yolu */
+    background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+    background-position: center; /* Ortalanmasını sağlar */
+}
+#stats{
+    margin-left: 3px;
+    /* max-width: 80px; */
+    /* padding: 25px 15px 15px 10px; */
+    width: 100%;
+    height: 90%;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #dfdede;
+    border-radius: 10px;
+    /* border: solid 3px #333;  */
+}
+
+#str, #dex, #con, #int, #wis, #cha {
+    width: 70px;
+    height: 75px;
+    text-align: center;
+    line-height: 15px;
+    padding:20px 5px 20px 5px;
+    background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+    background-clip: border-box;
+    background-image: url('svg/StatBox.svg'); /* SVG dosyanızın yolu */
+    background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+    background-position: center; /* Ortalanmasını sağlar */
+}
+#sol-alt{
+    height: 100%;
+}
+#PP{
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+    border: solid 3px #333;  
+    margin-right: 15px;
+    margin-bottom: 5px;
+}
+#ozelliklerDiller{
+    padding: 5px 0 5px 0;
+    text-align: center;
+    height: calc(100% - 55px);
+    border-radius: 0 0 10px 10px;
+    border: solid 3px #333; 
+    margin-right: 15px; 
+}
+/* -------------------------------------------- */
+#sol-ust-sag{
+    width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#yetenekler{
+    margin-left: 3px;
+    padding: 0 15px 0 10px;
+    margin-bottom: 15px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    /* background-color: #dfdede;
+    border-radius: 10px;
+    border: solid 3px #333;  */
+}
+    #Proficiency{
+        white-space: pre;
+        display: flex; /* Flexbox modelini etkinleştirir */
+        justify-content: center; /* Yatayda ortalar */
+        align-items: center; /* Dikeyde ortalar */
+        height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+        width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+        width: 172pt;
+        height: 52pt;
+        margin-bottom: 5px;
+        text-align: center;
+        background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+        background-clip: border-box;
+        background-image: url('svg/Proficiency.svg'); /* SVG dosyanızın yolu */
+        background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+        background-position: center; /* Ortalanmasını sağlar */
+    }
+    #kurtarma{
+        text-align: center;
+        font-size: 15px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5px;
+
+        white-space: pre;
+        display: flex; /* Flexbox modelini etkinleştirir */
+        justify-content: center; /* Yatayda ortalar */
+        align-items: center; /* Dikeyde ortalar */
+        height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+        width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+        width: 168pt;
+        height: 150pt;
+        margin-bottom: 5px;
+        text-align: center;
+        background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+        background-clip: border-box;
+        background-image: url('svg/Kurtarma.svg'); /* SVG dosyanızın yolu */
+        background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+        background-position: center; /* Ortalanmasını sağlar */
+    }    
+    #kurtarma table{
+        border-spacing: 0px;
+        width: 75%;
+        font-size: 1.1em;
+        margin: 0;
+    }    
+    #kurtarma th{
+        border: none;
+        padding: 3px 10px 3px 10px;
+    }    
+    #kurtarma td{
+        border: none;
+        font-size: 1em;
+    }    
+    #skills{
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-size: 15px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5px;
+
+        white-space: pre;
+        display: flex; /* Flexbox modelini etkinleştirir */
+        justify-content: center; /* Yatayda ortalar */
+        align-items: center; /* Dikeyde ortalar */
+        height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+        width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+        width: 172pt;
+        height: 390pt;
+        margin-bottom: 5px;
+        text-align: center;
+        background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+        background-clip: border-box;
+        background-image: url('svg/Skills.svg'); /* SVG dosyanızın yolu */
+        background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+        background-position: center; /* Ortalanmasını sağlar */
+        border-radius: 10px;
+        /* background-color: #fff; */
+    }
+    #skills table{
+        margin-left: 5px;
+        border-spacing: 0px;
+        width: 75%;
+        font-size: 1.07em;
+        margin: 0;
+    }  
+    #skills th{
+        border: none;
+        padding: 5px 10px 3px 10px;
+    }    
+    #skills td{
+        border: none;
+        font-size: 1em;
+        padding: 3px 0 3px 0;
+    }  
+/* -------------------------------------------- */
+
+
+/* ----------------------------------------------------------------------------------------------------- */
+#orta{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#orta-ust{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;   
+    background-color: #dfdede;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+    #orta-ust-ust{
+        height: 55px; 
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+        #ac{
+            height: 60px;
+            width: 55px;
+            padding: 4px 0 4px 0;
+            text-align: center;
+
+            white-space: pre;
+            display: flex; /* Flexbox modelini etkinleştirir */
+            justify-content: center; /* Yatayda ortalar */
+            align-items: center; /* Dikeyde ortalar */
+            height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+            width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+            margin-bottom: 5px;
+            text-align: center;
+            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+            background-clip: border-box;
+            background-image: url('svg/AC.svg'); /* SVG dosyanızın yolu */
+            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+            background-position: center; /* Ortalanmasını sağlar */
+        }
+        #iniativ{
+            padding-right: 10px;
+            padding-left: 5px;
+            margin-top: 5px;
+            height: 65px;
+            text-align: center;
+            font-size: 0.9em;
+
+            white-space: pre;
+            display: flex; /* Flexbox modelini etkinleştirir */
+            justify-content: center; /* Yatayda ortalar */
+            align-items: center; /* Dikeyde ortalar */
+            height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+            width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+            text-align: center;
+            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+            background-clip: border-box;
+            background-image: url('svg/İnitiativeSpeed.svg'); /* SVG dosyanızın yolu */
+            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+            background-position: center; /* Ortalanmasını sağlar */
+        }
+        #speed{
+            margin-top: 5px;
+            height: 65px;
+            text-align: center;
+ 
+            white-space: pre;
+            display: flex; /* Flexbox modelini etkinleştirir */
+            justify-content: center; /* Yatayda ortalar */
+            align-items: center; /* Dikeyde ortalar */
+            height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+            width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+            text-align: center;
+            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+            background-clip: border-box;
+            background-image: url('svg/İnitiativeSpeed.svg'); /* SVG dosyanızın yolu */
+            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+            background-position: center; /* Ortalanmasını sağlar */
+        }
+    #orta-ust-orta{
+        height: 147px; 
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+        #CHitPoint{
+            text-align: center;
+            padding: 0;
+            height: 100%;
+            margin-bottom: 10px;
+
+            white-space: pre;
+            display: flex; /* Flexbox modelini etkinleştirir */
+            justify-content: center; /* Yatayda ortalar */
+            align-items: center; /* Dikeyde ortalar */
+            text-align: center;
+            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+            background-clip: border-box;
+            background-image: url('svg/HitPoint.svg'); /* SVG dosyanızın yolu */
+            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+            background-position: center; /* Ortalanmasını sağlar */
+        }
+        #THitPoint{
+            text-align: center;
+            padding: 0;
+            height: 80%;
+
+            white-space: pre;
+            display: flex; /* Flexbox modelini etkinleştirir */
+            justify-content: center; /* Yatayda ortalar */
+            align-items: center; /* Dikeyde ortalar */
+            text-align: center;
+            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+            background-clip: border-box;
+            background-image: url('svg/THitPoint.svg'); /* SVG dosyanızın yolu */
+            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+            background-position: center; /* Ortalanmasını sağlar */
+        }
+    #orta-ust-alt{
+        height: 70px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+        #HitDice{
+            white-space: pre;
+            display: flex; /* Flexbox modelini etkinleştirir */
+            justify-content: center; /* Yatayda ortalar */
+            align-items: center; /* Dikeyde ortalar */
+            height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+            width: 90%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+            text-align: center;
+            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+            background-clip: border-box;
+            background-image: url('svg/HitDice.svg'); /* SVG dosyanızın yolu */
+            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+            background-position: center; /* Ortalanmasını sağlar */
+        }
+        #DeathSaves{
+            text-align: center;
+            margin-left: 5px;
+
+            white-space: pre;
+            display: flex; /* Flexbox modelini etkinleştirir */
+            justify-content: center; /* Yatayda ortalar */
+            align-items: center; /* Dikeyde ortalar */
+            height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+            width: 90%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+            text-align: center;
+            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+            background-clip: border-box;
+            background-image: url('svg/HitDice.svg'); /* SVG dosyanızın yolu */
+            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+            background-position: center; /* Ortalanmasını sağlar */
+        }
+#orta-orta{
+    display: flex; 
+    justify-content: center; 
+    align-items: flex-start;
+    border-radius: 10px;
+    border: solid 3px #333;
+    height: 100%;
+    margin-bottom: 10px;
+}
+#saldırı{
+    text-align: center;
+    align-items: center;
+    padding: 5px 0 0 0 ;
+}
+
+#orta-alt{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: solid 3px #333;
+    padding: 5px;
+}
+    #para{
+        text-align: center;
+        padding: 5px;
+        border-radius: 5px;
+        /* border: solid 3px #333; */
+        background-color: #dfdede;
+        height: 110px;
+    }
+    #ekipman{
+        width: 100%;
+        text-align: center;
+        border-radius: 10px;
+        border: solid 2px #333;
+    }
+
+
+/* ----------------------------------------------------------------------------------------------------- */
+
+#sag{
+    width: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#sag-ust{
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;   
+    background-color: #dfdede;
+    margin-left: 10px;
+}
+#kisilik{
+    text-align: center;
+    height: 100%;
+    border-radius: 10px;
+    border: solid 2px #333;
+    margin: 0 10px 10px 10px;
+}
+#ideals{
+    text-align: center;
+    height: 100%;
+    border-radius: 10px;
+    border: solid 2px #333;
+    margin: 0 10px 10px 10px;
+}
+#bonds{
+    text-align: center;
+    height: 100%;
+    border-radius: 10px;
+    border: solid 2px #333;
+    margin: 0 10px 10px 10px;
+}
+#flaws{
+    text-align: center;
+    height: 100%;
+    border-radius: 10px;
+    border: solid 2px #333;
+    margin: 0 10px 10px 10px;
+}
+
+
+#sag-alt{
+    text-align: center;
+    height: 100%;
+    border-radius: 10px;
+    border: solid 2px #333;
+    margin: 10px 0 0 10px;
+}
+
+@media (max-width: 695px) {
+    body {
+        transform: scale(0.8);
+        transform-origin: 0 0;
+        width: 125%;
+    }
+    #ust{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 10px;
+        border: solid 3px #333;
+    }
+    #ust-isim{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: solid 3px #333;
+    }
+    #ozellikler{
+        padding-left: 5px;
+        padding: 5px;
+        width: 98%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: none;
+    }
+    #ozellikler-ust{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: solid 1px #333;
+        margin-bottom: 3px;
+    }
+    #ozellikler-alt{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: -5px;
+    }
+    #alt{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        /* justify-content: space-between; */
+    }
+    #sol{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    #orta{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 10px; 
+    }
+    #orta-orta{
+        display: flex; 
+        justify-content: center; 
+        align-items: flex-start;
+        border-radius: 10px;
+        border: solid 3px #333;
+        height: 100%;
+        margin-bottom: 10px; 
+    }
+    #orta-alt{
+        display: flex; 
+        justify-content: center; 
+        align-items: flex-start;
+        border-radius: 10px;
+        border: solid 3px #333;
+        height: 100%;
+        margin-bottom: 10px; 
+    }
+    #sol-ust-sol{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    #yetenekler{
+        margin-bottom: 15px;
+        margin-left: 10px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0;
+        /* background-color: #dfdede;
+        border-radius: 10px;
+        border: solid 3px #333;  */
+    }
+    #str, #dex, #con, #int, #wis, #cha {
+        line-height: 16px;
+        text-align: center;
+        padding:20px 10px 20px 10px;
+        /* border-radius: 10px;
+        border: solid 3px #333;
+        background-color: #fff; */
+    }
+
+    #PP{
+        padding: 5px;
+        text-align: center;
+        border-radius: 10px 10px 0 0;
+        border: solid 3px #333;  
+        margin-bottom: 5px;
+        margin-right: 0;
+    }
+    #ozelliklerDiller{
+        padding: 5px 0 5px 0;
+        text-align: center;
+        height: calc(100% - 55px);
+        border-radius: 0 0 10px 10px;
+        border: solid 3px #333;  
+        margin-right: 0;
+    }
+    #sag-ust{
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 10px;   
+        background-color: #dfdede;
+        margin-left: 0;
+    }
+    #sag-alt{
+        text-align: center;
+        height: 100%;
+        border-radius: 10px;
+        border: solid 2px #333;
+        margin: 10px 0 0 0;
+    }
+
+    #orta{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    #orta-ust{
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 10px;   
+        background-color: #dfdede;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+        #orta-ust-ust{
+            height: 100%; 
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+            #ac{
+                padding: 5px;
+                height: 60px;
+                text-align: center;
+                width: 100%;
+                margin: 0 5px 0 0px;
+                /* border-radius: 10px;
+                border: solid 3px #333; */
+            }
+            #iniativ{
+                padding: 5px;
+                height: 60px;
+                text-align: center;
+                width: 100%;
+                margin: 0 5px 0 5px;
+                /* border-radius: 10px;
+                border: solid 3px #333; */
+            }
+            #speed{
+                padding: 5px;
+                height: 60px;
+                text-align: center;
+                width: 100%;
+                margin: 0 0px 0 5px;
+                /* border-radius: 10px;
+                border: solid 3px #333; */
+            }
+        #orta-ust-orta{
+            height: 100%; 
+            margin-bottom: 15px;
+        }
+            #CHitPoint{
+                text-align: center;
+                border-radius: 5px;
+                border-radius: 5px 5px 0 0;
+                border: solid 2px #333;
+                margin-bottom: 5px;
+                padding: 5px;
+                background-image: none;
+                background-color: #fff;
+            }
+            #THitPoint{
+                text-align: center;
+                padding: 5px;
+                border-radius: 5px;
+                border-radius: 0 0 5px 5px;
+                border: solid 2px #333;
+                background-image: none;
+                background-color: #fff;
+            }
+        #orta-ust-alt{
+            height: 100%; 
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+            #HitDice{
+                text-align: center;
+                padding: 0;
+                width: 100%;
+                border-radius: 5px;
+                border: solid 2px #333;
+                background-image: none;
+                background-color: #fff;
+                margin-right: 5px;
+            }
+            #DeathSaves{
+                padding: 0;
+                text-align: center;
+                width: 100%;
+                border-radius: 5px;
+                border: solid 2px #333;
+                background-image: none;
+                background-color: #fff;
+            }
+    #orta-orta{
+        display: flex; 
+        justify-content: center; 
+        align-items: flex-start;
+        border-radius: 10px;
+        border: solid 3px #333;
+        height: 100%;
+        margin-bottom: 10px;
+    }
+    #saldırı{
+        text-align: center;
+        align-items: center;
+        padding: 5px 0 0 0 ;
+    }
+    
+    #orta-alt{
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-radius: 10px;
+        border: solid 3px #333;
+        padding: 5px;
+    }
+        #para{
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            /* border: solid 3px #333; */
+            background-color: #dfdede;
+            height: 110px;
+        }
+        #ekipman{
+            width: 100%;
+            text-align: center;
+            border-radius: 10px;
+            border: solid 2px #333;
+        }
+    
+    
+}
