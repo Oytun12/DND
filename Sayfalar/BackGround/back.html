@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="D&D karakter oluşturma aracı ile Irklar, Sınıflar ve Karakter geçmişleri hakkında bilgi edinin. Kişiselleştirilmiş karakterler oluşturun ve en iyi sonuçları alın.">
+    <meta name="keywords" content="D&D, DND, Dungeons and Dragons, Karakter Yaratma, Karakter Oluşturma,Dnd Sınıflar, Karakter Kağıdı, RPG, Rol Yapma Oyunu">
+    <meta name="author" content="Oytun">
+    <link rel="icon" href="https://oytun12.github.io/DND/favicon.png" type="image/x-icon">
+    <title>D&D Karakter Geçmişleri</title>
+    <link rel="stylesheet" href="stylesBack.css">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "D&D Karakter Yaratma",
+          "url": "https://oytun12.github.io/DND",
+          "image": "https://oytun12.github.io/DND/favicon.png",
+          "description": "Karakter Oluşturma bölümünden ise basit bir test çözerek oynamak istediğiniz karakterin karakter kağıdını otomatik olarak oluşturabilirsiniz.",
+          "author": {
+            "@type": "Person",
+            "name": "Oytun"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Oytun's D&D Hub",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://oytun12.github.io/DND/favicon.png"
+            }
+          }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="title">Karakter Geçmişleri</div>   
+        <img src="../../SariZar.png" alt="Logo" class="logo-img">
+       <nav id="hamburger-menu" class="hidden">
+           <ul>
+               <li><a href="../../index.html">Ana Sayfa</a></li>
+               <li><a href="../../Sayfalar/Race/race.html">Irklar</a></li>
+               <li><a href="../../Sayfalar/Class/class.html">Sınıflar</a></li>
+               <li><a href="../../KarakterCreate/KarakterOlusturma/karakterOl.html">Karakter Oluşturma</a></li>
+               <li><a href="../../KarakterCreate/PointBuy/PointBuy.html">Karakter Oluşturma (Point Buy)</a></li>
+               <li><a href="../../KarakterCreate/KarakterSheet/KaKa.html">Karakter Kağıdı (Beta)</a></li>
+           </ul>
+       </nav>
+   </header>
+
+    <main>
+        <div class="container">
+            <section id="karkaterGecmisleri">
+                <h2>Karakter Geçmişleri</h2>
+                <p>Burada D&D 5e'de bulunan tüm Karakter Geçmişleri hakkında bilgi bulabilirsiniz.</p>
+                <h3 class="collapsible"><div class="altbaslık">Asker</div></h3>
+                <div class="asker hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'> Atletizim</span> ve <span class='ciz'>Gözdağı</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip oyun seti, araçlar (kara)</p>
+                    <p><span class="bold">Ekipman: </span> Bir rütbe sembolü, düşmandan alınmış bir hatıra (bir hançer, kırık kılıç yada bir sancak parçası), bir set kemik zar yada oyun kağıtları, bir set günlük kıyafet ve 10 gp içeren bir kese.</p>
+                    <p><span class="bold">Özellik: </span>  Askeri Rütbe. Askerlik kariyerinden bir rütben var. Eski askeri organizasyonuna sadık askerler hala senin nüfuz ve otoriteni sayarlar ve senden düşük rütbeleri varsa sana saygı gösterirler. Rütbeni diğer askerler üzerinde nüfuz sahibi olmak ve geçici kullanım için ekipman yada at talep etmek için kullanabilirsin. Genellikle rütbenin tanındığı müttefiklerinin askeri kamplarına giriş iznin olur.</p>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Uzmanlık Dalı:</span> </span>  Asker olarak geçirdiğin zamanda birimin yada ordunda belirli bir görevin vardı. Görevini belirlemek için aşağıdaki seçeneklerden seç yada d8 at:</p></div>
+                    <div class="gecmisler hidden">
+                        <h4>Görev</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Komutan</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong>Öncü<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong>Piyade</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong>Süvari<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong>Şifacı</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong>Levazım subayı</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong>Sancak taşıyıcı</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong>Yardımcı ekip (aşçı, demirci, vb.)</p></div>          
+                    </div>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> </span>  Savaşın dehşeti ve askeri hizmetin sıkı disiplini tüm askerler üzerinde izini bırakır. İdeallerini şekillendirir, güçlü bağlar yaratır ve sıkça onları yaralı ve korku, utanç ve nefrete karşı korunmasız bırakır.</p></div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Daima kibar ve saygılıyımdır.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong>Savaş anıları peşimi bırakmaz. Şiddet görüntülerini aklımdan çıkaramam.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong>Çok fazla dost kaybettim, bu yüzden yenilerini kazanmam zaman alır.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong>Askeri deneyimimden neredeyse tüm savaş durumlarına uyan ikaz edici ve ilham verici hikayeler ile doluyum.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong>Korkmadan bir cehennem köpeğini sadece bakışlarımla alt edebilirim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong>Güçlü olmayı seviyorum ve bir şeyleri kırmaktan zevk alırım.</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong>Kaba bir mizah anlayışım var.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong>Sorunlarımla doğrudan yüzleşirim. Basit ve direkt bir çözüm başarıya giden en iyi yoldur.</p><hr class="hr1"></div>
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> İyilik. Bizim işimiz diğerlerini korumak için hayatlarımızdan vazgeçmektir. (İyi)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Sorumluluk. Yapmam gerekeni yapıp adil otoriteye itaat ederim. (Kuralcı)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Bağımsızlık. Kişiler emirlere sorgusuz itaat ettiğinde bir tip tiranlığı benimsemiş olurlar. (Düzensiz)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Güç. Hayatta da savaştaki gibidir, güçlü olan kazanır. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Yaşa ve Yaşat. İdealler uğrunda öldürmeye yada savaşa girmeye değmezler. (Nötr)</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Millet. Benim şehrim, milletim yada halkım önemli olan tek şeydir. (Herhangi biri)</p><hr class="hr1"></div>
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Hala birlikte görev yapmış olduğum kişiler için canımdan vazgeçerim.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong>Savaş alanında biri benim hayatımı kurtardı. Bu güne kadar kimseyi geride bırakmadım, bırakmamda.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Onurum hayatımdır.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Birliğimin yaşadığı ezici malubiyeti yada bunu gerçekleştiren düşmanları asla unutamam.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Yanımda savaşanlar uğrunda ölmeye değecek olanlardır.</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Kendileri için savaşamayanlar için savaşırım.</p><hr class="hr1"></div>
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Savaşta yüzleştiğimiz korkunç düşman beni hala korkudan titretir.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Kendini kanıtlamış bir savaşçı olmayanlara saygım yoktur.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Savaşta bir çok cana mal olan korkunç bir hata yaptım ve bunu sır olarak saklamak için her şeyi yaparım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Düşmanlarıma olan nefretim kör edici ve mantık dışıdır.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Ben yasaya uyarım, yasa sefalete yol açsa bile.</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Hatamı kabul etmektense zırhımı yemeyi tercih ederim.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+
+                <h3 class="collapsible"><div class="altbaslık">Bilge</div></h3>
+                <div class="bilge hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'> Arcana</span> ve <span class='ciz'>Tarih</span></p>
+                    <p><span class="bold">Diller: </span> Seçeceğin iki tane</p>
+                    <p><span class="bold">Ekipman: </span> Bir şişe siyah mürekkep, bir tüy, bir küçük bıçak, hala yanıtlayamadığın bir soru içeren ölmüş bir iş arkadaşından gelen bir mektup, bir set günlük kıyafet ve 10 gp içeren bir kese.</p>
+                    <p><span class="bold">Özellik: </span>  Araştırmacı. Bir bilgiyi hatırlamaya yada öğrenmeye çalıştığında eğer o bilgiye sahip değilsen genelde nereden yada kimden öğrenebileceğini bilirsin. Genelde bu bilgi bir kütüphane, manastır arşivi, üniversite yada bir bilge veya benzeri zeki bir varlıktan gelir. DM aradığın bilginin ulaşılamaz bir yerde olduğuna yada bulunamayacağına karar verebilir. Çoklu evrenin en derin sırlarını açığa çıkarma uzun bir macera hatta tüm kampanya boyunca sürebilir.</p>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Uzmanlık Dalı:</span> </span>  Bilgin olduğun konu ve eğitimini seçmek için d8 atıp aşağıdaki tablodan seçebilirsin.</p></div>
+                    <div class="gecmisler hidden">
+                        <h4>Araştırma Alanı</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Simyacı</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong>Gök bilimci<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong>İtibardan yoksun bir akademisyen</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong>Kütüphaneci<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong>Profesör</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong>Araştırmacı</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong>Büyücü çırağı</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong>Katip</p></div>          
+                    </div>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> </span>  Bilgeler kapsamlı araştırmaları ile bilinirler ve nitelikleri de bu hayat tarzını yansıtır. Bilgelik arayışına bağlı yapıları ile bir bilge için bilgi, idealleri için bir araç yada ulaşmak istedikleri sonuç olabilir.</p></div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                    <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Üstün bilgelik izlenimi veren çok heceli kelimeler kullanırım.</p></div>
+                    <div class="koyu"><hr class="hr1"><strong>2:</strong> Dünyanın en büyük kütüphanelerindeki tüm kitapları okudum ve bununla övünmeyi de severim.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>3:</strong> Benim kadar zeki olmayanlara yardım etmeye alışkınım ve her şeyi diğerlerine sabırla açıklayabilirim.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Güzel bir gizemden çok sevdiğim hiçbir şey yoktur.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>5:</strong> Kendi yargımı yaratmadan önce bir tartışmanın her iki yanını da dinlerim.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Ben . . . aptallarla . . . konuşurken . . . daima . . . yavaş . . . konuşurum . . . ve . . . kendimle . . . karşılaştırınca . . . neredeyse . . . herkes . . . aptaldır.</p><hr class="hr1"></div>
+                    <div class="acık"><p><strong>7:</strong> Sosyal durumlarda korkunç derecede garibimdir.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Daima kişilerin benim sırlarımı çalmaya çalıştığını düşünürüm.</p><hr class="hr1"></div>
+                    
+                    <h4>İdeal</h4>
+                    <div class="koyu"><hr class="hr1"><strong>1:</strong> Bilgi. Güç ve kendini geliştirmeye giden yol bilgiden geçer. (Nötr)<hr class="hr1"></div>
+                    <div class="acık"><p><strong>2:</strong> Güzellik. Güzel olan bizi kendinden öteye, doğru olana götürür. (İyi)</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Mantık. Duygular mantıksal düşüncemizi bulandırmamalıdır. (Kuralcı)<hr class="hr1"></p></div>
+                    <div class="acık"><p><strong>4:</strong> Limitsiz. Tüm varoluşta bulunan sonsuz olasılığı hiçbir şey engellememelidir. (Düzensiz)</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Güç. Bilgi, güç ve hakimiyete giden yoldur. (Kötü)</p><hr class="hr1"></div>
+                    <div class="acık"><p><strong>6:</strong> Kendini geliştirme. Araştırma hayatının tek amacı bireyin kendini geliştirmesidir. (Hiç)</p><hr class="hr1"></div>
+                    
+                    <h4>Bağ</h4>
+                    <div class="koyu"><hr class="hr1"><strong>1:</strong> Görevim öğrencilerimi korumaktır.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>2:</strong> Yanlış kişilerin ellerine geçmemesi gereken, korkunç sırlar saklayan bir kadim yazıta sahibim.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Bir kütüphane, arşiv, üniversite yada manastırı korumaya çalışıyorum.<hr class="hr1"></p></div>
+                    <div class="acık"><p><strong>4:</strong> Tüm hayatımın çalışması belirli bir bilgi alanı hakkında yazdığım bir seri yazıttır.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Tüm hayatım boyunca belirli bir sorunun cevabını aradım.</p><hr class="hr1"></div>
+                    <div class="acık"><p><strong>6:</strong> Bilgi için ruhumu sattım. Büyük işler başarıp onu geri kazanmayı umuyorum.</p><hr class="hr1"></div>
+                    
+                    <h4>Kusur</h4>
+                    <div class="koyu"><hr class="hr1"><strong>1:</strong> Bilgi vaadi ile kolaylıkla dikkatim dağılabilir.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>2:</strong> Kişiler bir iblis gördüğünde korkup kaçarlar. Bense durup anatomisi hakkında notlar alırım.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Kadim bir sırrın keşfi bir medeniyete bedeldir.<hr class="hr1"></p></div>
+                    <div class="acık"><p><strong>4:</strong> Karmaşık çözümler bulmak için genelde basit olanları görmezden gelirim.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Düşünmeden konuşup istemsizce diğerlerine hakaret ederim.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>6:</strong> Hayatım pahasına sır tutamam, yada başkasının hayatı pahasına.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Denizci</div></h3>
+                <div class="denizci hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'> Atletizm</span> ve <span class='ciz'>Algı</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Rotacı aletleri, araçlar (su)</p>
+                    <p><span class="bold">Ekipman: </span> Bir bağlama direği (sopa), 50 feetlik ipek halat, tavşan ayağı yada delikli taş gibi bir şans tılsımı, bir set günlük kıyafet ve 10 gp içeren bir kese.</p>
+                    <p><span class="bold">Özellik: </span> Gemi Geçişi. İhtiyaç duyduğunda bir yelkenli gemide sen ve maceracı dostların için ücretsiz yolculuk ayarlayabilirsin. Daha önce çalıştığın bir gemi yada iyi ilişkilerin olan (belki eski bir dostun kaptanlık yaptığı) bir gemi olabilir. Bir iyilik istediğin için tarih yada rotanın senin tüm ihtiyaçlarına uyması garanti değildir. DM'in gideceğin yere ne sürede varacağına karar verir. Ücretsiz geçişin karşılığında sen ve dostlarının gemide işlere yardım etmeniz beklenir.</p>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> </span> Sailors can be a rough lot, but the responsibilities of life on a ship make them generally reliable as well. Life aboard a ship shapes their outlook and forms their most important attachments.</p></div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                    <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Dostlarım ne olursa olsun bana güvenebileceklerini bilirler.</p></div>
+                    <div class="koyu"><hr class="hr1"><strong>2:</strong> İş bittiğinde sıkı eğlenebilmek için çok sıkı çalışırım.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>3:</strong> Yeni limanlara yelken açıp bira eşliğinde yeni dostlar edinmeyi severim.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Güzel bir hikaye uğruna gerçeği biraz değiştirmekten kaçınmam.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>5:</strong> Bence bir bar kavgası yeni bir şehri tanımak için güzel bir yoldur.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Asla dostça bir bahisten kaçınmam.</p><hr class="hr1"></div>
+                    <div class="acık"><p><strong>7:</strong> Kullandığım dil bir otyugh yuvası kadar pistir.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>8:</strong> İyi yapılmış bir işi severim, özellikle başkasını onu yapmak için ikna edebiliyorsam.</p><hr class="hr1"></div>
+                    
+                    <h4>İdeal</h4>
+                    <div class="koyu"><hr class="hr1"><strong>1:</strong> Saygı. Gemiyi bir arada tutan şey kaptan ve tayfanın karşılıklı duyduğu saygıdır. (İyi)<hr class="hr1"></div>
+                    <div class="acık"><p><strong>2:</strong> Adalet. Hepimiz işi yaparız ve hepimiz ödülü paylaşırız. (Kuralcı)</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Özgürlük. Deniz özgürlüktür, istediğin yere gidip istediğini yapma özgürlüğü. (Düzensiz)<hr class="hr1"></p></div>
+                    <div class="acık"><p><strong>4:</strong> Ustalık. Ben bir yırtıcıyım, denizdeki diğer gemilerde benim avlarım. (Kötü)</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Halk. Ben ideallere değil tayfa dostlarıma bağlıyım. (Nötr)</p><hr class="hr1"></div>
+                    <div class="acık"><p><strong>6:</strong> Arzu. Birgün kendi gemime sahip olup kendi kaderimin rotasını izleyeceğim. (Herhangi biri)</p><hr class="hr1"></div>
+                    
+                    <h4>Bağ</h4>
+                    <div class="koyu"><hr class="hr1"><strong>1:</strong> Önce kaptanıma sadığım, diğer şeyler ikincildir.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>2:</strong> En önemlisi gemidir, tayfa ve kaptanlar gelir geçer.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Daima ilk gemimi hatırlayacağım.<hr class="hr1"></p></div>
+                    <div class="acık"><p><strong>4:</strong> Bir liman kasabasında gözleri neredeyse beni denizden çalan bir sevdiğim var.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Hile ile ganimetteki adil payımdan oldum ve onu geri alma niyetindeyim.</p><hr class="hr1"></div>
+                    <div class="acık"><p><strong>6:</strong> Acımasız korsanlar kaptanımı ve tayfa dostlarımı katlettiler, gemimizi yağmaladılar ve beni de ölmeye terkettiler. İntikam benim olacak.</p><hr class="hr1"></div>
+                    
+                    <h4>Kusur</h4>
+                    <div class="koyu"><hr class="hr1"><strong>1:</strong> Yanlış olsalar bile emirlere itaat ederim.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>2:</strong> Fazladan işten kaçınmak için her şeyi söylerim.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Biri benim cesaretimi sorguladığında durum ne kadar tehlikeli olursa olsun asla geri çekilmem.<hr class="hr1"></p></div>
+                    <div class="acık"><p><strong>4:</strong> Bir kere içmeye başladığımda durmak benim için zordur.</p></div>
+                    <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Kendimi gözüme çarpan bozuklukları ve diğer değerlileri cebime atmaktan alıkoyamıyorum.<hr class="hr1"></div>
+                    <div class="acık"><p><strong>6:</strong> Gururum muhtemelen benim sonum olacak.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Alternatif Denizci (Korsan)</div></h3>
+                <div class="denizci hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'> Atletizm</span> ve <span class='ciz'>Algı</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Rotacı aletleri, araçlar (su)</p>
+                    <p><span class="bold">Ekipman: </span> Bir bağlama direği (sopa), 50 feetlik ipek halat, tavşan ayağı yada delikli taş gibi bir şans tılsımı, bir set günlük kıyafet ve 10 gp içeren bir kese.</p>
+                    <p><span class="bold">Özellik: </span> Kötü Şöhret. Nereye gidersen git kişiler senin şöhretin yüzünden senden korkarlar. Medeni bir yerleşimdeyken, tavernada hesabı ödememe yada kapı kırma gibi küçük suçların gözardı edilebilir, çünkü bir çok kişi seni şikayet etmeye korkacaktır.</p>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Gösteri Adamı</div></h3>
+                <div class="gosteriAdami hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Akrobasi</span> ve <span class='ciz'>Performans</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Kılık değiştirme kiti, Bir tip müzik enstrümanı</p>
+                    <p><span class="bold">Ekipman: </span> Seçeceğin bir müzik enstrümanı, bir hayran hediyesi (aşk mektubu, bir tutam saç yada bir hediyelik eşya), bir kostüm ve 15 gp içeren bir kese.</p>
+                    <p><span class="bold">Özellik: </span>  İstek Üzerine. Daima gösteri yapacak bir yer bulabilirsin, genelde bir taverna yada handa ama bir sirk, tiyatro yada bir soylunun sarayı da mümkün. Her gece gösteri yaptığın sürece bu tip bir yerde ücretsiz yatak ve yiyecek sağlanır, yerin kalitesine göre mütevazı yada rahat olur. Ek olarak performansın seni yerel bir figür haline getirir. Gösteri yaptığın bir kasabada yabancılar seni tanıdığında genelde senden hoşlanırlar.</p>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Uzmanlık Dalı:</span> </span>  İyi bir gösteri adamı çok işlevlidir, her performansı çeşitli rutinlerle süslerler. Gösteri adamı olarak uzmanlığını belirlemek için birden üçe kadar rutin seç yada aşağıdaki tablo üzerinde zar at.</p></div>
+                    <div class="gecmisler hidden">
+                        <h4>Rutinler</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Aktör</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Dansçı<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Ateş yutan</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Soytarı<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong> Hokkabaz</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Enstrümentalci</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong> Şair</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Şarkıcı<hr class="hr1"></div>
+                        <div class="acık"><p><strong>9:</strong> Hikaye anlatıcı</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>10:</strong> Akrobat</div>
+                    </div>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> </span>  Başarılı göstericiler seyircilerin dikkatini çekip üzerinde tutabilmelidir. Bu sebeple genelde gösterişli yada etki bırakan kişiliklere sahip olurlar. Romantikliğe yatkındırlar ve genelde sanat ve güzelliğin takdiri hakkında asil ruhlu ideallere kapılırlar.</p></div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Neredeyse her duruma uygun bir hikaye bilirim.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Ne zaman yeni bir yere gitsem yerel dedikoduları toplayıp yayarım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Daima o özel kişiyi arayan umutsuz bir romantiğim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Ben tüm sinirleri yatıştırabildiğim için kimse bana yada benim çevremde uzun süre öfkeli kalmaz.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong> Güzel bir hakareti severim, bana edilmiş olsa bile.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Eğer ilgi odağı ben değilsem tatsızlaşırım.</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong> Kusursuzun altında hiçbir şeyi kabul etmem.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Modumu yada fikrimi şarkıdaki bir nota kadar sık değiştiririm.</p><hr class="hr1"></div>
+                        
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Güzellik. Ben gösteri yaptığımda, dünyayı öncesinden daha iyi bir hale getiririm. (İyi)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Gelenek. Hikayeler, efsaneler ve geçmişten şarkılar asla unutulmamalı çünkü onlar bize kim olduğumuzu öğretir. (Kuralcı)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Yaratıcılık. Dünyanın yeni fikirler ve cesur eylemlere ihtiyacı var. (Düzensiz)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Açgözlülük. Bu işi sadece para ve şöhret için yapıyorum. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Halk. Gösteri yaptığımda kişilerin yüzünde gülümseme görmek hoşuma gidiyor. Tek önemli olan da bu. (Nötr)</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Dürüstlük. Sanat ruhu yansıtmalı, içerden gelmeli ve aslında kim olduğumuzu ortaya koymalı. (Herhangi biri)</p><hr class="hr1"></div>
+                        
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Enstrümanım en değerli varlığım ve bana sevdiğim birini hatırlatıyor.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Biri değerli enstrümanımı çaldı ve birgün onu geri alacağım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Ne gerekirse gereksin bir gün ünlü olacağım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Eski hikayelerden bir kahraman idolüm ve kendi başarılarımı onunkiler ile kıyaslarım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Nefret ettiğim rakibimden daha üstün olduğumu göstermek için gereken her şeyi yaparım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Eski grubumun üyeleri için her şeyi yaparım.</p><hr class="hr1"></div>
+                        
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Nam ve şöhret kazanmak için her şeyi yaparım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Güzel bir yüze dayanamam.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Bir skandal yüzünden bir daha asla eve dönemem. Bu tip olaylar beni nereye gitsem bulur.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Bir kez hala kellemi isteyen bir soyluyla alay etmiştim. Bu muhtemelen yine yapacağım bir hata.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Gerçek hislerimi saklamakta zorlanıyorum. Keskin dilim başımı belaya sokar.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Ne kadar uğraşsam da dostlarım için güvenilmez biriyim.</p></div>
+                    </div>
+                </div>
+               <!-- --------------------------------------------------------------------------------- -->
+
+               <h3 class="collapsible"><div class="altbaslık">Alternatif Gösteri Adamı (Gladyatör)</div></h3>
+               <div class="denizci hidden">
+                <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Akrobasi</span> ve <span class='ciz'>Performans</span></p>
+                <p><span class="bold">Alet Uzmanlıkları: </span> Kılık değiştirme kiti, Bir tip müzik enstrümanı</p>
+                <p><span class="bold">Ekipman: </span> Seçeceğin bir müzik enstrümanı, bir hayran hediyesi (aşk mektubu, bir tutam saç yada bir hediyelik eşya), bir kostüm ve 15 gp içeren bir kese.</p>
+                <p><span class="bold">Özellik: </span>  İstek Üzerine. Eğlence için dövüş olanağı bulunan tüm yerleşimlerde daima gösteri yapabilecek bir yer bulabilirsin, bu bir arena yada gizli bir dövüş kulübü olabilir. Her gece gösteri yaptığın sürece bu tip bir yerde ücretsiz yatak ve yiyecek sağlanır, yerin kalitesine göre mütevazı yada rahat olur. Ek olarak performansın seni yerel bir figür haline getirir. Gösteri yaptığın bir kasabada yabancılar seni tanıdığında genelde senden hoşlanırlar.</p>
+               </div>
+               <!-- --------------------------------------------------------------------------------- -->
+               <h3 class="collapsible"><div class="altbaslık">Halk Kahramanı</div></h3>
+                <div class="halkKahramani hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Hayvan İdaresi</span> ve <span class='ciz'>Hayatta Kalma</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip zanaatkar aleti, araçlar (kara)</p>
+                    <p><span class="bold">Ekipman: </span> Seçeceğin bir zanaatkar alet seti, bir kürek, bir demir tencere, bir set günlük kıyafet ve 10 gp içeren bir kese.</p>
+                    <p><span class="bold">Özellik: </span> Köylü Misafirperverliği. Sıradan halkın arasından çıktığından onların arasında çok rahat uyum sağlarsın. Kendini onlara bir tehlike olarak göstermediğin sürece saklanacak, dinlenecek ve iyileşecek bir yer bulabilirsin. Senin için hayatlarını tehlikeye atmazlar ama seni kanundan ya da peşindekilerden korurlar.</p>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Uzmanlık Dalı:</span> Eskiden avamların arasında basit bir meslek sürdürüyordun, belki bir çiftçi, madenci, hizmetkar, çoban, oduncu ya da mezarcı olarak. Ama bir şey oldu ve seni çok daha önemli işlerin beklediğini gördün. Seni halkın kahramanı yapan olayı seç ya da rastgele belirle.</p></div>
+                    <div class="gecmisler hidden">
+                        <h4>Dönüm Noktası</h4>
+                        <div class="acık1"><p><hr class="hr1"><strong>1:</strong> Bir tiranın adamlarına karşı geldim.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Bir doğal afet sırasında insanları kurtardım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Korkunç bir yaratığa karşı tek başıma direndim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Fakirlere yardım etmek için yozlaşmış bir tüccardan çaldım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong> İşgalci bir orduya karşı bir milis kuvveti yönettim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Bir tiranın kalesine girip halkı silahlandırmak için silah çaldım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong> Bir tiranın askerlerine karşı kullansınlar diye halka çiftçi aletlerini nasıl silah olarak kullanabileceklerini öğrettim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Sembolik bir protesto eylemimden sonra bir lord verdiği hükmü geri çekti.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>9:</strong> Bir kutsal, fey ya da benzeri bir varlık beni kutsadı ya da gizli aslımı ortaya çıkardı.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>10:</strong> Bir lordun ordusuna alındıktan sonra liderliğe yükseldim ve kahramanlığım takdir edildi.</p></div>
+                    </div>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> iyi ya da kötü bir halk kahramanı halktan biridir. Çoğu halk kahramanı mütevazı asıllarından utanmaktansa bunu erdem olarak görürler ve memleketleri onlar için hep çok önemli kalır.</p></div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Kişileri sözleri değil eylemleri ile yargılarım.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Eğer birinin başı dertteyse daima yardıma hazırım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Aklıma bir şeyi koydum mu yoluma ne çıkarsa çıksın onu yaparım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Güçlü bir adalet anlayışım var ve daima tartışmalarda orta yolu bulmaya çalışırım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong> Kendi yeteneklerime güvenirim ve diğerlerine de özgüven vermek için elimden geleni yaparım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Düşünmek diğerlerinin işidir. Ben eylemi tercih ederim.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong> Daha akıllı görünebilmek için uzun kelimeleri yanlış yerlerde kullanırım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Çabuk sıkılırım. Ne zaman kaderime ulaşacağım?</p><hr class="hr1"></div>
+                        
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Saygı. Kişiler haysiyet ve saygı görmeyi hak eder. (İyi)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Dürüstlük. Kimse kanun önünde ayrıcalıklı olmamalıdır ve kimse kanunun üzerinde değildir. (Kuralcı)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Özgürlük. Tiranların halk üzerindeki baskısına izin verilmemeli. (Düzensiz)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Güç. Eğer güçlü olursam hak ettiğimi alabilirim. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> İçtenlik. Olmadığım bir şey gibi görünmekten hayır gelmez. (Nötr)</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Kader. Hiçbir şey ve hiç kimse beni kaderimden alıkoyamaz. (Herhangi biri)</p><hr class="hr1"></div>
+                        
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Bir ailem var ama nerede oldukları hakkında fikrim yok. Bir gün onları yeniden görmeyi umut ediyorum.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Toprağı işledim, toprağı seviyorum ve toprağı koruyacağım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Kibirli bir asil bir gün beni çok fena dövmüştü, bu yüzden karşılaştığım tüm kabadayılardan öcümü alırım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Aletlerim geçmiş yaşamımın bir sembolüdür ve asla özümü unutmamak için onları taşırım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Kendini koruyamayanları korurum.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Keşke çocukluk aşkımda kaderimi izlemek için benimle gelseydi.</p><hr class="hr1"></div>
+                        
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Topraklarımı yöneten tiran beni öldürene kadar her şeyi deneyecek.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Kaderimin önemine inanıyorum, bu yüzden eksiklerimi ve başarısızlık riskini görmüyorum.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Benim gençliğimi bilen kişiler utanç verici sırrımı biliyorlar, asla eve dönemem.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Şehrin günahlarına zaafım var, özellikle sert bir içkiye.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Gizlice, eğer topraklara hükmeden bir tiran olsaydım her şeyin çok daha iyi olabileceğine inanıyorum.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Dostlarıma güvenmekte zorluk yaşıyorum.</p></div>
+                        </div>
+                    </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Lonca Zanaatkarı</div></h3>
+                <div class="loncaZanatkari hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Sezgi</span> ve <span class='ciz'>İkna Etme</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip zanaatkar aleti</p>
+                    <p><span class="bold">Ekipman: </span> Seçeceğin bir zanaatkar alet seti, locandan bir tanıtım mektubu, bir set yolcu kıyafeti ve 15 gp içeren bir kese.</p>
+                    <p><span class="bold">Özellik: </span> Loca Üyeliği. Locanın saygıdeğer bir üyesi olarak bu üyeliğin sağladığı ayrıcalıklardan faydalanabilirsin. Üye dostların sana yemek ve yatak sağlayacaktır, gerekirse cenazeni de yaparlar. Bazı şehir ve kasabalarda loca salonu meslektaşların ile buluşmak için bir merkez olur. Potansiyel patronlar, hizmetçiler yada dostlar bulmak için iyi bir fırsattır.</p>
+                    <p><span class="indented"></span>Localar genellikle muazzam politik güce sahiptirler. Eğer bir durumda suçlanıyorsan locan seni korumak için elinden geleni yapar, tabii suça karşı düzgün bir savunma ortaya koyulabilirse ve suçun çok ağır değilse. Eğer hatrı sayılan bir üyeysen güçlü politik figürlere de erişimin olabilir. Bu tip bağlantılar locaya yapılacak büyülü eşya yada para bağışı gerektirebilir.</p>
+                    <p><span class="indented"></span>Locaya aylık 5 gp üyelik aidatı ödemen gerekir. Loca ile aranı iyi tutabilmek için eğer ödemeyi kaçırırsan aradaki farkı faizi ile ödemelisin.</p>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Uzmanlık Dalı:</span> Localar genellikle aynı işi yapan bir çok zanaatkarın bir arada olabileceği büyüklükteki şehir yada kasabalarda bulunurlar. Ama senin locan büyük bir alanda her zanaatkarın farklı bir köyde çalıştığı bir ağ olabilir. Locanın yapısını oluşturmak için DM'in ile görüş. Loca işini Loca İşleri tablosundan yada zar ile rastgele seçebilirsin.</p></div>
+                    <div class="gecmisler hidden">
+                        <h4>Loca İşleri</h4>
+                        <div class="acık1"><p><hr class="hr1"><strong>1:</strong> Simyacılar ve eczacılar.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Zırhçılar, anahtarcılar, ve ince metal işçileri.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Mayacılar, damıtıcılar, ve şarap tüccarları.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Hattatlar, yazıcılar, ve arzuhalciler.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong> Marangozlar, çatıcılar, ve sıvacılar.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Haritacılar, keşifçiler, ve çizelgeciler.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong> Ayakkabıcılar.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Aşçılar ve fırıncılar.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>9:</strong> Cam işçileri.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>10:</strong> Kuyumcular ve cevher kesiciler.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>11:</strong> Deri işçileri, ve tabakçılar.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>12:</strong> Taş işçileri.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>13:</strong> Boyacılar, kireççiler, ve levhacılar.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>14:</strong> Çömlekçiler ve fayansçılar.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>15:</strong> Gemi ve yelken imalatçıları.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>16:</strong> Demir ve metal ustaları.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>17:</strong> Tamirciler, kalaycılar, ve kalıpçılar.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>18:</strong> Vagon ve tekerlek imalatçıları.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>19:</strong> Dokumacılar ve boyacılar.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>20:</strong> Oymacılar, fıçıcılar, ve yaycılar.</div>
+                    </div>
+                    <div class="collapsible"><p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> Loca zanaatkarları aletlerini bırakıp maceracılığa atılana dek dünyanın en sıradan insanları arasındadırlar. Sıkı çalışma ve toplumun değerini bilirler ama hırs ve açgözlülük zaaflarıdır.</p></div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Yapılacak her şey düzgün yapılmalıdır. Engel olamıyorum ben bir mükemmeliyetçiyim.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Sanatı anlayamayanları aşağı gören bir züppeyim.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Daima bir şeylerin yada kişilerin nasıl çalıştığını öğrenmek isterim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Her duruma uyacak özdeyiş ve atasözleri bilirim.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>5:</strong> Sıkı çalışma ve adalete benim bağlılığımı göstermeyen kişilere karşı kabayımdır.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Mesleğim hakkında uzun uzun konuşmayı severim.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>7:</strong> Paramdan kolay kolay vazgeçmem ve en iyi fiyatı alabilmek için usanmadan pazarlık yaparım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> İşim dolayısıyla iyi tanınırım ve herkesin işimi takdir etmesini isterim. Kişiler beni duymamışsa şaşırırım.<hr class="hr1"></div>
+                        
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Toplum. Medeniyetin güvenliği ve toplumun bağlarını güçlendirmek her medeni kişinin görevidir. (Kuralcı)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Cömertlik. Benim yeteneklerim dünyayı daha iyi bir hale getireyim diye bana verildi. (İyi)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Özgürlük. Herkes kendi geçimini kovalamakta özgür olmalıdır. (Düzensiz)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Açgözlülük. Sadece para için bunu yapıyorum. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Halk. Önemsediğim kişilere bağlıyım, ideallere değil. (Nötr)</p></div>
+                        <div class="acık"><p><strong>6:</strong> Arzu. Zanaatımda en iyisi olabilmek için sıkı çalışırım. (Herhangi biri)</p><hr class="hr1"></div>
+                        
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Zanaatımı öğrendiğim atölye benim için dünyadaki en önemli yerdir.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Biri için muazzam bir şey yarattım ve sonra onun bu şeyi hak etmediğini düşündüm. Hala buna layık birini arıyorum.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Beni bugünkü halime getirdiği için locama borçluyum.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>4:</strong> Birinin aşkını kazanabilmek için zenginlik peşindeyim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Bir gün locama dönüp aralarındaki en iyi zanaatkar olduğumu kanıtlayacağım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> İşyerimi yıkıp geçimimi elimden alan kötü güçlerden bir gün öcümü alacağım.</p><hr class="hr1"></div>
+                        
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Nadir ya da paha biçilemez bir şeye sahip olabilmek için her şeyi yaparım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Hemen birinin beni kandırmaya çalıştığını varsayarım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Bir kez locanın sandığından para çaldığımı kimse bilmemeli.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>4:</strong> Sahip olduğumla asla yetinmem, daima fazlasını isterim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Bir soylu unvanına sahip olabilmek için elimi kana bulayabilirim.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Benim işçiliğimi geçebilecek herkese karşı korkunç derecede kıskancım. Nereye gidersem gideyim hep rakiplerle çevriliyim.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Alternatif Loca Zanaatkarı (Loca Tüccarı)</div></h3>
+                <div class="loncaZanatkari hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Sezgi</span> ve <span class='ciz'>İkna Etme</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip zanaatkar aleti</p>
+                    <p><span class="bold">Ekipman: </span> Seçeceğin bir zanaatkar alet seti, locandan bir tanıtım mektubu, bir set yolcu kıyafeti ve 15 gp içeren bir kese.</p>
+                    <p><span class="bold">Özellik: </span> Loca Üyeliği. Locanın yada ticari bir birliğin saygıdeğer bir üyesi olarak bu üyeliğin sağladığı ayrıcalıklardan faydalanabilirsin. Üye dostların sana yemek ve yatak sağlayacaktır, gerekirse cenazeni de yaparlar. Bazı şehir ve kasabalarda loca salonu meslektaşların ile buluşmak için bir merkez olur. Potansiyel patronlar, hizmetçiler yada dostlar bulmak için iyi bir fırsattır.</p>
+                    <p><span class="indented"></span>Localar ve birlikler genellikle muazzam politik güce sahiptirler. Eğer bir durumda suçlanıyorsan locan seni korumak için elinden geleni yapar, tabii suça karşı düzgün bir savunma ortaya koyulabilirse ve suçun çok ağır değilse. Eğer hatrı sayılan bir üyeysen güçlü politik figürlere de erişimin olabilir. Bu tip bağlantılar locaya yapılacak büyülü eşya yada para bağışı gerektirebilir.</p>
+                    <p><span class="indented"></span>Locaya aylık 5 gp üyelik aidatı ödemen gerekir. Loca ile aranı iyi tutabilmek için eğer ödemeyi kaçırırsan aradaki farkı faizi ile ödemelisin.</p>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Münzevi</div></h3>
+                <div class="munzevi hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Tıp</span> ve <span class='ciz'>Din</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Otacılık Kiti</p>
+                    <p><span class="bold">Diller: </span> Seçeceğin bir tane</p>
+                    <p><span class="bold">Ekipman: </span> Duaların ya da araştırmandan notlar ile dolu bir tomar kabı, bir kış battaniyesi, bir set günlük kıyafet, bir otacılık kiti ve 5 gp.</p>
+                    <p><span class="bold">Özellik: </span> Keşif. İnziva sonucu özgün ve güçlü bir şeyi keşfettin. Bu buluşun yapısı inzivanın yapısına bağlıdır. Evren, tanrılar, dış boyutlardan güçlü varlıklar ya da doğanın güçleri hakkında büyük bir gerçeklik olabilir. Kimsenin görmediği bir yer olabilir. Unutulmuş bir gerçeği ortaya çıkarmış ya da tarihi yeniden yazacak geçmişten bir kutsal emanet bulmuş olabilirsin. Seni sürgüne göndermiş kişilere zarar verecek bir bilgi olabilir, bu yüzden medeniyete dönersin. Keşfinin detayları ve serüvenin üzerindeki etkisini DM'in ile konuş.</p>
+                    <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Uzmanlık Dalı:</span> İnzivanın sebebi neydi ve neden buna son veriyorsun? İnzivanın yapısına DM'in ile konuşup karar verebilirsin ya da aşağıdaki tabloda zar atıp rastgele belirleyebilirsin.</p>
+                    </div>
+                    <div class="gecmisler hidden">
+                        <h4>İnziva Hayatı</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Ruhsal aydınlanma peşindeydim.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Dini tarikatımın öğretileri yönünde hareket ettim.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> İşlemediğim bir suç için sürgüne gönderildim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Hayatımı değiştiren bir olaydan sonra toplumdan uzaklaştım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Sanat, edebiyat, müzik ya da manifesto üzerinde çalışmak için sessiz bir yere ihtiyacım vardı.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Medeniyetten uzak, doğa ile baş başa kalmam gerekiyordu.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Kadim bir kalıntı ya da yadigarın bakıcısıydım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Bir kişi, yer ya da ruhsal önem barındıran bir emanet peşinde olan bir seyyahtım.</p></div>
+                    </div>
+                    <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> Bazı münzeviler yalnız yaşama çok uygundur, diğerleri ise dost hasreti çekerler. İnzivayı sevseler de bitirmek isteseler de bu yaşam onların davranış ve ideallerini şekillendirir. Bazıları toplumdan uzakta geçirdikleri yıllarda akıllarını yitirirler.</p>
+                    </div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> O kadar uzun süredir yalnızım ki çok nadir konuşurum, genellikle hareketler ve homurtular ile anlaşırım.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Felaket karşısında bile daima sakinimdir.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Toplumumun lideri her durumda bilge bir şey söyleyebilirdi, bende bu bilgeliği paylaşmayı severim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Acı çeken herkese karşı inanılmaz empatim vardır.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Sosyal beklentiler ve görgü kurallarından bihaberim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Başıma gelen her şeyi bir büyük evrensel plana bağlarım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Sıklıkla kendi düşüncelerimde kaybolurum, çevreme hiç dikkat etmem.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Büyük bir felsefe teorisi üzerinde çalışıyorum ve fikirlerimi paylaşmayı severim.</p><hr class="hr1"></div>
+                        
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> İyilik. Bana bahşedilenler herkesle paylaşılmalı, sadece kendi yararıma olmamalıdır. (İyi)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Mantık. Duygular mantıksal düşüncemizi, doğru ya da yanlış anlayışımızı bulandırmamalıdır. (Kuralcı)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Özgür Düşünce. İlerlemenin sütunları merak ve sorgudur. (Düzensiz)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Güç. İnziva ve düşünce mistik ya da büyülü güce giden yollardır. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Yaşa ve Yaşat. Diğerlerinin yaşamlarına karışmak sadece sorun yaratır. (Nötr)</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Kendini Tanıma. Kendini tanırsan başka öğrenecek hiçbir şey kalmaz. (Herhangi biri)</p><hr class="hr1"></div>
+                        
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> İnzivam, tarikatım ya da birliğimin diğer üyelerinden daha değerli hiçbir şey yoktur.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Hala benim peşimde olabilecek kişilerden saklanmak için inzivaya çekildim. Bir gün onlarla yüzleşmeliyim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> İnzivamda aradığım aydınlanmanın hala peşindeyim ve hala ulaşamadım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>4:</strong> Sahip olamayacağım birini sevdiğim için inzivaya çekildim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Keşfim açığa çıkarsa dünyanın sonunu getirebilir.</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> İnzivam bana sadece benim yok edebileceğim bir büyük kötülüğe karşı irfan kazandırdı.</p><hr class="hr1"></div>
+                        
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Dünyaya döndüğümden beri onun sunduğu zevkleri biraz fazla tadıyorum.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> İnzivamın söndüremediği karanlık, kanasusamış düşünceler barındırıyorum.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Düşüncelerim ve felsefemde dogmacıyım.</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>4:</strong> Tartışmaları kazanma isteğim, dostluklar ve uyumun üzerinde bulunuyor.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Kaybolmuş biraz bilgi için gereğinden fazlasını tehlikeye atarım.</p><hr class="hr1"></div>
+                        <div class="acık"><p><strong>6:</strong> Sır tutmayı severim ve onları kimse ile paylaşmam.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Mürit</div></h3>
+                <div class="murit hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Sezgi</span> ve <span class='ciz'>Din</span></p>
+                    <p><span class="bold">Diller: </span> Seçeceğin iki tane</p>
+                    <p><span class="bold">Ekipman: </span> Bir kutsal sembol (din adamlığına başladığında aldığın bir hediye), bir dua kitabı ya da dua çarkı, 5 tütsü çubuğu, cüppe, bir takım günlük kıyafet ve içinde 15 gp olan bir kese.</p>
+                    <p><span class="bold">Özellik: </span> Dindarın Mabedi. Bir mürit olarak seninle aynı inanca bağlı kişilerin saygısını kazanırsın ve dini ritüeller gerçekleştirebilirsin. Sen ve macera yoldaşların dinine bağlı tapınaklardan ücretsiz tedavi, kutsanma ya da tapınağın sunabileceği diğer benzer hizmetlerden faydalanabilirsin ama yapılmasını istediğin büyüler için gereken materyal bileşenleri sen tedarik etmelisin. Dinine mensup olanlar seni (ancak yalnızca seni) mütevazı bir şekilde destekleyecektir.</p>
+                    </p><span class="indented">Bununla beraber tanrına ya da panteonuna hizmet sunan tapınaklardan seçtiğin birisi ile bağın olabilir ve bu tapınakta sana ait bir oda bulunabilir. Bu tapınak, eğer tapınaktakiler ile bağlantıların hala iyiyse, daha önceden hizmetlerini sunduğun tapınak ya da kendine yeni bir yuva kuracağın yeni bir tapınak olabilir. Tapınağına yakınken bu tapınaktaki diğer din adamlarından yardım isteyebilirsin, tabii bu yardımın tehlikeli olmaması ve hala din adamlarıyla hatrının olması gerekir.</p>
+                    <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> Müritler tapınaklarında ve diğer dini toplumlarda edindikleri tecrübeler ile tanımlanırlar. Müritlerin kişilikleri ve idealleri tarih ve dini öğreti araştırmalarından, tapınaklar ve mabetlerle olan ilişkilerinden, dini topluluklarındaki hiyerarşiden etkilenmektedir. Kusurları ise gizlenmiş iki yüzlülükleri, dinlerine ters düşen düşünceleri, ya da bir idealin aşırıya kaçması olabilir.</p>
+                    </div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> İnancıma bağlı bir kahraman idolümdür. Sürekli bu kişinin hayatından örnekler anlatırım.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> En ateşli düşmanımla bile ortak bir paydada buluşabilirim, onlarla empati kurar ve daima barış adına çalışırım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Her şeyde kutsal işaretler görürüm. Tanrılar bizimle konuşmaya çalışıyor, tek yapmamız gereken onlara kulak vermek.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Hiçbir şey iyimser tutumumu sarsamaz.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Hemen her durumda özlü sözlerden ve dini yazıtlardan (doğru ya da yanlış) alıntı yaparım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Başka tanrılara tapılmasına ve diğerlerinin inançlarına karşı hoşgörülüyümdür (ya da tahammülüm yoktur).<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Tapınağımdaki ayrıcalıklı kesimin arasında olmak, iyi yemekler yiyip güzel içecekler içmek benim yaşam tarzımdır. Daha düşük seviyede bir yaşam tarzının düşüncesi bile berbat!</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Tapınakta o kadar uzun vakit geçirdim ki dış dünyadaki kişilerle iletişimde neredeyse hiç deneyimim yok.<hr class="hr1"></p></div>
+
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Gelenek. Kadim ibadet ve kurban gelenekleri korunmalı ve sürdürülmelidir. (Kuralcı)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Hayır. Daima ihtiyacı olanlara yardım ederim, bireysel bedeli ne olursa olsun. (İyi)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Değişim. Tanrıların dünyayı sürekli değiştirme çabalarına yardımcı olmalıyız. (Düzensiz)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Güç. Bir gün inancımın dini hiyerarşisinde en üste çıkmayı umuyorum. (Kuralcı)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> İnanç. Tanrımın bana yol göstereceğini biliyorum. Eğer sıkı çalışırsam her şeyin iyi gideceğinden şüphem yok. (Kuralcı)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Arzu. Tanrımın öğretileri yolunda ilerleyerek bir gün tanrımın sevgisini ve onayını kazanacağım. (Herhangi biri)</p><hr class="hr1"></div>
+
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Uzun zaman önce kaybolmuş dinime ait bir kutsal emaneti bulmak için gerekirse ölürüm.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Beni kafir olarak yaftalayan yozlaşmış tapınak hiyerarşisinden bir gün öcümü alacağım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Ebeveynlerim öldüğünde beni sahiplenen rahibe hayatımı borçluyum.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Yaptığım her şey halk içindir.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Hizmet ettiğim tapınağı korumak için her şeyi yaparım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Düşmanlarımın kafirce gördüğü ve yoketmek istediği bir kutsal yazıtı korumaya çalışıyorum.</p><hr class="hr1"></div>
+
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Diğerlerini sertçe yargılarım, kendimi daha da sert.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Tapınağımın hiyerarşisinde güç sahibi kişilere gereğinden fazla güveniyorum.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Bağnazlığım bazen tanrıma inananlara kör bir şekilde güvenmeme yol açıyor.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Düşüncelerimde esnek değilim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Yabancılara şüpheli yaklaşırım ve onlardan daima en kötüsünü beklerim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Mürit olmadan önceki hayatım benden kaçıyor ve kimliğimi gizli tutmak için ne gerekiyorsa yapacağım.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Sokak Çocuğu</div></h3>
+                <div class="sokakCocugu hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>El Çabukluğu</span> ve <span class='ciz'>Gizlenme</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Kılık değiştirme kiti, hırsız aletleri</p>
+                    <p><span class="bold">Ekipman: </span> Küçük bir bıçak, büyüdüğün şehrin haritası, evcil bir fare, ebeveynlerini hatırlatan bir yadigar, bir set günlük kıyafet ve 10 gp içeren bir kese</p>
+                    <p><span class="bold">Özellik: </span> Şehrin Sırları. Şehirlerdeki gizli düzen ve akışı bilirsin ve diğerlerinin gözden kaçıracağı geçitler bulabilirsin. Savaşta olmadığın zamanlarda, sen (ve seninle gelen dostların) şehirdeki iki nokta arasında normalin iki katı hızda seyahat edebilirsin.</p>
+                    <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> İyisi ve kötüsüyle sokak çocuklarının hayatı çaresizlik ve sefalet ile şekillenir. Motivasyonları ya sokaklarda hayatı paylaştıkları kişilere olan bağları yada iyi bir yaşantı bulma arzularından gelir. Belki onlara kötü davranan tüm zenginlerden intikam alma arzusu da olabilir.</p>
+                    </div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Ceplerim yemek artıkları ve ıvır zıvır ile doludur.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Çok soru sorarım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Diğerlerinin bana erişemeyeceği ufak yerlere sıkışmayı severim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Sahip olduğum her şey kucağımda kollarımla sardığım bir bohçada iken sırtımı bir duvara yada ağaca yaslayarak uyurum.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Bir domuz gibi yerim ve görgüsüzümdür.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Bana iyi davranan herkesin kötü niyeti olduğunu düşünürüm.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Banyo yapmayı sevmem.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Diğerlerinin göz kırptıkları yada sakladıkları şeyleri açıkça söylerim.<hr class="hr1"></p></div>
+
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Saygı. Zengin yada fakir, herkes saygıyı hakeder. (İyi)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Toplum. Biz birbirimize sahip çıkmak zorundayız, çünkü başka kimse bunu yapmayacak. (Kuralcı)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Değişim. Alttaki yükseltilir ve görkemli olan indirilir. Değişim doğanın yapısında vardır. (Düzensiz)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Karşılık. Zenginlere sokaklarda yaşam ve ölümün nasıl bir şey olduğu gösterilmeli. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Halk. Bana yardım edenlere bende yardım ederim, bizi hayatta tutan budur. (Nötr)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Arzu. Daha iyi bir yaşamı hakettiğimi kanıtlayacağım. (Herhangi biri)</p><hr class="hr1"></div>
+
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Şehrim benim evimdir ve onu korumak için savaşırım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Diğerleri benim yaşadığımı yaşamasın diye bir yetimhaneye destek oluyorum.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Hayatımı bana sokaklarda yaşamayı öğreten başka bir sokak çocuğuna borçluyum.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Bana acıyan kişiye asla ödeyemeyeceğim bir borcum var.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Sefaletimden önemli birini soyarak kurtuldum ve bu yüzden aranıyorum.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Başka kimse benim yaşadığım zorluklara katlanmamalı.</p><hr class="hr1"></div>
+
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Eğer sayıca üstünlerse o dövüşten kaçarım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Altın benim için çok para gibi görünür ve fazlasına sahip olmak için her şeyi yaparım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Asla kendim dışında kimseye tamamen güvenemem.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Adil dövüşmektense birini uykusunda öldürmeyi tercih ederim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Eğer benim daha fazla ihtiyacım varsa bu hırsızlık sayılmaz.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Kendilerini koruyamayan kişiler başlarına gelenleri hakeder.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Soylu</div></h3>
+                <div class="soylu hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Tarih</span> ve <span class='ciz'>İkna</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip oyun seti</p>
+                    <p><span class="bold">Diller: </span> Seçeceğin bir tane</p>
+                    <p><span class="bold">Ekipman: </span> Bir set kaliteli kıyafet, damga yüzüğü, soyağacı tomarı, ve 25 gp içeren bir kese</p>
+                    <p><span class="bold">Özellik: </span> Ayrıcalık Pozisyonu. Soylu doğumun sayesinde kişiler senin hakkında iyi düşünür. Üst toplumda yerin vardır ve nereye gidersen git kişiler orada bulunma hakkın olduğunu varsayar. Avamlar seni tatmin etmek için ellerinden geleni yaparlar ve diğer soylular seni kendi sosyal gruplarının bir parçası olarak görürler. Eğer ihtiyacın olursa yerli bir soylu ile görüşme ayarlayabilirsin.</p>
+                    <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> Soylular bir çok kişinin deneyimleyemeyeceği bir hayatta yetişirler ve kişilikleri bu yetişme şeklini yansıtır. Bir soylu ünvanı ailene, diğer soylulara (hükümdar dahil), ailenin himayesindekilere yada ünvanın kendisine sayısız bağ ve sorumluluk ile gelir. Bu sorumluluk bir soylunun kuyusunu kazmak için çok uygun bir yoldur.</p>
+                    </div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Dokunaklı iltifatlarım konuştuğum herkesi dünyadaki en önemli kişi gibi hissettirir.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Halk beni cömertliğim ve nezaketim dolayısıyla sever.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Benim soylu duruşum sayesinde kimse benim avam sınıfının üzerinde olduğumdan şüphe edemez.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Son modayı takip etmek ve iyi görünmek için çok çaba sarfederim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Ellerimi kirletmeyi sevmem ve asla uygunsuz konaklamayı kabul edemem.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Soylu doğumuma rağmen kendimi diğerlerinin üzerinde görmem. Hepimiz aynı kanı taşırız.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Benim onayım bir kere kaybedildimi sonsuza kadar kaybolmuştur.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Eğer beni incitirsen seni ezerim, adını mahvederim ve topraklarını tuzlarım.<hr class="hr1"></p></div>
+                        
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Saygı. Pozisyonumdan dolayı ben saygı görürüm, ama tüm kişiler statülerine bakılmaksızın saygı ve haysiyeti hakeder. (İyi)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Sorumluluk. Benim vazifem üstlerimin otoritesine saygı duymaktır, astlarımında bana saygı duyması gerekir. (Kuralcı)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Bağımsızlık. Ailemin desteği olmadan kendi başımın çaresine bakabileceğimi kanıtlamam gerekir. (Düzensiz)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Güç. Daha fazla güç sahibi olursam kimse bana ne yapacağımı söyleyemez. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Aile. Hiçbir şey aileden önemli değildir. (Herhangi biri)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Soylu Sorumluluğu. Vazifem himayem altındakilere bakmak ve korumaktır. (İyi)</p><hr class="hr1"></div>
+                        
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Ailemin onayını almak için her tür zorlukla yüzleşirim.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Ailemin başka bir soylu aile ile dostluğu ne pahasına olursa olsun korunmalıdır.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Hiçbir şey diğer aile bireylerim kadar önemli değildir.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Ailemin nefret ettiği bir ailenin varisine aşığım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Hükümdarıma sadakatim asla sarsılmaz.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Halk beni bir halk kahramanı olarak görmeli.</p><hr class="hr1"></div>
+                        
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Gizlice herkesin benim astım olduğuna inanırım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Ailemi sonsuza kadar mahvedebilecek bir skandal sır saklıyorum.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Bana söylenen her sözde gizlenmiş hakaretler ve tehditler duyarım, çabuk sinirlenirim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Cinsel zevklere karşı doyumsuz bir arzum vardır.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Aslında, dünya benim etrafımda dönüyor.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Sözlerim ve eylemlerimle sıkça aileme utanç veririm.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Alternatif Soylu (Şövalye)</div></h3>
+                <div class="soylu hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Tarih</span> ve <span class='ciz'>İkna</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip oyun seti.</p>
+                    <p><span class="bold">Diller: </span> Seçeceğin bir tane.</p>
+                    <p><span class="bold">Ekipman: </span> Gönlünü verdiğin soylu bir lord yada leydiye ait bir sancak yada başka bir sembol, bir set kaliteli kıyafet, bir damga yüzüğü, soyağacı tomarı ve 25 gp içeren bir kese.</p>
+                    <p><span class="bold">Soylu (Şövalye): </span> Şövalyelik, soyluluk ünvanları arasında en aşağılarda yer alabilir ama kişiye yükselebilme imkanı verir. Eğer şövalye olmak istersen, Ayrıcalık Pozisyonu yerine Uşaklar özelliğini seçersin.</p>
+                    <p><span class="indented">Mertlik ve soylu bir aşk idealinin sembolü olarak, gönlünü verdiğin bir soyluya ait sancak yada başka bir yadigar taşıyıp o kişiye erdemle bağlı olduğunu gösterebilirsin.</p>
+                    <p><span class="bold">Özellik: </span> Uşaklar. Ailene sadık üç uşağın hizmetine sahipsin. Bu uşaklar görevliler yada haberciler olabilirler, hatta bir tanesi vekilharcın olabilir. Uşaklarından biri kendi şövalyeliğine yolu açmak için sana eğitim karşılığında yaverlik eden bir soyludur (Bu kişi senin bağın olabilir.). Geri kalan iki uşağın atına bakacak bir seyis ve zırhının bakımını yapan (hatta giymene yardım eden) bir hizmetçi olabilir.</p>
+                    <p><span class="indented">Uşakların senin için sıradan işleri yaparlar ama senin için savaşmazlar ve seni açıkça tehlikeli olan yerlere (zindanlar gibi) giderken izlemezler. Eğer sıkça hayatları tehlikeye giriyorsa yada suistimal ediliyorlarsa yanından ayrılırlar.</p>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Suçlu</div></h3>
+                <div class="suclu hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Aldatma</span> ve <span class='ciz'>Gizlenme</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip oyun seti, hırsız aletleri</p>
+                    <p><span class="bold">Ekipman: </span> Bir levye, kapüşonlu siyah günlük kıyafetler, 15 gp içeren bir kese</p>
+                    <p><span class="bold">Özellik: </span> Suçlu Aracısı. Seni diğer suçluların bulunduğu bir ağa bağlayan güvenilir bir aracın var. Bu aracıdan mesaj alma ve iletmeyi bilirsin, uzun mesafelerde bile. Özellikle senin için mesaj iletebilecek yerel habercileri, yozlaşmış kervan başlarını ve denizcileri tanırsın.</p>
+                    <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Uzmanlık Dalı:</span>Bir çok tip suçlu var, hırsızlar locasında yada benzeri bir suç organizasyonunda belirli üyelerin uzmanlıkları vardır. Bu tip organizasyonların dışında çalışanlar bile belirli suç tiplerini tercih eder. Suç hayatında oynadığın rolü seç yada aşağıdaki tablo üzerinde zar at.</p>
+                    </div>
+                    <div class="gecmisler hidden">
+                        <div class="acık1"><p><strong>1:</strong> Şantajcı</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Hırsız<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> İnfazcı</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Çalıntı mal taciri<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Yol soyguncusu</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Kiralık katil<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Yankesici</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Kaçakçı</p></div>
+                    </div>
+                    <div class="collapsible">
+                    <p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> Suçlular yüzeyde kötü olarak görülürler, ve birçoğu da köküne kadar kötüdür. Ama bazıları sevecen hatta telafi edici niteliklere sahiptir. Hırsızlar arasında onur olabilir ama suçlular nadir olarak otorite yada yasalara saygı duyarlar.</p></div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> İşler yolunda gitmezse diye daima bir planım vardır.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Durum ne olursa olsun sakinim. Asla sesimi yükseltmem yada duygularımın beni kontrol etmesine izin vermem.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Yeni bir yere girdiğimde ilk işim değerli eşyaları tespit etmek yada bunların nerede saklanabileceğini belirlemektir.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Yeni bir düşman edinmektense dost edinirim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Çok zor güvenirim. En dürüst görünenler genelde en çok şeyi saklayanlardır.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Bir durumdaki risklere aldırış etmem. Bana ihtimali asla söyleme.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Bana bir şey yaptırmanın en iyi yolu onu yapamayacağımı söylemendir.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> En küçük hakarette bile patlarım.<hr class="hr1"></p></div>
+
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Onur. İşteki diğerlerinden çalmam. (Kuralcı)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Özgürlük. Zincirler kırılmak için vardır, onları yapanlarda öyle. (Düzensiz)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Hayır. İhtiyaçtakilere yardım edebilmek için zenginden çalarım. (iyi)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Açgözlülük. Zengin olmak için ne olursa olsun yaparım. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Halk. Ben dostlarıma sadığım, ideallere değil. Geri kalan herkes cehenneme gidebilir umrumda olmaz. (Nötr)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Kefaret. Herkesin içinde bir iyilik kıvılcımı vardır. (İyi)</p><hr class="hr1"></div>
+
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Cömert bir hayırsevere olan eski bir borcu ödemeye çalışıyorum.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Haksız kazancım ailemin geçimine gidiyor.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Önemli bir şey benden alındı ve ben onu geri çalmayı hedefliyorum.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Şu ana kadar yaşamış en iyi hırsız olacağım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Korkunç bir suç işledim. Umarım bunu telafi edebilirim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Yaptığım bir hata yüzünden sevdiğim birini kaybettim. Bu asla tekrarlanmayacak.</p><hr class="hr1"></div>
+
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Değerli bir şey gördüğümde onu çalmak dışında bir şey düşünemem.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Dostlarım ve para arasında bir seçim yapmam gerekirse genelde parayı seçerim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Eğer bir plan varsa, ben unuturum. Eğer unutmazsam, görmezden gelirim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Sadece yalan söylerken yaptığım ve yalanımı ele veren bir huyum var.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> İşler kötü görünmeye başlayınca arkamı dönüp kaçarım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Benim işlediğim bir suç için şu anda bir masum hapiste. Benim için sorun değil.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Alternatif Suçlu (Ajan)</div></h3>
+                <div class="soylu hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Aldatma</span> ve <span class='ciz'>Gizlenme</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip oyun seti, hırsız aletleri.</p>
+                    <p><span class="bold">Diller: </span> Seçeceğin bir tane.</p>
+                    <p><span class="bold">Ekipman: </span> Bir levye, bir set günlük kapüşonlu siyah kıyafet ve 15 gp içeren bir kese.</p>
+                    <p><span class="bold">Soylu (Şövalye): </span> Şövalyelik, soyluluk ünvanları arasında en aşağılarda yer alabilir ama kişiye yükselebilme imkanı verir. Eğer şövalye olmak istersen, Ayrıcalık Pozisyonu yerine Uşaklar özelliğini seçersin.</p>
+                    <p><span class="bold">Özellik: </span> Ajan Aracısı. Seni diğer ajanların bulunduğu bir ağa bağlayan güvenilir bir aracın var. Bu aracıdan mesaj alma ve iletmeyi bilirsin, uzun mesafelerde bile. Özellikle senin için mesaj iletebilecek yerel habercileri, yozlaşmış kervan başlarını ve denizcileri tanırsın.</p>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->                
+                <h3 class="collapsible"><div class="altbaslık">Yabancı</div></h3>
+                <div class="yabanci hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Atletizm</span> ve <span class='ciz'>Hayatta Kalma</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Bir tip müzik enstrümanı</p>
+                    <p><span class="bold">Diller: </span> Seçeceğin bir tane</p>
+                    <p><span class="bold">Ekipman: </span> Bir asa, bir av kapanı, avladığın bir hayvandan hatıra, bir set yolcu kıyafeti ve 10 gp içeren bir kese</p>
+                    <p><span class="bold">Özellik: </span> Gezgin. Haritalar ve coğrafya için muazzam bir hafızan var, arazinin, yerleşimlerin ve çevrendeki diğer özelliklerin genel hatlarını daima hatırlayabilirsin. Ek olarak, bulunduğun arazide meyve, küçük hayvanlar ve su gibi kaynakların bulunması durumunda kendin ve diğer 5 kişinin günlük yemek ve içme suyu ihtiyacını karşılayabilirsin.</p>
+                    <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Uzmanlık Dalı:</span>Garip yerlerde bulundun ve diğerlerinin hayal bile edemeyeceği şeyler gördün. Gittiğin uzak diyarları ve onların seni nasıl etkilediğini düşün. Karakterine en uygununu kendin seçebilir yada bu tablo üzerinde zar atarak seyahatlerin sırasındaki mesleğini belirleyebilirsin.</p>
+                    </div>
+                    <div class="gecmisler hidden">
+                        <div class="acık1"><p><strong>1:</strong> Ormancı</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Avcı<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Gecekonducu</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Rehber<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Sürgün edilmiş yada toplumdan kovulmuş biri</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Ödül Avcısı<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Hacı</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Göçebe kabileden biri<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>9:</strong> Avcı-toplayıcı</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>10:</strong> Yağmacı kabileden biri</p></div>
+                    </div>
+                    <div class="collapsible">
+                    <p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> Medeni halkın gözünde kaba ve görgüsüz olarak görülen yabancıların şehir hayatındaki inceliklere pek saygıları yoktur. Parçası oldukları kabile, aile, klan ve doğal ortama olan bağları onlar için en önemli bağdır.</p></div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> İçimdeki seyahat tutkusu yüzünden evden uzaklaştım.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Dostlarıma sanki onlar yeni doğmuş köpek yavrularıymışçasına bakar, korurum.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Bir keresinde klanımı yaklaşan bir orc ordusuna karşı uyarabilmek için durmaksızın 25 mil koştum. Zorunda kalırsam yine yaparım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Doğayı inceleyerek her durumdan bir ders çıkarabilirim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Zengin yada iyi huylu kişilere güvenmem. Para ve efendilik seni aç bir owlbear karşısında korumaz.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Daima bir şeyleri alır, dalgınlıkla onlarla oyalanır ve bazen yanlışlıkla onları kırarım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Hayvanların yanında kişilerin yanında olduğumdan daha rahat hissederim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Aslında ben kurtlar tarafından yetiştirildim.<hr class="hr1"></p></div>
+
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Değişim. Yaşam mevsimler gibi sürekli değişim içindedir, bizde onunla değişmeliyiz. (Düzensiz)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> İyilik. Bütün kabile için en fazla mutluluğu yaratmak her bireyin görevidir. (İyi)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Onur. Eğer kendi onuruma leke sürersem, bütün klanıma leke sürmüş olurum. (Kuralcı)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Güç. En güçlü olan yönetir. (Kötü)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Doğa. Doğal dünya tüm medeniyetin yapılarından daha önemlidir. (Nötr)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Şan. Kendim ve klanım için savaşta şanlanmalıyım. (Herhangi biri)</p><hr class="hr1"></div>
+
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Ailem, klanım yada kabilem hayatımdaki en önemli şeydir, benden uzakta olsalar bile.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Yurdumun bozulmamış doğasına açılan bir yara, benim bedenime açılmış bir yaradır.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Anayurdumu mahveden kötülere bütün gazabımı göstereceğim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Kabilemin sonuncusuyum ve bu yüzden adlarımızın efsanelerde anılmasını sağlamak bana düşer.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Yaklaşan bir felaket hakkında görülerim var ve onu durdurabilmek için elimden geleni yaparım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Kabilemin devamını sağlamak için çocuk yapmak benim görevim.</p><hr class="hr1"></div>
+
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Bira, şarap ve tüm sarhoş edici maddelere fazla düşkünüm.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Dolu dolu yaşanan bir hayatta temkinin yeri yoktur.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Bana yapılan tüm hakaretleri hatırlarım ve bana yanlış yapan herkese karşı içimden kin beslerim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Diğer ırklar, kabileler ve toplumların bireylerine zor güvenirim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Neredeyse tüm zorluklara benim cevabım şiddettir.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Kendini kurtaramayanları kurtarmamı bekleme. Zayıfın yok olması ve güçlünün hayatta kalması doğanın kuralıdır.</p></div>
+                    </div>
+                </div>
+                <!-- --------------------------------------------------------------------------------- -->
+                <h3 class="collapsible"><div class="altbaslık">Şarlatan</div></h3>
+                <div class="sarlatan hidden">
+                    <p><span class='bold'>Beceri Uzmanlıkları: </span><span class='ciz'>Aldatma</span> ve <span class='ciz'>El Çabukluğu</span></p>
+                    <p><span class="bold">Alet Uzmanlıkları: </span> Kılık Değiştirme Kiti, Sahtecilik Kiti</p>
+                    <p><span class="bold">Ekipman: </span> Bir takım kaliteli kıyafet, bir kılık değiştirme kiti, seçtiğin dolandırıcılığın aletleri (on tane renkli sıvılarla dolu kapaklı şişe, bir hileli zar seti, bir deste işaretlenmiş kart yada hayali bir dükün damga yüzüğü) ve 15 gp içeren bir kese</p>
+                    <p><span class="bold">Özellik: </span> Sahte Kimlik. Karaktere bürünmen için gereken belgeleri, kurulmuş bağlantıları ve kılıkları ile ikinci bir kimlik yarattın. Ek olarak, bir örneğini görmüş olduğun sürece resmi kağıtlar yada kişisel mektuplar gibi belgelerin sahtesini yaratabilirsin.</p>
+                    <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Favori Entrikalar:</span>Her şarlatanın çevirdiği diğer dolaplara oranla daha sık tercih ettiği bir tane vardır. Favori dolandırıcılığını seç yada aşağıdaki tablo üzerinde zar at.</p>
+                    </div>
+                    <div class="gecmisler hidden">
+                        <div class="acık1"><p><strong>1:</strong> Şans oyunlarında hile yaparım.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Para tıraşlarım yada belge sahteciliği yaparım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> Kişilerin hayatlarına girip zayıflıklarını kullanarak varlıklarına konarım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Kimliğimi kıyafet gibi değiştiririm.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Sokak köşelerinde el çabukluğu ile dolandırırım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Kişileri işe yaramaz şeylerin zorla kazanılmış paralarına değer olduğuna inandırırım.</p></div>
+                    </div>
+                        <div class="collapsible">
+                        <p><span class="bold"></span><span class="collapsibleKarGec">Tavsiye Edilen Nitelikler:</span> Şarlatanlar gerçek kişiliklerini yarattıkları maskeler ardında saklayan renkli karakterlerdir. Kişilere kendi görmek istedikleri ve inanmak istedikleri şeyleri yansıtırlar. Ama bazen asıl benlikleri ağır bir vicdan, eski bir düşman yada yerleşmiş güven problemleri ile boğuşur.</p>
+                    </div>
+                    <div class="kisilikler hidden">
+                        <h4>Kişilik Özelliği</h4>
+                        <div class="acık1"><hr class="hr1"><p><strong>1:</strong> Şıpsevdiyim ve daima birinin peşinden koşarım.</p></div>
+                        <div class="koyu"><hr class="hr1"><strong>2:</strong> Her durum için bir şakam olur, özellikle mizahın uygun olmadığı durumlar için.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>3:</strong> İstediğimi almak için tercih ettiğim numara iltifatlardır.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>4:</strong> Potansiyel kazanç getirebilecek risklere dayanamayan doğuştan bir kumarbazım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>5:</strong> Bir ihtiyaç olmasa bile neredeyse her şey hakkında yalan söylerim.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>6:</strong> Kinaye ve hakaretler benim silah tercihlerimdir.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>7:</strong> Üzerimde birçok kutsal sembol taşır ve duruma göre uygun olacak tanrının ismini anarım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>8:</strong> Gördüğüm değerli olabilecek her şeyi cebime atarım.<hr class="hr1"></p></div>
+
+                        <h4>İdeal</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Bağımsızlık. Ben özgür bir ruhum ve kimse bana ne yapacağımı söyleyemez. (Düzensiz)<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> İnsaf. Asla biraz para kaybetmeyi göze alamıyacak kişileri hedef almam. (Kuralcı)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Hayır. Elde ettiğim parayı gerçekten ihtiyacı olanlara dağıtırım. (İyi)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Yaratıcılık. Asla aynı dolabı iki kere çevirmem. (Düzensiz)</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Dostluk. Mal gelip geçicidir. Dostluk bağları sonsuza kadar dayanır. (İyi)<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Arzu. Bir yere gelmekte kararlıyım. (Herhangi Biri)</p><hr class="hr1"></div>
+
+                        <h4>Bağ</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Yanlış kişiyi yoldum ve şimdi bu kişinin asla benle yada sevdiklerimle karşılaşmayacağına emin olmalıyım.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Her şeyimi ustama borçluyum, muhtemelen şuanda bir hapiste çürüyen birine.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Dışarda bir yerde beni tanımayan bir çocuğum var. Ben dünyayı onun için daha iyi bir yer haline getiriyorum.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Soylu bir aileden geliyorum ve bir gün benden çalınan ünvanımı ve topraklarımı geri alacağım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Güçlü birisi çok sevdiğim birini öldürdü. Bir gün öcümü alacağım.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Yaptığımı haketmeyen birini dolandırdım ve hayatını mahvettim. Yanlışlarımı telafi etmeye çalışıyorum ama muhtemelen kendimi asla affedemeyeceğim.</p><hr class="hr1"></div>
+
+                        <h4>Kusur</h4>
+                        <div class="koyu"><hr class="hr1"><strong>1:</strong> Güzel bir yüze direnemem.<hr class="hr1"></div>
+                        <div class="acık"><p><strong>2:</strong> Daima borcum olur. Haksız kazancımı geçici zevklerde harcarım.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>3:</strong> Benim diğerlerini kandırdığım gibi kimsenin beni kandıramayacağına eminim.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>4:</strong> Gereğinden fazla açgözlüyüm. Eğer işin içinde para varsa risk almaya dayanamam.</p></div>
+                        <div class="koyu"><hr class="hr1"><p><strong>5:</strong> Benden daha güçlü kişileri dolandırmaya dayanamam.<hr class="hr1"></p></div>
+                        <div class="acık"><p><strong>6:</strong> Kabul etmek zor ve bundan dolayı kendimden nefret ederim ama eğer işler zora girerse kaçıp kendimi kurtarırım.</p></div>
+                    </div>
+                </div>
+
+
+                <!-- Irk bilgileri buraya eklenecek -->
+            </section>
+        </div>  
+        <script src="scriptBack.js"></script>
+    </main>
+</body>
+</html>

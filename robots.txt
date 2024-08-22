@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /public/
+Sitemap: https://oytun12.github.io/DND/sitemap.xml

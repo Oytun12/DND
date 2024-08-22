@@ -4,4 +4,3 @@ document.querySelectorAll('.checkbox').forEach(function(checkbox) {
         this.classList.toggle('checked');
     });
 });
-
