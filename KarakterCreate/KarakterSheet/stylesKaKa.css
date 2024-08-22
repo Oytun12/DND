@@ -21,6 +21,24 @@ body {
     background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
     background-size: cover;
 }
+.input {
+    border: none;         /* Çerçeveyi kaldırır */
+    background: none;     /* Arka planı kaldırır */
+    width: 20px;          /* Genişliği ayarlar */
+    font-size: 16px;      /* Yazı tipinin boyutunu ayarlar */
+    text-align: center;   /* Sayıyı ortalar */
+    color: black;         /* Yazı rengini ayarlar */
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+    -webkit-appearance: none;  /* Chrome'da spin butonlarını kaldırır */
+    margin: 0;
+}
+
+.input:focus {
+    outline: none; /* Input elemanı seçildiğinde mavi çerçeveyi kaldırır */
+}
 
 /* div{
     border: solid 3px #333;
