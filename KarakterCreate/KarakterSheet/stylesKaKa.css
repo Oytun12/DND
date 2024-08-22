@@ -21,22 +21,37 @@ body {
     background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
     background-size: cover;
 }
-.input {
-    border: none;         /* Çerçeveyi kaldırır */
-    background: none;     /* Arka planı kaldırır */
-    width: 20px;          /* Genişliği ayarlar */
-    font-size: 16px;      /* Yazı tipinin boyutunu ayarlar */
-    text-align: center;   /* Sayıyı ortalar */
-    color: black;         /* Yazı rengini ayarlar */
+
+/* <tr>
+<td><span class="checkbox" id="str-checkbox"></span></td>
+<td>Strenght</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td><input type="checkbox" id="athletics-checkbox"></td>
+<td>Athletics</td>
+<td id="athletics-bonus">+0</td>
+</tr> */
+
+.bold { font-weight: bold; }
+
+input[type="number"] {
+    border: none;          /* Çerçeveyi kaldırır */
+    background: none;      /* Arka planı kaldırır */
+    width: 20px;           /* Genişliği ayarlar */
+    font-size: 16px;       /* Yazı tipinin boyutunu ayarlar */
+    text-align: center;    /* Sayıyı ortalar */
+    color: black;          /* Yazı rengini ayarlar */
 }
 
-.input::-webkit-outer-spin-button,
-.input::-webkit-inner-spin-button {
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;  /* Chrome'da spin butonlarını kaldırır */
     margin: 0;
 }
 
-.input:focus {
+input[type="number"]:focus {
     outline: none; /* Input elemanı seçildiğinde mavi çerçeveyi kaldırır */
 }
 
@@ -48,7 +63,7 @@ body {
     border: 2px solid #862F1B;
     width: 100%;
 } */
-.checkbox {
+/* .checkbox {
     display: inline-block;
     width: 10px;
     height: 10px;
@@ -59,8 +74,8 @@ body {
 }
 
 .checkbox.checked {
-    background-color: #333; /* İçi dolu olduğunda yeşil renkte olacak */
-}
+    background-color: #333; /* İçi dolu olduğunda yeşil renkte olacak 
+} */
 #noteArea {
     margin: 5px;
     width: calc(100% - 45px);

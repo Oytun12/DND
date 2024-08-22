@@ -974,99 +974,94 @@ const KaKa = () => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <th>Prf</th>
-                                            <th>Skill</th>
-                                            <th>Skor</th>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="checkbox" id="athletics-checkbox"></span></td>
+                                            <td><input type="checkbox" id="athletics-checkbox"></td>
                                             <td>Athletics</td>
-                                            <td><span id="athletics-bonus">${skills.athletics.modifier}</span></td>
+                                            <td><span id="athletics-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="acrobatics-checkbox"></span></td>
+                                            <td><input type="checkbox" id="acrobatics-checkbox"></td>
                                             <td>Acrobatics</td>
-                                            <td><span id="acrobatics-bonus">${skills.acrobatics.modifier}</span></td>
+                                            <td><span id="acrobatics-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="sleightOfHand-checkbox"></span></td>
+                                            <td><input type="checkbox" id="sleightOfHand-checkbox"></td>
                                             <td>Sleight of Hand</td>
-                                            <td><span id="sleightOfHand-bonus">${skills.sleightOfHand.modifier}</span></td>
+                                            <td><span id="sleightOfHand-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="stealth-checkbox"></span></td>
+                                            <td><input type="checkbox" id="stealth-checkbox"></td>
                                             <td>Stealth</td>
-                                            <td><span id="stealth-bonus">${skills.stealth.modifier}</span></td>
+                                            <td><span id="stealth-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="history-checkbox"></span></td>
+                                            <td><input type="checkbox" id="history-checkbox"></td>
                                             <td>History</td>
-                                            <td><span id="history-bonus">${skills.history.modifier}</span></td>
+                                            <td><span id="history-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="religion-checkbox"></span></td>
+                                            <td><input type="checkbox" id="religion-checkbox"></td>
                                             <td>Religion</td>
-                                            <td><span id="religion-bonus">${skills.religion.modifier}</span></td>
+                                            <td><span id="religion-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="investigation-checkbox"></span></td>
+                                            <td><input type="checkbox" id="investigation-checkbox"></td>
                                             <td>Investigation</td>
-                                            <td><span id="investigation-bonus">${skills.investigation.modifier}</span></td>
+                                            <td><span id="investigation-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="nature-checkbox"></span></td>
+                                            <td><input type="checkbox" id="nature-checkbox"></td>
                                             <td>Nature</td>
-                                            <td><span id="nature-bonus">${skills.nature.modifier}</span></td>
+                                            <td><span id="nature-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="arcana-checkbox"></span></td>
+                                            <td><input type="checkbox" id="arcana-checkbox"></td>
                                             <td>Arcana</td>
-                                            <td><span id="arcana-bonus">${skills.arcana.modifier}</span></td>
+                                            <td><span id="arcana-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="animalHandling-checkbox"></span></td>
+                                            <td><input type="checkbox" id="animalHandling-checkbox"></td>
                                             <td>Animal Handling</td>
-                                            <td><span id="animalHandling-bonus">${skills.animalHandling.modifier}</span></td>
+                                            <td><span id="animalHandling-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="insight-checkbox"></span></td>
+                                            <td><input type="checkbox" id="insight-checkbox"></td>
                                             <td>Insight</td>
-                                            <td><span id="insight-bonus">${skills.insight.modifier}</span></td>
+                                            <td><span id="insight-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="medicine-checkbox"></span></td>
+                                            <td><input type="checkbox" id="medicine-checkbox"></td>
                                             <td>Medicine</td>
-                                            <td><span id="medicine-bonus">${skills.medicine.modifier}</span></td>
+                                            <td><span id="medicine-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="perception-checkbox"></span></td>
+                                            <td><input type="checkbox" id="perception-checkbox"></td>
                                             <td>Perception</td>
-                                            <td><span id="perception-bonus">${skills.perception.modifier}</span></td>
+                                            <td><span id="perception-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="survival-checkbox"></span></td>
+                                            <td><input type="checkbox" id="survival-checkbox"></td>
                                             <td>Survival</td>
-                                            <td><span id="survival-bonus">${skills.survival.modifier}</span></td>
+                                            <td><span id="survival-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="deception-checkbox"></span></td>
+                                            <td><input type="checkbox" id="deception-checkbox"></td>
                                             <td>Deception</td>
-                                            <td><span id="deception-bonus">${skills.deception.modifier}</span></td>
+                                            <td><span id="deception-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="persuasion-checkbox"></span></td>
+                                            <td><input type="checkbox" id="persuasion-checkbox"></td>
                                             <td>Persuasion</td>
-                                            <td><span id="persuasion-bonus">${skills.persuasion.modifier}</span></td>
+                                            <td><span id="persuasion-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="performance-checkbox"></span></td>
+                                            <td><input type="checkbox" id="performance-checkbox"></td>
                                             <td>Performance</td>
-                                            <td><span id="performance-bonus">${skills.performance.modifier}</span></td>
+                                            <td><span id="performance-bonus">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="intimidation-checkbox"></span></td>
+                                            <td><input type="checkbox" id="intimidation-checkbox"></td>
                                             <td>Intimidation</td>
-                                            <td><span id="intimidation-bonus">${skills.intimidation.modifier}</span></td>
+                                            <td><span id="intimidation-bonus">0</span></td>
                                         </tr>
                                     </tbody>
                                 </table>

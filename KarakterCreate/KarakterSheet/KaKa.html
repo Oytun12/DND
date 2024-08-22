@@ -29,68 +29,83 @@
             <div id="sol">
                 <div id="sol-ust">
                     <div id="sol-ust-sol">
-                        <div id="inspration"><span class="checkbox" id="str-checkbox"></span>          İnspration   </div>
+                        <div id="inspration"><input type="checkbox" id="Inspiration-checkbox"></span>           Inspiration </div>
                         <div id="stats">
-                            <div id="str">Str <br><br><span id="strBonus">-1</span><br><br>
-                                <input type="number" id="strInput" name="str" value="8" min="8" max="20" class="input">
+                            <div id="str">
+                                <strong class="bold">Str</strong> <br><br>
+                                <span id="strBonus">-1</span><br><br>
+                                <input type="number" id="strInput" name="str" value="8" min="8" max="20" class="input">                            
                             </div>
-                            <div id="dex">Dex <br><br><span id="dexBonus">-1</span><br><br>
-                                <input type="number" id="dexInput" name="dex" value="8" min="8" max="20" class="input">
+                            <div id="dex">
+                                <strong class="bold">Dex</strong> <br><br>
+                                <span id="dexBonus">-1</span> <br><br>
+                                <input type="number" id="dexInput" name="dex" value="8" min="8" max="20" class="input">                            
                             </div>
-                            <div id="con">Con <br><br><span id="conBonus">-1</span><br><br>
-                                <input type="number" id="conInput" name="con" value="8" min="8" max="20" class="input">
+                            <div id="con">
+                                <strong class="bold">Con</strong> <br><br>
+                                <span id="conBonus">-1</span> <br><br>
+                                <input type="number" id="conInput" name="con" value="8" min="8" max="20" class="input">                            
                             </div>
-                            <div id="int">Int <br><br><span id="intBonus">-1</span><br><br>
-                                <input type="number" id="intInput" name="int" value="8" min="8" max="20" class="input">
+                            <div id="int">
+                                <strong class="bold">Int</strong> <br><br>
+                                <span id="intBonus">-1</span> <br><br>
+                                <input type="number" id="intInput" name="int" value="8" min="8" max="20" class="input">                            
                             </div>
-                            <div id="wis">Wis <br><br><span id="wisBonus">-1</span><br><br>
-                                <input type="number" id="wisInput" name="wis" value="8" min="8" max="20" class="input">
+                            <div id="wis">
+                                <strong class="bold">Wis</strong> <br><br>
+                                <span id="wisBonus">-1</span> <br><br>
+                                <input type="number" id="wisInput" name="wis" value="8" min="8" max="20" class="input">                            
                             </div>
-                            <div id="cha">Cha <br><br><span id="chaBonus">-1</span><br><br>
-                                <input type="number" id="chaInput" name="cha" value="8" min="8" max="20" class="input">
+                            <div id="cha">
+                                <strong class="bold">Cha</strong> <br><br>
+                                <span id="chaBonus">-1</span> <br><br>
+                                <input type="number" id="chaInput" name="cha" value="8" min="8" max="20" class="input">                            
                             </div>
                         </div>
                     </div>
                     <div id="sol-ust-sag">
                         <div id="yetenekler">
                             <div id="Proficiency">(+2)       Proficiency Bonus  </div>
-                            <div id="kurtarma"><table>
-                                <tbody><tr>
-                                    <th>Prf</th>
-                                    <th>Kurtarma at</th>
-                                    <th>Skor</th>
-                                </tr>
-                                <tr>
-                                    <td><span class="checkbox" id="str-checkbox"></span></td>
-                                    <td>Strenght</td>
-                                    <td>-1</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="checkbox" id="dex-checkbox"></span></td>
-                                    <td>Dexterity</td>
-                                    <td>-1</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="checkbox" id="con-checkbox"></span></td>
-                                    <td>Constution</td>
-                                    <td>-1</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="checkbox" id="int-checkbox"></span></td>
-                                    <td>İntelligence</td>
-                                    <td>-1</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="checkbox" id="wis-checkbox"></span></td>
-                                    <td>Wisdom</td>
-                                    <td>-1</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="checkbox" id="cha-checkbox"></span></td>
-                                    <td>Charizma</td>
-                                    <td>-1</td>
-                                </tr>
-                                </tbody></table>
+                            <div id="kurtarma">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>Prf</th>
+                                            <th>Kurtarma at</th>
+                                            <th>Skor</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="str-checkbox"></td>
+                                            <td>Strength</td>
+                                            <td id="str-saving">+0</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="dex-checkbox"></td>
+                                            <td>Dexterity</td>
+                                            <td id="dex-saving">+0</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="con-checkbox"></td>
+                                            <td>Constitution</td>
+                                            <td id="con-saving">+0</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="int-checkbox"></td>
+                                            <td>Intelligence</td>
+                                            <td id="int-saving">+0</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="wis-checkbox"></td>
+                                            <td>Wisdom</td>
+                                            <td id="wis-saving">+0</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="cha-checkbox"></td>
+                                            <td>Charisma</td>
+                                            <td id="cha-saving">+0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div id="skills">
                                 <table>
@@ -101,94 +116,94 @@
                                             <th>Skor</th>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="athletics-checkbox"></span></td>
+                                            <td><input type="checkbox" id="athletics-checkbox"></td>
                                             <td>Athletics</td>
-                                            <td><span id="athletics-bonus">0</span></td>
+                                            <td id="athletics-bonus" class="bonus-display">-1</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="acrobatics-checkbox"></span></td>
+                                            <td><input type="checkbox" id="acrobatics-checkbox"></td>
                                             <td>Acrobatics</td>
-                                            <td><span id="acrobatics-bonus">0</span></td>
+                                            <td id="acrobatics-bonus">-1</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="sleightOfHand-checkbox"></span></td>
+                                            <td><input type="checkbox" id="sleightOfHand-checkbox"></td>
                                             <td>Sleight of Hand</td>
-                                            <td><span id="sleightOfHand-bonus">0</span></td>
+                                            <td id="sleightOfHand-bonus">-1</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="stealth-checkbox"></span></td>
+                                            <td><input type="checkbox" id="stealth-checkbox"></td>
                                             <td>Stealth</td>
-                                            <td><span id="stealth-bonus">0</span></td>
+                                            <td id="stealth-bonus">-1</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="history-checkbox"></span></td>
+                                            <td><input type="checkbox" id="history-checkbox"></td>
                                             <td>History</td>
-                                            <td><span id="history-bonus">0</span></td>
+                                            <td id="history-bonus">-1</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="religion-checkbox"></span></td>
+                                            <td><input type="checkbox" id="religion-checkbox"></td>
                                             <td>Religion</td>
-                                            <td><span id="religion-bonus">0</span></td>
+                                            <td id="religion-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="investigation-checkbox"></span></td>
+                                            <td><input type="checkbox" id="investigation-checkbox"></td>
                                             <td>Investigation</td>
-                                            <td><span id="investigation-bonus">0</span></td>
+                                            <td id="investigation-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="nature-checkbox"></span></td>
+                                            <td><input type="checkbox" id="nature-checkbox"></td>
                                             <td>Nature</td>
-                                            <td><span id="nature-bonus">0</span></td>
+                                            <td id="nature-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="arcana-checkbox"></span></td>
+                                            <td><input type="checkbox" id="arcana-checkbox"></td>
                                             <td>Arcana</td>
-                                            <td><span id="arcana-bonus">0</span></td>
+                                            <td id="arcana-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="animalHandling-checkbox"></span></td>
+                                            <td><input type="checkbox" id="animalHandling-checkbox"></td>
                                             <td>Animal Handling</td>
-                                            <td><span id="animalHandling-bonus">0</span></td>
+                                            <td id="animalHandling-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="insight-checkbox"></span></td>
+                                            <td><input type="checkbox" id="insight-checkbox"></td>
                                             <td>Insight</td>
-                                            <td><span id="insight-bonus">0</span></td>
+                                            <td id="insight-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="medicine-checkbox"></span></td>
+                                            <td><input type="checkbox" id="medicine-checkbox"></td>
                                             <td>Medicine</td>
-                                            <td><span id="medicine-bonus">0</span></td>
+                                            <td id="medicine-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="perception-checkbox"></span></td>
+                                            <td><input type="checkbox" id="perception-checkbox"></td>
                                             <td>Perception</td>
-                                            <td><span id="perception-bonus">0</span></td>
+                                            <td id="perception-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="survival-checkbox"></span></td>
+                                            <td><input type="checkbox" id="survival-checkbox"></td>
                                             <td>Survival</td>
-                                            <td><span id="survival-bonus">0</span></td>
+                                            <td id="survival-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="deception-checkbox"></span></td>
+                                            <td><input type="checkbox" id="deception-checkbox"></td>
                                             <td>Deception</td>
-                                            <td><span id="deception-bonus">0</span></td>
+                                            <td id="deception-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="persuasion-checkbox"></span></td>
+                                            <td><input type="checkbox" id="persuasion-checkbox"></td>
                                             <td>Persuasion</td>
-                                            <td><span id="persuasion-bonus">0</span></td>
+                                            <td id="persuasion-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="performance-checkbox"></span></td>
+                                            <td><input type="checkbox" id="performance-checkbox"></td>
                                             <td>Performance</td>
-                                            <td><span id="performance-bonus">0</span></td>
+                                            <td id="performance-bonus">+0</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="checkbox" id="intimidation-checkbox"></span></td>
+                                            <td><input type="checkbox" id="intimidation-checkbox"></td>
                                             <td>Intimidation</td>
-                                            <td><span id="intimidation-bonus">0</span></td>
+                                            <td id="intimidation-bonus">+0</td>
                                         </tr>
                                     </tbody>
                                 </table>
