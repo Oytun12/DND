@@ -104,14 +104,6 @@ document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
     checkbox.addEventListener('change', updateSavingThrows);
 });
 
-// const updateKurtulmaBonuses = () => {
-//     document.getElementById('str-saving').innerText = statsB.strB >= 0 ? `+${statsB.strB}` : `${statsB.strB}`;
-//     document.getElementById('dex-saving').innerText = statsB.dexB >= 0 ? `+${statsB.dexB}` : `${statsB.dexB}`;
-//     document.getElementById('con-saving').innerText = statsB.conB >= 0 ? `+${statsB.conB}` : `${statsB.conB}`;
-//     document.getElementById('int-saving').innerText = statsB.intB >= 0 ? `+${statsB.intB}` : `${statsB.intB}`;
-//     document.getElementById('wis-saving').innerText = statsB.wisB >= 0 ? `+${statsB.wisB}` : `${statsB.wisB}`;
-//     document.getElementById('cha-saving').innerText = statsB.chaB >= 0 ? `+${statsB.chaB}` : `${statsB.chaB}`;
-// }
 
 function updateSkills() {
     skills = {
