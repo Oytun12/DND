@@ -26,24 +26,24 @@ const statsB = {
 };
 
 let skills = {
-    athletics      : 0,      // STR
-    acrobatics     : 0,      // DEX
-    sleightOfHand  : 0,      // DEX
-    stealth        : 0,      // DEX
-    arcana         : 0,      // INT
-    history        : 0,      // INT
-    investigation  : 0,      // INT
-    nature         : 0,      // INT
-    religion       : 0,      // INT
-    animalHandling : 0,      // WIS
-    insight        : 0,      // WIS
-    medicine       : 0,      // WIS
-    perception     : 0,      // WIS
-    survival       : 0,      // WIS
-    deception      : 0,      // CHA
-    intimidation   : 0,      // CHA
-    performance    : 0,      // CHA
-    persuasion     : 0       // CHA
+    athletics      : statsB.strB,       // STR
+    acrobatics     : statsB.dexB,       // DEX
+    sleightOfHand  : statsB.dexB,       // DEX
+    stealth        : statsB.dexB,       // DEX
+    arcana         : statsB.intB,       // INT
+    history        : statsB.intB,       // INT
+    investigation  : statsB.intB,       // INT
+    nature         : statsB.intB,       // INT
+    religion       : statsB.intB,       // INT
+    animalHandling : statsB.wisB,       // WIS
+    insight        : statsB.wisB,       // WIS
+    medicine       : statsB.wisB,       // WIS
+    perception     : statsB.wisB,       // WIS
+    survival       : statsB.wisB,       // WIS
+    deception      : statsB.chaB,       // CHA
+    intimidation   : statsB.chaB,       // CHA
+    performance    : statsB.chaB,       // CHA
+    persuasion     : statsB.chaB        // CHA
 };
 
 
@@ -99,6 +99,7 @@ function updateSavingThrows() {
         document.getElementById(`${stat}-saving`).textContent = savingThrow >= 0 ? `+${savingThrow}` : `${savingThrow}`;
     });
 }
+
 document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
     checkbox.addEventListener('change', updateSavingThrows);
 });
@@ -112,54 +113,52 @@ document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
 //     document.getElementById('cha-saving').innerText = statsB.chaB >= 0 ? `+${statsB.chaB}` : `${statsB.chaB}`;
 // }
 
-const updateSkills = () => {
-    skills.athletics      = statsB.strB;       // STR
-    skills.acrobatics     = statsB.dexB;       // DEX
-    skills.sleightOfHand  = statsB.dexB;       // DEX
-    skills.stealth        = statsB.dexB;       // DEX
-    skills.arcana         = statsB.intB;       // INT
-    skills.history        = statsB.intB;       // INT
-    skills.investigation  = statsB.intB;       // INT
-    skills.nature         = statsB.intB;       // INT
-    skills.religion       = statsB.intB;       // INT
-    skills.animalHandling = statsB.wisB;       // WIS
-    skills.insight        = statsB.wisB;       // WIS
-    skills.medicine       = statsB.wisB;       // WIS
-    skills.perception     = statsB.wisB;       // WIS
-    skills.survival       = statsB.wisB;       // WIS
-    skills.deception      = statsB.chaB;       // CHA
-    skills.intimidation   = statsB.chaB;       // CHA
-    skills.performance    = statsB.chaB;       // CHA
-    skills.persuasion     = statsB.chaB;       // CHA
-};  
+function updateSkills() {
+    skills = {
+        athletics      : statsB.strB,       // STR
+        acrobatics     : statsB.dexB,       // DEX
+        sleightOfHand  : statsB.dexB,       // DEX
+        stealth        : statsB.dexB,       // DEX
+        arcana         : statsB.intB,       // INT
+        history        : statsB.intB,       // INT
+        investigation  : statsB.intB,       // INT
+        nature         : statsB.intB,       // INT
+        religion       : statsB.intB,       // INT
+        animalHandling : statsB.wisB,       // WIS
+        insight        : statsB.wisB,       // WIS
+        medicine       : statsB.wisB,       // WIS
+        perception     : statsB.wisB,       // WIS
+        survival       : statsB.wisB,       // WIS
+        deception      : statsB.chaB,       // CHA
+        intimidation   : statsB.chaB,       // CHA
+        performance    : statsB.chaB,       // CHA
+        persuasion     : statsB.chaB        // CHA
+    };
+}
+function updateSkillProf() {
+    Object.keys(skills).forEach(skill => {
+        const isChecked = document.getElementById(`${skill}-checkbox`).checked;
+        const baseSkill = skills[skill];
+        const skillP = baseSkill + (isChecked ? profB : 0);
+        document.getElementById(`${skill}-bonus`).textContent = skillP >= 0 ? `+${skillP}` : `${skillP}`;
+    });
+}
 
-const updateSkillBonuses = () => {
-    document.getElementById('athletics-bonus').textContent      = skills.athletics >= 0 ? `+${skills.athletics}` : `${skills.athletics}`;
-    document.getElementById('acrobatics-bonus').textContent     = skills.acrobatics >= 0 ? `+${skills.acrobatics}` : `${skills.acrobatics}`;
-    document.getElementById('sleightOfHand-bonus').textContent  = skills.sleightOfHand >= 0 ? `+${skills.sleightOfHand}` : `${skills.sleightOfHand}`;
-    document.getElementById('stealth-bonus').textContent        = skills.stealth >= 0 ? `+${skills.stealth}` : `${skills.stealth}`;
-    document.getElementById('arcana-bonus').textContent         = skills.arcana >= 0 ? `+${skills.arcana}` : `${skills.arcana}`;
-    document.getElementById('history-bonus').textContent        = skills.history >= 0 ? `+${skills.history}` : `${skills.history}`;
-    document.getElementById('investigation-bonus').textContent  = skills.investigation >= 0 ? `+${skills.investigation}` : `${skills.investigation}`;
-    document.getElementById('nature-bonus').textContent         = skills.nature >= 0 ? `+${skills.nature}` : `${skills.nature}`;
-    document.getElementById('religion-bonus').textContent       = skills.religion >= 0 ? `+${skills.religion}` : `${skills.religion}`;
-    document.getElementById('animalHandling-bonus').textContent = skills.animalHandling >= 0 ? `+${skills.animalHandling}` : `${skills.animalHandling}`;
-    document.getElementById('insight-bonus').textContent        = skills.insight >= 0 ? `+${skills.insight}` : `${skills.insight}`;
-    document.getElementById('medicine-bonus').textContent       = skills.medicine >= 0 ? `+${skills.medicine}` : `${skills.medicine}`;
-    document.getElementById('perception-bonus').textContent     = skills.perception >= 0 ? `+${skills.perception}` : `${skills.perception}`;
-    document.getElementById('survival-bonus').textContent       = skills.survival >= 0 ? `+${skills.survival}` : `${skills.survival}`;
-    document.getElementById('deception-bonus').textContent      = skills.deception >= 0 ? `+${skills.deception}` : `${skills.deception}`;
-    document.getElementById('persuasion-bonus').textContent     = skills.persuasion >= 0 ? `+${skills.persuasion}` : `${skills.persuasion}`;
-    document.getElementById('performance-bonus').textContent    = skills.performance >= 0 ? `+${skills.performance}` : `${skills.performance}`;
-    document.getElementById('intimidation-bonus').textContent   = skills.intimidation >= 0 ? `+${skills.intimidation}` : `${skills.intimidation}`;
-};
+// Checkbox'lara tıklanınca update fonksiyonunu çalıştırma
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+        updateSkills();       // Statlara bağlı olarak skill'leri güncelle
+        updateSkillProf();    // Proficiency bonusunu ekle
+    });
+});
 
 const guncelle = () => {
     girdiGeldiğinde();
     statBonusHesapla();
     updateStatBonuses();
     updateSkills();
-    updateSkillBonuses();
+    updateSkills();           // Statlara bağlı olarak skill'leri güncelle
+    updateSkillProf();        // Proficiency bonusunu ekle
     updateSavingThrows();
 };
 
