@@ -735,7 +735,7 @@ table{
         border: solid 3px #333;  */
     }
     #str, #dex, #con, #int, #wis, #cha {
-        line-height: 16px;
+        line-height: 15px;
         text-align: center;
         padding:20px 10px 20px 10px;
         /* border-radius: 10px;
@@ -759,6 +759,50 @@ table{
         border: solid 3px #333;  
         margin-right: 0;
     }
+    #skills{
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-size: 15px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5px;
+
+        white-space: pre;
+        display: flex; /* Flexbox modelini etkinleştirir */
+        justify-content: center; /* Yatayda ortalar */
+        align-items: center; /* Dikeyde ortalar */
+        height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+        width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+        width: 172pt;
+        height: 390pt;
+        margin-bottom: 5px;
+        text-align: center;
+        background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+        background-clip: border-box;
+        background-image: url('svg/Skills.svg'); /* SVG dosyanızın yolu */
+        background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+        background-position: center; /* Ortalanmasını sağlar */
+        border-radius: 10px;
+        /* background-color: #fff; */
+    }
+    #skills table{
+        margin-left: 5px;
+        border-spacing: 0px;
+        width: 75%;
+        font-size: 1.07em;
+        margin: 0;
+    }  
+    #skills th{
+        border: none;
+        padding: 5px 10px 3px 10px;
+    }    
+    #skills td{
+        border: none;
+        font-size: 1em;
+        padding: 2px 0 2px 0;
+    }  
     #sag-ust{
         padding-top: 10px;
         display: flex;
