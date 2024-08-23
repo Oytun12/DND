@@ -128,7 +128,7 @@ function updateSkills() {
     };
     
     let PP = statsB.wisB;
-    document.getElementById(`PP`).innerHTML = PP >= 0 ? `(+${PP}) Pasive Perception`:`(${PP}) Pasive Perception`;
+    document.getElementById(`PP`).innerHTML = PP >= 0 ? `<input type="checkbox" id="PP-checkbox">(+${PP}) Pasive Perception`:`<input type="checkbox" id="PP-checkbox">(${PP}) Pasive Perception`;
 
     let AC = 10 + statsB.dexB;
     document.getElementById(`ac`).innerHTML = `<input type="number" id="acInput" name="acInput" value="${AC}" min="9" max="25" class="input"><br>AC`;
