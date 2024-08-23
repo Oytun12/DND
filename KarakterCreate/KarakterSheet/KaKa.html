@@ -222,17 +222,22 @@
             <div id="orta">
                 <div id="orta-ust">
                     <div id="orta-ust-ust">
-                        <div id="ac">13 <br>AC</div>
+                        <div id="ac"><input type="number" id="acInput" name="acInput" value="9" min="9" max="25" class="input"> <br>AC</div>
                         <div id="iniativ">+dex <br> İniative</div>
-                        <div id="speed">30 <br>Speed</div>
+                        <div id="speed"><input type="number" id="acInput" value="30" class="input"> <br>Speed</div>
                     </div>
                     <div id="orta-ust-orta">
                         <div id="CHitPoint">Max Hit Point= 30 <br>Current Hit Point</div>
                         <div id="THitPoint">+5 <br>Temporary Hit Point</div>
                     </div>
                     <div id="orta-ust-alt">
-                        <div id="HitDice">Total= 3d12<br>Hit Dice<br>1d12</div>
-                        <div id="DeathSaves">+ + + <br>+ + + <br>Death Saves</div>
+                        <div id="HitDiceContainer">
+                            <div id="HitDice1">Total= <input type="number" id="X" name="XInput" value="1" min="1" max="9" class="input">d<input type="number" id="D" name="DInput" value="6" min="6" max="12" class="input"></div>
+                            <div id="HitDice2">Hit Dice<br>1d12</div>
+                        </div>
+                        <div id="DeathSavesContainer">
+                            <div id="DeathSaves"><input type="checkbox"> <input type="checkbox"> <input type="checkbox"> <br><input type="checkbox"> <input type="checkbox"> <input type="checkbox"> <br>Death Saves</div>
+                        </div>
                     </div>
                 </div>
                 <div id="orta-orta">

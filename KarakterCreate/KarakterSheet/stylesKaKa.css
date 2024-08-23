@@ -416,7 +416,7 @@ table{
             text-align: center;
 
             white-space: pre;
-            display: flex; /* Flexbox modelini etkinleştirir */
+            /*display: flex;  Flexbox modelini etkinleştirir */
             justify-content: center; /* Yatayda ortalar */
             align-items: center; /* Dikeyde ortalar */
             height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
@@ -428,6 +428,9 @@ table{
             background-image: url('svg/AC.svg'); /* SVG dosyanızın yolu */
             background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
             background-position: center; /* Ortalanmasını sağlar */
+        }
+        #acInput.input{
+            padding-top: 10px;
         }
         #iniativ{
             padding-right: 10px;
@@ -456,7 +459,7 @@ table{
             text-align: center;
  
             white-space: pre;
-            display: flex; /* Flexbox modelini etkinleştirir */
+            /* display: flex; Flexbox modelini etkinleştirir */
             justify-content: center; /* Yatayda ortalar */
             align-items: center; /* Dikeyde ortalar */
             height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
@@ -468,6 +471,7 @@ table{
             background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
             background-position: center; /* Ortalanmasını sağlar */
         }
+
     #orta-ust-orta{
         height: 147px; 
         display: flex;
@@ -514,14 +518,48 @@ table{
         flex-direction: row;
         justify-content: space-between;
     }
-        #HitDice{
+        #HitDiceContainer{
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
+            background-clip: border-box;
+            background-image: url('svg/HitDice.svg'); /* SVG dosyanızın yolu */
+            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
+            background-position: center; /* Ortalanmasını sağlar */
+        }
+        #HitDice1{
+            margin: 5px 2px 0 8px;
             white-space: pre;
-            display: flex; /* Flexbox modelini etkinleştirir */
+            height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+            width: 90%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+            text-align: center;
+            font-size: 14px;
+        }
+        #HitDice2{
+            margin: 3px;
+            margin-left: 4px;
+            white-space: pre;
+            /* display: flex; Flexbox modelini etkinleştirir */
             justify-content: center; /* Yatayda ortalar */
             align-items: center; /* Dikeyde ortalar */
             height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
             width: 90%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
             text-align: center;
+            font-size: 14px;
+        }
+
+        #DeathSavesContainer{
+            height: 45px;
+            margin-left: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
             background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
             background-clip: border-box;
             background-image: url('svg/HitDice.svg'); /* SVG dosyanızın yolu */
@@ -529,21 +567,24 @@ table{
             background-position: center; /* Ortalanmasını sağlar */
         }
         #DeathSaves{
-            text-align: center;
-            margin-left: 5px;
-
+            padding: 6px 6px 0 6px;
+            text-align:center;
+    
             white-space: pre;
-            display: flex; /* Flexbox modelini etkinleştirir */
+            /* display: flex;  Flexbox modelini etkinleştirir */
             justify-content: center; /* Yatayda ortalar */
             align-items: center; /* Dikeyde ortalar */
             height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
             width: 90%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
             text-align: center;
-            background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
-            background-clip: border-box;
-            background-image: url('svg/HitDice.svg'); /* SVG dosyanızın yolu */
-            background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
-            background-position: center; /* Ortalanmasını sağlar */
+
+            white-space: pre;
+            /* display: flex; Flexbox modelini etkinleştirir */
+            justify-content: center; /* Yatayda ortalar */
+            align-items: center; /* Dikeyde ortalar */
+            height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
+            width: 90%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
+            text-align: center;
         }
 #orta-orta{
     display: flex; 
