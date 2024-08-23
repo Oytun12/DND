@@ -128,7 +128,28 @@ function updateSkills() {
     };
     
     let PP = statsB.wisB;
-    document.getElementById(`PP`).innerHTML = PP >= 0 ? `<input type="checkbox" id="PP-checkbox">(+${PP}) Pasive Perception`:`<input type="checkbox" id="PP-checkbox">(${PP}) Pasive Perception`;
+    let basePP = 10; // Pasif Perception'un temel değeri
+    
+    // İlk değer ataması
+document.getElementById(`PP`).innerHTML = PP >= 0 ? 
+`<input type="checkbox" id="PP-checkbox">(${basePP + PP}) Passive Perception` : 
+`<input type="checkbox" id="PP-checkbox">(${basePP + PP}) Passive Perception`;
+
+// Checkbox durumunu izleyip güncelleyen fonksiyon
+document.getElementById('PP-checkbox').addEventListener('change', function() {
+    if (this.checked) {
+        // Checkbox işaretli ise profB ekle
+        let newPP = basePP + PP + profB;
+        document.getElementById(`PP`).innerHTML = `<input type="checkbox" id="PP-checkbox" checked>(${newPP}) Passive Perception`;
+    } else {
+        // Checkbox işaretli değilse sadece PP göster
+        let defaultPP = basePP + PP;
+        document.getElementById(`PP`).innerHTML = `<input type="checkbox" id="PP-checkbox">(${defaultPP}) Passive Perception`;
+    }
+    
+    // Checkbox'ı yeniden dinlemek için
+    document.getElementById('PP-checkbox').addEventListener('change', arguments.callee);
+});
 
     let AC = 10 + statsB.dexB;
     document.getElementById(`ac`).innerHTML = `<input type="number" id="acInput" name="acInput" value="${AC}" min="9" max="25" class="input"><br>AC`;
