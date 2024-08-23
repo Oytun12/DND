@@ -484,11 +484,7 @@ table{
             padding: 0;
             height: 100%;
             margin-bottom: 10px;
-
             white-space: pre;
-            display: flex; /* Flexbox modelini etkinleştirir */
-            justify-content: center; /* Yatayda ortalar */
-            align-items: center; /* Dikeyde ortalar */
             text-align: center;
             background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
             background-clip: border-box;
@@ -502,9 +498,6 @@ table{
             height: 80%;
 
             white-space: pre;
-            display: flex; /* Flexbox modelini etkinleştirir */
-            justify-content: center; /* Yatayda ortalar */
-            align-items: center; /* Dikeyde ortalar */
             text-align: center;
             background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
             background-clip: border-box;
@@ -532,15 +525,23 @@ table{
             background-position: center; /* Ortalanmasını sağlar */
         }
         #HitDice1{
-            margin: 5px 2px 0 8px;
+            margin: 7px 4px -13px 8px;
             white-space: pre;
             height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
             width: 90%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
             text-align: center;
             font-size: 14px;
         }
+        #X.input{
+            font-size: 14px;
+            padding:0px;
+        }
+        #D.input{
+            font-size: 14px;
+            padding: 0px 3px 0px 0px;
+        }
         #HitDice2{
-            margin: 3px;
+            margin: 1px 1px 1px 4px;
             margin-left: 4px;
             white-space: pre;
             /* display: flex; Flexbox modelini etkinleştirir */
@@ -588,8 +589,9 @@ table{
         }
 #orta-orta{
     display: flex; 
+    flex-direction: column;
     justify-content: center; 
-    align-items: flex-start;
+    align-items:center;
     border-radius: 10px;
     border: solid 3px #333;
     height: 100%;
@@ -742,12 +744,13 @@ table{
     }
     #orta-orta{
         display: flex; 
+        flex-direction: column;
         justify-content: center; 
-        align-items: flex-start;
+        align-items:center;
         border-radius: 10px;
         border: solid 3px #333;
         height: 100%;
-        margin-bottom: 10px; 
+        margin-bottom: 10px;
     }
     #orta-alt{
         display: flex; 
@@ -960,15 +963,6 @@ table{
                 background-image: none;
                 background-color: #fff;
             }
-    #orta-orta{
-        display: flex; 
-        justify-content: center; 
-        align-items: flex-start;
-        border-radius: 10px;
-        border: solid 3px #333;
-        height: 100%;
-        margin-bottom: 10px;
-    }
     #saldırı{
         text-align: center;
         align-items: center;

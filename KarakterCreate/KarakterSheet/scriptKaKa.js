@@ -134,10 +134,11 @@ function updateSkills() {
     document.getElementById(`ac`).innerHTML = `<input type="number" id="acInput" name="acInput" value="${AC}" min="9" max="25" class="input"><br>AC`;
                                                        
     let iniativ = statsB.dexB;
-    document.getElementById(`iniativ`).innerHTML = iniativ >= 0 ? `+${iniativ} <br> İniative`:`${iniativ} <br> İniative`;
+    document.getElementById(`iniativ`).innerHTML = iniativ >= 0 ? `  +${iniativ} <br> İniative`:`  ${iniativ} <br> İniative`;
                                                        
-    // let X = parseInt(document.getElementById(`X`).value);
-    // document.getElementById(`HitDice`).innerHTML =  `Total= <input type="number" id="X" name="XInput" value="1" min="1" max="9" class="input">d<input type="number" id="D" name="DInput" value="6" min="6" max="12" class="input"><br>Hit Dice<br>${X}d12`;
+    let X = parseInt(document.getElementById(`X`).value);
+    let D = parseInt(document.getElementById(`D`).value);
+    document.getElementById(`HitDice2`).innerHTML =  `Hit Dice<br>${X}d${D}`;
                                                        
 }
 
