@@ -5,6 +5,8 @@ document.querySelectorAll('.checkbox').forEach(function(checkbox) {
     });
 });
 
+let profB = 2;
+
 const stats = {
     str: 0,
     dex: 0,
@@ -68,6 +70,8 @@ const girdiGeldiğinde = () => {
     stats.wis = parseInt(document.getElementById('wisInput').value);
     stats.cha = parseInt(document.getElementById('chaInput').value);
 
+    profB  = parseInt(document.getElementById('ProfInput').value);
+
 };
 
 const statBonusHesapla=()=>{
@@ -88,6 +92,26 @@ const updateStatBonuses = () => {
     document.getElementById('chaBonus').innerText = statsB.chaB >= 0 ? `+${statsB.chaB}` : `${statsB.chaB}`;
 };
 
+function updateSavingThrows() {
+    Object.keys(stats).forEach(stat => {
+        const isChecked = document.getElementById(`${stat}-checkbox`).checked;
+        const savingThrow = statsB[`${stat}B`] + (isChecked ? profB : 0);
+        document.getElementById(`${stat}-saving`).textContent = savingThrow >= 0 ? `+${savingThrow}` : `${savingThrow}`;
+    });
+}
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', updateSavingThrows);
+});
+
+// const updateKurtulmaBonuses = () => {
+//     document.getElementById('str-saving').innerText = statsB.strB >= 0 ? `+${statsB.strB}` : `${statsB.strB}`;
+//     document.getElementById('dex-saving').innerText = statsB.dexB >= 0 ? `+${statsB.dexB}` : `${statsB.dexB}`;
+//     document.getElementById('con-saving').innerText = statsB.conB >= 0 ? `+${statsB.conB}` : `${statsB.conB}`;
+//     document.getElementById('int-saving').innerText = statsB.intB >= 0 ? `+${statsB.intB}` : `${statsB.intB}`;
+//     document.getElementById('wis-saving').innerText = statsB.wisB >= 0 ? `+${statsB.wisB}` : `${statsB.wisB}`;
+//     document.getElementById('cha-saving').innerText = statsB.chaB >= 0 ? `+${statsB.chaB}` : `${statsB.chaB}`;
+// }
+
 const updateSkills = () => {
     skills.athletics      = statsB.strB;       // STR
     skills.acrobatics     = statsB.dexB;       // DEX
@@ -107,7 +131,8 @@ const updateSkills = () => {
     skills.intimidation   = statsB.chaB;       // CHA
     skills.performance    = statsB.chaB;       // CHA
     skills.persuasion     = statsB.chaB;       // CHA
-};    
+};  
+
 const updateSkillBonuses = () => {
     document.getElementById('athletics-bonus').textContent      = skills.athletics >= 0 ? `+${skills.athletics}` : `${skills.athletics}`;
     document.getElementById('acrobatics-bonus').textContent     = skills.acrobatics >= 0 ? `+${skills.acrobatics}` : `${skills.acrobatics}`;
@@ -135,6 +160,7 @@ const guncelle = () => {
     updateStatBonuses();
     updateSkills();
     updateSkillBonuses();
+    updateSavingThrows();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
