@@ -1,0 +1,591 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f5e3;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ddddacc3;
+    border: 2px solid rgb(186, 184, 184);
+    border-radius: 10px;
+    color: #8b4513;
+    font-family: 'Georgia', serif;
+    padding: 1rem 0;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.menu-icon {
+    cursor: pointer;
+    font-size: 2.2em;
+}
+
+.title {
+    font-family: 'Georgia', serif;
+    font-size: 2em;
+}
+
+.logo-img {
+    padding: -20px;
+    width: 60px; /* Logonun genişliği */
+    height: auto; /* Oranını koruyarak yüksekliği otomatik ayarlar */
+}
+
+
+nav {
+    position: absolute;
+    top: 121%; /* Menü ikonunun hemen altında başlar */
+    left: -2px;
+    width: 250px;
+    background-color: #cabe80;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    display: none;
+    z-index: 1000; /* Menü ikonunun üstünde görünmesi için */
+}
+
+nav ul {
+    margin-left: 20px;
+    list-style: disc;
+    padding: 0;
+}
+
+nav ul li {
+    text-align: left;
+    margin-left: 13px; 
+    margin-bottom: 13px;
+}
+
+nav ul li a {
+    color: #8b4513;
+    font-size: 1.2em;
+    font-family: 'Georgia', serif;
+    text-decoration: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+    background-size: cover;
+}
+
+hr {
+    border: 1.4px solid #862F1B;
+    width: 100%;
+    margin-top: -10px;
+    /* margin: 20px 0; */
+}
+
+h1, h2 {
+    font-family: 'Georgia', serif;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #8b4513;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+}
+/* -------------------------------------------------------- */
+.containerStat{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+/* ----------------------------- */
+.strTxt{
+    /* border: 2px solid #000000; */
+    float: left;
+}
+
+#stricon{
+    position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
+    background-image: url('../../img/str.png');
+    background-size: cover;
+    background-position: center;
+    width: 111px;
+    height: 117px;
+}
+.strB{
+    position: absolute; /* Mutlak konumlandırma */
+    top: 50%; /* Dikeyde ortala */
+    left: 29%; /* Yatayda ortala */
+    color: #A0892C; /* Metin rengini ayarlayın */
+    font-size: 16px; /* Yazı boyutunu ayarlayın */
+    font-weight: bold; /* Metni kalın yapın */
+}
+
+/* ----------------------------- */
+.dexTxt{
+    float: left;
+}
+
+#dexicon{
+    position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
+    background-image: url('../../img/dex.png');
+    background-size: cover;
+    background-position: center;
+    margin-right: 10px;
+    width: 111px;
+    height: 117px;
+}
+.dexB{
+    position: absolute; /* Mutlak konumlandırma */
+    top: 50%; /* Dikeyde ortala */
+    left: 50%; /* Yatayda ortala */
+    transform: translate(-18px, -12px); /* 50px sağa, 30px yukarı */
+    color: #A0892C; /* Metin rengini ayarlayın */
+    font-size: 16px; /* Yazı boyutunu ayarlayın */
+    font-weight: bold; /* Metni kalın yapın */
+}
+/* -------------------------------- */
+.conTxt{
+    /* border: 2px solid #000000; */
+    float: left;
+}
+
+#conicon{
+    position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
+    background-image: url('../../img/cons.png');
+    background-size: cover;
+    background-position: center;
+    width: 111px;
+    height: 117px;
+}
+.conB{
+    position: absolute; /* Mutlak konumlandırma */
+    top: 50%; /* Dikeyde ortala */
+    left: 50%; /* Yatayda ortala */
+    transform: translate(-22px, -8px); /* 50px sağa, 30px yukarı */
+    color: #A0892C; /* Metin rengini ayarlayın */
+    font-size: 16px; /* Yazı boyutunu ayarlayın */
+    font-weight: bold; /* Metni kalın yapın */
+}
+
+/* ----------------------------- */
+.intTxt{
+    /* border: 2px solid #000000; */
+    float: left;
+}
+
+#inticon{
+    position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
+    background-image: url('../../img/int.png');
+    background-size: cover;
+    background-position: center;
+    width: 111px;
+    height: 117px;
+}
+.intB{
+    position: absolute; /* Mutlak konumlandırma */
+    top: 50%; /* Dikeyde ortala */
+    left: 50%; /* Yatayda ortala */
+    transform: translate(-27px, -9px); /* 50px sağa, 30px yukarı */
+    color: #A0892C; /* Metin rengini ayarlayın */
+    font-size: 16px; /* Yazı boyutunu ayarlayın */
+    font-weight: bold; /* Metni kalın yapın */
+}
+
+/* ----------------------------- */
+.wisTxt{
+    /* border: 2px solid #000000; */
+    float: left;
+}
+
+#wisicon{
+    position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
+    background-image: url('../../img/wis.png');
+    background-size: cover;
+    background-position: center;
+    width: 111px;
+    height: 117px;
+}
+.wisB{
+    position: absolute; /* Mutlak konumlandırma */
+    top: 50%; /* Dikeyde ortala */
+    left: 50%; /* Yatayda ortala */
+    transform: translate(-20px, -1px); /* 50px sağa, 30px yukarı */
+    color: #A0892C; /* Metin rengini ayarlayın */
+    font-size: 16px; /* Yazı boyutunu ayarlayın */
+    font-weight: bold; /* Metni kalın yapın */
+}
+
+/* ----------------------------- */
+.chaTxt{
+    /* border: 2px solid #000000; */
+    float: left;
+}
+
+#chaicon{
+    position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
+    background-image: url('../../img/cha.png');
+    background-size: cover;
+    background-position: center;
+    width: 111px;
+    height: 117px;
+}
+.chaB{
+    position: absolute; /* Mutlak konumlandırma */
+    top: 50%; /* Dikeyde ortala */
+    left: 50%; /* Yatayda ortala */
+    transform: translate(-22px, -1px); /* 50px sağa, 30px yukarı */
+    color: #A0892C; /* Metin rengini ayarlayın */
+    font-size: 16px; /* Yazı boyutunu ayarlayın */
+    font-weight: bold; /* Metni kalın yapın */
+}
+/* ------------------------------------------------------- */
+#stats{
+    font-size: 1.3em;
+    font-family: 'Georgia', serif;
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #f0e4af95;
+    border: 1px solid #ddd;
+    /* border: 1px solid #000000; */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.17);
+}
+#skills{
+    margin-top: 5px;
+    padding: 20px;
+    background-color: #f5f5dc;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.pstat{
+    margin-top: -1px;
+    font-size: 1.1em;
+}
+.statContainer{
+    position: relative;
+    border: 1px solid #ccc;
+    background-color: #eee2ad98;
+    border-radius: 5px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow:inset 0 0 10px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+.arkaplan-text1 {
+    position: absolute;
+    font-size: 24px;
+    color: #7f7f7f;
+    pointer-events: none;
+    top: 17mm;
+    left: 15px;
+}
+
+.arkaplan-text2 {
+    position: absolute;
+    font-size: 24px;
+    color: #7f7f7f;
+    pointer-events: none;
+    top: 29.5mm;
+    left: 16px;
+}
+.arkaplan-text3 {
+    position: absolute;
+    font-size: 24px;
+    color: #7f7f7f;
+    pointer-events: none;
+    top: 41mm;
+    left: 16px;
+}
+.arkaplan-text4 {
+    position: absolute;
+    font-size: 24px;
+    color: #7f7f7f;
+    pointer-events: none;
+    top: 53.1mm;
+    left: 16px;
+}
+.arkaplan-text5 {
+    position: absolute;
+    font-size: 24px;
+    color: #7f7f7f;
+    pointer-events: none;
+    top: 64.8mm;
+    left: 16px;
+}
+.arkaplan-text6 {
+    position: absolute;
+    font-size: 24px;
+    color: #7f7f7f;
+    pointer-events: none;
+    top: 76.2mm;
+    left: 17px;
+}
+#assignStats{
+    font-size: 1em;
+    margin-top: 10px;
+    margin-left: 25px;
+    margin-left: -6px;
+    width: calc(100% + 5px);
+    height: 33px;
+    border-radius: 6px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    background-color:#ffffffd5;
+}
+
+
+#statList{
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: calc(100% - 60px);
+    margin-left: 60px;
+}
+
+#statList li{
+    padding: 10px;
+    margin: 5px 0;
+    cursor: move;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: #f9f5e3;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
+
+}
+#statList li:hover {
+    background-color: #ffffff57;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f5e3;
+}
+
+#sortable {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#sortable li {
+    padding: 5px;
+    background-color: #f9f5e3;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    margin: 2px;
+    transition: background-color 0.3s;
+    flex: 1 1 calc(50% - 10px); /* Her bir öğenin genişliğini %50 olarak ayarla ve aralarındaki boşluk */
+    box-sizing: border-box;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+#sortable li:hover {
+    background-color: #cece9127;
+}
+
+#sortableStat {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#sortableStat li {
+    padding: 5px;
+    background-color: #f5f5ebd6;
+    /* border: 1px solid #aaa; */
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s;
+    flex: 1 1 calc(50% - 15px); /* Her bir öğenin genişliğini %50 olarak ayarla ve aralarındaki boşluk */
+    box-sizing: border-box;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+#sortableStat li:hover {
+    background-color: #ebebd88e;
+}
+
+.sagayasla{
+    padding: 5px;
+    padding-top: 10px;
+    float: right;
+}
+#skill-slot-eksi{
+    color: red;
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: -5px;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 10px;
+    color: #8b4513;
+}
+
+p span {
+    font-weight: bold;
+    color: #555;
+}
+
+form p {
+    margin-bottom: 10px;
+}
+
+
+#statList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#statList li {
+    padding: 8px;
+    margin: 4px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: move;
+}
+
+#background-info, #class-info, #race-info {
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    /* padding-top: 10px;
+    padding-bottom: 10px; */
+    background-color: #FBF1DE;
+    border: 2px solid #DB9D43;
+    border-radius: 7px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Convergence', sans-serif;
+    margin-top: 20px;
+    /* padding: 15px;
+    background-color: #f5f5dc;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+#background-info h3, #class-info h3, #race-info h3 {
+    margin-top: 0;
+    color: #8b4513;
+}
+
+#background-info p, #class-info p, #race-info p {
+    font-size: 1.1em;
+    color: #333;
+}
+.bold {
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'Convergence', sans-serif;
+    color: #000;
+}
+.ciz {
+    text-decoration: underline;
+}
+.skillButton {
+    background-color: #8b4513;
+    color: white;
+    border: solid 1px #000000;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 2px 5px 3px 2px;
+    margin-top: 5px;
+    font-size: 1em;
+    transition: background-color 0.1s;
+}
+
+.skillButton.active {
+    background-color: #d21919;
+    color: #fff;
+}
+.footer{
+    font-size: 0.8em;
+}
+
+@media (max-width: 695px) {
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px;
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+        background-size: cover;
+    }
+    #skillsyazı {
+        font-size: 0.7em;
+    }
+    .title {
+        font-family: 'Georgia', serif;
+        font-size: 1.3em;
+    }
+    #skills {
+        margin-top: 5px;
+        padding: 5px;
+        background-color: #f5f5dc;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    #sortable li {
+        flex: 1 1 100%; /* Her bir öğenin genişliğini %100 yaparak alt alta sıralama */
+        padding:0 0px 0 5px;
+        background-color: #f9f5e3;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        margin: 2px;
+        transition: background-color 0.3s;
+        box-sizing: border-box;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    #sortableStat li {
+        flex: 1 1 100%; /* Her bir öğenin genişliğini %100 yaparak alt alta sıralama */
+        padding: 5px;
+        background-color: #f5f5ebd6;
+        /* border: 1px solid #aaa; */
+        border-radius: 5px;
+        margin: 2px;
+        transition: background-color 0.3s;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+}
