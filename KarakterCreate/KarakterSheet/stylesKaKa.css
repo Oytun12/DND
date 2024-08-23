@@ -602,16 +602,6 @@ table{
     align-items: center;
     padding: 5px 0 0 0 ;
 }
-
-#orta-alt{
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border-radius: 10px;
-    border: solid 3px #333;
-    padding: 5px;
-}
     #para{
         text-align: center;
         padding: 5px;
@@ -620,11 +610,21 @@ table{
         background-color: #dfdede;
         height: 110px;
     }
+
+#orta-alt{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: solid 3px #333;
+}
+
     #ekipman{
         width: 100%;
         text-align: center;
         border-radius: 10px;
-        border: solid 2px #333;
+        /* border: solid 2px #333; */
     }
 
 
