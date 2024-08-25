@@ -90,3 +90,22 @@ document.getElementById('rollStats').addEventListener('click', updateStats);
 
 // Checkbox olay dinleyicilerini başlat
 addCheckboxListeners();
+
+
+
+function rollDice() {
+    // Zar sayısını ve zar yüzey sayısını al
+    const numDice = parseInt(document.getElementById('num-dice').value);
+    const sidesDice = parseInt(document.getElementById('sides-dice').value);
+
+    // Zarları at
+    const results = [];
+    for (let i = 0; i < numDice; i++) {
+        results.push(Math.floor(Math.random() * sidesDice) + 1);
+    }
+
+    // Sonuçları ekrana yazdır
+    document.getElementById('result').innerHTML = 
+        `Zar sonuçları: ${results.join(', ')} <br> Toplam: ${results.reduce((a, b) => a + b, 0)}`;
+}
+

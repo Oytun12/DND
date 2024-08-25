@@ -7,28 +7,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="container">
     <h1>D&D Karakter Yaratma</h1>
-    <section id="character-info">
-        <label for="characterName">Karakter Adı:</label>
-        <input type="text" id="characterName" placeholder="Ad girin...">
-
-        <label for="characterRace">Irk:</label>
-        <select id="characterRace">
-            <option value="human">İnsan</option>
-            <option value="elf">Elf</option>
-            <option value="dwarf">Cüce</option>
-            <!-- Diğer ırklar buraya eklenebilir -->
-        </select>
-
-        <label for="characterClass">Sınıf:</label>
-        <select id="characterClass">
-            <option value="fighter">Savaşçı</option>
-            <option value="wizard">Büyücü</option>
-            <option value="rogue">Hırsız</option>
-            <!-- Diğer sınıflar buraya eklenebilir -->
-        </select>
-    </section>
-
     <section id="stats">
         <h2>Statlar</h2>
         <div>
@@ -63,7 +43,7 @@
         </div>
         <button id="rollStats">Statları At</button>
     </section>
-
+<br>
     <section id="skills">
         <h2>Skiller</h2>
         <div>
@@ -157,8 +137,32 @@
             <span id="survival">0</span>
         </div>
     </section>
-    
+    <h1>Zar Atma Uygulaması</h1>
+    <label for="num-dice">Zar Sayısı:</label>
+    <input type="number" id="num-dice" min="1" max="10" value="1">
+    <label for="sides-dice">Zar Yüzey Sayısı:</label>
+    <input type="number" id="sides-dice" min="4" max="20" value="6">
+    <button onclick="rollDice()">Zar At</button>
+    <div id="result"></div>
+</div>
+<!-- <div id="strBox" class="stat-box">STR</div>
 
+<script>
+    function roll4d6DropLowest() {
+        let rolls = [];
+        for (let i = 0; i < 4; i++) {
+            rolls.push(Math.floor(Math.random() * 6) + 1);
+        }
+        rolls.sort((a, b) => a - b); // Küçükten büyüğe sıralar
+        rolls.shift(); // En küçük olanı çıkarır
+        return rolls.reduce((a, b) => a + b, 0); // Geriye kalan 3 zarın toplamı
+    }
+
+    document.getElementById('strBox').addEventListener('click', function() {
+        const strValue = roll4d6DropLowest();
+        this.textContent = 'STR: ' + strValue;
+    });
+</script> -->
     <script src="script.js"></script>
 </body>
 </html>

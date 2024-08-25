@@ -6,8 +6,18 @@ body {
     padding: 20px;
     text-align: left;
 }
-.container {
-    max-width: 260px;
+.item{
+    padding: 20px;
+    margin: 5px;
+    font-weight: bold;
+    /* flex-grow: 1; Her bir öğe eşit genişlik alır */
+    width: 93%;
+    text-align: center;
+    border: solid 1px #333;
+}
+.stat-container {
+    flex-direction: column;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -18,23 +28,21 @@ body {
     background-size: cover;
 }
 
+.str-container, .dex-container, .con-container, .int-container, .wis-container, .cha-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+#str-name, #dex-name, #con-name, #int-name, #wis-name, #cha-name {
+    background-color: #999;
+}
+
 h1, h2 {
     text-align: center;
 }
 
-#character-info, #stats, #skills {
-    margin-bottom: 20px;
-}
 
-label {
-    display: inline-block;
-    width: 150px;
-    font-weight: bold;
-}
-
-input, select {
-    margin-bottom: 10px;
-}
 
 button {
     display: block;
@@ -50,9 +58,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-#stats div, #skills div {
-    margin-bottom: 10px;
-}
 
 .rolls {
     color: #999;
