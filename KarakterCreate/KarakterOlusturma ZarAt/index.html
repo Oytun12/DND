@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Karakter Yaratma</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>D&D Karakter Yaratma</h1>
+    <section id="character-info">
+        <label for="characterName">Karakter Adı:</label>
+        <input type="text" id="characterName" placeholder="Ad girin...">
+
+        <label for="characterRace">Irk:</label>
+        <select id="characterRace">
+            <option value="human">İnsan</option>
+            <option value="elf">Elf</option>
+            <option value="dwarf">Cüce</option>
+            <!-- Diğer ırklar buraya eklenebilir -->
+        </select>
+
+        <label for="characterClass">Sınıf:</label>
+        <select id="characterClass">
+            <option value="fighter">Savaşçı</option>
+            <option value="wizard">Büyücü</option>
+            <option value="rogue">Hırsız</option>
+            <!-- Diğer sınıflar buraya eklenebilir -->
+        </select>
+    </section>
+
+    <section id="stats">
+        <h2>Statlar</h2>
+        <div>
+            <label>Strength:</label>
+            <span id="str">0</span> 
+            <span class="rolls" id="strRolls">(0, 0, 0, 0)</span>
+        </div>
+        <div>
+            <label>Dexterity:</label>
+            <span id="dex">0</span> 
+            <span class="rolls" id="dexRolls">(0, 0, 0, 0)</span>
+        </div>
+        <div>
+            <label>Constitution:</label>
+            <span id="con">0</span> 
+            <span class="rolls" id="conRolls">(0, 0, 0, 0)</span>
+        </div>
+        <div>
+            <label>Intelligence:</label>
+            <span id="int">0</span> 
+            <span class="rolls" id="intRolls">(0, 0, 0, 0)</span>
+        </div>
+        <div>
+            <label>Wisdom:</label>
+            <span id="wis">0</span> 
+            <span class="rolls" id="wisRolls">(0, 0, 0, 0)</span>
+        </div>
+        <div>
+            <label>Charisma:</label>
+            <span id="cha">0</span> 
+            <span class="rolls" id="chaRolls">(0, 0, 0, 0)</span>
+        </div>
+        <button id="rollStats">Statları At</button>
+    </section>
+
+    <section id="skills">
+        <h2>Skiller</h2>
+        <div>
+            <input type="checkbox" id="acrobaticsCheckbox">
+            <label>Acrobatics (Dex):</label>
+            <span id="acrobatics">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="animalHandlingCheckbox">
+            <label>Animal Handling (Wis):</label>
+            <span id="animalHandling">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="arcanaCheckbox">
+            <label>Arcana (Int):</label>
+            <span id="arcana">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="athleticsCheckbox">
+            <label>Athletics (Str):</label>
+            <span id="athletics">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="deceptionCheckbox">
+            <label>Deception (Cha):</label>
+            <span id="deception">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="historyCheckbox">
+            <label>History (Int):</label>
+            <span id="history">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="insightCheckbox">
+            <label>Insight (Wis):</label>
+            <span id="insight">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="intimidationCheckbox">
+            <label>Intimidation (Cha):</label>
+            <span id="intimidation">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="investigationCheckbox">
+            <label>Investigation (Int):</label>
+            <span id="investigation">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="medicineCheckbox">
+            <label>Medicine (Wis):</label>
+            <span id="medicine">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="natureCheckbox">
+            <label>Nature (Int):</label>
+            <span id="nature">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="perceptionCheckbox">
+            <label>Perception (Wis):</label>
+            <span id="perception">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="performanceCheckbox">
+            <label>Performance (Cha):</label>
+            <span id="performance">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="persuasionCheckbox">
+            <label>Persuasion (Cha):</label>
+            <span id="persuasion">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="religionCheckbox">
+            <label>Religion (Int):</label>
+            <span id="religion">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="sleightOfHandCheckbox">
+            <label>Sleight of Hand (Dex):</label>
+            <span id="sleightOfHand">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="stealthCheckbox">
+            <label>Stealth (Dex):</label>
+            <span id="stealth">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="survivalCheckbox">
+            <label>Survival (Wis):</label>
+            <span id="survival">0</span>
+        </div>
+    </section>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
