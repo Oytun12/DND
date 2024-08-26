@@ -9,7 +9,7 @@ function rollStat() {
         total: rolls[1] + rolls[2] + rolls[3],
         rolls: rolls
     };
-}
+} 
 
 function updateStat(statId, rollId) {
     const stat = rollStat();
