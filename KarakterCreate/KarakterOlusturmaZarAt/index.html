@@ -145,24 +145,7 @@
     <button onclick="rollDice()">Zar At</button>
     <div id="result"></div>
 </div>
-<!-- <div id="strBox" class="stat-box">STR</div>
 
-<script>
-    function roll4d6DropLowest() {
-        let rolls = [];
-        for (let i = 0; i < 4; i++) {
-            rolls.push(Math.floor(Math.random() * 6) + 1);
-        }
-        rolls.sort((a, b) => a - b); // Küçükten büyüğe sıralar
-        rolls.shift(); // En küçük olanı çıkarır
-        return rolls.reduce((a, b) => a + b, 0); // Geriye kalan 3 zarın toplamı
-    }
-
-    document.getElementById('strBox').addEventListener('click', function() {
-        const strValue = roll4d6DropLowest();
-        this.textContent = 'STR: ' + strValue;
-    });
-</script> -->
     <script src="script.js"></script>
 </body>
 </html>

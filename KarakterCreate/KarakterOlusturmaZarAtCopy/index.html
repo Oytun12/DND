@@ -19,7 +19,217 @@
         <div class="cha-container">    <div class="item" id="cha-name">Cha:</div>   <div class="cha-racial item" id="cha-race">1</div>     <span class="item" id="cha-total">8</span>     <span class="item" id="cha-modifier">8</span>     <div class="item rolled" id="cha">0</div>     <div class="rolls item" id="chaRolls">(0, 0, 0, 0)</div> </div>     
     </div>     
     <button id="rollStats">Statları At</button>
-    
+    <form id="race-form">
+        <p>Oynamak istediğiniz ırkı seçiniz:</p>
+        <select id="race" name="race">
+            <option value="select">Seçiniz</option>
+            <option value="Human">İnsan</option>
+            <option value="HumanVariant">Alternatif İnsan</option>
+            <option value="Elf(Ulu)">Elf(Ulu)</option>
+            <option value="Elf(Or)">Elf(Orman)</option>
+            <option value="Elf(Drow)">Elf(Drow)</option>
+            <option value="Dwarf(Dağ)">Cüce(Dağ)</option>
+            <option value="Dwarf(Tepe)">Cüce(Tepe)</option>
+            <option value="Halfling(Tez)">Buçukluk (Tez Ayak)</option>
+            <option value="Halfling(Tık)">Buçukluk (Tıknaz)</option>
+            <option value="Dragonborn">Ejderdoğan</option>
+            <option value="Gnome(Kaya)">Gnome(Kaya)</option>
+            <option value="Gnome(Or)">Gnome(Orman)</option>
+            <option value="Tiefling">Tiefling</option>
+            <option value="Yarı-Elf">Yarı-Elf</option>
+            <option value="Yarı-Orc">Yarı-Orc</option>
+            <!-- Diğer ırklar burada -->
+        </select>    
+        <div id="race-info" class="hidden"></div>
+        <div id="race-variant-H" class="hidden">
+            <h3>Alternatif İnsan</h3>
+            <hr>
+            <strong class='bold'>Yetenek Skorları:</strong> 
+            <span class='ciz'> herhangi iki farklı stata +1 alır.</span>
+            <br>
+            <div id='custom-bonuses' name='HumanVariant1' required>    
+                <label for='custom-bonus-1'>Birinci bonus:</label>    
+                <select id='custom-bonus-1'>        
+                    <option value='strB'>Strength</option>        
+                    <option value='dexB'>Dexterity</option>        
+                    <option value='conB'>Constitution</option>        
+                    <option value='intB'>Intelligence</option>        
+                    <option value='wisB'>Wisdom</option>        
+                    <option value='chaB'>Charisma</option>    
+                </select>    
+                <label for='custom-bonus-2' id='custom-bonus-2-label'>İkinci bonus:</label>    
+                <select id='custom-bonus-2'>        
+                    <option value='strB'>Strength</option>        
+                    <option value='dexB'>Dexterity</option>        
+                    <option value='conB'>Constitution</option>        
+                    <option value='intB'>Intelligence</option>        
+                    <option value='wisB'>Wisdom</option>        
+                    <option value='chaB'>Charisma</option>    
+                    </select>
+                </div>
+                <br>
+                <br>
+                <strong class='bold'>Beceriler:</strong><span class='ciz'>Seçeceğin bir beceride uzmanlık kazanırsın.</span>
+                <br>Geri kalan özellikleri Irklar sayfasından bakınız.
+        </div>
+        <div id="race-variant-E" class="hidden">
+            <h3>Yarı-Elf</h3>
+            <hr>
+            <strong class='bold'>Yetenek Skorları:</strong> 
+            <span class='ciz'> herhangi iki farklı stata +1 alır.</span>
+            <br>
+            <div id='custom-bonuses' name='HumanVariant1' required>    
+                <label for='custom-bonus-3'>Birinci bonus:</label>    
+                <select id='custom-bonus-3'>        
+                    <option value='strB'>Strength</option>        
+                    <option value='dexB'>Dexterity</option>        
+                    <option value='conB'>Constitution</option>        
+                    <option value='intB'>Intelligence</option>        
+                    <option value='wisB'>Wisdom</option>          
+                </select>    
+            </div>
+            <br>
+            <strong class='bold'>Beceriler:</strong><span class='ciz'>Seçeceğin bir beceride uzmanlık kazanırsın.</span>
+            <br>Geri kalan özellikleri Irklar sayfasından bakınız.
+        </div>
+    </form>
+    <form id="background-form">
+        <p>Oynamak istediğiniz karakter geçmişini seçiniz:</p>
+        <select id="background" name="background" required>
+            <option value="">Seçiniz</option>
+            <option value="Asker">Asker</option>
+            <option value="Bilge">Bilge</option>
+            <option value="Denizci">Denizci</option>
+            <option value="Korsan">Alternatif Denizci (Korsan)</option>
+            <option value="Gösteri Adamı">Gösteri Adamı</option>
+            <option value="Gösteri Adamı (Gladyatör)">Alternatif Gösteri Adamı (Gladyatör)</option>
+            <optxion value="Halk Kahramanı">Halk Kahramanı</option>
+            <option value="Loca Zanaatkarı">Loca Zanaatkarı</option>
+            <option value="Loca Tüccarı">Alternatif Loca Zanaatkarı (Loca Tüccarı)</option>
+            <option value="Munzevi">Münzevi (İnzivaya çekilmiş kimse)</option>
+            <option value="Mürit">Mürit</option>
+            <option value="Sokak Çocuğu">Sokak Çocuğu</option>
+            <option value="Soylu">Soylu</option>
+            <option value="Şövalye">Alternatif Soylu (Şövalye)</option>
+            <option value="Suçlu">Suçlu</option>
+            <option value="Suçlu (Ajan)">Alternatif Suçlu (Ajan)</option>
+            <option value="Yabancı">Yabancı</option>
+            <option value="Şarlatan">Şarlatan</option>
+        </select>
+        <div id="background-info" class="hidden"></div>
+    </form>
+    <form id="class-form">
+        <p>Oynamak istediğiniz sınıfı seçiniz:</p>
+        <select id="class" name="class" required>
+            <option value="">Seçiniz</option>
+            <option value="Barbar">Barbar</option>
+            <option value="Ozan">Ozan</option>
+            <option value="Rahip">Rahip</option>
+            <option value="Druid">Druid</option>
+            <option value="Savaşçı">Savaşçı</option>
+            <option value="Keşiş">Keşiş</option>
+            <option value="Paladin">Paladin</option>
+            <option value="Korucu">Korucu</option>
+            <option value="Hırsız">Hırsız</option>
+            <option value="Sihrbaz">Sihrbaz</option>
+            <option value="Warlock">Warlock</option>
+            <option value="Büyücü">Büyücü</option>
+        </select>
+        <div id="class-info" class="hidden"></div>
+    </form>
+    <section id="skills">
+        <h2>Skiller</h2>
+        <div>
+            <input type="checkbox" id="acrobaticsCheckbox">
+            <label>Acrobatics (Dex):</label>
+            <span id="acrobatics">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="animalHandlingCheckbox">
+            <label>Animal Handling (Wis):</label>
+            <span id="animalHandling">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="arcanaCheckbox">
+            <label>Arcana (Int):</label>
+            <span id="arcana">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="athleticsCheckbox">
+            <label>Athletics (Str):</label>
+            <span id="athletics">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="deceptionCheckbox">
+            <label>Deception (Cha):</label>
+            <span id="deception">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="historyCheckbox">
+            <label>History (Int):</label>
+            <span id="history">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="insightCheckbox">
+            <label>Insight (Wis):</label>
+            <span id="insight">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="intimidationCheckbox">
+            <label>Intimidation (Cha):</label>
+            <span id="intimidation">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="investigationCheckbox">
+            <label>Investigation (Int):</label>
+            <span id="investigation">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="medicineCheckbox">
+            <label>Medicine (Wis):</label>
+            <span id="medicine">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="natureCheckbox">
+            <label>Nature (Int):</label>
+            <span id="nature">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="perceptionCheckbox">
+            <label>Perception (Wis):</label>
+            <span id="perception">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="performanceCheckbox">
+            <label>Performance (Cha):</label>
+            <span id="performance">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="persuasionCheckbox">
+            <label>Persuasion (Cha):</label>
+            <span id="persuasion">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="religionCheckbox">
+            <label>Religion (Int):</label>
+            <span id="religion">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="sleightOfHandCheckbox">
+            <label>Sleight of Hand (Dex):</label>
+            <span id="sleightOfHand">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="stealthCheckbox">
+            <label>Stealth (Dex):</label>
+            <span id="stealth">0</span>
+        </div>
+        <div>
+            <input type="checkbox" id="survivalCheckbox">
+            <label>Survival (Wis):</label>
+            <span id="survival">0</span>
+        </div>
+    </section>
 
 </div>
  

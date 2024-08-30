@@ -31,7 +31,13 @@ body {
     padding: 0 20px;
 } */
 
+.hidden {
+    display: none;
+}
 
+.visible {
+    display: block;
+}
 
 .str-container, .dex-container, .con-container, .int-container, .wis-container, .cha-container, .xContainer {
     display: flex;
