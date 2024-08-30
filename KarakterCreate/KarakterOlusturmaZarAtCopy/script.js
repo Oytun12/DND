@@ -11,14 +11,141 @@ function rollStat() {
     };
 } 
 
-const race = {
-    str: 1,
-    dex: 2,
-    con: 3,
-    int: 4,
-    wis: 5,
-    cha: 6,
-}
+
+let race = {
+    str: 0,
+    dex: 0,
+    con: 0,
+    int: 0,
+    wis: 0,
+    cha: 0,
+};
+
+document.getElementById('race').addEventListener('change', function() {
+    if (this.value == "Human") {
+        race.str = 1;
+        race.dex = 1;
+        race.con = 1;
+        race.int = 1;
+        race.wis = 1;
+        race.cha = 1;
+    } 
+    if (this.value == "HumanVariant") {
+        race.str = 0;
+        race.dex = 0;
+        race.con = 0;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 0;
+        // Alternatif İnsan için oyuncunun hangi statları seçeceğine bağlı olarak kod eklenmelidir.
+    } 
+    if (this.value == "Elf(Ulu)") {
+        race.str = 0;
+        race.dex = 2;
+        race.con = 0;
+        race.int = 1;
+        race.wis = 0;
+        race.cha = 0;
+    } 
+    if (this.value == "Elf(Or)") {
+        race.str = 0;
+        race.dex = 2;
+        race.con = 0;
+        race.int = 0;
+        race.wis = 1;
+        race.cha = 0;
+    } 
+    if (this.value == "Elf(Drow)") {
+        race.str = 0;
+        race.dex = 2;
+        race.con = 0;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 1;
+    } 
+    if (this.value == "Dwarf(Dağ)") {
+        race.str = 0;
+        race.dex = 0;
+        race.con = 2;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 0;
+    } 
+    if (this.value == "Dwarf(Tepe)") {
+        race.str = 0;
+        race.dex = 0;
+        race.con = 2;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 0;
+    } 
+    if (this.value == "Halfling(Tez)") {
+        race.str = 0;
+        race.dex = 2;
+        race.con = 0;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 0;
+    } 
+    if (this.value == "Halfling(Tık)") {
+        race.str = 0;
+        race.dex = 2;
+        race.con = 0;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 0;
+    } 
+    if (this.value == "Dragonborn") {
+        race.str = 2;
+        race.dex = 0;
+        race.con = 0;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 1;
+    } 
+    if (this.value == "Gnome(Kaya)") {
+        race.str = 0;
+        race.dex = 0;
+        race.con = 0;
+        race.int = 2;
+        race.wis = 0;
+        race.cha = 0;
+    } 
+    if (this.value == "Gnome(Or)") {
+        race.str = 0;
+        race.dex = 0;
+        race.con = 0;
+        race.int = 2;
+        race.wis = 0;
+        race.cha = 0;
+    } 
+    if (this.value == "Tiefling") {
+        race.str = 0;
+        race.dex = 0;
+        race.con = 0;
+        race.int = 1;
+        race.wis = 0;
+        race.cha = 2;
+    } 
+    if (this.value == "Yarı-Elf") {
+        race.str = 0;
+        race.dex = 0;
+        race.con = 0;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 2;
+        // Yarı-Elf için oyuncunun iki stat seçmesi gerekiyor.
+    } 
+    if (this.value == "Yarı-Orc") {
+        race.str = 2;
+        race.dex = 0;
+        race.con = 1;
+        race.int = 0;
+        race.wis = 0;
+        race.cha = 0;
+    }
+    updateStat();
+});
 
 const skillBonuses = {
     athletics: 0,
