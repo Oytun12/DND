@@ -30,15 +30,15 @@ document.getElementById('race').addEventListener('change', function() {
         race.wis = 1;
         race.cha = 1;
     } 
-    if (this.value == "HumanVariant") {
-        race.str = 0;
-        race.dex = 0;
-        race.con = 0;
-        race.int = 0;
-        race.wis = 0;
-        race.cha = 0;
-        // Alternatif İnsan için oyuncunun hangi statları seçeceğine bağlı olarak kod eklenmelidir.
-    } 
+    // if (this.value == "HumanVariant") {
+    //     race.str = 0;
+    //     race.dex = 0;
+    //     race.con = 0;
+    //     race.int = 0;
+    //     race.wis = 0;
+    //     race.cha = 0;
+    //     // Alternatif İnsan için oyuncunun hangi statları seçeceğine bağlı olarak kod eklenmelidir.
+    // } 
     if (this.value == "Elf(Ulu)") {
         race.str = 0;
         race.dex = 2;
@@ -127,15 +127,15 @@ document.getElementById('race').addEventListener('change', function() {
         race.wis = 0;
         race.cha = 2;
     } 
-    if (this.value == "Yarı-Elf") {
-        race.str = 0;
-        race.dex = 0;
-        race.con = 0;
-        race.int = 0;
-        race.wis = 0;
-        race.cha = 2;
-        // Yarı-Elf için oyuncunun iki stat seçmesi gerekiyor.
-    } 
+    // if (this.value == "Yarı-Elf") {
+    //     race.str = 0;
+    //     race.dex = 0;
+    //     race.con = 0;
+    //     race.int = 0;
+    //     race.wis = 0;
+    //     race.cha = 2;
+    //     // Yarı-Elf için oyuncunun iki stat seçmesi gerekiyor.
+    // } 
     if (this.value == "Yarı-Orc") {
         race.str = 2;
         race.dex = 0;
@@ -144,7 +144,7 @@ document.getElementById('race').addEventListener('change', function() {
         race.wis = 0;
         race.cha = 0;
     }
-    updateStat();
+    guncelle();
 });
 
 const skillBonuses = {
@@ -167,6 +167,8 @@ const skillBonuses = {
     performance: 0,
     intimidation: 0,
 };
+
+// ----------------------SKİLL STAT-------------------------------------------
 
 function updateStat(statId, rollId) {
     const stat = rollStat();
@@ -210,6 +212,58 @@ function updateStat(statId, rollId) {
 
     updateSkills();
 }
+function updateRace(statId) {
+
+    // Fetch the race and total elements and ensure they're numbers
+    const raceElement = document.getElementById(`${statId}-race`);
+    const totalElement = document.getElementById(`${statId}-total`);
+
+    const raceValue = parseInt(raceElement ? raceElement.innerText : '0', 10);
+    const totalValue = parseInt(totalElement ? totalElement.innerText : '0', 10);
+
+    // Calculate the new total and modifier
+    const total = totalValue + raceValue;
+    const modifier = Math.floor((total - 10) / 2) + race[statId];
+
+    // Update the DOM with the new values
+    totalElement.innerText = total;
+    document.getElementById(`${statId}-modifier`).innerText = modifier;
+    document.getElementById(`${statId}-total`).innerText = parseInt(totalElement) + parseInt(race[statId]);
+    document.getElementById(`${statId}-race`).innerText = race[statId];
+
+    if (statId === "str") {
+        skillBonuses.athletics = modifier;
+    } 
+    if (statId === "dex")  {
+        skillBonuses.acrobatics = modifier;
+        skillBonuses.stealth = modifier;
+        skillBonuses.sleightOfHand = modifier;
+    } 
+    if (statId === "int")  {
+        skillBonuses.history = modifier;
+        skillBonuses.religion = modifier;
+        skillBonuses.investigation = modifier;
+        skillBonuses.nature = modifier;
+        skillBonuses.arcana = modifier;
+    } 
+    if (statId === "wis")  {
+        skillBonuses.animalHandling = modifier;
+        skillBonuses.insight = modifier;
+        skillBonuses.medicine = modifier;
+        skillBonuses.perception = modifier;
+        skillBonuses.survival = modifier;
+    } 
+    if (statId === "cha")  {
+        skillBonuses.deception = modifier;
+        skillBonuses.persuasion = modifier;
+        skillBonuses.performance = modifier;
+        skillBonuses.intimidation = modifier;
+    }
+
+    updateSkills();
+}
+
+// -----------------------------GÜNCELLEME-------------------------------------
 
 const updateSkills = () => {
     document.getElementById('athletics').innerHTML = skillBonuses.athletics;
@@ -231,7 +285,14 @@ const updateSkills = () => {
     document.getElementById('performance').innerHTML = skillBonuses.performance;
     document.getElementById('intimidation').innerHTML = skillBonuses.intimidation;
 };
-
+const guncelle = () =>{
+    updateRace('str');
+    updateRace('dex');
+    updateRace('con');
+    updateRace('int');
+    updateRace('wis');
+    updateRace('cha');
+};
 document.getElementById('rollStats').addEventListener('click', function() {
     updateStat('str', 'strRolls');
     updateStat('dex', 'dexRolls');
@@ -265,6 +326,8 @@ document.getElementById('wis-name').addEventListener('click', function() {
 document.getElementById('cha-name').addEventListener('click', function() {
     updateStat('cha', 'chaRolls');
 });
+
+// -----------------------------Check-boxs-----------------------------------------------------------------------
 
 const proficiencyBonus = 2;
 
