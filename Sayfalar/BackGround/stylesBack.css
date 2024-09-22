@@ -72,7 +72,7 @@ nav {
     padding: 10px;
     display: none;
     z-index: 1000; /* Menü ikonunun üstünde görünmesi için */
-    background-color: #f5deb3;
+    background-color: #cabe80;
     /* background-color: #f5deb3;  Krem tonunda arka plan
     border: 2px solid #d2b48c; Daha yumuşak krem tonunda kenarlık */
 }
