@@ -31,35 +31,33 @@
           }
         }
     </script>
-    </head>
-    <body>
-        <header>
-            <div class="menu-icon" onclick="toggleMenu()">☰</div>
-            <div class="title">Karakter Oluşturucu</div>   
-            <img src="../../SariZar.png" alt="Logo" class="logo-img">
-           <nav id="hamburger-menu" class="hidden">
-               <ul>
-                   <li><a href="../../index.html">Ana Sayfa</a></li>
-                   <li><a href="../../Sayfalar/Race/">Irklar</a></li>
-                   <li><a href="../../Sayfalar/BackGround/back.html">Karakter Geçmişleri</a></li>
-                   <li><a href="../../Sayfalar/Class/class.html">Sınıflar</a></li>
-                   <li><a href="../PointBuy/PointBuy.html">Karakter Oluşturma (Point Buy)</a></li>
-                    <li><a href="../KarakterSheet/KaKa.html" target="_blank">Karakter Kağıdı</a></li>
-                   
-               </ul>
-           </nav>
-         </header>
+</head>
+<body>
+    <header>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="title">Karakter Oluşturucu</div>   
+        <img src="../../SariZar.png" alt="Logo" class="logo-img">
+        <nav id="hamburger-menu" class="hidden">
+            <ul>
+            <li><a href="../../index.html">Ana Sayfa</a></li>
+            <li><a href="../../Sayfalar/Race/race.html">Irklar</a></li>
+            <li><a href="../../Sayfalar/Class/class.html">Sınıflar</a></li>
+            <li><a href="../PointBuy/PointBuy.html">Karakter Oluşturma (Point Buy)</a></li>
+            <li><a href="../KarakterSheet/KaKa.html">Karakter Kağıdı (Beta)</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <div class="container">
         <div id="stats">
           <ul id="sortableStat">  
-            <li id="StatStr">"<div class="strT">Güç (STR): </div><div id='str'>10(0)</div></li>
+            <li id="StatStr"><div class="strT">Güç (STR): </div><div id='str'>10(0)</div></li>
             <li id="StatDex">Çeviklik (DEX): <div id='dex'>10(0)</div></li>
             <li id="StatCon">Dayanıklılık (CON): <div id='con'>10(0)</div></li>
             <li id="StatInt">Zeka (INT): <div id='int'>10(0)</div></li>
             <li id="StatWis">Bilgelik (WIS): <div id='wis'>10(0)</div></li>
             <li id="StatCha">Karizma (CHA): <div id='cha'>10(0)</div></li>
-            </ul>
+          </ul>
         </div>
 
         <form id="race-from">
@@ -95,7 +93,7 @@
               <option value="DenizciKorsan">Alternatif Denizci (Korsan)</option>
               <option value="GosteriAdamı">Gösteri Adamı</option>
               <option value="GosteriAdamiGladyator">Alternatif Gösteri Adamı (Gladyatör)</option>
-              <optxion value="FolkHero">Halk Kahramanı</option>
+              <option value="FolkHero">Halk Kahramanı</option>
               <option value="LocaZanaatkari">Loca Zanaatkarı</option>
               <option value="LocaZanaatkariTuccar">Alternatif Loca Zanaatkarı (Loca Tüccarı)</option>
               <option value="Munzevi">Münzevi (İnzivaya çekilmiş kimse)</option>
@@ -110,6 +108,7 @@
             </select>
             <div id="background-info" class="hidden"></div>
         </form>
+
         <div id="stat-oncelik" class="statContainer">
           <p class="pstat">Statları öncelik sırasında diziniz.</p>
           <div class="arkaplan-text1">1.(15)</div>
@@ -126,7 +125,6 @@
             <li data-stat='wis'>Bilgelik (WIS)</li>
             <li data-stat='cha'>Karizma (CHA)</li>
           </ul>
-          <button id='assignStats'>Hesapla</button>
           <div id='result'></div>   
         </div>
         
@@ -150,7 +148,7 @@
           <div id="class-info" class="hidden"></div>
       </form>
         
-        <div id="skills"  class="hidden">
+        <div id="skills" class="hidden">
             <p id="skill-slots">Kalan Skill Yuvası: 0</p>
             <p id="skill-slot-eksi">(Skill yuvanız DM'iniz ile anlaşmadıysanız eksiye düşemez !!!)</p>
             <ul id="sortable">  
@@ -174,21 +172,21 @@
               <li><button id='But-survival' class='skillButton' onclick='window.toggleBonusSurvival()'>+2</button> Survival (Hayatta Kalma) <span class='sagayasla'>WIS: <span id='survival'>0</span></span></li>
             </ul>
         </div>
+        
         <div class="btns">
-            <!-- <button id="create-character">Karakter Oluştur</button>
-            <button id="reset-skills">Sıfırla</button> -->
-            <button onclick="guncelle()">Sayiyi Güncelle</button>
-            <button onclick="window.location.href='PointBuy/PointBuy.html'">point buy</button>
+            <button id="createSheetBtn">Karakter Kağıdı Oluştur</button>
+            
+            <button onclick="window.location.href='../PointBuy/PointBuy.html'">Point Buy Modu</button>
         </div>
+
         <footer class="footer">
             <p>© 2024 Tüm Hakları Saklıdır. | Tasarım: Oytun</p>
         </footer>
-     </div>
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
-</head>
-     <script src="scriptKarOl.js"></script>
-     <!-- <script src="PointBuy/PointBuy.html"></script> -->
+    <script src="scriptKarOl.js"></script>
 </body>
 </html>

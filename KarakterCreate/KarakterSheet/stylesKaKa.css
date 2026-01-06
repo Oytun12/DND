@@ -1,4 +1,3 @@
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f5e3;
@@ -23,39 +22,6 @@ body {
     background-size: cover;
 }
 
-/* <tr>
-<td><span class="checkbox" id="str-checkbox"></span></td>
-<td>Strenght</td>
-<td>-1</td>
-</tr>
-
-<tr>
-<td><input type="checkbox" id="athletics-checkbox"></td>
-<td>Athletics</td>
-<td id="athletics-bonus">+0</td>
-</tr> */
-
-.bold { font-weight: bold; }
-
-input[type="number"] {
-    border: none;          /* Çerçeveyi kaldırır */
-    background: none;      /* Arka planı kaldırır */
-    width: 20px;           /* Genişliği ayarlar */
-    font-size: 16px;       /* Yazı tipinin boyutunu ayarlar */
-    text-align: center;    /* Sayıyı ortalar */
-    color: black;          /* Yazı rengini ayarlar */
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;  /* Chrome'da spin butonlarını kaldırır */
-    margin: 0;
-}
-
-input[type="number"]:focus {
-    outline: none; /* Input elemanı seçildiğinde mavi çerçeveyi kaldırır */
-}
-
 /* div{
     border: solid 3px #333;
     padding: 10px;
@@ -64,7 +30,7 @@ input[type="number"]:focus {
     border: 2px solid #862F1B;
     width: 100%;
 } */
-/* .checkbox {
+.checkbox {
     display: inline-block;
     width: 10px;
     height: 10px;
@@ -75,19 +41,9 @@ input[type="number"]:focus {
 }
 
 .checkbox.checked {
-    background-color: #333; /* İçi dolu olduğunda yeşil renkte olacak 
-} */
-#noteArea {
-    margin: 5px;
-    width: calc(100% - 45px);
-    height: calc(100% - 70px); /* Yüksekliği istediğiniz gibi ayarlayın */
-    font-size: 0.8em;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize:vertical; /* Kullanıcı boyutunu değiştirebilir */
-    overflow: auto; /* İçerik kutudan taşarsa kaydırma çubuğu göster */
+    background-color: #333; /* İçi dolu olduğunda yeşil renkte olacak */
 }
+
 th{
     border: solid 1px #333;
 }
@@ -116,6 +72,18 @@ table{
     width: 100%;
     height: 100%;
 }
+#noteArea {
+    font-family: Arial, sans-serif;
+    margin: 5px;
+    width: calc(100% - 45px);
+    height: calc(100% - 70px); /* Yüksekliği istediğiniz gibi ayarlayın */
+    font-size: 0.8em;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize:vertical; /* Kullanıcı boyutunu değiştirebilir */
+    overflow: auto; /* İçerik kutudan taşarsa kaydırma çubuğu göster */
+}
 #noteArea-isim {
     margin: 5px 0 5px 0;
     width: calc(100% - 55px);
@@ -128,9 +96,10 @@ table{
     overflow: auto; /* İçerik kutudan taşarsa kaydırma çubuğu göster */
 }
 #noteArea-ust {
-    margin: 5px 0 5px 0;
-    width: calc(100% - 35px);
-    height: 10px; /* Yüksekliği istediğiniz gibi ayarlayın */
+    font-family: Arial, sans-serif;
+    margin: 5px;
+    width: calc(100% - 45px);
+    height: 15pt; /*calc(100% - 70px);  Yüksekliği istediğiniz gibi ayarlayın */
     font-size: 0.8em;
     padding: 10px;
     border: 1px solid #ccc;
@@ -141,7 +110,7 @@ table{
 #noteArea-alt {
     margin: 5px 0 5px 0;
     width: calc(100% - 35px);
-    height: 10px; /* Yüksekliği istediğiniz gibi ayarlayın */
+    height: 15pt; /* Yükseklik 10px'den 30px'e çıkarıldı */
     font-size: 0.8em;
     padding: 10px;
     border: 1px solid #ccc;
@@ -213,7 +182,7 @@ table{
     text-align: center;
     background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
     background-clip: border-box;
-    background-image: url('svg/İnspration2.svg'); /* SVG dosyanızın yolu */
+    background-image: url('svg/İnspration2.svg'); /* SVG dosyanızın yolu */
     background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
     background-position: center; /* Ortalanmasını sağlar */
 }
@@ -446,7 +415,7 @@ table{
             text-align: center;
             background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
             background-clip: border-box;
-            background-image: url('svg/İnitiativeSpeed.svg'); /* SVG dosyanızın yolu */
+            background-image: url('svg/İnitiativeSpeed.svg'); /* SVG dosyanızın yolu */
             background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
             background-position: center; /* Ortalanmasını sağlar */
         }
@@ -464,7 +433,7 @@ table{
             text-align: center;
             background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
             background-clip: border-box;
-            background-image: url('svg/İnitiativeSpeed.svg'); /* SVG dosyanızın yolu */
+            background-image: url('svg/İnitiativeSpeed.svg'); /* SVG dosyanızın yolu */
             background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
             background-position: center; /* Ortalanmasını sağlar */
         }
@@ -559,7 +528,10 @@ table{
     align-items: center;
     padding: 5px 0 0 0 ;
 }
-
+#saldırı #noteArea {
+    height: calc(100% - 40px); /* Başlık payı düşünce kalan alan */
+    width: calc(100% - 20px); /* Kenar boşlukları */
+}
 #orta-alt{
     height: 100%;
     display: flex;
@@ -699,14 +671,16 @@ table{
         justify-content: space-between;
         margin-top: 10px; 
     }
-    #orta-orta{
-        display: flex; 
-        justify-content: center; 
-        align-items: flex-start;
+    #orta-orta {
+        display: flex;
+        flex-direction: column; /* İçerikleri (Başlık ve Kutu) alt alta dizer */
+        align-items: center;    /* Başlığı yatayda ortalar */
+        text-align: center;
         border-radius: 10px;
         border: solid 3px #333;
         height: 100%;
-        margin-bottom: 10px; 
+        margin-bottom: 10px;
+        padding-top: 10px;      /* Başlığın üstüne biraz boşluk ekler */
     }
     #orta-alt{
         display: flex; 
@@ -736,7 +710,7 @@ table{
         border: solid 3px #333;  */
     }
     #str, #dex, #con, #int, #wis, #cha {
-        line-height: 15px;
+        line-height: 16px;
         text-align: center;
         padding:20px 10px 20px 10px;
         /* border-radius: 10px;
@@ -760,50 +734,6 @@ table{
         border: solid 3px #333;  
         margin-right: 0;
     }
-    #skills{
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        font-size: 15px;
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 5px;
-
-        white-space: pre;
-        display: flex; /* Flexbox modelini etkinleştirir */
-        justify-content: center; /* Yatayda ortalar */
-        align-items: center; /* Dikeyde ortalar */
-        height: 100%; /* Div'in yüksekliğini belirleyin (ihtiyacınıza göre) */
-        width: 100%; /* Div'in genişliğini belirleyin (ihtiyacınıza göre) */
-        width: 172pt;
-        height: 390pt;
-        margin-bottom: 5px;
-        text-align: center;
-        background-size: 100% 100%;      /* Elementin genişliğine ve yüksekliğine eşitler */
-        background-clip: border-box;
-        background-image: url('svg/Skills.svg'); /* SVG dosyanızın yolu */
-        background-repeat: no-repeat; /* Görselin tekrar etmesini engeller */
-        background-position: center; /* Ortalanmasını sağlar */
-        border-radius: 10px;
-        /* background-color: #fff; */
-    }
-    #skills table{
-        margin-left: 5px;
-        border-spacing: 0px;
-        width: 75%;
-        font-size: 1.07em;
-        margin: 0;
-    }  
-    #skills th{
-        border: none;
-        padding: 5px 10px 3px 10px;
-    }    
-    #skills td{
-        border: none;
-        font-size: 1em;
-        padding: 2px 0 2px 0;
-    }  
     #sag-ust{
         padding-top: 10px;
         display: flex;
