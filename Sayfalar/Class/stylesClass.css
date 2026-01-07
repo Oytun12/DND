@@ -210,6 +210,55 @@ tr:nth-child(even) {
     color: #000;
 }
 
+/* --- ALT SINIF BUTONLARI --- */
+.subclass-selection-area {
+    margin: 15px 0 20px 0;
+    padding: 15px;
+    background-color: #faf0e0;
+    border: 1px dashed #8b4513;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.subclass-title {
+    font-weight: bold;
+    color: #8b4513;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.btn-subclass {
+    background-color: #e6c99c;
+    border: 1px solid #8b4513;
+    color: #4a2c0f;
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    font-family: 'Georgia', serif;
+    font-size: 0.95em;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-subclass:hover {
+    background-color: #dcb374;
+    transform: translateY(-1px);
+}
+
+.btn-subclass.active {
+    background-color: #8b4513;
+    color: #fff;
+    border-color: #5e2f0d;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Alt sınıf özelliği olduğunu belli etmek için hafif farklı bir stil */
+.feature-block.subclass-feature {
+    border-left: 3px solid #2c7a2c; /* Yeşilimsi bir çizgi ile ayrışsın */
+    background-color: #e8f5e9;
+}
+
 @media (max-width: 600px) {
     #skillsyazı {
         font-size: 0.85em;
