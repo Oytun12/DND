@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'Convergence';
+    src: local('Convergence-Regular'), url('../../fonts/Convergence-Regular.ttf') format('truetype');
+}
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f5e3;
@@ -98,6 +102,112 @@ h1, h2 {
     font-family: 'Georgia', serif;
     margin-bottom: 20px;
     color: #8b4513;
+}
+
+/* --- Bura Yeni Sistem ---*/
+
+/* Collapsible (Başlık) */
+.collapsible {
+    background-color: #FBF1DE;
+    color: #8b4513;
+    cursor: pointer;
+    padding: 15px;
+    width: 100%;
+    border: 2px solid #DB9D43;
+    border-radius: 7px;
+    text-align: left;
+    outline: none;
+    font-size: 1.3em;
+    font-family: 'Georgia', serif;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box; /* Taşmayı engeller */
+}
+
+.collapsible:hover, .active {
+    background-color: #f0e6cc;
+}
+
+.collapsible:after {
+    content: '\002B'; /* Artı işareti */
+    color: #8b4513;
+    font-weight: bold;
+    float: right;
+    margin-left: auto;
+}
+
+.active:after {
+    content: "\2212"; /* Eksi işareti */
+}
+/* İçerik Kutusu */
+.class-content {
+    padding: 0 20px 20px 20px;
+    background-color: #fff; /* Veya #fcf9f2 */
+    border: 2px solid #DB9D43;
+    border-top: none;
+    border-radius: 0 0 7px 7px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    display: none; /* Varsayılan gizli */
+}
+
+.class-content.visible {
+    display: block;
+}
+
+/* Tablolar ve Listeler */
+.feature-block {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #faf0e0c3;
+    border-radius: 5px;
+    border-left: 3px solid #8b4513;
+}
+
+h4 {
+    color: #8b4513;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-top: 20px;
+}
+
+h5 {
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+ul {
+    margin: 5px 0 10px 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.9em;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f5deb3;
+    color: #8b4513;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.bold {
+    font-weight: bold;
+    color: #000;
 }
 
 @media (max-width: 600px) {
