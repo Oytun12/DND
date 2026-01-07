@@ -130,7 +130,7 @@ p {
 
 #stricon{
     position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
-    background-image: url('../../img/str.png');
+    background-image: url('../../img/str.svg');
     background-size: cover;
     background-position: center;
     width: 111px;
@@ -152,7 +152,7 @@ p {
 
 #dexicon{
     position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
-    background-image: url('../../img/dex.png');
+    background-image: url('../../img/dex.svg');
     background-size: cover;
     background-position: center;
     margin-right: 10px;
@@ -176,7 +176,7 @@ p {
 
 #conicon{
     position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
-    background-image: url('../../img/cons.png');
+    background-image: url('../../img/cons.svg');
     background-size: cover;
     background-position: center;
     width: 111px;
@@ -200,7 +200,7 @@ p {
 
 #inticon{
     position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
-    background-image: url('../../img/int.png');
+    background-image: url('../../img/int.svg');
     background-size: cover;
     background-position: center;
     width: 111px;
@@ -224,7 +224,7 @@ p {
 
 #wisicon{
     position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
-    background-image: url('../../img/wis.png');
+    background-image: url('../../img/wis.svg');
     background-size: cover;
     background-position: center;
     width: 111px;
@@ -248,7 +248,7 @@ p {
 
 #chaicon{
     position: relative; /* İçindeki elemanların konumlandırılmasına izin verir */
-    background-image: url('../../img/cha.png');
+    background-image: url('../../img/cha.svg');
     background-size: cover;
     background-position: center;
     width: 111px;
