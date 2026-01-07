@@ -52,11 +52,23 @@
         <div class="container">
             <section id="siniflar-bolumu">
                 <h2>D&D 5e Sınıfları</h2>
-                <p>Burada Dungeons & Dragons 5e sınıflarının tüm özelliklerini, seviye tablolarını ve alt sınıflarını bulabilirsiniz.</p>
+                <p>Bu rehberde, karakterinizin macera boyunca nasıl gelişeceğini inceleyebilirsiniz. <strong>"Sınıf Rehberi"</strong> sekmesinde yetenekleri ve açıklamaları okuyabilir, <strong>"Gelişim Tablosu"</strong> sekmesinde ise seviye bazlı istatistik artışlarını ve kazanımları toplu halde görebilirsiniz.</p>
                 
-                <div id="class-container">
-                    <p style="text-align:center; color:#888;">Sınıf bilgileri yükleniyor...</p>
+                <div class="tab-menu">
+                    <button class="tab-link active" onclick="openTab(event, 'view-features')">Sınıf Rehberi</button>
+                    <button class="tab-link" onclick="openTab(event, 'view-tables')">Gelişim Tablosu</button>
                 </div>
+
+                <div id="view-features" class="tab-view active-view">
+                    <div id="container-features">
+                        <p style="text-align:center; color:#888;">Yükleniyor...</p>
+                    </div>
+                </div>
+
+                <div id="view-tables" class="tab-view" style="display:none;">
+                    <div id="container-tables"></div>
+                </div>
+
             </section>
         </div>
     </main>

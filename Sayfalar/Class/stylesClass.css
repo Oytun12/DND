@@ -282,6 +282,94 @@ tr:nth-child(even) { background-color: #f9f9f9; }
 
 /* .subclass-tag stilini silebilirsin, artık kullanılmıyor */
 
+
+/* --- SEKME (TAB) YAPISI --- */
+.tab-menu {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+    border-bottom: 2px solid #8b4513;
+    margin-top: 20px;
+}
+
+.tab-link {
+    background-color: #f5deb3;
+    border: 2px solid #8b4513;
+    border-bottom: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 30px; /* Biraz daha geniş olsun */
+    transition: 0.3s;
+    font-family: 'Georgia', serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #8b4513;
+    margin: 0 4px; /* Butonlar arası boşluk */
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    top: 2px;
+}
+
+.tab-link:hover {
+    background-color: #e6c99c;
+}
+
+.tab-link.active {
+    background-color: #fff;
+    border-bottom: 2px solid #fff; /* Çizgiyi siler */
+    z-index: 5;
+    color: #5e2f0d;
+}
+
+.tab-view {
+    /* Sekme içeriği için genel kapsayıcı */
+    animation: fadeEffect 0.5s;
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* --- GELİŞİM TABLOLARI STİLİ --- */
+.progression-table-wrapper {
+    overflow-x: auto; /* Mobilde tablo taşarsa kaydırma çubuğu çıksın */
+}
+
+.progression-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.progression-table th {
+    background-color: #8b4513;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #5e2f0d;
+}
+
+.progression-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Zebra Deseni: Satırları ayırt etmek için */
+.progression-table tr:nth-child(even) {
+    background-color: #f9f5e3; /* Kağıt rengi */
+}
+.progression-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.progression-table tr:hover {
+    background-color: #e6c99c; /* Üzerine gelince parlasın */
+}
+
 /* =========================================================
    DÜZELTME: Buton Varsayılan Olarak HERKESTE Gizli Olsun
    ========================================================= */
