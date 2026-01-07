@@ -1,0 +1,155 @@
+/* Temel Ayarlar (Back.css ile uyumlu) */
+@font-face {
+    font-family: 'Convergence';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Convergence-Regular'), url('../../fonts/Convergence-Regular.ttf') format('truetype');
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f5e3;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Tab Menü Stilleri */
+.tab-menu {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0; /* Değişiklik: Boşluk kaldırıldı, artık yapışık */
+    /*border-bottom: 2px solid #8b4513;*/
+}
+
+.tab-link {
+    background-color: #f5deb3;
+    border: 2px solid #8b4513; /* Değişiklik: Çerçeve kalınlığı 2px yapıldı */
+    border-bottom: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 20px;
+    transition: 0.3s;
+    font-family: 'Georgia', serif;
+    font-size: 1.1em;
+    color: #8b4513;
+    margin: 0 2px;
+    border-radius: 10px 10px 0 0;
+    position: relative; /* Eklendi: z-index için gerekli */
+    top: 2px; /* Eklendi: Çizgiye tam basması için hafif aşağı itildi */
+}
+
+.tab-link:hover {
+    background-color: #e6c99c;
+}
+
+.tab-link.active {
+    background-color: #fff;
+    border-bottom: 2px solid #fff; /* Alt çizgiyi beyaz yaparak "siliyoruz" */
+    font-weight: bold;
+    z-index: 5; /* Eklendi: Çizginin üstünde durmasını sağlar */
+    top: 2px; /* Konumu koru */
+}
+
+/* Tab İçerik Alanları */
+.tab-content {
+    display: none; 
+    padding: 20px;
+    border: 3px solid #8b4513; 
+    /*border-top: none;  Üst çizgi yok, menünün çizgisi kullanılıyor */
+    background-color: #fff;
+    border-radius: 10px 10px 10px 10px; /* Sadece alt köşeler yuvarlak */
+    position: relative;
+    z-index: 1; /* Menünün altında kalmaması için */
+}
+
+.active-content {
+    display: block; /* Sadece aktif olan görünür */
+    animation: fadeEffect 0.5s;
+}
+
+/* Animasyon */
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* Collapsible (Açılır-Kapanır) Yapı */
+.collapsible {
+    box-sizing: border-box; /* <-- EKLENECEK SİHİRLİ SATIR BU */
+    
+    background-color: #FBF1DE;
+    color: #8b4513;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: 2px solid #DB9D43;
+    border-radius: 7px;
+    text-align: left;
+    outline: none;
+    font-size: 1.2em;
+    font-family: 'Georgia', serif;
+    margin-top: 10px;
+}
+.active, .collapsible:hover {
+    background-color: #f0e6cc;
+}
+
+.icerik {
+    padding: 0 10px;
+    background-color: white;
+    overflow: hidden;
+    border-left: 3px solid #8b4513;
+    margin-bottom: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+/* Liste Öğeleri (Satırlar) */
+.item-card {
+    padding: 5px 10px; /* Üst-Alt boşluğu 10px'ten 5px'e düşürdük */
+    border-bottom: 1px solid #ddd;
+    display: flex; /* İçeriği dikeyde ortalamak için */
+    align-items: center; /* Yazıyı kutunun tam ortasına hizalar */
+    min-height: 30px; /* Satırın çok küçülmesini engeller */
+}
+
+/* Satır içindeki yazı ayarları - EN ÖNEMLİ KISIM */
+.item-card p {
+    margin: 0; /* Paragrafın o koca boşluğunu sıfırladık */
+    padding: 0; /* Garanti olsun diye iç boşluğu da sıfırladık */
+    line-height: 1.2; /* Satır aralığını biraz kıstık */
+}
+
+/* Arka plan renkleri aynen kalıyor */
+.koyu {
+    background-color: #faf0e0c3;
+}
+.bold {
+    font-weight: bold;
+    color: #000;
+}
+
+.ozellik {
+    font-style: italic;
+    color: #555;
+}
+
+.altbaslık {
+    margin: 0;
+    pointer-events: none; /* Tıklamayı h3'e geçirir */
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 600px) {
+    .tab-link {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+}
