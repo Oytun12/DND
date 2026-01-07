@@ -1,7 +1,11 @@
+/* =========================================
+   1. TEMEL STİLLER (Senin Gönderdiğin Çalışan Kod)
+   ========================================= */
 @font-face {
     font-family: 'Convergence';
     src: local('Convergence-Regular'), url('../../fonts/Convergence-Regular.ttf') format('truetype');
 }
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f5e3;
@@ -26,7 +30,6 @@ header {
     padding: 15px;
     margin-bottom: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); */
     position: relative;
 }
 
@@ -41,13 +44,13 @@ header {
 }
 
 .logo-img {
-    width: 60px; /* Logonun genişliği */
-    height: auto; /* Oranını koruyarak yüksekliği otomatik ayarlar */
+    width: 60px;
+    height: auto;
 }
 
 nav {
     position: absolute;
-    top: 121%; /* Menü ikonunun hemen altında başlar */
+    top: 121%;
     left: -4px;
     width: 200px;
     background-color: #cabe80;
@@ -56,7 +59,7 @@ nav {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     padding: 10px;
     display: none;
-    z-index: 1000; /* Menü ikonunun üstünde görünmesi için */
+    z-index: 1000;
 }
 
 nav ul {
@@ -67,10 +70,10 @@ nav ul {
 
 nav ul li {
     text-align: left;
-
     margin-left: 13px; 
     margin-bottom: 13px;
 }
+
 nav ul li a {
     color: #8b4513;
     font-size: 1.2em;
@@ -78,13 +81,8 @@ nav ul li a {
     text-decoration: none;
 }
 
-.hidden {
-    display: none;
-}
-
-.visible {
-    display: block;
-}
+.hidden { display: none; }
+.visible { display: block; }
 
 .container {
     max-width: 800px;
@@ -104,9 +102,15 @@ h1, h2 {
     color: #8b4513;
 }
 
-/* --- Bura Yeni Sistem ---*/
+@media (max-width: 600px) {
+    #skillsyazı { font-size: 0.85em; }
+}
 
-/* Collapsible (Başlık) */
+/* =========================================
+   2. SINIF SAYFASI ÖZEL STİLLERİ (YENİ EKLENENLER)
+   ========================================= */
+
+/* Başlıklar (Açılır/Kapanır) */
 .collapsible {
     background-color: #FBF1DE;
     color: #8b4513;
@@ -123,41 +127,40 @@ h1, h2 {
     transition: background-color 0.3s;
     display: flex;
     align-items: center;
-    box-sizing: border-box; /* Taşmayı engeller */
+    box-sizing: border-box;
 }
 
 .collapsible:hover, .active {
     background-color: #f0e6cc;
 }
 
+/* Artı (+) İşareti */
 .collapsible:after {
-    content: '\002B'; /* Artı işareti */
+    content: '\002B';
     color: #8b4513;
     font-weight: bold;
-    float: right;
+    font-size: 1.2em;
     margin-left: auto;
 }
 
+/* Eksi (-) İşareti */
 .active:after {
-    content: "\2212"; /* Eksi işareti */
+    content: "\2212";
 }
-/* İçerik Kutusu */
+
+/* İçerik Alanı */
 .class-content {
-    padding: 0 20px 20px 20px;
-    background-color: #fff; /* Veya #fcf9f2 */
+    padding: 20px;
+    background-color: #fff;
     border: 2px solid #DB9D43;
     border-top: none;
     border-radius: 0 0 7px 7px;
     margin-bottom: 10px;
+    display: none;
     overflow: hidden;
-    display: none; /* Varsayılan gizli */
 }
 
-.class-content.visible {
-    display: block;
-}
-
-/* Tablolar ve Listeler */
+/* Özellik Kutuları ve Tablolar */
 .feature-block {
     margin-bottom: 15px;
     padding: 10px;
@@ -171,17 +174,17 @@ h4 {
     border-bottom: 1px solid #ddd;
     padding-bottom: 5px;
     margin-top: 20px;
+    font-family: 'Georgia', serif;
 }
 
 h5 {
     color: #555;
     font-weight: bold;
     margin-bottom: 5px;
+    font-family: Arial, sans-serif;
 }
 
-ul {
-    margin: 5px 0 10px 20px;
-}
+ul { margin: 5px 0 10px 20px; }
 
 table {
     width: 100%;
@@ -199,18 +202,14 @@ th, td {
 th {
     background-color: #f5deb3;
     color: #8b4513;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.bold {
     font-weight: bold;
-    color: #000;
 }
 
-/* --- ALT SINIF BUTONLARI --- */
+tr:nth-child(even) { background-color: #f9f9f9; }
+
+.bold { font-weight: bold; color: #000; }
+
+/* Alt Sınıf Seçim Butonları */
 .subclass-selection-area {
     margin: 15px 0 20px 0;
     padding: 15px;
@@ -253,14 +252,123 @@ tr:nth-child(even) {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Alt sınıf özelliği olduğunu belli etmek için hafif farklı bir stil */
 .feature-block.subclass-feature {
-    border-left: 3px solid #2c7a2c; /* Yeşilimsi bir çizgi ile ayrışsın */
+    border-left: 3px solid #2c7a2c;
     background-color: #e8f5e9;
 }
 
-@media (max-width: 600px) {
-    #skillsyazı {
+/* --- ALT SINIF ÖZELLİKLERİ (MAVİ TEMA & SADE BAŞLIK) --- */
+
+.feature-block.subclass-feature {
+    border-left: 5px solid #2b5a8e; /* Koyu Mavi Çizgi */
+    background-color: #eaf4fc;      /* Çok açık mavi arka plan */
+    margin-top: 20px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Alt Sınıf Başlığı */
+.feature-block.subclass-feature h5 {
+    color: #1a4a7a;       /* Başlık rengi: Lacivert */
+    font-family: 'Georgia', serif;
+    font-size: 1.4em;
+    font-weight: bold;
+    border-bottom: 2px solid #b6d4fe; /* Altına ince mavi çizgi */
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    margin-top: 0;
+    display: block;       /* Flex yerine Block yaptık, düz yazı olsun */
+}
+
+/* .subclass-tag stilini silebilirsin, artık kullanılmıyor */
+
+/* =========================================================
+   DÜZELTME: Buton Varsayılan Olarak HERKESTE Gizli Olsun
+   ========================================================= */
+.mobile-back-btn {
+    display: none; /* Masaüstünde de gizli kalsın */
+}
+
+/* =========================================================
+   MOBİL ODAK MODU (ZEN MODE) - Sadece Dar Ekranlar İçin
+   ========================================================= */
+@media (max-width: 768px) {
+    
+    /* 1. Odaklanınca Kaydırmayı Kilitle */
+    body.mobile-focus {
+        overflow-x: hidden !important;
+        padding: 0 !important;
+    }
+
+    /* 2. Gereksiz Her Şeyi Gizle (Header, Nav, Logo) */
+    body.mobile-focus header,
+    body.mobile-focus nav,
+    body.mobile-focus .menu-icon {
+        display: none !important;
+    }
+
+    /* 3. Container'ı Tam Ekran Yap */
+    body.mobile-focus .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: #fff;
+        min-height: 100vh;
+    }
+
+    /* 4. DÜZELTME: Giriş Yazılarını ve Başlığı Gizle */
+    /* id="siniflar-bolumu" içindeki h2 ve p etiketlerini hedefliyoruz */
+    body.mobile-focus #siniflar-bolumu > h2, 
+    body.mobile-focus #siniflar-bolumu > p {
+        display: none !important;
+    }
+
+    /* 5. Aktif Olmayan Diğer Sınıfları Gizle */
+    body.mobile-focus .class-wrapper:not(.focus-active) {
+        display: none !important;
+    }
+
+    /* 6. Aktif Sınıfın Başlığını (Collapsible) Yapışkan Yap */
+    body.mobile-focus .class-wrapper.focus-active .collapsible {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin: 0 !important;
+        border-radius: 0;
+        border: none;
+        background-color: #8b4513;
+        color: #fff;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    /* Mobilde artı/eksi ikonunu gizle */
+    body.mobile-focus .class-wrapper.focus-active .collapsible:after {
+        display: none;
+    }
+
+    /* 7. İçeriği Tam Ekran Yap */
+    body.mobile-focus .class-content {
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 15px !important;
+        margin-bottom: 50px;
+    }
+
+    /* 8. DÜZELTME: Geri Dön Butonunu SADECE Burada Göster */
+    body.mobile-focus .mobile-back-btn {
+        display: inline-block !important; /* display: none'ı ezmek için */
+        margin-left: auto; /* Sağa yaslamak için float yerine bu */
+        background-color: #fff;
+        color: #8b4513;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        font-weight: bold;
         font-size: 0.85em;
+        cursor: pointer;
     }
 }

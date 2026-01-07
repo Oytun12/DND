@@ -54,19 +54,24 @@ function renderClassHeaders() {
     container.innerHTML = ""; 
 
     ALL_CLASSES_DATA.forEach((cls, index) => {
-        // Her sınıf için bir kapsayıcı oluşturuyoruz
         const classWrapper = document.createElement('div');
         classWrapper.className = 'class-wrapper';
+        // ID atayalım ki CSS ile hangisi aktif bilelim
+        classWrapper.id = `wrapper-${index}`;
         
-        // Başlık (Accordion Header)
+        // Başlık
         const header = document.createElement('h3');
         header.className = 'collapsible';
-        header.innerText = cls.name;
         
-        // Tıklama Olayı: İçeriği o an oluşturacağız (Lazy Load mantığı gibi)
+        // Başlık İçeriği + Mobil Geri Butonu (Gizli gelir)
+        header.innerHTML = `
+            ${cls.name}
+            <button class="mobile-back-btn" onclick="closeFocusMode(event)">KAPAT ✕</button>
+        `;
+        
         header.onclick = (e) => toggleClassAccordion(e, index, header);
 
-        // İçerik Alanı (Başlangıçta boş ve gizli)
+        // İçerik Alanı
         const contentDiv = document.createElement('div');
         contentDiv.className = 'class-content';
         contentDiv.id = `class-content-${index}`;
@@ -77,30 +82,43 @@ function renderClassHeaders() {
     });
 }
 
-// Bir sınıfa tıklandığında çalışır
+/// Bir sınıfa tıklandığında
 function toggleClassAccordion(e, classIndex, headerElement) {
-    e.stopPropagation(); // Boşluk tıklamasını engelle
+    // Eğer Geri butonuna tıklandıysa bu fonksiyonu çalıştırma (Çakışmayı önle)
+    if(e.target.classList.contains('mobile-back-btn')) return;
+
+    e.stopPropagation();
     
     const contentDiv = document.getElementById(`class-content-${classIndex}`);
+    const wrapper = document.getElementById(`wrapper-${classIndex}`);
     const isCurrentlyOpen = contentDiv.style.display === "block";
 
-    // 1. Önce her şeyi kapat
+    // 1. Önce her şeyi temizle
     document.querySelectorAll(".class-content").forEach(c => c.style.display = "none");
     document.querySelectorAll(".collapsible").forEach(h => h.classList.remove("active"));
+    document.querySelectorAll(".class-wrapper").forEach(w => w.classList.remove("focus-active")); // Odak sınıfını temizle
+    
+    // Mobil odak modunu temizle (Eğer masaüstündeysek zaten etki etmez)
+    document.body.classList.remove("mobile-focus");
 
-    // 2. Eğer zaten açık değilse, bu sınıfı AÇ ve RENDER ET
+    // 2. Açma İşlemi
     if (!isCurrentlyOpen) {
-        // Aktif sınıfı işaretle
         headerElement.classList.add("active");
         contentDiv.style.display = "block";
-        
-        // İçeriği oluştur (Varsayılan olarak alt sınıf seçili değil: null)
-        renderClassDetails(classIndex, null);
+        wrapper.classList.add("focus-active"); // Bu wrapper artık odakta
 
-        // Kaydırma
-        setTimeout(() => {
-            headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+        // MOBİL ODAK MODUNU AKTİF ET
+        if (window.innerWidth <= 768) {
+            document.body.classList.add("mobile-focus");
+            window.scrollTo(0, 0); // Sayfanın en tepesine at
+        } else {
+            // Masaüstü ise yumuşak kaydır
+            setTimeout(() => {
+                headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+        
+        renderClassDetails(classIndex, null);
     }
 }
 
@@ -147,11 +165,10 @@ function renderClassDetails(classIndex, selectedSubclassIndex) {
         html += `</div>`;
     }
 
-    // --- SEVİYELER VE ÖZELLİKLER (ENJEKSİYON MANTIĞI) ---
+// --- SEVİYELER VE ÖZELLİKLER (ENJEKSİYON MANTIĞI) ---
     // Eğer bir alt sınıf seçildiyse onun verisini al
     const selectedSubclass = (selectedSubclassIndex !== null) ? cls.subclasses[selectedSubclassIndex] : null;
     
-    // Alt sınıf özelliklerinde hangi sırada olduğumuzu takip etmek için sayaç
     let subclassFeatureIndex = 0;
 
     if (cls.classFeatures) {
@@ -168,20 +185,18 @@ function renderClassDetails(classIndex, selectedSubclassIndex) {
                             ${renderEntries(feature.entries)}
                          </div>`;
                 
-                // KONTROL: Bu özellik "Alt Sınıf Seçimi" veriyor mu?
-                // Eğer feature "gainSubclassFeature": true içeriyorsa (veya mantık gereği o seviyedeyse)
-                // ve bir alt sınıf seçiliyse, sıradaki alt sınıf özelliğini buraya ekle.
-                
+// 2. ALT SINIF ÖZELLİĞİ VAR MI KONTROL ET
                 if (feature.gainSubclassFeature && selectedSubclass) {
                     const subFeatures = selectedSubclass.subclassFeatures[subclassFeatureIndex];
                     if (subFeatures) {
                         subFeatures.forEach(subFeat => {
+                            // DÜZELTME: Etiket (Tag) tamamen kaldırıldı, sadece özellik adı kaldı.
                             html += `<div class="feature-block subclass-feature">
-                                        <h5>★ ${subFeat.name} (${selectedSubclass.name})</h5>
+                                        <h5>${subFeat.name}</h5>
                                         ${renderEntries(subFeat.entries)}
                                      </div>`;
                         });
-                        subclassFeatureIndex++; // Bir sonraki seviye için sayacı artır
+                        subclassFeatureIndex++; 
                     }
                 }
             });
@@ -229,4 +244,16 @@ function renderEntries(entries) {
         }
     });
     return html;
+}
+
+// Mobilde Kapat Butonuna Basınca
+function closeFocusMode(e) {
+    e.stopPropagation(); // Üstteki tıklamaları engelle
+    
+    // Her şeyi kapat ve resetle
+    document.querySelectorAll(".class-content").forEach(c => c.style.display = "none");
+    document.querySelectorAll(".collapsible").forEach(h => h.classList.remove("active"));
+    document.querySelectorAll(".class-wrapper").forEach(w => w.classList.remove("focus-active"));
+    
+    document.body.classList.remove("mobile-focus");
 }
