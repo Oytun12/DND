@@ -44,7 +44,7 @@ header {
 nav {
     position: absolute;
     top: 121%; /* Menü ikonunun hemen altında başlar */
-    left: -2px;
+    left: -4px;
     width: 200px;
     background-color: #cabe80;
     border: 2px solid #ccc;
