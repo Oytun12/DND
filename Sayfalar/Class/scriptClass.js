@@ -8,8 +8,12 @@ const toggleMenu = () => {
     menu.classList.toggle('visible');
 };
 
-// TAB DEĞİŞTİRME FONKSİYONU (SENKRONİZASYONLU)
+// TAB DEĞİŞTİRME FONKSİYONU (GÜNCELLENDİ: GEREKSİZ TIKLAMA ENGELİ)
 function openTab(evt, viewId) {
+    // DÜZELTME BURADA:
+    // Eğer tıklanan butonda zaten 'active' sınıfı varsa, fonksiyonu hemen durdur.
+    if (evt.currentTarget.classList.contains('active')) return;
+
     // 1. Tüm görünümleri gizle
     document.querySelectorAll('.tab-view').forEach(view => {
         view.style.display = 'none';
@@ -34,7 +38,7 @@ function openTab(evt, viewId) {
         if (wrapper) {
             const header = wrapper.querySelector('.collapsible');
             if (header) {
-                // Tıklama efektini tetikle ama animasyonla uğraşma
+                // Tıklama efektini tetikle
                 header.click();
             }
         }
@@ -186,9 +190,10 @@ function renderClassTable(classIndex, containerId) {
     html += `<th>Seviye</th>`;
     html += `<th>Uzmanlık Bonusu</th>`;
     
+    // DÜZELTME BURADA: label'ı format5eText() içine aldık
     cls.classTableGroups.forEach(group => {
         group.colLabels.forEach(label => {
-            html += `<th>${label}</th>`;
+            html += `<th>${format5eText(label)}</th>`; 
         });
     });
     html += `</tr></thead>`;
@@ -217,14 +222,22 @@ function renderClassTable(classIndex, containerId) {
 }
 
 function formatTableCell(cell) {
+    // Eğer hücre bir nesne (object) ise (Bonus, Zar vb.)
     if (typeof cell === 'object') {
         if (cell.type === 'bonus') return `+${cell.value}`;
+        // Zar gösterimini güzelleştir
         if (cell.type === 'dice') return cell.toRoll ? cell.toRoll : cell.number + 'd' + cell.faces;
+        // Aralık belirtiyorsa (Örn: 1-4)
         if (cell.roll) return cell.roll.exact || `${cell.roll.min}-${cell.roll.max}`;
+        // Bilinmeyen bir tipse string'e çevir
         return JSON.stringify(cell);
     }
+    
+    // Eğer hücre boşsa veya 0 ise çizgi koy
     if (cell === 0 || cell === "0") return "—";
-    return cell;
+    
+    // DÜZELTME BURADA: Metin hücresi ise temizleyiciye gönder ({@filter...} gibi kodları düzeltir)
+    return format5eText(cell);
 }
 
 // ------------------ İÇERİK: REHBER ------------------
@@ -303,7 +316,8 @@ window.updateSubclassView = function(classIndex, containerId, subIndex) {
     renderClassFeaturesWithSubclass(classIndex, containerId, subIndex);
 };
 
-// ------------------ KARMAŞIK METİN İŞLEYİCİ (GELİŞTİRİLDİ) ------------------
+
+// ------------------ KARMAŞIK METİN İŞLEYİCİ (GÜNCELLENDİ) ------------------
 function renderEntries(entries) {
     if (!entries) return "";
     let html = "";
@@ -317,7 +331,8 @@ function renderEntries(entries) {
         if (!e) return;
 
         if (typeof e === "string") {
-            html += `<p>${e}</p>`;
+            // DÜZELTME: Metni doğrudan basmak yerine formatlayıp basıyoruz
+            html += `<p>${format5eText(e)}</p>`;
         } else if (typeof e === "object") {
             // Liste
             if (e.type === "list") {
@@ -325,25 +340,32 @@ function renderEntries(entries) {
             } 
             // Tablo
             else if (e.type === "table") {
-                 html += `<table><thead><tr>${e.colLabels.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>`;
+                 html += `<table><thead><tr>${e.colLabels.map(h => `<th>${format5eText(h)}</th>`).join("")}</tr></thead><tbody>`;
                  e.rows.forEach(row => {
                      let rHtml = "";
-                     row.forEach(c => rHtml += `<td>${typeof c==='object' ? (c.roll ? c.roll.exact : JSON.stringify(c)) : c}</td>`);
+                     row.forEach(c => rHtml += `<td>${typeof c==='object' ? (c.roll ? c.roll.exact : JSON.stringify(c)) : format5eText(c)}</td>`);
                      html += `<tr>${rHtml}</tr>`;
                  });
                  html += `</tbody></table>`;
             } 
-            // İç İçe Başlıklar (Entries) - İŞTE BU EKSİKTİ!
+            // İç İçe Başlıklar (Entries)
             else if (e.type === "entries" || e.type === "section") {
-                if (e.name) html += `<h5>${e.name}</h5>`;
+                if (e.name) html += `<h5>${format5eText(e.name)}</h5>`;
                 html += renderEntries(e.entries);
             }
             // Kutucuk (Inset)
             else if (e.type === "inset") {
                  html += `<div style="border:1px solid #ccc; padding:10px; background:#f9f9f9; margin:10px 0;">`;
-                 if (e.name) html += `<h5>${e.name}</h5>`;
+                 if (e.name) html += `<h5>${format5eText(e.name)}</h5>`;
                  html += renderEntries(e.entries);
                  html += `</div>`;
+            }
+            // "quote" (Alıntı)
+            else if (e.type === "quote") {
+                html += `<blockquote style="border-left: 4px solid #8b4513; padding-left: 10px; font-style: italic;">
+                            ${renderEntries(e.entries)}
+                            <footer style="font-size:0.8em; font-weight:bold;">— ${e.by || ""}</footer>
+                         </blockquote>`;
             }
             // Bilinmeyen tipler için içerik varsa yazdır
             else if (e.entries) {
@@ -352,4 +374,43 @@ function renderEntries(entries) {
         }
     });
     return html;
+}
+
+// ------------------ 5e TOOLS FORMAT TEMİZLEYİCİ (YENİ!) ------------------
+function format5eText(text) {
+    if (!text || typeof text !== 'string') return text;
+
+    // 1. Önce basit etiketleri temizle: {@spell Fireball} -> Fireball
+    // Regex mantığı: {@etiketAdı Icerik|Kaynak|Ekstra} -> Sadece "Icerik" kısmını al
+    
+    // {@bold ...} -> Kalın yap
+    text = text.replace(/{@bold ([^}]+)}/g, '<span class="dnd-bold">$1</span>');
+    text = text.replace(/{@b ([^}]+)}/g, '<span class="dnd-bold">$1</span>');
+    
+    // {@italic ...} -> İtalik yap
+    text = text.replace(/{@italic ([^}]+)}/g, '<span class="dnd-italic">$1</span>');
+    text = text.replace(/{@i ([^}]+)}/g, '<span class="dnd-italic">$1</span>');
+
+    // Saldırı Tipleri {@atk mw} -> "Yakın Dövüş Saldırısı:"
+    text = text.replace(/{@atk mw}/g, '<span class="dnd-icon-text">🗡️ Yakın Dövüş Saldırısı:</span>');
+    text = text.replace(/{@atk rw}/g, '<span class="dnd-icon-text">🏹 Menzilli Silah Saldırısı:</span>');
+    text = text.replace(/{@atk ms}/g, '<span class="dnd-icon-text">✨ Yakın Büyü Saldırısı:</span>');
+    text = text.replace(/{@atk rs}/g, '<span class="dnd-icon-text">🔥 Menzilli Büyü Saldırısı:</span>');
+    
+    // Hit (Vuruş) ve DC
+    text = text.replace(/{@h}/g, '<span class="dnd-icon-text">Vuruş:</span>');
+    text = text.replace(/{@dc ([^}]+)}/g, '<span class="dnd-bold">DC $1</span>');
+
+    // {@recharge 5} -> (Zar 5-6 gelince yenilenir)
+    text = text.replace(/{@recharge ([^}]+)}/g, '(Yenilenme $1-6)');
+    text = text.replace(/{@recharge}/g, '(Yenilenme 6)');
+
+    // GENEL TEMİZLİK: {@spell Fireball|PHB} gibi olan her şeyi temizle
+    // Mantık: {@birsey Icerik} veya {@birsey Icerik|Kaynak} -> "Icerik" kısmını alıp süslü link yap
+    text = text.replace(/{@\w+ ([^}|]+)(?:\|[^}]+)?}/g, '<span class="dnd-link">$1</span>');
+
+    // {@dice 1d6} gibi zar kodları
+    // Not: Üstteki genel temizlik bunu da yakalar ama özel stil vermek istersen buraya ekleyebilirsin.
+    
+    return text;
 }

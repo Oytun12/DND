@@ -283,52 +283,75 @@ tr:nth-child(even) { background-color: #f9f9f9; }
 /* .subclass-tag stilini silebilirsin, artık kullanılmıyor */
 
 
-/* --- SEKME (TAB) YAPISI --- */
+/* --- SEKME (TAB) YAPISI (DOSYA KLASÖRÜ GÖRÜNÜMÜ) --- */
 .tab-menu {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Ortalar, istersen 'flex-start' yapıp sola yaslayabilirsin */
     margin-bottom: 0;
-    border-bottom: 2px solid #8b4513;
+    /* border-bottom: İPTAL EDİLDİ (Artık kutunun kendi çerçevesi var) */
     margin-top: 20px;
+    position: relative;
+    z-index: 10; /* Kutunun üstünde dursun */
 }
 
 .tab-link {
-    background-color: #f5deb3;
+    background-color: #e6c99c; /* Pasif renk (Biraz daha koyu) */
     border: 2px solid #8b4513;
-    border-bottom: none;
+    border-bottom: none; /* Alt çizgi yok, kutuyla birleşecek */
     outline: none;
     cursor: pointer;
-    padding: 14px 30px; /* Biraz daha geniş olsun */
-    transition: 0.3s;
+    padding: 10px 25px;
+    transition: all 0.2s ease;
     font-family: 'Georgia', serif;
     font-size: 1.1em;
     font-weight: bold;
-    color: #8b4513;
-    margin: 0 4px; /* Butonlar arası boşluk */
-    border-radius: 10px 10px 0 0;
+    color: #5e2f0d;
+    margin: 0 2px; /* Sekmeler arası ufak boşluk */
+    border-radius: 8px 8px 0 0; /* Sadece üst köşeler oval */
     position: relative;
-    top: 2px;
+    top: 2px; /* Çizgiye tam otursun diye */
 }
 
 .tab-link:hover {
-    background-color: #e6c99c;
+    background-color: #f5deb3;
+    transform: translateY(-2px); /* Üzerine gelince hafif zıplasın */
 }
 
+/* AKTİF SEKME (ÖNEMLİ AYARLAR) */
 .tab-link.active {
-    background-color: #fff;
-    border-bottom: 2px solid #fff; /* Çizgiyi siler */
-    z-index: 5;
-    color: #5e2f0d;
+    background-color: #fff; /* İçerik kutusuyla aynı renk */
+    color: #8b4513;
+    border-color: #8b4513;
+    border-bottom: 2px solid #fff; /* Alt çizgiyi BEYAZ yaparak kutu çizgisini siliyoruz */
+    z-index: 20; /* En üstte durmalı */
+    top: 2px; /* Kutu sınırına basmalı */
+    padding-bottom: 12px; /* Aşağıya uzayıp boşluğu kapatsın */
 }
 
+/* --- İÇERİK KUTUSU (KONTEYNER) --- */
 .tab-view {
-    /* Sekme içeriği için genel kapsayıcı */
+    /* Senin istediğin radiuslu, çerçeveli kutu */
+    border: 2px solid #8b4513;
+    background-color: #fff;
+    border-radius: 9px; /* Köşeleri yuvarlattık */
+    padding: 15px;      /* İçerik kenarlara yapışmasın (3-5pt az olur, 15px idealdir) */
+    margin-top: 0;      /* Yukarıyla sıfıra sıfır */
+    position: relative;
+    z-index: 5;         /* Sekmelerin altında kalsın */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Hafif derinlik katalım */
+    
     animation: fadeEffect 0.5s;
+    display: none; /* Varsayılan gizli */
+}
+
+/* Aktif görünüm için display ayarı JS'ten yapılıyor ama buraya da ekleyelim */
+.tab-view.active-view {
+    display: block;
 }
 
 @keyframes fadeEffect {
-    from {opacity: 0;}
-    to {opacity: 1;}
+    from {opacity: 0; transform: translateY(5px);}
+    to {opacity: 1; transform: translateY(0);}
 }
 
 /* --- GELİŞİM TABLOLARI STİLİ --- */
@@ -370,59 +393,123 @@ tr:nth-child(even) { background-color: #f9f9f9; }
     background-color: #e6c99c; /* Üzerine gelince parlasın */
 }
 
-/* =========================================================
-   DÜZELTME: Buton Varsayılan Olarak HERKESTE Gizli Olsun
-   ========================================================= */
-.mobile-back-btn {
-    display: none; /* Masaüstünde de gizli kalsın */
+/* --- METİN İÇİ ETİKETLER --- */
+.dnd-link {
+    color: #2b5a8e; /* Link gibi mavi dursun */
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default; /* Tıklanmadığını belli et */
 }
 
-/* =========================================================
-   MOBİL ODAK MODU (ZEN MODE) - Sadece Dar Ekranlar İçin
-   ========================================================= */
+.dnd-bold {
+    font-weight: bold;
+    color: #8b4513;
+}
+
+.dnd-italic {
+    font-style: italic;
+}
+
+/* Saldırı ikonları vb. için */
+.dnd-icon-text {
+    font-weight: bold;
+    color: #a71e1e; /* Koyu kırmızı */
+}
+
+/* --- TABLO BAŞLIĞI RENK DÜZELTMESİ --- */
+.progression-table th .dnd-link {
+    color: #ffffff !important; /* Bordo zemin üstünde Beyaz */
+    text-decoration: none;     /* Altı çizili olmasın */
+}
+
+
+/* =========================================
+   DÜZELTME: Kapat Butonu Varsayılan Olarak HERKESTE Gizli Olsun
+   (Bunu @media sorgusunun DIŞINA, buraya yazıyoruz)
+   ========================================= */
+.mobile-back-btn {
+    display: none; 
+}
+
+/* =========================================
+   3. MOBİL ODAK MODU (ZEN MODE) - FİNAL DÜZELTME
+   ========================================= */
 @media (max-width: 768px) {
     
-    /* 1. Odaklanınca Kaydırmayı Kilitle */
+    /* Body kaydırmasını kilitle */
     body.mobile-focus {
         overflow-x: hidden !important;
         padding: 0 !important;
     }
 
-    /* 2. Gereksiz Her Şeyi Gizle (Header, Nav, Logo) */
+    /* GEREKSİZLERİ GİZLE 
+       DÜZELTME: '.subclass-selection-area' (Alt sınıf butonları) buradan çıkarıldı!
+       Artık mobilde de görünecekler.
+    */
     body.mobile-focus header,
     body.mobile-focus nav,
-    body.mobile-focus .menu-icon {
+    body.mobile-focus .menu-icon,
+    body.mobile-focus #siniflar-bolumu > h2, 
+    body.mobile-focus #siniflar-bolumu > p {
         display: none !important;
     }
 
-    /* 3. Container'ı Tam Ekran Yap */
+    /* --- SEKME MENÜSÜ AYARLARI --- */
+    body.mobile-focus .tab-menu {
+        display: flex !important;
+        position: sticky;       
+        top: 0;
+        z-index: 150;           
+        background-color: #fff; 
+        width: 100%;
+        margin: 0 !important;
+        padding-top: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    }
+
+    body.mobile-focus .tab-link {
+        flex: 1;             
+        text-align: center;
+        padding: 10px 5px;   
+        font-size: 0.95em;   
+        border-radius: 0;    
+        top: 0;              
+    }
+    
+    body.mobile-focus .tab-link.active {
+        border-bottom: 3px solid #8b4513; 
+        background-color: #fcf9f2;
+    }
+
+    /* --- KONTEYNER SIFIRLAMA --- */
     body.mobile-focus .container {
         width: 100% !important;
         max-width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
         border: none !important;
-        box-shadow: none !important;
         background: #fff;
         min-height: 100vh;
     }
 
-    /* 4. DÜZELTME: Giriş Yazılarını ve Başlığı Gizle */
-    /* id="siniflar-bolumu" içindeki h2 ve p etiketlerini hedefliyoruz */
-    body.mobile-focus #siniflar-bolumu > h2, 
-    body.mobile-focus #siniflar-bolumu > p {
-        display: none !important;
+    /* --- KLASÖR KUTUSU SIFIRLAMA --- */
+    body.mobile-focus .tab-view {
+        padding: 0 !important;
+        border: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
     }
 
-    /* 5. Aktif Olmayan Diğer Sınıfları Gizle */
+    /* Aktif olmayan sınıfları gizle */
     body.mobile-focus .class-wrapper:not(.focus-active) {
         display: none !important;
     }
 
-    /* 6. Aktif Sınıfın Başlığını (Collapsible) Yapışkan Yap */
+    /* --- BAŞLIK AYARLARI --- */
     body.mobile-focus .class-wrapper.focus-active .collapsible {
         position: sticky;
-        top: 0;
+        top: 48px; /* Sekmelerin altında */
         z-index: 100;
         margin: 0 !important;
         border-radius: 0;
@@ -430,26 +517,27 @@ tr:nth-child(even) { background-color: #f9f9f9; }
         background-color: #8b4513;
         color: #fff;
         padding: 15px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15); 
     }
     
-    /* Mobilde artı/eksi ikonunu gizle */
     body.mobile-focus .class-wrapper.focus-active .collapsible:after {
         display: none;
     }
 
-    /* 7. İçeriği Tam Ekran Yap */
+    /* --- İÇERİK ALANI --- */
     body.mobile-focus .class-content {
         border: none !important;
         border-radius: 0 !important;
-        padding: 15px !important;
+        padding: 10px 15px !important; 
+        margin: 0 !important;
         margin-bottom: 50px;
     }
 
-    /* 8. DÜZELTME: Geri Dön Butonunu SADECE Burada Göster */
+    /* --- GERİ DÖN BUTONU --- */
+    /* Masaüstünde gizlemiştik, şimdi sadece mobilde ve odaktayken gösteriyoruz */
     body.mobile-focus .mobile-back-btn {
-        display: inline-block !important; /* display: none'ı ezmek için */
-        margin-left: auto; /* Sağa yaslamak için float yerine bu */
+        display: inline-block !important;
+        margin-left: auto;
         background-color: #fff;
         color: #8b4513;
         border: none;
