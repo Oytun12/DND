@@ -1,5 +1,5 @@
 let ALL_CLASSES_DATA = [];
-let currentActiveIndex = null; // HAFIZA: Şu an hangi sınıf açık? (Yoksa null)
+let currentActiveIndex = null; // HAFIZA: Şu an hangi sınıf açık?
 
 // ------------------ MENÜ & TAB İŞLEMLERİ ------------------
 const toggleMenu = () => {
@@ -8,7 +8,7 @@ const toggleMenu = () => {
     menu.classList.toggle('visible');
 };
 
-// TAB DEĞİŞTİRME FONKSİYONU (GÜNCELLENDİ: SENKRONİZASYON EKLENDİ)
+// TAB DEĞİŞTİRME FONKSİYONU (SENKRONİZASYONLU)
 function openTab(evt, viewId) {
     // 1. Tüm görünümleri gizle
     document.querySelectorAll('.tab-view').forEach(view => {
@@ -24,22 +24,17 @@ function openTab(evt, viewId) {
     document.getElementById(viewId).style.display = 'block';
     evt.currentTarget.classList.add('active');
 
-    // --- SENKRONİZASYON BÜYÜSÜ ---
-    // Eğer şu an bir sınıf açıksa, yeni sekmede de aynı sınıfı aç
+    // --- SENKRONİZASYON ---
+    // Eğer hafızada bir sınıf varsa, yeni sekmede de onu aç
     if (currentActiveIndex !== null) {
-        // Hangi sekmedeyiz? view-features -> 'feat', view-tables -> 'table'
         const targetType = (viewId === 'view-features') ? 'feat' : 'table';
-        
-        // O sekmedeki ilgili sınıfın başlığını (Header) bul
-        // ID yapımız: wrapper-feat-0 veya wrapper-table-0
         const wrapperId = `wrapper-${targetType}-${currentActiveIndex}`;
         const wrapper = document.getElementById(wrapperId);
         
         if (wrapper) {
             const header = wrapper.querySelector('.collapsible');
             if (header) {
-                // Sanki kullanıcı tıklamış gibi tetikle!
-                // Not: click() metodu bizim toggleClassAccordion fonksiyonumuzu çalıştırır.
+                // Tıklama efektini tetikle ama animasyonla uğraşma
                 header.click();
             }
         }
@@ -62,23 +57,17 @@ document.addEventListener('click', (event) => {
     const isTab = event.target.closest('.tab-link');
     const isSubBtn = event.target.closest('.btn-subclass'); // Alt sınıf butonları da kapatmasın
 
-    // Eğer sınıf dışına tıklandıysa HEPSİNİ KAPAT ve HAFIZAYI SİL
     if (!isHeader && !isContent && !isTab && !isSubBtn) {
         closeAllAccordions();
     }
 });
 
-// Yardımcı: Her şeyi kapatan ve hafızayı sıfırlayan fonksiyon
 function closeAllAccordions() {
     document.querySelectorAll('.class-content').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.collapsible').forEach(el => el.classList.remove('active'));
-    
-    // Mobil odak modunu temizle
-    document.body.classList.remove("mobile-focus");
     document.querySelectorAll(".class-wrapper").forEach(w => w.classList.remove("focus-active"));
-
-    // HAFIZAYI SİL (Artık hiçbir sınıf açık değil)
-    currentActiveIndex = null;
+    document.body.classList.remove("mobile-focus");
+    currentActiveIndex = null; // Hafızayı sil
 }
 
 // ------------------ BAŞLATMA ------------------
@@ -91,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => {
             console.error('Hata:', error);
-            document.getElementById('container-features').innerHTML = "<p style='color:red;'>Veri yüklenemedi.</p>";
+            document.getElementById('container-features').innerHTML = "<p style='color:red;'>Veri yüklenemedi. Lütfen Data/classes.json dosyasını kontrol edin.</p>";
         });
 });
 
@@ -120,7 +109,6 @@ function createClassAccordionItem(container, cls, index, type) {
     
     const contentId = `content-${type}-${index}`;
     
-    // Tıklama Olayı
     header.onclick = (e) => toggleClassAccordion(e, index, header, contentId, type, wrapper.id);
 
     const contentDiv = document.createElement('div');
@@ -141,30 +129,25 @@ function toggleClassAccordion(e, classIndex, headerElement, contentId, type, wra
     const wrapper = document.getElementById(wrapperId);
     const isOpen = contentDiv.style.display === "block";
 
-    // 1. Önce Hepsini Kapat (Görsel Olarak)
-    // Not: closeAllAccordions() çağırmıyoruz çünkü o index'i de sıfırlıyor.
-    // Biz sadece görselleri kapatıp yenisini açacağız.
+    // Önce hepsini kapat (Görsel temizlik)
     document.querySelectorAll(".class-content").forEach(c => c.style.display = "none");
     document.querySelectorAll(".collapsible").forEach(h => h.classList.remove("active"));
     document.querySelectorAll(".class-wrapper").forEach(w => w.classList.remove("focus-active"));
     document.body.classList.remove("mobile-focus");
 
     if (!isOpen) {
-        // 2. Tıklananı Aç
+        // Tıklananı aç
         headerElement.classList.add("active");
         contentDiv.style.display = "block";
         wrapper.classList.add("focus-active");
 
-        // HAFIZAYA KAYDET (Senkronizasyon için)
-        currentActiveIndex = classIndex;
+        currentActiveIndex = classIndex; // Hafızaya al
 
-        // Mobil Odak
+        // Mobil Odak Modu
         if (window.innerWidth <= 768) {
             document.body.classList.add("mobile-focus");
             window.scrollTo(0, 0);
         } else {
-            // Sadece kullanıcı gerçekten tıkladıysa (e.isTrusted) kaydır
-            // Yoksa sekme değişiminde sayfa zıplamasın
             if (e.isTrusted) {
                 setTimeout(() => headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
             }
@@ -172,25 +155,22 @@ function toggleClassAccordion(e, classIndex, headerElement, contentId, type, wra
 
         // İçeriği Doldur
         if (type === 'feat') {
-            // Eğer daha önce alt sınıf seçildiyse onu hatırla? 
-            // Şimdilik sıfırlıyoruz, istenirse o da hafızaya alınabilir.
             renderClassFeatures(classIndex, contentId);
         } else {
             renderClassTable(classIndex, contentId);
         }
     } else {
-        // Eğer zaten açıksa ve tekrar tıklandıysa -> Kapat ve Hafızayı Sil
+        // Zaten açıksa kapat ve hafızayı sil
         currentActiveIndex = null;
     }
 }
 
-// Mobilde Kapatma Butonu
 function closeFocusMode(e) {
     e.stopPropagation();
-    closeAllAccordions(); // Hepsini kapat ve hafızayı sil
+    closeAllAccordions();
 }
 
-// ------------------ İÇERİK OLUŞTURUCU: TABLOLAR ------------------
+// ------------------ İÇERİK: TABLOLAR ------------------
 function renderClassTable(classIndex, containerId) {
     const cls = ALL_CLASSES_DATA[classIndex];
     const container = document.getElementById(containerId);
@@ -247,7 +227,7 @@ function formatTableCell(cell) {
     return cell;
 }
 
-// ------------------ İÇERİK OLUŞTURUCU: REHBER ------------------
+// ------------------ İÇERİK: REHBER ------------------
 function renderClassFeatures(classIndex, containerId) {
     renderClassFeaturesWithSubclass(classIndex, containerId, null);
 }
@@ -282,14 +262,32 @@ function renderClassFeaturesWithSubclass(classIndex, containerId, subIndex) {
             html += `<h4>Seviye ${i + 1}</h4>`;
             lvlFeats.forEach(feat => {
                 html += `<div class="feature-block"><h5>${feat.name}</h5>${renderEntries(feat.entries)}</div>`;
+                
+                // ALT SINIF ÖZELLİĞİ
                 if (feat.gainSubclassFeature && selectedSubclass) {
                     const subs = selectedSubclass.subclassFeatures[subFeatIdx];
                     if (subs) {
                         subs.forEach(sf => {
-                            // SADECE MAVİ KUTU, ETİKET YOK
+                            let featureName = sf.name;
+                            let entriesToRender = sf.entries; // Varsayılan: Her şeyi yazdır
+
+                            // DÜZELTME: Eğer ana isim yoksa ve içeride isim varsa
+                            if (!featureName && sf.entries && sf.entries[0] && sf.entries[0].name) {
+                                // 1. İsmi alıp başlığa taşı
+                                featureName = sf.entries[0].name;
+                                
+                                // 2. KRİTİK NOKTA: İçeriği yazdırırken, başlığı aldığımız o ilk katmanı "soyup" atıyoruz.
+                                // Sadece o katmanın içindeki "entries" kısmını alıyoruz.
+                                if (sf.entries[0].entries) {
+                                    entriesToRender = sf.entries[0].entries;
+                                }
+                            }
+                            
+                            if (!featureName) featureName = ""; 
+
                             html += `<div class="feature-block subclass-feature">
-                                        <h5>${sf.name}</h5>
-                                        ${renderEntries(sf.entries)}
+                                        <h5>${featureName}</h5>
+                                        ${renderEntries(entriesToRender)}
                                      </div>`;
                         });
                         subFeatIdx++;
@@ -305,20 +303,52 @@ window.updateSubclassView = function(classIndex, containerId, subIndex) {
     renderClassFeaturesWithSubclass(classIndex, containerId, subIndex);
 };
 
+// ------------------ KARMAŞIK METİN İŞLEYİCİ (GELİŞTİRİLDİ) ------------------
 function renderEntries(entries) {
     if (!entries) return "";
     let html = "";
+    
+    // Eğer entries tek bir obje ise onu diziye çevir
+    if (!Array.isArray(entries)) {
+        entries = [entries];
+    }
+
     entries.forEach(e => {
-        if (typeof e === "string") html += `<p>${e}</p>`;
-        else if (e.type === "list") html += `<ul>${e.items.map(i => `<li>${renderEntries([i])}</li>`).join("")}</ul>`;
-        else if (e.type === "table") {
-             html += `<table><thead><tr>${e.colLabels.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>`;
-             e.rows.forEach(row => {
-                 let rHtml = "";
-                 row.forEach(c => rHtml += `<td>${typeof c==='object' ? (c.roll ? c.roll.exact : JSON.stringify(c)) : c}</td>`);
-                 html += `<tr>${rHtml}</tr>`;
-             });
-             html += `</tbody></table>`;
+        if (!e) return;
+
+        if (typeof e === "string") {
+            html += `<p>${e}</p>`;
+        } else if (typeof e === "object") {
+            // Liste
+            if (e.type === "list") {
+                html += `<ul>${e.items.map(i => `<li>${renderEntries([i])}</li>`).join("")}</ul>`;
+            } 
+            // Tablo
+            else if (e.type === "table") {
+                 html += `<table><thead><tr>${e.colLabels.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>`;
+                 e.rows.forEach(row => {
+                     let rHtml = "";
+                     row.forEach(c => rHtml += `<td>${typeof c==='object' ? (c.roll ? c.roll.exact : JSON.stringify(c)) : c}</td>`);
+                     html += `<tr>${rHtml}</tr>`;
+                 });
+                 html += `</tbody></table>`;
+            } 
+            // İç İçe Başlıklar (Entries) - İŞTE BU EKSİKTİ!
+            else if (e.type === "entries" || e.type === "section") {
+                if (e.name) html += `<h5>${e.name}</h5>`;
+                html += renderEntries(e.entries);
+            }
+            // Kutucuk (Inset)
+            else if (e.type === "inset") {
+                 html += `<div style="border:1px solid #ccc; padding:10px; background:#f9f9f9; margin:10px 0;">`;
+                 if (e.name) html += `<h5>${e.name}</h5>`;
+                 html += renderEntries(e.entries);
+                 html += `</div>`;
+            }
+            // Bilinmeyen tipler için içerik varsa yazdır
+            else if (e.entries) {
+                html += renderEntries(e.entries);
+            }
         }
     });
     return html;
