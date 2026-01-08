@@ -221,23 +221,56 @@ function renderClassTable(classIndex, containerId) {
     container.innerHTML = html;
 }
 
+// Hücre Verisi Düzenleyici (Keşiş Array Sorunu ve Bonus Hız Fixlendi)
 function formatTableCell(cell) {
-    // Eğer hücre bir nesne (object) ise (Bonus, Zar vb.)
-    if (typeof cell === 'object') {
-        if (cell.type === 'bonus') return `+${cell.value}`;
-        // Zar gösterimini güzelleştir
-        if (cell.type === 'dice') return cell.toRoll ? cell.toRoll : cell.number + 'd' + cell.faces;
-        // Aralık belirtiyorsa (Örn: 1-4)
-        if (cell.roll) return cell.roll.exact || `${cell.roll.min}-${cell.roll.max}`;
-        // Bilinmeyen bir tipse string'e çevir
-        return JSON.stringify(cell);
-    }
-    
-    // Eğer hücre boşsa veya 0 ise çizgi koy
+    // 1. Boş veri kontrolü
+    if (cell === null || cell === undefined) return "—";
     if (cell === 0 || cell === "0") return "—";
-    
-    // DÜZELTME BURADA: Metin hücresi ise temizleyiciye gönder ({@filter...} gibi kodları düzeltir)
-    return format5eText(cell);
+
+    // 2. Eğer veri bir NESNE (Object) ise
+    if (typeof cell === 'object') {
+        
+        // --- ZAR TİPİ (Fix: Keşiş Dizisi Kontrolü) ---
+        if (cell.type === 'dice') {
+            // SENARYO A: toRoll bir DİZİ ise (Keşiş Tablosu Buraya Düşer)
+            if (Array.isArray(cell.toRoll)) {
+                // Dizinin ilk elemanını alalım (Genelde tek zar olur)
+                const die = cell.toRoll[0];
+                if (die && die.faces) {
+                    return `${die.number || 1}d${die.faces}`;
+                }
+            }
+            // SENARYO B: toRoll düz yazı ise
+            if (typeof cell.toRoll === 'string') return cell.toRoll;
+            
+            // SENARYO C: number/faces direkt objede ise
+            if (cell.faces) return `${cell.number || 1}d${cell.faces}`;
+        }
+
+        // --- BONUS TİPİ (+2 vb.) ---
+        if (cell.type === 'bonus') {
+            return `+${cell.value}`;
+        }
+
+        // --- HIZ TİPİ (+10 ft. vb.) ---
+        // Keşiş 'bonusSpeed' tipini kullanır
+        if (cell.type === 'speed' || cell.type === 'bonusSpeed' || (cell.value !== undefined && typeof cell.value === 'number' && cell.value >= 5)) {
+             return `+${cell.value} ft.`;
+        }
+
+        // --- ARALIK (Öfke sayısı vb.) ---
+        if (cell.roll) {
+            return cell.roll.exact || `${cell.roll.min}-${cell.roll.max}`;
+        }
+        
+        // Kurtarılamayan veri için yedek
+        if (cell.value) return format5eText(cell.value.toString());
+
+        return "—";
+    }
+
+    // 3. Düz metin veya sayı ise temizleyip bas
+    return format5eText(cell.toString());
 }
 
 // ------------------ İÇERİK: REHBER ------------------

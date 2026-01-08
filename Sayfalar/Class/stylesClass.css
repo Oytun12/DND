@@ -102,9 +102,6 @@ h1, h2 {
     color: #8b4513;
 }
 
-@media (max-width: 600px) {
-    #skillsyazı { font-size: 0.85em; }
-}
 
 /* =========================================
    2. SINIF SAYFASI ÖZEL STİLLERİ (YENİ EKLENENLER)
