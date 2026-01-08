@@ -460,17 +460,19 @@ tr:nth-child(even) { background-color: #f9f9f9; }
         background-color: #fff; 
         width: 100%;
         margin: 0 !important;
-        padding-top: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        padding-top: 0; /* Üst boşluğu aldık */
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        height: 40px; /* Sabit ve kısa bir yükseklik verelim */
     }
 
     body.mobile-focus .tab-link {
         flex: 1;             
         text-align: center;
-        padding: 10px 5px;   
-        font-size: 0.95em;   
+        padding: 8px 5px; /* İç boşluğu azalttık */
+        font-size: 0.9em; /* Yazıyı biraz küçülttük */
         border-radius: 0;    
-        top: 0;              
+        top: 0; 
+        line-height: 20px; /* Satır yüksekliğini sabitledik */
     }
     
     body.mobile-focus .tab-link.active {
@@ -506,15 +508,22 @@ tr:nth-child(even) { background-color: #f9f9f9; }
     /* --- BAŞLIK AYARLARI --- */
     body.mobile-focus .class-wrapper.focus-active .collapsible {
         position: sticky;
-        top: 48px; /* Sekmelerin altında */
+        top: 40px; /* Sekmelerin yeni yüksekliği kadar aşağıda */
         z-index: 100;
         margin: 0 !important;
         border-radius: 0;
         border: none;
+        
+        /* İnceltme Ayarları */
         background-color: #8b4513;
         color: #fff;
-        padding: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.15); 
+        padding: 8px 15px; /* 15px'ten 8px'e düşürdük */
+        font-size: 1.1em;  /* Yazı boyutunu küçülttük (Eskiden 1.3em idi) */
+        
+        display: flex;
+        justify-content: space-between; /* Yazı ve butonu uçlara it */
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15); 
     }
     
     body.mobile-focus .class-wrapper.focus-active .collapsible:after {
@@ -534,14 +543,14 @@ tr:nth-child(even) { background-color: #f9f9f9; }
     /* Masaüstünde gizlemiştik, şimdi sadece mobilde ve odaktayken gösteriyoruz */
     body.mobile-focus .mobile-back-btn {
         display: inline-block !important;
-        margin-left: auto;
-        background-color: #fff;
-        color: #8b4513;
-        border: none;
-        padding: 5px 12px;
-        border-radius: 4px;
-        font-weight: bold;
-        font-size: 0.85em;
+        margin-left: auto; /* Sağa yasla */
+        background-color: rgba(255,255,255,0.2); /* Yarı saydam beyaz yapalım, daha şık durur */
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.4);
+        padding: 3px 10px; /* Butonu küçülttük */
+        border-radius: 15px; /* Yuvarlak hatlı olsun */
+        font-weight: normal;
+        font-size: 0.75em; /* Yazısını küçülttük */
         cursor: pointer;
     }
 }

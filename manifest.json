@@ -1,0 +1,21 @@
+{
+  "name": "D&D Karakter Oluşturma Rehberi",
+  "short_name": "D&D",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f9f5e3",
+  "theme_color": "#8b4513",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://oytun12.github.io/DND/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://oytun12.github.io/DND/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
