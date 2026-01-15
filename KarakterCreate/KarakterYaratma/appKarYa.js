@@ -1,279 +1,321 @@
-import { createApp, ref, computed, onMounted } from 'vue';
+import { createApp, ref, reactive, computed, onMounted, watch } from 'vue';
 
 const app = createApp({
     setup() {
+        // ============================================================
+        //  1. GLOBAL STATE (STORE)
+        // ============================================================
+        const store = reactive({
+            meta: { name: "", xp: 0 },
+            race: { 
+                selected: null, 
+                subrace: null, 
+                features: [],
+                abilityChoices: {} 
+            },
+            class: { selected: null, subclass: null, level: 1 },
+            abilities: { 
+                method: "point-buy",
+                base: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+                asi: {} 
+            },
+            background: { selected: null },
+            choices: {} 
+        });
+
+        // ============================================================
+        //  2. NAVIGATION
+        // ============================================================
+        const currentStep = ref(0);
+        const steps = [{ title: "Konsept" }, { title: "Irk" }, { title: "Sınıf" }, { title: "Puanlar" }, { title: "Geçmiş" }];
+        const nextStep = () => { if (currentStep.value < steps.length - 1) currentStep.value++; };
+        const prevStep = () => { if (currentStep.value > 0) currentStep.value--; };
+
+        // ============================================================
+        //  3. VERİ YÖNETİMİ
+        // ============================================================
         const loading = ref(true);
         const error = ref(null);
-        
-        const rawData = ref({});
         const classList = ref([]);
+        const raceList = ref([]); 
         
-        const selectedClass = ref(null);
-        const selectedSubclass = ref(null);
-        const targetLevel = ref(1);
-        
-        const userChoices = ref({}); 
-
-        // --- 1. SEÇİM ADETLERİ (Senin JSON İsimlerin) ---
-        const manualCounts = {
-            "Savaş Üstadı: Manevralar": 3,
-            "Ek Manevralar": 2, 
-            // JSON'a eklediğin özel bloklar için ayarlar:
-            "Savaş Üstadı: Ek Manevralar_1": 2, // 7. Seviye
-            "Savaş Üstadı: Ek Manevralar_2": 2, // 10. Seviye
-            "Savaş Üstadı: Ek Manevralar_3": 2, // 15. Seviye
-            
-            "Metabüyü": 2,
-            "Büyüde Uzmanlaşmış Şövalye: Büyüler": 2
-        };
-
-        // --- 2. VERİ KAYNAĞI HARİTASI ---
-        // Eğer metin tabanlı özelliğin içi boşsa, seçenekleri buradan çalar.
-        const optionSourceMap = {
-            "Ek Manevralar": "Savaş Üstadı: Manevralar",
-            "Ek Metabüyü": "Metabüyü"
-        };
+        const featList = ref([
+            "Alert (Tetikte)", "Actor (Aktör)", "Athlete (Atlet)", "Charger (Hücumcu)", 
+            "Crossbow Expert (Arbalet Uzmanı)", "Defensive Duelist (Savunmacı Düellocu)",
+            "Dual Wielder (Çift Silahşör)", "Dungeon Delver (Zindan Kaşifi)", 
+            "Durable (Dayanıklı)", "Great Weapon Master (Büyük Silah Ustası)",
+            "Healer (Şifacı)", "Keen Mind (Keskin Zeka)", "Lucky (Şanslı)",
+            "Mage Slayer (Büyücü Katili)", "Mobile (Mobil)", "Observant (Gözlemci)",
+            "Polearm Master (Sırıklı Silah Ustası)", "Resilient (Dirençli)",
+            "Sentinel (Nöbetçi)", "Sharpshooter (Keskin Nişancı)", 
+            "Shield Master (Kalkan Ustası)", "Skulker (Gizlenen)", 
+            "Tough (Sert)", "War Caster (Savaş Büyücüsü)"
+        ]);
 
         onMounted(async () => {
             try {
-                const response = await fetch('../../Data/classes.json');
-                if (!response.ok) throw new Error(`Dosya bulunamadı!`);
-
-                const data = await response.json();
-                rawData.value = data;
-
-                if (data.class && Array.isArray(data.class)) {
-                    classList.value = data.class;
-                } else {
-                    throw new Error("JSON formatı hatalı.");
-                }
-            } catch (err) {
-                console.error(err);
-                error.value = `Veri yüklenemedi: ${err.message}`;
-            } finally {
+                const [classRes, raceRes] = await Promise.all([
+                    fetch('../../Data/classes.json'),
+                    fetch('../../Data/races.json')
+                ]);
+                const classData = await classRes.json();
+                const raceData = await raceRes.json();
+                classList.value = classData.class;
+                raceList.value = raceData.race;
                 loading.value = false;
+            } catch (err) {
+                error.value = "Veri yüklenemedi: " + err.message;
             }
         });
 
-        // --- Helpers ---
-        const getHitDie = (cls) => {
-            if (!cls || !cls.hd) return '?';
-            return cls.hd.faces ? cls.hd.faces : cls.hd;
-        };
+        // ============================================================
+        //  4. IRK MANTIĞI
+        // ============================================================
+        const selectedFlatOption = ref(null);
+        const selectedRace = ref(null);
+        const selectedSubrace = ref(null);
 
-        const formatEntry = (entry) => {
-            if (!entry) return "";
-            if (typeof entry === 'string') return parseTags(entry);
-            if (entry.type === 'options') return ""; 
-            if (entry.entries) return entry.entries.map(e => formatEntry(e)).join("<br>");
-            if (entry.type === 'list' && entry.items) return "<ul>" + entry.items.map(i => "<li>" + formatEntry(i) + "</li>").join("") + "</ul>";
-            return entry.name || "";
-        };
-
-        const parseTags = (text) => {
-            if (!text) return "";
-            return text.replace(/\{@(\w+)\s+([^}]+)\}/g, (match, tag, content) => {
-                let displayText = content;
-                if (content.includes('(') && content.includes(')')) {
-                    const matches = content.match(/\(([^)]+)\)$/);
-                    if (matches) displayText = matches[1];
-                } else if (content.includes('|')) {
-                    const parts = content.split('|');
-                    displayText = parts[2] || parts[0]; 
-                }
-
-                switch (tag) {
-                    case 'spell': case 'item': case 'condition': case 'sense': case 'skill': case 'action': case 'creature':
-                        return `<span class="dnd-link" title="${tag}: ${content}">${displayText}</span>`;
-                    case 'dice': case 'damage':
-                        return `<span class="dnd-dice">${displayText}</span>`;
-                    case 'bold':
-                        return `<span class="dnd-bold">${content}</span>`;
-                    case 'italic':
-                        return `<span class="dnd-italic">${content}</span>`;
-                    default:
-                        return displayText;
+        const flatRaceList = computed(() => {
+            const list = [];
+            if (!raceList.value) return [];
+            raceList.value.forEach(r => {
+                if (r.subraces && r.subraces.length > 0) {
+                    r.subraces.forEach(sub => list.push({ label: `${r.name} (${sub.name})`, race: r, subrace: sub }));
+                } else {
+                    list.push({ label: r.name, race: r, subrace: null });
                 }
             });
-        };
+            return list;
+        });
 
-        // --- SEÇENEK SİSTEMİ ---
-        const extractOptions = (feat) => {
-            if (!feat) return null;
-            if (feat.type === 'options' && feat.entries) return feat.entries;
-            if (feat.entries && Array.isArray(feat.entries)) {
-                for (const entry of feat.entries) {
-                    if (entry.type === 'options' && entry.entries) return entry.entries;
-                }
+        watch(selectedFlatOption, (newVal) => {
+            if (newVal) {
+                store.race.selected = newVal.race;
+                store.race.subrace = newVal.subrace;
+                selectedRace.value = newVal.race;
+                selectedSubrace.value = newVal.subrace;
+                store.race.abilityChoices = {}; 
+            } else {
+                store.race.selected = null;
+                store.race.subrace = null;
+                selectedRace.value = null;
+                selectedSubrace.value = null;
+                store.race.abilityChoices = {};
+            }
+        });
+
+        const raceChoiceConfig = computed(() => {
+            if (!selectedRace.value) return null;
+            const source = selectedSubrace.value?.ability ? selectedSubrace.value : selectedRace.value;
+            if (source && source.ability && source.ability.choose) {
+                const chooseData = source.ability.choose[0] || source.ability.choose; 
+                return {
+                    count: chooseData.count || 1, amount: chooseData.amount || 1,
+                    from: chooseData.from || ['str', 'dex', 'con', 'int', 'wis', 'cha']
+                };
             }
             return null;
-        };
+        });
 
-        const findOptionsByName = (targetName) => {
-            if (!selectedSubclass.value || !selectedSubclass.value.subclassFeatures) return null;
-            for (const levelGroup of selectedSubclass.value.subclassFeatures) {
-                for (const feat of levelGroup) {
-                    if (feat.name === targetName) return extractOptions(feat);
+        const abilityKeyMap = { 'kuv': 'str', 'str': 'str', 'çev': 'dex', 'dex': 'dex', 'day': 'con', 'con': 'con', 'zek': 'int', 'int': 'int', 'akı': 'wis', 'wis': 'wis', 'kar': 'cha', 'cha': 'cha' };
+        
+        const statLabels = { 'str': 'KUV', 'kuv': 'KUV', 'dex': 'ÇEV', 'çev': 'ÇEV', 'con': 'DAY', 'day': 'DAY', 'int': 'ZEK', 'zek': 'ZEK', 'wis': 'AKI', 'akı': 'AKI', 'aki': 'AKI', 'cha': 'KAR', 'kar': 'KAR' };
+
+        const selectableStats = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
+
+        const raceBonuses = computed(() => {
+            const bonuses = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
+            if (!selectedRace.value) return bonuses;
+            const getKey = (k) => abilityKeyMap[k.toLowerCase()] || k.toLowerCase();
+            const addBonus = (abilityObj) => {
+                if (!abilityObj) return;
+                for (const [key, val] of Object.entries(abilityObj)) {
+                    if (key === 'choose') continue; 
+                    const mappedKey = getKey(key);
+                    if (bonuses[mappedKey] !== undefined) bonuses[mappedKey] += val;
                 }
-            }
-            return null;
-        };
-
-        const normalizeOption = (opt) => {
-            if (!opt) return { name: "Hatalı Veri", entries: [] };
-            if (opt.name) return opt; 
-            if (opt.entries && Array.isArray(opt.entries) && opt.entries.length > 0) {
-                const inner = opt.entries[0];
-                if (inner.name) return { ...inner, entries: inner.entries || [] };
-            }
-            return { name: "İsimsiz Seçenek", entries: [] };
-        };
-
-        const detectSelectionCount = (name, entries) => {
-            if (manualCounts[name]) return manualCounts[name];
-            
-            const fullText = JSON.stringify(entries).toLowerCase();
-            if (fullText.includes("3 manevra") || fullText.includes("seçeceğin 3") || fullText.includes("üç manevra")) return 3;
-            if (fullText.includes("2 manevra") || fullText.includes("seçeceğin iki") || fullText.includes("seçeceğin 2") || fullText.includes("iki ek manevra")) return 2;
-            
-            return 0;
-        };
-
-        // --- COMPUTED ---
-        const subclassUnlockLevel = computed(() => {
-            if (!selectedClass.value || !selectedClass.value.classFeatures) return -1;
-            try {
-                for (let i = 0; i < selectedClass.value.classFeatures.length; i++) {
-                    const levelGroup = selectedClass.value.classFeatures[i];
-                    if (levelGroup && levelGroup.some(f => f.gainSubclassFeature === true)) {
-                        return i + 1;
+            };
+            if (selectedRace.value.ability) addBonus(selectedRace.value.ability);
+            if (selectedSubrace.value && selectedSubrace.value.ability) addBonus(selectedSubrace.value.ability);
+            const choiceConfig = raceChoiceConfig.value;
+            if (choiceConfig) {
+                Object.values(store.race.abilityChoices).forEach(statKey => {
+                    if (statKey) {
+                        const mappedKey = getKey(statKey);
+                        if (bonuses[mappedKey] !== undefined) bonuses[mappedKey] += choiceConfig.amount;
                     }
-                }
-            } catch (e) { console.warn("UnlockLevel hatası", e); }
-            return -1;
+                });
+            }
+            return bonuses;
         });
 
-        const subclassOptions = computed(() => {
-            if (!selectedClass.value || !selectedClass.value.subclasses) return [];
-            return selectedClass.value.subclasses;
+        const activeRaceTraits = computed(() => {
+            if (!selectedRace.value) return [];
+            let traits = [];
+            if (selectedRace.value.entries) traits = selectedRace.value.entries.map(t => ({...t}));
+            if (selectedSubrace.value && selectedSubrace.value.entries) {
+                selectedSubrace.value.entries.forEach(subTrait => {
+                    if (subTrait.data && subTrait.data.overwrite) traits = traits.filter(t => t.name !== subTrait.data.overwrite);
+                    traits.push(subTrait);
+                });
+            }
+            const formattedTraits = traits.map(trait => {
+                if (typeof trait === 'string') return { name: "Özellik", text: parseTags(trait) };
+                let processedText = "";
+                if (trait.entries) processedText = trait.entries.map(e => formatEntry(e)).join("<br><br>");
+                return { name: trait.name, text: processedText };
+            });
+            const bonusText = Object.entries(raceBonuses.value).filter(([_, val]) => val !== 0).map(([key, val]) => `<strong style="color:#4caf50">${key.toUpperCase()} +${val}</strong>`).join(', ');
+            let headerText = bonusText ? `<p>Irkınızdan gelen doğal yetenekleriniz: ${bonusText}</p>` : `<p style="color:#e67e22">Lütfen yukarıdan yetenek puanı artışlarını seçiniz.</p>`;
+            formattedTraits.unshift({ name: "Yetenek Puanı Artışı", text: headerText });
+            return formattedTraits;
         });
 
+        // ============================================================
+        //  5. SINIF MANTIĞI
+        // ============================================================
+        const selectedClass = ref(null);
+        const selectedSubclass = ref(null);
+        const targetLevel = ref(1);
+        const userChoices = ref({}); 
+
+        watch(selectedClass, (newVal) => { store.class.selected = newVal; selectedSubclass.value = null; });
+        watch(selectedSubclass, (newVal) => { store.class.subclass = newVal; });
+        watch(targetLevel, (newVal) => { store.class.level = newVal; });
+
+        const manualCounts = { "Savaş Üstadı: Manevralar": 3, "Ek Manevralar": 2, "Savaş Üstadı: Ek Manevralar_1": 2, "Savaş Üstadı: Ek Manevralar_2": 2, "Savaş Üstadı: Ek Manevralar_3": 2, "Metabüyü": 2, "Büyüde Uzmanlaşmış Şövalye: Büyüler": 2 };
+        const optionSourceMap = { "Ek Manevralar": "Savaş Üstadı: Manevralar", "Ek Metabüyü": "Metabüyü" };
+
+        const getHitDie = (cls) => cls?.hd?.faces || '?';
+        const parseTags = (text) => text ? text.replace(/\{@(\w+)\s+([^}]+)\}/g, (_, __, c) => `<span class="dnd-link">${c.split('|')[0]}</span>`) : "";
+        const formatEntry = (entry) => { if(!entry) return ""; if(typeof entry==='string') return parseTags(entry); if(entry.type==='options') return ""; if(entry.entries) return entry.entries.map(e=>formatEntry(e)).join("<br>"); if(entry.type==='list'&&entry.items) return "<ul>"+entry.items.map(i=>"<li>"+formatEntry(i)+"</li>").join("")+"</ul>"; return entry.name||""; };
+        const extractOptions = (feat) => { if(!feat) return null; if(feat.type==='options'&&feat.entries) return feat.entries; if(feat.entries&&Array.isArray(feat.entries)) { for(const e of feat.entries) if(e.type==='options'&&e.entries) return e.entries; } return null; };
+        const findOptionsByName = (targetName) => { if(!selectedSubclass.value?.subclassFeatures) return null; for(const grp of selectedSubclass.value.subclassFeatures) for(const f of grp) if(f.name===targetName) return extractOptions(f); return null; };
+        const normalizeOption = (opt) => opt ? (opt.name ? opt : (opt.entries?.[0]?.name ? {...opt.entries[0], entries: opt.entries[0].entries||[]} : {name: "Seçenek", entries:[]})) : {name:"Hata", entries:[]};
+        const detectSelectionCount = (name, entries) => { if(manualCounts[name]) return manualCounts[name]; const txt = JSON.stringify(entries).toLowerCase(); return txt.includes("3") ? 3 : txt.includes("2") || txt.includes("iki") ? 2 : 0; };
+        const subclassUnlockLevel = computed(() => selectedClass.value?.classFeatures?.findIndex(grp => grp.some(f => f.gainSubclassFeature)) + 1 || -1);
+        const subclassOptions = computed(() => selectedClass.value?.subclasses || []);
+        const getAvailableOptions = (all, key) => { if(!all) return []; const used = new Set(Object.entries(userChoices.value).filter(([k,v]) => k!==key && v?.name).map(([_,v]) => v.name)); return all.filter(o => !used.has(o.name)); };
+        const getChoiceDetail = (n, l, i) => formatEntry(userChoices.value[`${n}-${l}_${i}`]);
+        const processFeature = (feat, isSub) => {
+            try {
+                let opts = extractOptions(feat);
+                if(!opts && optionSourceMap[feat.name]) opts = findOptionsByName(optionSourceMap[feat.name]);
+                let cleanOpts = opts ? opts.map(normalizeOption) : [];
+                let count = detectSelectionCount(feat.name, feat.entries);
+                if(cleanOpts.length > 0 && count === 0) count = 1;
+                return { name: feat.name, entries: feat.entries ? feat.entries.map(formatEntry).filter(t=>t) : ["Detay yok"], isSubclass: isSub, hasOptions: !!cleanOpts.length, options: cleanOpts, selectionCount: count };
+            } catch(e) { return {name: feat.name, entries:[], isSubclass:false}; }
+        };
         const activeFeatures = computed(() => {
-            if (!selectedClass.value || !selectedClass.value.classFeatures) return [];
-
+            if (!selectedClass.value) return [];
             const timeline = [];
-            const mainFeaturesArray = selectedClass.value.classFeatures;
-            const subFeaturesArray = selectedSubclass.value ? selectedSubclass.value.subclassFeatures : [];
-
-            let subclassFeatureIndex = 0;
-
-            try {
-                for (let i = 0; i < targetLevel.value; i++) {
-                    const currentLevel = i + 1;
-                    const featuresAtThisLevel = [];
-
-                    if (mainFeaturesArray[i]) {
-                        mainFeaturesArray[i].forEach(feat => {
-                            featuresAtThisLevel.push(processFeature(feat, false));
-
-                            if (feat.gainSubclassFeature) {
-                                if (selectedSubclass.value && subFeaturesArray[subclassFeatureIndex]) {
-                                    subFeaturesArray[subclassFeatureIndex].forEach(subFeat => {
-                                        featuresAtThisLevel.push(processFeature(subFeat, true));
-                                    });
-                                }
-                                subclassFeatureIndex++;
-                            }
-                        });
-                    }
-
-                    if (featuresAtThisLevel.length > 0 || currentLevel === subclassUnlockLevel.value) {
-                        timeline.push({
-                            level: currentLevel,
-                            features: featuresAtThisLevel
-                        });
-                    }
+            let subIdx = 0;
+            for (let i = 0; i < targetLevel.value; i++) {
+                const feats = [];
+                if (!store.abilities.asi[i + 1]) {
+                    store.abilities.asi[i + 1] = { feat: null, stat1: null, stat2: null };
                 }
-            } catch (e) { console.error("Timeline Hatası", e); return timeline; }
-
+                selectedClass.value.classFeatures[i]?.forEach(f => {
+                    feats.push(processFeature(f, false));
+                    if(f.gainSubclassFeature) {
+                        if(selectedSubclass.value) selectedSubclass.value.subclassFeatures[subIdx]?.forEach(sf => feats.push(processFeature(sf, true)));
+                        subIdx++;
+                    }
+                });
+                if(feats.length || i+1 === subclassUnlockLevel.value) timeline.push({level: i+1, features: feats});
+            }
             return timeline;
         });
 
-        const processFeature = (feat, isSubclass) => {
-            try {
-                let entriesData = [];
-                if (feat.entries) {
-                    entriesData = feat.entries
-                        .map(e => formatEntry(e))       
-                        .filter(txt => txt && txt.trim() !== ""); 
-                } else {
-                    entriesData = ["Detay yok."];
-                }
+        // ----------------------------------------------------------------
+        //  6. BONUS VE SKILL HESAPLAMALARI
+        // ----------------------------------------------------------------
+        
+        // A. Tüm Bonuslar (Irk + ASI)
+        const statBonuses = computed(() => {
+            const totals = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
+            for (const [key, val] of Object.entries(raceBonuses.value)) {
+                if (totals[key] !== undefined) totals[key] += val;
+            }
+            Object.values(store.abilities.asi).forEach(asi => {
+                if (asi.stat1) totals[asi.stat1] += 1;
+                if (asi.stat2) totals[asi.stat2] += 1;
+            });
+            return totals;
+        });
 
-                let rawOptions = extractOptions(feat);
+        // B. Final Ability Scores
+        const finalAbilityScores = computed(() => {
+            const finals = {};
+            ['str','dex','con','int','wis','cha'].forEach(k => {
+                finals[k] = (store.abilities.base[k] || 10) + (statBonuses.value[k] || 0);
+            });
+            return finals;
+        });
 
-                if (!rawOptions || rawOptions.length === 0) {
-                    const sourceName = optionSourceMap[feat.name];
-                    if (sourceName) rawOptions = findOptionsByName(sourceName);
-                }
+        // C. Proficiency Bonus
+        const proficiencyBonus = computed(() => {
+            const lvl = store.class.level || 1;
+            return Math.ceil(lvl / 4) + 1;
+        });
 
-                let cleanedOptions = [];
-                if (rawOptions) cleanedOptions = rawOptions.map(opt => normalizeOption(opt));
+        // D. Skill Listesi
+        const SKILL_DEFINITIONS = [
+            { id: 'acrobatics', name: 'Akrobasi', attr: 'dex' },
+            { id: 'animal_handling', name: 'Hayvan Terbiyesi', attr: 'wis' },
+            { id: 'arcana', name: 'Arkana (Büyü İlmi)', attr: 'int' },
+            { id: 'athletics', name: 'Atletizm', attr: 'str' },
+            { id: 'deception', name: 'Kandırma', attr: 'cha' },
+            { id: 'history', name: 'Tarih', attr: 'int' },
+            { id: 'insight', name: 'Sezgi', attr: 'wis' },
+            { id: 'intimidation', name: 'Gözdağı', attr: 'cha' },
+            { id: 'investigation', name: 'Araştırma', attr: 'int' },
+            { id: 'medicine', name: 'Tıp', attr: 'wis' },
+            { id: 'nature', name: 'Doğa', attr: 'int' },
+            { id: 'perception', name: 'Algı', attr: 'wis' },
+            { id: 'performance', name: 'Performans', attr: 'cha' },
+            { id: 'persuasion', name: 'İkna', attr: 'cha' },
+            { id: 'religion', name: 'Din', attr: 'int' },
+            { id: 'sleight_of_hand', name: 'El Çabukluğu', attr: 'dex' },
+            { id: 'stealth', name: 'Gizlilik', attr: 'dex' },
+            { id: 'survival', name: 'Hayatta Kalma', attr: 'wis' }
+        ];
 
-                let count = detectSelectionCount(feat.name, feat.entries);
-                if (cleanedOptions.length > 0 && count === 0) count = 1;
-
+        const calculatedSkills = computed(() => {
+            const stats = finalAbilityScores.value;
+            const pb = proficiencyBonus.value;
+            return SKILL_DEFINITIONS.map(skill => {
+                const score = stats[skill.attr] || 10;
+                const mod = Math.floor((score - 10) / 2);
+                const profLevel = 0; // Şimdilik 0, ileride store'dan çekeceğiz
+                const total = mod + (pb * profLevel);
                 return {
-                    name: feat.name,
-                    entries: entriesData,
-                    isSubclass: isSubclass,
-                    hasOptions: !!(cleanedOptions.length > 0), 
-                    options: cleanedOptions,
-                    selectionCount: count, 
+                    ...skill,
+                    totalBonus: total,
+                    profLevel: profLevel,
+                    attrLabel: statLabels[skill.attr].substring(0, 3) 
                 };
-            } catch (e) {
-                console.error("Özellik işlenirken hata:", feat.name, e);
-                return { name: feat.name + " (Hata)", entries: [], isSubclass: false, hasOptions: false };
-            }
-        };
+            });
+        });
 
-        // --- DÜZELTME BURADA: Seviyeyi de anahtara ekledik ---
-        const getChoiceDetail = (featName, level, index) => {
-            // Anahtar artık İsim + Seviye + İndex
-            // Örn: Ek Manevralar-7_0
-            const key = `${featName}-${level}_${index}`;
-            const choice = userChoices.value[key];
-            if (!choice) return null;
-            return formatEntry(choice);
-        };
-
-        // --- AKILLI FİLTRELEME: Seçilenleri Gizle ---
-        // Bu fonksiyon, bir seçim kutusu için "Müsait Seçenekleri" hesaplar.
-        const getAvailableOptions = (allOptions, currentKey) => {
-            if (!allOptions) return [];
-
-            // 1. Diğer kutularda seçilmiş olan tüm isimleri topla
-            const selectedNames = new Set();
-            
-            for (const [key, value] of Object.entries(userChoices.value)) {
-                // Dikkat: Kendi kutumuzdaki seçimi filtreye eklememeliyiz!
-                // Yoksa seçtiğimiz an seçenek kaybolur ve boş görünür.
-                if (key !== currentKey && value && value.name) {
-                    selectedNames.add(value.name);
-                }
-            }
-
-            // 2. Ana listeyi filtrele: Sadece seçilmemiş olanları bırak
-            return allOptions.filter(opt => !selectedNames.has(opt.name));
+        // --- MOBİL KARAKTER KAĞIDI YÖNETİMİ ---
+        const isMobileSheetOpen = ref(false);
+        const toggleMobileSheet = () => {
+            isMobileSheetOpen.value = !isMobileSheetOpen.value;
         };
 
         return {
-            loading, error, classList, selectedClass, 
-            selectedSubclass, subclassOptions, targetLevel, 
-            getHitDie, activeFeatures, subclassUnlockLevel,
-            userChoices, getChoiceDetail, getAvailableOptions // <--- Bunu ekledik
+            store, currentStep, steps, nextStep, prevStep, loading, error,
+            raceList, flatRaceList, selectedFlatOption, activeRaceTraits, raceBonuses, raceChoiceConfig, 
+            statLabels, selectableStats,
+            classList, selectedClass, selectedSubclass, targetLevel, activeFeatures, subclassOptions, subclassUnlockLevel,
+            getHitDie, userChoices, getChoiceDetail, getAvailableOptions, 
+            finalAbilityScores, statBonuses,
+            selectedRace, selectedSubrace, featList,
+            isMobileSheetOpen, toggleMobileSheet,
+            proficiencyBonus, calculatedSkills // <--- Bunlar artık return ediliyor!
         };
     }
 });
-
 app.mount('#app');

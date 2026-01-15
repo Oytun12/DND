@@ -1,3 +1,164 @@
+
+/* --- LAYOUT --- */
+.wizard-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px; /* Sol geniş, Sağ 300px sabit */
+    gap: 20px;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 20px;
+    align-items: start;
+}
+
+/* Sol Taraf: Sihirbaz */
+.wizard-container {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    border: 1px solid #333;
+    padding: 20px;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Stepper (Adım Göstergesi) */
+.step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+}
+
+.step-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+
+.step-badge.active, .step-badge.completed {
+    opacity: 1;
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.step-badge.active .step-number {
+    background-color: #b52b2b;
+    box-shadow: 0 0 10px rgba(181, 43, 43, 0.6);
+}
+
+.step-badge.completed .step-number {
+    background-color: #2e7d32; /* Yeşil */
+}
+
+.step-name {
+    font-weight: bold;
+    color: #ccc;
+    display: none; /* Mobilde gizle */
+}
+
+@media (min-width: 768px) {
+    .step-name { display: block; }
+}
+
+/* İçerik Alanı */
+.step-content {
+    flex-grow: 1; /* Alanı doldur */
+    margin-bottom: 20px;
+}
+
+.step-pane {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Kontrol Paneli */
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.btn {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+.btn-primary { background-color: #b52b2b; color: white; }
+.btn-primary:hover { background-color: #d63d3d; }
+.btn-primary:disabled { background-color: #555; cursor: not-allowed; }
+
+.btn-secondary { background-color: #444; color: white; }
+.btn-secondary:hover { background-color: #555; }
+
+/* Sağ Taraf: Canlı Karakter Kağıdı */
+.live-sheet {
+    background-color: #1a1a1a;
+    border: 1px solid #b52b2b;
+    border-radius: 8px;
+    padding: 15px;
+    position: sticky;
+    top: 20px;
+}
+
+.sheet-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.sheet-header h3 { margin: 0; color: #fff; }
+.sheet-header .subtitle { color: #b52b2b; font-size: 0.9em; margin-top: 5px; }
+
+.sheet-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label { font-size: 0.7em; color: #888; }
+.stat-val { font-size: 1.2em; font-weight: bold; color: #fff; }
+.stat-mod { font-size: 0.8em; color: #b52b2b; }
+
+/* Mobil Uyumluluk */
+@media (max-width: 900px) {
+    .wizard-layout {
+        grid-template-columns: 1fr; /* Tek kolon */
+    }
+    .live-sheet {
+        display: none; /* Mobilde sidebar'ı şimdilik gizle veya alta al */
+    }
+}
+
 /* --- TEMEL AYARLAR (RESET) --- */
 * {
     box-sizing: border-box;
@@ -279,7 +440,7 @@ select:focus, input:focus {
 .level-card {
     display: flex;
     gap: 15px;
-    background-color: #383838;
+    background-color: #2b2b2b;
     margin-bottom: 15px;
     padding: 15px;
     border-radius: 6px;
@@ -288,7 +449,7 @@ select:focus, input:focus {
 }
 
 .level-card:hover {
-    background-color: #404040;
+    background-color: #383838;
     transform: translateX(5px);
 }
 
@@ -471,6 +632,122 @@ select:focus, input:focus {
     margin-bottom: 5px;
 }
 
+/* --- SIDEBAR SKILL LİSTESİ --- */
+
+/* Uzmanlık Puanı Kutusu */
+
+.pb-box {
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 6px;
+    
+    /* Yüksekliği ve boşlukları azalttık */
+    padding: 5px 15px; 
+    margin-bottom: 15px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pb-label {
+    font-size: 0.85em; /* Yazıyı biraz kibarlaştırdık */
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pb-val {
+    font-size: 1.2em; /* O devasa rakamı normalleştirdik */
+    font-weight: bold;
+    color: #fff;
+}
+/* Skill Satırı */
+.skill-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.skill-row:last-child { border-bottom: none; }
+
+/* Sol Taraf: Kutucuklar ve İsim */
+.skill-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Yuvarlak Prof/Expertise Kutucukları */
+.skill-dots {
+    display: flex;
+    gap: 2px;
+}
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid #555;
+    background-color: transparent;
+}
+/* Dolu Hali (Gelecekte JS ile class ekleyeceğiz) */
+.dot.active { background-color: #b52b2b; border-color: #b52b2b; }
+
+.skill-name { color: #ccc; }
+.skill-attr { color: #666; font-size: 0.8em; margin-left: 4px; }
+
+/* Sağ Taraf: Bonus Değeri */
+.skill-val {
+    font-weight: bold;
+    color: #fff;
+    min-width: 25px;
+    text-align: right;
+}
+
+/* --- SIDEBAR SCROLL (KAYDIRMA) AYARLARI --- */
+
+.live-sheet {
+    /* Sidebar'ı ekranın tepesine yapıştır */
+    position: sticky;
+    top: 20px;
+
+    /* Yüksekliği ekran boyunu geçmesin (20px üst, 20px alt boşluk bırak) */
+    max-height: calc(100vh - 40px);
+    
+    /* İçerik taşarsa dikey scroll çubuğu çıkar */
+    overflow-y: auto;
+    
+    /* Sağ taraftan biraz iç boşluk verelim ki scrollbar içeriği ezmesin */
+    padding-right: 10px; 
+}
+
+/* --- ÖZEL SCROLLBAR TASARIMI (Webkit: Chrome, Safari, Edge) --- */
+
+/* Çubuğun genişliği */
+.live-sheet::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Çubuğun arka plan yolu (Track) */
+.live-sheet::-webkit-scrollbar-track {
+    background: #1a1a1a; 
+    border-radius: 4px;
+}
+
+/* Tutamaç (Thumb) - Sitenin kırmızısı */
+.live-sheet::-webkit-scrollbar-thumb {
+     
+    background: rgb(56, 56, 56);
+    border-radius: 4px;
+}
+
+/* Tutamaç üzerine gelince */
+.live-sheet::-webkit-scrollbar-thumb:hover {
+    background: #b52b2b; 
+}
 
 /* Animasyon */
 @keyframes fadeIn {
