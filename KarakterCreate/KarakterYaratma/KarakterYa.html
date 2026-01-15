@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karakter Yaratma - 5eTürkçe</title>
+    <link rel="stylesheet" href="stylesKarYa.css">
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+        }
+    }
+    </script>
+</head>
+<body>
+
+    <div id="app">
+<header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
+                <div class="titles">
+                    <h1 class="main-title">D&D 5e Türkçe</h1>
+                    <span class="sub-title">Karakter Yaratıcısı</span>
+                </div>
+            </div>
+
+            <nav class="desktop-nav">
+                <a href="../../index.html" class="nav-link">Ana Sayfa</a>
+                <a href="../../Sayfalar/Race/race.html" class="nav-link">Irklar</a>
+                <a href="../../Sayfalar/Class/class.html" class="nav-link">Sınıflar</a>
+                <a href="../../Sayfalar/Envanter/envanter.html" class="nav-link">Ekipmanlar</a>
+                <a href="../KarakterOlusturma/karakterOl.html" class="nav-link">Karakter Oluşturma</a>
+                <a href="../PointBuy/PointBuy.html" class="nav-link">Point Buy</a>
+            </nav>
+
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        </div>
+
+        <nav id="mobile-menu" class="mobile-nav hidden">
+            <ul>
+                <li><a href="../../index.html">Ana Sayfa</a></li>
+                <li><a href="../../Sayfalar/Race/race.html">Irklar</a></li>
+                <li><a href="../../Sayfalar/Class/class.html">Sınıflar</a></li>
+                <li><a href="../../Sayfalar/Envanter/envanter.html">Ekipmanlar</a></li>
+                <li><a href="../KarakterOlusturma/karakterOl.html">Karakter Oluşturma</a></li>
+                <li><a href="../PointBuy/PointBuy.html">Point Buy</a></li>
+                <li><a href="../KarakterSheet/KaKa.html">Karakter Kağıdı (Beta)</a></li>
+            </ul>
+        </nav>
+    </header> 
+
+        <main>
+            <section class="setup-container">
+                <div v-if="error" class="error-box">
+                    <h3>⚠️ Hata</h3>
+                    <p>{{ error }}</p>
+                </div>
+
+                <div v-else class="controls-grid">
+                    <div class="form-group">
+                        <label>Sınıf:</label>
+                        <select v-model="selectedClass" :disabled="loading" @change="selectedSubclass = null; userChoices = {}">
+                            <option :value="null">Sınıf Seç...</option>
+                            <option v-for="c in classList" :key="c.name" :value="c">
+                                {{ c.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Seviye: <strong>{{ targetLevel }}</strong></label>
+                        <input type="range" v-model.number="targetLevel" min="1" max="20" class="level-slider">
+                    </div>
+                </div>
+
+                <div v-if="selectedClass" class="timeline-area">
+                    <div class="class-summary">
+                        <div>
+                            <h2>{{ selectedClass.name }} <span class="badge">Lv. {{ targetLevel }}</span></h2>
+                            <p v-if="selectedSubclass" style="color: #b52b2b; font-weight: bold; margin-top: 5px;">
+                                {{ selectedSubclass.name }}
+                            </p>
+                        </div>
+                        <p><strong>Can Zarı:</strong> 1d{{ getHitDie(selectedClass) }}</p>
+                    </div>
+
+                    <div class="level-stream">
+                        <div v-for="step in activeFeatures" :key="step.level" class="level-card">
+                            <div class="level-badge">{{ step.level }}</div>
+                            <div class="features-list">
+                                
+                                <template v-for="feat in step.features" :key="'main-'+feat.name">
+                                    <div v-if="!feat.isSubclass" class="feature-item">
+                                        <h4>{{ feat.name }}</h4>
+                                        <div class="feature-text">
+                                            <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt" style="margin-bottom: 5px;"></p>
+                                        </div>
+
+                                        <div v-if="feat.hasOptions">
+                                            <div v-for="i in feat.selectionCount" :key="i" class="choice-wrapper">
+                                                <div class="choice-container">
+                                                    <label>Seçim {{ i }}:</label>
+                                                    
+                                                    <select v-model="userChoices[feat.name + '-' + step.level + '_' + (i-1)]" class="mini-select">
+                                                        <option :value="undefined">-- Seçiniz --</option>
+                                                        <option 
+                                                            v-for="opt in getAvailableOptions(feat.options, feat.name + '-' + step.level + '_' + (i-1))" 
+                                                            :key="opt.name" 
+                                                            :value="opt">
+                                                            {{ opt.name }}
+                                                        </option>
+                                                    </select>
+
+                                                </div>
+                                                <div v-if="getChoiceDetail(feat.name, step.level, i-1)" class="choice-result">
+                                                    <strong>➤ {{ userChoices[feat.name + '-' + step.level + '_' + (i-1)].name }}</strong>
+                                                    <div v-html="getChoiceDetail(feat.name, step.level, i-1)"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <div v-if="step.level === subclassUnlockLevel" class="subclass-selection-box">
+                                    <label class="selection-label">✨ {{ selectedClass.subclassTitle || 'Bir Yol' }} Seçin:</label>
+                                    <select v-model="selectedSubclass" class="embedded-select">
+                                        <option :value="null">-- Seçim Yapınız --</option>
+                                        <option v-for="sub in subclassOptions" :key="sub.name" :value="sub">
+                                            {{ sub.name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <template v-for="feat in step.features" :key="'sub-'+feat.name">
+                                    <div v-if="feat.isSubclass" class="feature-item subclass-item">
+                                        <h4>
+                                            {{ feat.name }} 
+                                            <span class="subclass-tag">{{ selectedClass.subclassTitle || 'Alt Sınıf' }}</span>
+                                        </h4>
+                                        <div class="feature-text">
+                                            <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt" style="margin-bottom: 5px;"></p>
+                                        </div>
+
+                                        <div v-if="feat.hasOptions">
+                                            <div v-for="i in feat.selectionCount" :key="i" class="choice-wrapper">
+                                                <div class="choice-container">
+                                                    <label>Seçim {{ i }}:</label>
+
+                                                    <select v-model="userChoices[feat.name + '-' + step.level + '_' + (i-1)]" class="mini-select">
+                                                        <option :value="undefined">-- Seçiniz --</option>
+                                                        <option 
+                                                            v-for="opt in getAvailableOptions(feat.options, feat.name + '-' + step.level + '_' + (i-1))" 
+                                                            :key="opt.name" 
+                                                            :value="opt">
+                                                            {{ opt.name }}
+                                                        </option>
+                                                    </select>
+
+                                                </div>
+                                                <div v-if="getChoiceDetail(feat.name, step.level, i-1)" class="choice-result">
+                                                    <strong>➤ {{ userChoices[feat.name + '-' + step.level + '_' + (i-1)].name }}</strong>
+                                                    <div v-html="getChoiceDetail(feat.name, step.level, i-1)"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script type="module" src="./appKarYa.js"></script>
+    <script>
+    function toggleMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    }
+</script>
+</body>
+</html>

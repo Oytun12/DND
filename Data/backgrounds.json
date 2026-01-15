@@ -1,0 +1,4195 @@
+{
+	"background": [
+		{
+			"name": "Mürit",
+			"source": "PHB",
+			"page": 127,
+			"skillProficiencies": "Sezgi, Din",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Sezgi, Din"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin iki tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir kutsal sembol (din adamlığına başladığında aldığın bir hediye), bir dua kitabı yada dua çarkı, 5 tütsü çubuğu, cüppe, bir takım günlük kıyafet ve içinde 15 gp olan bir kese."
+					]
+				},
+				{
+					"name": "Özellik: Dindarın Mabedi",
+					"type": "entries",
+					"entries": [
+						"Bir mürit olarak seninle aynı inanca bağlı kişilerin saygısını kazanırsın ve dini ritüeller gerçekleştirebilirsin. Sen ve macera yoldaşların dinine bağlı tapınaklardan ücretsiz tedavi, kutsanma yada tapınağın sunabileceği diğer benzer hizmetlerden faydalanabilirsin ama yapılmasını istediğin büyüler için gereken materyal bileşenleri sen tedarik etmelisin. Dinine mensup olanlar seni (ancak yalnızca seni) mütevazı bir şekilde destekleyecektir.",
+						"Bununla beraber tanrına yada panteonuna hizmet sunan tapınaklardan seçtiğin birisi ile bağın olabilir ve bu tapınakta sana ait bir oda bulunabilir. Bu tapınak, eğer tapınaktakiler ile bağlantıların hala iyiyse, daha önceden hizmetlerini sunduğun tapınak yada kendine yeni bir yuva kuracağın yeni bir tapınak olabilir. Tapınağına yakınken bu tapınaktaki diğer din adamlarından yardım isteyebilirsin, tabii bu yardımın tehlikeli olmaması ve hala din adamlarıyla hatrının olması gerekir."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Müritler tapınaklarında ve diğer dini toplumlarda edindikleri tecrübeler ile tanımlanırlar. Müritlerin kişilikleri ve idealleri tarih ve dini öğreti araştırmalarından, tapınaklar ve mabetlerle olan ilişkilerinden, dini topluluklarındaki hiyerarşiden etkilenmektedir. Kusurları ise gizlenmiş iki yüzlülükleri, dinlerine ters düşen düşünceleri, yada bir idealin aşırıya kaçması olabilir.",
+						{
+							"type": "table",
+							"colLabels": [
+								"d8",
+								"Kişilik Özelliği"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"İnancıma bağlı bir kahraman idolümdür. Sürekli bu kişinin hayatından örnekler anlatırım."
+								],
+								[
+									"2",
+									"En ateşli düşmanımla bile ortak bir paydada buluşabilirim, onlarla empati kurar ve daima barış adına çalışırım."
+								],
+								[
+									"3",
+									"Her şeyde kutsal işaretler görürüm. Tanrılar bizimle konuşmaya çalışıyor, tek yapmamız geren onlara kulak vermek."
+								],
+								[
+									"4",
+									"Hiçbir şey iyimser tutumumu sarsamaz."
+								],
+								[
+									"5",
+									"Hemen her durumda özlü sözlerden ve dini yazıtlardan (doğru yada yanlış) alıntı yaparım."
+								],
+								[
+									"6",
+									"Başka tanrılara tapılmasına ve diğerlerinin inançlarına karşı hoşgörülüyümdür (yada tahammülüm yoktur)."
+								],
+								[
+									"7",
+									"Tapınağımdaki ayrıcalıklı kesimin arasında olmak, iyi yemekler yiyip güzel içecekler içmek benim yaşam tarzımdır. Daha düşük seviyede bir yaşam tarzının düşüncesi bile berbat!"
+								],
+								[
+									"8",
+									"Tapınakta o kadar uzun vakit geçirdim ki dış dünyadaki kişilerle iletişimde neredeyse hiç deneyimim yok."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+								"d6",
+								"İdeal"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Gelenek. Kadim ibadet ve kurban gelenekleri korunmalı ve sürdürülmelidir. (Kuralcı)"
+								],
+								[
+									"2",
+									"Hayır. Daima ihtiyacı olanlara yardım ederim, bireysel bedeli ne olursa olsun. (İyi)"
+								],
+								[
+									"3",
+									"Değişim. Tanrıların dünyayı sürekli değiştirme çabalarına yardımcı olmalıyız. (Düzensiz)"
+								],
+								[
+									"4",
+									"Güç. Bir gün inancımın dini hiyerarşisinde en üste çıkmayı umuyorum. (Kuralcı)"
+								],
+								[
+									"5",
+									"İnanç. Tanrımın bana yol göstereceğini biliyorum. Eğer sıkı çalışırsam her şeyin iyi gideceğinden şüphem yok. (Kuralcı)"
+								],
+								[
+									"6",
+									"Arzu. Tanrımın öğretileri yolunda ilerleyerek bir gün tanrımın sevgisini ve onayını kazanacağım. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+								"d6",
+								"Bağ"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Uzun zaman önce kaybolmuş dinime ait bir kutsal emaneti bulmak için gerekirse ölürüm."
+								],
+								[
+									"2",
+									"Beni kafir olarak yaftalayan yozlaşmış tapınak hiyerarşisinden bir gün öcümü alacağım."
+								],
+								[
+									"3",
+									"Ebeveynlerim öldüğünde beni sahiplenen rahibe hayatımı borçluyum."
+								],
+								[
+									"4",
+									"Yaptığım her şey halk içindir."
+								],
+								[
+									"5",
+									"Hizmet ettiğim tapınağı korumak için her şeyi yaparım."
+								],
+								[
+									"6",
+									"Düşmanlarımın kafirce gördüğü ve yoketmek istediği bir kutsal yazıtı korumaya çalışıyorum."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+								"d6",
+								"Kusur"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Diğerlerini sertçe yargılarım, kendimi daha da sert."
+								],
+								[
+									"2",
+									"Tapınağımın hiyerarşisinde güç sahibi kişilere gereğinden fazla güveniyorum."
+								],
+								[
+									"3",
+									"Bağnazlığım bazen tanrıma inananlara kör bir şekilde güvenmeme yol açıyor."
+								],
+								[
+									"4",
+									"Düşüncelerimde esnek değilim."
+								],
+								[
+									"5",
+									"Yabancılara şüpheli yaklaşırım ve onlardan daima en kötüsünü beklerim."
+								],
+								[
+									"6",
+									"Bir hedef seçtiğimde hayatımdaki tüm diğer şeyleri olumsuz etkileyecek şekilde ona saplantım olur."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Şarlatan",
+			"source": "PHB",
+			"page": 128,
+			"skillProficiencies": "Aldatma, El Çabukluğu",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Aldatma, El Çabukluğu"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Kılık Değiştirme Kiti, Sahtecilik Kiti"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir takım kaliteli kıyafet, bir kılık değiştirme kiti, seçtiğin dolandırıcılığın aletleri (on tane renkli sıvılarla dolu kapaklı şişe, bir hileli zar seti, bir deste işaretlenmiş kart yada hayali bir dükün damga yüzüğü) ve 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Sahte Kimlik",
+					"type": "entries",
+					"entries": [
+						"Karaktere bürünmen için gereken belgeleri, kurulmuş bağlantıları ve kılıkları ile ikinci bir kimlik yarattın. Ek olarak, bir örneğini görmüş olduğun sürece resmi kağıtlar yada kişisel mektuplar gibi belgelerin sahtesini yaratabilirsin."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Favori Entrikalar",
+					"type": "entries",
+					"entries": [
+						"Her şarlatanın çevirdiği diğer dolaplara oranla daha sık tercih ettiği bir tane vardır. Favori dolandırıcılığını seç yada aşağıdaki tablo üzerinde zar at.",
+						{
+							"type": "table",
+							"colLabels": [
+								"d6",
+								"Dolandırıcılık"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Şans oyunlarında hile yaparım."
+								],
+								[
+									"2",
+									"Para tıraşlarım yada belge sahteciliği yaparım."
+								],
+								[
+									"3",
+									"Kişilerin hayatlarına girip zayıflıklarını kullanarak varlıklarına konarım."
+								],
+								[
+									"4",
+									"Kimliğimi kıyafet gibi değiştiririm."
+								],
+								[
+									"5",
+									"Sokak köşelerinde el çabukluğu ile dolandırırım."
+								],
+								[
+									"6",
+									"Kişileri işe yaramaz şeylerin zorla kazanılmış paralarına değer olduğuna inandırırım."
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Şarlatanlar gerçek kişiliklerini yarattıkları maskeler ardında saklayan renkli karakterlerdir. Kişilere kendi görmek istedikleri ve inanmak istedikleri şeyleri yansıtırlar. Ama bazen asıl benlikleri ağır bir vicdan, eski bir düşman yada yerleşmiş güven problemleri ile boğuşur.",
+						{
+							"type": "table",
+							"colLabels": [
+								"d8",
+								"Kişilik Özelliği"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Şıpsevdiyim ve daima birinin peşinden koşarım."
+								],
+								[
+									"2",
+									"Her durum için bir şakam olur, özellikle mizahın uygun olmadığı durumlar için."
+								],
+								[
+									"3",
+									"İstediğimi almak için tercih ettiğim numara iltifatlardır."
+								],
+								[
+									"4",
+									"Potansiyel kazanç getirebilecek risklere dayanamayan doğuştan bir kumarbazım."
+								],
+								[
+									"5",
+									"Bir ihtiyaç olmasa bile neredeyse her şey hakkında yalan söylerim."
+								],
+								[
+									"6",
+									"Kinaye ve hakaretler benim silah tercihlerimdir."
+								],
+								[
+									"7",
+									"Üzerimde birçok kutsal sembol taşır ve duruma göre uygun olacak tanrının ismini anarım."
+								],
+								[
+									"8",
+									"Gördüğüm değerli olabilecek her şeyi cebime atarım."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+								"d6",
+								"İdeal"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Bağımsızlık. Ben özgür bir ruhum ve kimse bana ne yapacağımı söyleyemez. (Düzensiz)"
+								],
+								[
+									"2",
+									"İnsaf. Asla biraz para kaybetmeyi göze alamıyacak kişileri hedef almam. (Kuralcı)"
+								],
+								[
+									"3",
+									"Hayır. Elde ettiğim parayı gerçekten ihtiyacı olanlara dağıtırım. (İyi)"
+								],
+								[
+									"4",
+									"Yaratıcılık. Asla aynı dolabı iki kere çevirmem. (Düzensiz)"
+								],
+								[
+									"5",
+									"Dostluk. Mal gelip geçicidir. Dostluk bağları sonsuza kadar dayanır. (İyi)"
+								],
+								[
+									"6",
+									"Arzu. Bir yere gelmekte kararlıyım. (Herhangi Biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+								"d6",
+								"Bağ"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Yanlış kişiyi yoldum ve şimdi bu kişinin asla benle yada sevdiklerimle karşılaşmayacağına emin olmalıyım."
+								],
+								[
+									"2",
+									"her şeyimi ustama borçluyum, muhtemelen şuanda bir hapiste çürüyen birine."
+								],
+								[
+									"3",
+									"Dışarda biryerde beni tanımayan bir çocuğum var. Ben dünyayı onun için daha iyi bir yer haline getiriyorum."
+								],
+								[
+									"4",
+									"Soylu bir aileden geliyorum ve bir gün benden çalınan ünvanımı ve topraklarımı geri alacağım."
+								],
+								[
+									"5",
+									"Güçlü birisi çok sevdiğim birini öldürdü. Bir gün öcümü alacağım."
+								],
+								[
+									"6",
+									"Yaptığımı haketmeyen birini dolandırdım ve hayatını mahvettim. Yanlışlarımı telafi etmeye çalışıyorum ama muhtemelen kendimi asla affedemeyeceğim."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+								"d6",
+								"Kusur"
+							],
+							"colStyles": [
+								"col-xs-1 text-align-center",
+								"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Güzel bir yüze direnemem."
+								],
+								[
+									"2",
+									"Daima borcum olur. Haksız kazancımı geçici zevklerde harcarım."
+								],
+								[
+									"3",
+									"Benim diğerlerini kandırdığım gibi kimsenin beni kandıramayacağına eminim."
+								],
+								[
+									"4",
+									"Gereğinden fazla açgözlüyüm. Eğer işin içinde para varsa risk almaya dayanamam."
+								],
+								[
+									"5",
+									"Benden daha güçlü kişileri dolandırmaya dayanamam."
+								],
+								[
+									"6",
+									"Kabul etmek zor ve bundan dolayı kendimden nefret ederim ama eğer işler zora girerse kaçıp kendimi kurtarırım."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Şehir Bekçisi",
+			"source": "SCAG",
+			"page": 145,
+			"skillProficiencies": "Atletizm, Sezgi",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Atletizm, Sezgi"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin iki tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Birliğin ve rütbene uygun bir üniforma, yardım çağrısı için bir boru, bir çift kelepçe ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Bekçinin Gözü",
+					"type": "entries",
+					"entries": [
+						"Yasaları uygulama ve suçluları yakalamada sahip olduğun deneyim sayesinde yerel kanun adamlarını ve suçluları hızlıca sezebilirsin. Kolayca yerel karakol ve benzeri organizasyonları yada suç yuvalarını bulabilirsin, ama ilk seçenekte daha hoş karşılanacaksındır."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Klan Zanaatkarı",
+			"source": "SCAG",
+			"page": 145,
+			"skillProficiencies": "Tarih, Sezgi",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Tarih, Sezgi"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip zanaatkar aleti"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Cücece yada zaten bu dili biliyorsan seçeceğin yeni bir tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Uzmanlık sahibi olduğun bir zanaatkar alet seti, becerilerini öğrendiğin zanaatkar klanının sembolünü yapmak için kullanılacak bir keski yada alet, bir set yolcu kıyafeti, 10 gp değerinde bir mücevher ve 5 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Tıknaz Halkın Saygısı",
+					"type": "entries",
+					"entries": [
+						"Yabancılar arasında klan zanaatkarları ne kadar saygıdeğer olsa da, hiç kimse onlara cücelerin verdiği değeri vermez. Kalkan cüceleri ve altın cücelerin yaşadığı tüm yerleşimlerde sen ve yoldaşların için daima ücretsiz yiyecek ve yatak sağlanır, hatta bu yerleşimdeki bireyler en uygun konaklamayı kimin sağlayabileceği konusunda aralarında tartışabilirler."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Dünyadan Uzak Alim",
+			"source": "SCAG",
+			"page": 146,
+			"skillProficiencies": "History",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Tarih artı Arcana, Doğa ve Din arasından seçeceğin bir tane"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin iki tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Manastırına ait alim cübbesi, bir yazım kiti (küçük bir kalem bıçağı, katlanmış parşömen, mürekkep ve tüy içeren bir kese), güncel araştırma konun hakkında ödünç aldığın bir kitap ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Kütüphane Erişimi",
+					"type": "entries",
+					"entries": [
+						"Diğerlerinin senin kütüphanende en basit kaynaklara bile ulaşabilmek için bitmek bilmeyen mülakatlardan geçmesi ve pahalı giriş ücretleri ödemesi gerekir ama sen kütüphanin çoğunluğuna serbestçe erişebilirsin. Bazı kısımlar çok değerli bilgiler barındırması, çok büyülü olması yada büyük bir sır olması sebebiyle üyelere bile kapalı olabilir.",
+						"Manastırının çalışanları ve bürokrasisi hakkında fikir sahibisin ve bu bağlantıları kullanmayı da bilirsin.",
+						"Ek olarak diğer kütüphanelerde de bir alimden diğerine gösterilecek profesyonel nezaket olarak kaytarılman olasıdır."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Saray Mensubu",
+			"source": "SCAG",
+			"page": 146,
+			"skillProficiencies": "Sezgi, İkna",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Sezgi, İkna"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin iki tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir set kaliteli kıyafet ve 5 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Saray Memuru",
+					"type": "entries",
+					"entries": [
+						"Bürokrasilerin nasıl işlediğini bilmek, karşılaştığın tüm soylu sarayları yada devletlerin iç işleri ve kayıtlarına erişmeni sağlayabilir. İşi bitiren kişilerin kim olduğunu, kimlerden iyilik isteyeceğini ve gruptaki ilgi çeken entrikaları bilirsin."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Suçlu",
+			"source": "PHB",
+			"page": 129,
+			"skillProficiencies": "Aldatma, Gizlenme",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Aldatma, Gizlenme"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip oyun seti, hırsız aletleri"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir levye, kapüşonlu siyah günlük kıyafetler, 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Suçlu Aracısı",
+					"type": "entries",
+					"entries": [
+						"Seni diğer suçluların bulunduğu bir ağa bağlayan güvenilir bir aracın var. Bu aracıdan mesaj alma ve iletmeyi bilirsin, uzun mesafelerde bile. Özellikle senin için mesaj iletebilecek yerel habercileri, yozlaşmış kervan başlarını ve denizcileri tanırsın."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Uzmanlık Dalı",
+					"type": "entries",
+					"entries": [
+						"Bir çok tip suçlu var, hırsızlar locasında yada benzeri bir suç organizasyonunda belirli üyelerin uzmanlıkları vardır. Bu tip organizasyonların dışında çalışanlar bile belirli suç tiplerini tercih eder. Suç hayatında oynadığın rolü seç yada aşağıdaki tablo üzerinde zar at.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Uzmanlık Dalı"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Şantajcı"
+								],
+								[
+									"2",
+									"Hırsız"
+								],
+								[
+									"3",
+									"İnfazcı"
+								],
+								[
+									"4",
+									"Çalıntı mal taciri"
+								],
+								[
+									"5",
+									"Yol soyguncusu"
+								],
+								[
+									"6",
+									"Kiralık katil"
+								],
+								[
+									"7",
+									"Yankesici"
+								],
+								[
+									"8",
+									"Kaçakçı"
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Suçlular yüzeyde kötü olarak görülürler, ve birçoğu da köküne kadar kötüdür. Ama bazıları sevecen hatta telafi edici niteliklere sahiptir. Hırsızlar arasında onur olabilir ama suçlular nadir olarak otorite yada yasalara saygı duyarlar.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"İşler yolunda gitmezse diye daima bir planım vardır."
+								],
+								[
+									"2",
+									"Durum ne olursa olsun sakinim. Asla sesimi yükseltmem yada duygularımın beni kontrol etmesine izin vermem."
+								],
+								[
+									"3",
+									"Yeni bir yere girdiğimde ilk işim değerli eşyaları tespit etmek yada bunların nerede saklanabileceğini belirlemektir."
+								],
+								[
+									"4",
+									"Yeni bir düşman edinmektense dost edinirim."
+								],
+								[
+									"5",
+									"Çok zor güvenirim. En dürüst görünenler genelde en çok şeyi saklayanlardır."
+								],
+								[
+									"6",
+									"Bir durumdaki risklere aldırış etmem. Bana ihtimali asla söyleme."
+								],
+								[
+									"7",
+									"Bana bir şey yaptırmanın en iyi yolu onu yapamayacağımı söylemendir."
+								],
+								[
+									"8",
+									"En küçük hakarette bile patlarım."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Onur. İşteki diğerlerinden çalmam. (Kuralcı)"
+								],
+								[
+									"2",
+									"Özgürlük. Zincirler kırılmak için vardır, onları yapanlarda öyle. (Düzensiz)"
+								],
+								[
+									"3",
+									"Hayır. İhtiyaçtakilere yardım edebilmek için zenginden çalarım. (iyi)"
+								],
+								[
+									"4",
+									"Açgözlülük. Zengin olmak için ne olursa olsun yaparım. (Kötü)"
+								],
+								[
+									"5",
+									"Halk. Ben dostlarıma sadığım, ideallere değil. Geri kalan herkes cehenneme gidebilir umrumda olmaz. (Nötr)"
+								],
+								[
+									"6",
+									"Kefaret. Herkesin içinde bir iyilik kıvılcımı vardır. (İyi)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Cömert bir hayırsevere olan eski bir borcu ödemeye çalışıyorum."
+								],
+								[
+									"2",
+									"Haksız kazancım ailemin geçimine gidiyor."
+								],
+								[
+									"3",
+									"Önemli bir şey benden alındı ve ben onu geri çalmayı hedefliyorum."
+								],
+								[
+									"4",
+									"Şu ana kadar yaşamış en iyi hırsız olacağım."
+								],
+								[
+									"5",
+									"Korkunç bir suç işledim. Umarım bunu telafi edebilirim."
+								],
+								[
+									"6",
+									"Yaptığım bir hata yüzünden sevdiğim birini kaybettim. Bu asla tekrarlanmayacak."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Değerli bir şey gördüğümde onu çalmak dışında bir şey düşünemem."
+								],
+								[
+									"2",
+									"Dostlarım ve para arasında bir seçim yapmam gerekirse genelde parayı seçerim."
+								],
+								[
+									"3",
+									"Eğer bir plan varsa, ben unuturum. Eğer unutmazsam, görmezden gelirim."
+								],
+								[
+									"4",
+									"Sadece yalan söylerken yaptığım ve yalanımı ele veren bir huyum var."
+								],
+								[
+									"5",
+									"İşler kötü görünmeye başlayınca arkamı dönüp kaçarım."
+								],
+								[
+									"6",
+									"Benim işlediğim bir suç için şu anda bir masum hapiste. Benim için sorun değil."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Gösteri Adamı",
+			"source": "PHB",
+			"page": 130,
+			"skillProficiencies": "Akrobasi, Performans",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Akrobasi, Performans"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Kılık değiştirme kiti, Bir tip müzik enstrümanı"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir müzik enstrümanı, bir hayran hediyesi (aşk mektubu, bir tutam saç yada bir hediyelik eşya), bir kostüm ve 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: İstek Üzerine",
+					"type": "entries",
+					"entries": [
+						"Daima gösteri yapacak bir yer bulabilirsin, genelde bir taverna yada handa ama bir sirk, tiyatro yada bir soylunun sarayı da mümkün. Her gece gösteri yaptığın sürece bu tip bir yerde ücretsiz yatak ve yiyecek sağlanır, yerin kalitesine göre mütevazı yada rahat olur. Ek olarak performansın seni yerel bir figür haline getirir. Gösteri yaptığın bir kasabada yabancılar seni tanıdığında genelde senden hoşlanırlar."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Uzmanlık Dalı",
+					"type": "entries",
+					"entries": [
+						"İyi bir gösteri adamı çok işlevlidir, her performansı çeşitli rutinlerle süslerler. Gösteri adamı olarak uzmanlığını belirlemek için birden üçe kadar rutin seç yada aşağıdaki tablo üzerinde zar at.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d10",
+									"Rutinler"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Aktör"
+								],
+								[
+									"2",
+									"Dansçı"
+								],
+								[
+									"3",
+									"Ateş yutan"
+								],
+								[
+									"4",
+									"Soytarı"
+								],
+								[
+									"5",
+									"Hokkabaz"
+								],
+								[
+									"6",
+									"Enstrümentalci"
+								],
+								[
+									"7",
+									"Şair"
+								],
+								[
+									"8",
+									"Şarkıcı"
+								],
+								[
+									"9",
+									"Hikaye anlatıcı"
+								],
+								[
+									"10",
+									"Akrobat"
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Başarılı göstericiler seyircilerin dikkatini çekip üzerinde tutabilmelidir. Bu sebeple genelde gösterişli yada etki bırakan kişiliklere sahip olurlar. Romantikliğe yatkındırlar ve genelde sanat ve güzelliğin takdiri hakkında asil ruhlu ideallere kapılırlar.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Neredeyse her duruma uygun bir hikaye bilirim."
+								],
+								[
+									"2",
+									"Ne zaman yeni bir yere gitsem yerel dedikoduları toplayıp yayarım."
+								],
+								[
+									"3",
+									"Daima o özel kişiyi arayan umutsuz bir romantiğim."
+								],
+								[
+									"4",
+									"Ben tüm sinirleri yatıştırabildiğim için kimse bana yada benim çevremde uzun süre öfkeli kalmaz."
+								],
+								[
+									"5",
+									"Güzel bir hakareti severim, bana edilmiş olsa bile."
+								],
+								[
+									"6",
+									"Eğer ilgi odağı ben değilsem tatsızlaşırım."
+								],
+								[
+									"7",
+									"Kusursuzun altında hiçbir şeyi kabul etmem."
+								],
+								[
+									"8",
+									"Modumu yada fikrimi şarkıdaki bir nota kadar sık değiştiririm."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Güzellik. Ben gösteri yaptığımda, dünyayı öncesinden daha iyi bir hale getiririm. (İyi)"
+								],
+								[
+									"2",
+									"Gelenek. Hikayeler, efsaneler ve geçmişten şarkılar asla unutulmamalı çünkü onlar bize kim olduğumuzu öğretir. (Kuralcı)"
+								],
+								[
+									"3",
+									"Yaratıcılık. Dünyanın yeni fikirler ve cesur eylemlere ihtiyacı var. (Düzensiz)"
+								],
+								[
+									"4",
+									"Açgözlülük. Bu işi sadece para ve şöhret için yapıyorum. (Kötü)"
+								],
+								[
+									"5",
+									"Halk. Gösteri yaptığımda kişilerin yüzünde gülümseme görmek hoşuma gidiyor. Tek önemli olan da bu. (Nötr)"
+								],
+								[
+									"6",
+									"Dürüstlük. Sanat ruhu yansıtmalı, içerden gelmeli ve aslında kim olduğumuzu ortaya koymalı. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Enstrümanım en değerli varlığım ve bana sevdiğim birini hatırlatıyor."
+								],
+								[
+									"2",
+									"Biri değerli enstrümanımı çaldı ve birgün onu geri alacağım."
+								],
+								[
+									"3",
+									"Ne gerekirse gereksin bir gün ünlü olacağım."
+								],
+								[
+									"4",
+									"Eski hikayelerden bir kahraman idolüm ve kendi başarılarımı onunkiler ile kıyaslarım."
+								],
+								[
+									"5",
+									"Nefret ettiğim rakibimden daha üstün olduğumu göstermek için gereken her şeyi yaparım."
+								],
+								[
+									"6",
+									"Eski grubumun üyeleri için her şeyi yaparım."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Nam ve şöhret kazanmak için her şeyi yaparım."
+								],
+								[
+									"2",
+									"Güzel bir yüze dayanamam."
+								],
+								[
+									"3",
+									"Bir skandal yüzünden bir daha asla eve dönemem. Bu tip olaylar beni nereye gitsem bulur."
+								],
+								[
+									"4",
+									"Bir kez hala kellemi isteyen bir soyluyla alay etmiştim. Bu muhtemelen yine yapacağım bir hata."
+								],
+								[
+									"5",
+									"Gerçek hislerimi saklamakta zorlanıyorum. Keskin dilim başımı belaya sokar."
+								],
+								[
+									"6",
+									"Ne kadar uğraşsam da dostlarım için güvenilmez biriyim."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Grup Temsilcisi",
+			"source": "SCAG",
+			"page": 147,
+			"skillProficiencies": "Sezgi",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Sezgi ve grubuna uygun olacak şekilde bir Zeka, Akıl yada Karizma becerisi"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin iki tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Grubunun rozeti yada simgesi, grubuna ait özgün metnin bir kopyası (gizli bir grup için kod kitabı), bir set günlük kıyafet ve 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Güvenli Bölge",
+					"type": "entries",
+					"entries": [
+						"Bir grubun temsilcisi olarak sana maceralarında yardımcı olabilecek gizli bir casus ve destek ağına erişimin vardır. Bu tip casusları tanıyabilmek için gizli işaretler ve şifreler bilirsin. Sana gizli ve güvenli bir eve erişim, ücretsiz yatak ve yemek yada bilgi bulmada yardım sağlayabilirler. Bu casuslar senin için asla kimliklerini açığa çıkarmayı yada hayatlarını riske atmazlar."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Seyyah",
+			"source": "SCAG",
+			"page": 148,
+			"skillProficiencies": "Sezgi, Algı",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Sezgi, Algı"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir müzik enstrümanı yada bir oyun seti, muhtemelen memleketine özgü bir şey"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir set yolcu kıyafeti, uzmanlığın olan bir müzik enstrümanı yada oyun seti, Faerûn'de nerede olduğunu gösteren kabaca yapılmış haritalar, memleketinin zanaat tarzında yapılmış 10 gp değerinde bir takı ve 5 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Tüm Gözler Üzerinde",
+					"type": "entries",
+					"entries": [
+						"Aksanın, mimiklerin, mecazların hatta belkide görünüşün seni bir yabancı olarak gösterir. Nereye gidersen git meraklı bakışlar seni izler ve bunlar can sıkıcı olabilir ama aynı zamanda bilginlerin ve uzak diyarlara ilgi duyan kişilerin dostane ilgisine sahip olursun. Avamların daima senin memleketinden hikayeler dinleme isteği vardır.",
+						"Bu ilgiyi, yoldaşlarınla normalde erişemeyeceğiniz yerlere ve kişilere erişmek için kullanmayı deneyebilirsin. Soylu lordlar, alimler ve tüccar prensler senin memleketin hakkında bilgi almak isteyecek ve senle tanışmak isteyecek kişilere örnekler olabilir."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Neden Buradasın?",
+					"type": "entries",
+					"entries": [
+						"Bir seyyah yola bir çok sebepten dolayı çıkmış olabilir, ve memleketinden ayrılması istekli yada isteksiz olabilir. Neden evden bu kadar uzak olduğunu belirlemek için ya verilen seçeneklerden seç yada aşağıdaki tabloda zar at. Sıradaki kısımda muhtemel memleketler ve o yere uygun olabilecek sebepler tavsiye edilmiştir.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Sebep"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Elçi"
+								],
+								[
+									"2",
+									"Sürgün Edilmiş Kişi"
+								],
+								[
+									"3",
+									"Kaçak"
+								],
+								[
+									"4",
+									"Hacı"
+								],
+								[
+									"5",
+									"Gezgin"
+								],
+								[
+									"6",
+									"Avare"
+								]
+							]
+						}
+					]
+				},
+				{
+					"type": "entries",
+					"entries": [
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Kişisel alan anlayışım çevremdekilerden çok farklıdır, ya ben cahilce onların alanına girip rahatsız ederim yada onlar benim."
+								],
+								[
+									"2",
+									"Neyin yiyecek olup olmadığı konusunda kendi görüşlerim var ve çevremdekilerin yeme alışkanlıkları beni hayrete düşürür, şaşırtır yada tiksindirir."
+								],
+								[
+									"3",
+									"Diğerlerinin anlayamadığı güçlü bir onur yada adap anlayışım var."
+								],
+								[
+									"4",
+									"Diğerlerine farklı gelen şekillerde sevgi yada nefretimi gösteririm."
+								],
+								[
+									"5",
+									"Tanrılarıma bu diyarlarda garip karşılanan şekillerde ibadet ederim."
+								],
+								[
+									"6",
+									"Günüme çevremdekilere garip gelen küçük ritüellerle başlar yada bitiririm."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Açık. Yoluma çıkan dostane halktan öğrenecek çok şeyim vardır. (İyi)"
+								],
+								[
+									"2",
+									"Çekingen. Bu garip diyarlara yeni birisi olarak iletişimlerimde dikkatli ve saygılıyımdır. (Kuralcı)"
+								],
+								[
+									"3",
+									"Macera. Evden çok uzaktayım ve her şey garip ve harika! (Düzensiz)"
+								],
+								[
+									"4",
+									"Kurnazlık. Ben onların yolunu bilmeyebilirim ama onlar da benimkini bilmez, bunu avantajıma kullanabilirim. (Kötü)"
+								],
+								[
+									"5",
+									"Meraklı. Her şey yeni ve ben öğrenmeye susamışım. (Nötr)"
+								],
+								[
+									"6",
+									"Şüpheci. Dikkatli olmalıyım, çünkü burada dost ve düşmanı ayırt edemiyorum. (Herhangis)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Memleketimden getirdiğim bu yadigar bende olduğu sürece bu garip diyardaki tüm zorluklarla başa çıkabilirim."
+								],
+								[
+									"2",
+									"Halkımın tanrıları bu uzak diyarlarda bana huzur verir."
+								],
+								[
+									"3",
+									"Halkıma hizmetin dışında bir gayem yoktur."
+								],
+								[
+									"4",
+									"Özgürlüğüm en değerli varlığımdır. Asla birinin yeniden onu elimden almasına izin vermem."
+								],
+								[
+									"5",
+									"Bu yeni diyarın güzelliği ve harikalarına hayranım."
+								],
+								[
+									"6",
+									"Başka seçeneğim olmasa da sevdiklerimi ardımda bırakmak beni üzüyor. Bir gün onları yeniden görmeyi umuyorum."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"İçten içe (yada barizce) kendi kültürümün bu yabancı diyardan üstün olduğunu düşünüyorum."
+								],
+								[
+									"2",
+									"İstemediğim iletişimlerden kaçınmak için yerel dili anlamıyormuş gibi yaparım."
+								],
+								[
+									"3",
+									"Bu yeni diyarın içkileri ve zevklerine zaafım vardır."
+								],
+								[
+									"4",
+									"Buranın halkının bazı eylemleri ve düşüncelerinden hoşlanmıyorum, çünkü onlar benden çok farklı."
+								],
+								[
+									"5",
+									"Diğer tanrılara tapanların en iyi ihtimalle kafası karışık masumlar olduğunu, en kötü ihtimalle de cahil ahmaklar olduğunu düşünürüm."
+								],
+								[
+									"6",
+									"Bu diyarın halkının egzotik güzelliğine zaafım vardır."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Halk Kahramanı",
+			"source": "PHB",
+			"page": 131,
+			"skillProficiencies": "Hayvan İdaresi, Hayatta Kalma",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Hayvan İdaresi, Hayatta Kalma"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip zanaatkar aleti, araçlar (kara)"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir zanaatkar alet seti, bir kürek, bir demir tencere, bir set günlük kıyafet ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Köylü Misafirperverliği",
+					"type": "entries",
+					"entries": [
+						"Sıradan halkın arasından çıktığından onların arasında çok rahat uyum sağlarsın. Kendini onlara bir tehlike olarak göstermediğin sürece saklanacak, dinlenecek ve iyileşecek bir yer bulabilirsin. Senin için hayatlarını tehlikeye atmazlar ama seni kanundan yada peşindekilerden korurlar."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Uzmanlık Dalı",
+					"type": "entries",
+					"entries": [
+						"Eskiden avamların arasında basit bir meslek sürdürüyordun, belki bir çiftçi, madenci, hizmetkar, çoban, oduncu yada mezarcı olarak. Ama bir şey oldu ve seni çok daha önemli işlerin beklediğini gördün. Seni halkın kahramanı yapan olayı seç yada rastgele belirle.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d10",
+									"Dönüm Noktası"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Bir tiranın adamlarına karşı geldim."
+								],
+								[
+									"2",
+									"Bir doğal afet sırasında insanları kurtardım."
+								],
+								[
+									"3",
+									"Korkunç bir yaratığa karşı tek başıma direndim."
+								],
+								[
+									"4",
+									"Fakirlere yardım etmek için yozlaşmış bir tüccardan çaldım."
+								],
+								[
+									"5",
+									"İşgalci bir orduya karşı bir milis kuvveti yönettim."
+								],
+								[
+									"6",
+									"Bir tiranın kalesine girip halkı silahlandırmak için silah çaldım."
+								],
+								[
+									"7",
+									"Bir tiranın askerlerine karşı kullansınlar diye halka çiftçi aletlerini nasıl silah olarak kullanabileceklerini öğrettim."
+								],
+								[
+									"8",
+									"Sembolik bir protesto eylemimden sonra bir lord verdiği hükmü geri çekti."
+								],
+								[
+									"9",
+									"Bir kutsal, fey yada benzeri bir varlık beni kutsadı yada gizli aslımı ortaya çıkardı."
+								],
+								[
+									"10",
+									"Bir lordun ordusuna alındıktan sonra liderliğe yükseldim ve kahramanlığım takdir edildi."
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"iyi yada kötü bir halk kahramanı halktan biridir. Çoğu halk kahramanı mütevazı asıllarından utanmaktansa bunu erdem olarak görürler ve memleketleri onlar için hep çok önemli kalır.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Kişileri sözleri değil eylemleri ile yargılarım."
+								],
+								[
+									"2",
+									"Eğer birinin başı dertteyse daima yardıma hazırım."
+								],
+								[
+									"3",
+									"Aklıma bir şeyi koydummu yoluma ne çıkarsa çıksın onu yaparım."
+								],
+								[
+									"4",
+									"Güçlü bir adalet anlayışım var ve daima tartışmalarda orta yolu bulmaya çalışırım."
+								],
+								[
+									"5",
+									"Kendi yeteneklerime güvenirim ve diğerlerine de özgüven vermek için elimden geleni yaparım."
+								],
+								[
+									"6",
+									"Düşünmek diğerlerinin işidir. Ben eylemi tercih ederim."
+								],
+								[
+									"7",
+									"Daha akıllı görünebilmek için uzun kelimeleri yanlış yerlerde kullanırım."
+								],
+								[
+									"8",
+									"Çabuk sıkılırım. Ne zaman kaderime ulaşacağım?"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Saygı. Kişiler haysiyet ve saygı görmeyi hakeder. (İyi)"
+								],
+								[
+									"2",
+									"Dürüstlük. Kimse kanun önünde ayrıcalıklı olmamalıdır ve kimse kanunun üzerinde değildir. (Kuralcı)"
+								],
+								[
+									"3",
+									"Özgürlük. Tiranların halk üzerindeki baskısına izin verilmemeli. (Düzensiz)"
+								],
+								[
+									"4",
+									"Güç. Eğer güçlü olursam hakettiğimi alabilirim. (Kötü)"
+								],
+								[
+									"5",
+									"İçtenlik. Olmadığım bir şey gibi görünmekten hayır gelmez. (Nötr)"
+								],
+								[
+									"6",
+									"Kader. Hiçbir şey ve hiçkimse beni kaderimden alıkoyamaz. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Bir ailem var ama nerede oldukları hakkında fikrim yok. Bir gün onları yeniden görmeyi umut ediyorum."
+								],
+								[
+									"2",
+									"Toprağı işledim, toprağı seviyorum ve toprağı koruyacağım."
+								],
+								[
+									"3",
+									"Kibirli bir asil bir gün beni çok fena dövmüştü, bu yüzden karşılaştığım tüm kabadayılardan öcümü alırım."
+								],
+								[
+									"4",
+									"Aletlerim geçmiş yaşamımın bir sembolüdür ve asla özümü unutmamak için onları taşırım."
+								],
+								[
+									"5",
+									"Kendini koruyamayanları korurum."
+								],
+								[
+									"6",
+									"Keşke çocukluk aşkımda kaderimi izlemek için benimle gelseydi."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Topraklarımı yöneten tiran beni öldürene kadar her şeyi deneyecek."
+								],
+								[
+									"2",
+									"Kaderimin önemine inanıyorum, bu yüzden eksiklerimi ve başarısızlık riskini görmüyorum."
+								],
+								[
+									"3",
+									"Benim gençliğimi bilen kişiler utanç verici sırrımı biliyorlar, asla eve dönemem."
+								],
+								[
+									"4",
+									"Şehrin günahlarına zaafım var, özellikle sert bir içkiye."
+								],
+								[
+									"5",
+									"Gizlice, eğer topraklara hükmeden bir tiran olsaydım her şeyin çok daha iyi olabileceğine inanıyorum."
+								],
+								[
+									"6",
+									"Dostlarıma güvenmekte zorluk yaşıyorum."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Loca Zanaatkarı",
+			"source": "PHB",
+			"page": 132,
+			"skillProficiencies": "Sezgi, İkna Etme",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Sezgi, İkna Etme"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip zanaatkar aleti"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir zanaatkar alet seti, locandan bir tanıtım mektubu, bir set yolcu kıyafeti ve 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Loca Üyeliği",
+					"type": "entries",
+					"entries": [
+						"Locanın saygıdeğer bir üyesi olarak bu üyeliğin sağladığı ayrıcalıklardan faydalanabilirsin. Üye dostların sana yemek ve yatak sağlayacaktır, gerekirse cenazeni de yaparlar. Bazı şehir ve kasabalarda loca salonu meslektaşların ile buluşmak için bir merkez olur. Potansiyel patronlar, hizmetçiler yada dostlar bulmak için iyi bir fırsattır.",
+						"Localar genellikle muazzam politik güce sahiptirler. Eğer bir durumda suçlanıyorsan locan seni korumak için elinden geleni yapar, tabii suça karşı düzgün bir savunma ortaya koyulabilirse ve suçun çok ağır değilse. Eğer hatrı sayılan bir üyeysen güçlü politik figürlere de erişimin olabilir. Bu tip bağlantılar locaya yapılacak büyülü eşya yada para bağışı gerektirebilir.",
+						"Locaya aylık 5 gp üyelik aidatı ödemen gerekir. Loca ile aranı iyi tutabilmek için eğer ödemeyi kaçırırsan aradaki farkı faizi ile ödemelisin."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Uzmanlık Dalı",
+					"type": "entries",
+					"entries": [
+						"Localar genellikle aynı işi yapan bir çok zanaatkarın bir arada olabileceği büyüklükteki şehir yada kasabalarda bulunurlar. Ama senin locan büyük bir alanda her zanaatkarın farklı bir köyde çalıştığı bir ağ olabilir. Locanın yapısını oluşturmak için DM'in ile görüş. Loca işini Loca İşleri tablosundan yada zar ile rastgele seçebilirsin.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d20",
+									"Loca İşleri"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Simyacılar ve eczacılar"
+								],
+								[
+									"2",
+									"Zırhçılar, anahtarcılar, ve ince metal işçileri"
+								],
+								[
+									"3",
+									"Mayacılar, damıtıcılar, ve şarap tüccarları"
+								],
+								[
+									"4",
+									"Hattatlar, yazıcılar, ve arzuhalciler"
+								],
+								[
+									"5",
+									"Marangozlar, çatıcılar, ve sıvacılar"
+								],
+								[
+									"6",
+									"Haritacılar, keşifçiler, ve çizelgeciler"
+								],
+								[
+									"7",
+									"Ayakkabıcılar"
+								],
+								[
+									"8",
+									"Aşçılar ve fırıncılar"
+								],
+								[
+									"9",
+									"Cam işçileri"
+								],
+								[
+									"10",
+									"Kuyumcular ve cevher kesiciler"
+								],
+								[
+									"11",
+									"Deri işçileri, ve tabakçılar"
+								],
+								[
+									"12",
+									"Taş işçileri"
+								],
+								[
+									"13",
+									"Boyacılar, kireççiler, ve levhacılar"
+								],
+								[
+									"14",
+									"Çömlekçiler ve fayansçılar"
+								],
+								[
+									"15",
+									"Gemi ve yelken imalatçıları"
+								],
+								[
+									"16",
+									"Demir ve metal ustaları"
+								],
+								[
+									"17",
+									"Tamirciler, kalaycılar, ve kalıpçılar"
+								],
+								[
+									"18",
+									"Vagon ve tekerlek imalatçıları"
+								],
+								[
+									"19",
+									"Dokumacılar ve boyacılar"
+								],
+								[
+									"20",
+									"Oymacılar, fıçıcılar, ve yaycılar"
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Loca zanaatkarları aletlerini bırakıp maceracılığa atılana dek dünyanın en sıradan insanları arasındadırlar. Sıkı çalışma ve toplumun değerini bilirler ama hırs ve açgözlülük zaaflarıdır.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Yapılacak her şey düzgün yapılmalıdır. Engel olamıyorum ben bir mükemmeliyetçiyim."
+								],
+								[
+									"2",
+									"Sanatı anlayamayanları aşağı gören bir züppeyim."
+								],
+								[
+									"3",
+									"Daima bir şeylerin yada kişilerin nasıl çalıştığını öğrenmek isterim."
+								],
+								[
+									"4",
+									"Her duruma uyacak özdeyiş ve atasözleri bilirim."
+								],
+								[
+									"5",
+									"Sıkı çalışma ve adalete benim bağlılığımı göstermeyen kişilere karşı kabayımdır."
+								],
+								[
+									"6",
+									"Mesleğim hakkında uzun uzun konuşmayı severim."
+								],
+								[
+									"7",
+									"Paramdan kolay kolay vazgeçmem ve en iyi fiyatı alabilmek için usanmadan pazarlık yaparım."
+								],
+								[
+									"8",
+									"İşim dolayısıyla iyi tanınırım ve herkesin işimi takdir etmesini isterim. Kişiler beni duymamışsa şaşırırım."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Toplum. Medeniyetin güvenliği ve toplumun bağlarını güçlendirmek her medeni kişinin görevidir. (Kuralcı)"
+								],
+								[
+									"2",
+									"Cömertlik. Benim yeteneklerim dünyayı daha iyi bir hale getireyim diye bana verildi. (İyi)"
+								],
+								[
+									"3",
+									"Özgürlük. Herkes kendi geçimini kovalamakta özgür olmalıdır. (Düzensiz)"
+								],
+								[
+									"4",
+									"Açgözlülük. Sadece para için bunu yapıyorum. (Kötü)"
+								],
+								[
+									"5",
+									"Halk. Önemsediğim kişilere bağlıyım, ideallere değil. (Nötr)"
+								],
+								[
+									"6",
+									"Arzu. Zanaatımda en iyisi olabilmek için sıkı çalışırım. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Zanaatımı öğrendiğim atölye benim için dünyadaki en önemli yerdir."
+								],
+								[
+									"2",
+									"Biri için muazzam bir şey yarattım ve sonra onun bu şeyi haketmediğini düşündüm. Hala buna layık birini arıyorum."
+								],
+								[
+									"3",
+									"Beni bugünkü halime getirdiği için locama borçluyum."
+								],
+								[
+									"4",
+									"Birinin aşkını kazanabilmek için zenginlik peşindeyim."
+								],
+								[
+									"5",
+									"Bir gün locama dönüp aralarındaki en iyi zanaatkar olduğumu kanıtlayacağım."
+								],
+								[
+									"6",
+									"İşyerimi yıkıp geçimimi elimden alan kötü güçlerden bir gün öcümü alacağım."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Nadir yada paha biçilemez bir şeye sahip olabilmek için her şeyi yaparım."
+								],
+								[
+									"2",
+									"Hemen birinin beni kandırmaya çalıştığını varsayarım."
+								],
+								[
+									"3",
+									"Bir kez locanın sandığından para çaldığımı kimse bilmemeli."
+								],
+								[
+									"4",
+									"Sahip olduğumla asla yetinmem, daima fazlasını isterim."
+								],
+								[
+									"5",
+									"Bir soylu ünvanına sahip olabilmek için elimi kana bulayabilirim."
+								],
+								[
+									"6",
+									"Benim işçiliğimi geçebilecek herkese karşı korkunç derecede kıskancım. Nereye gidersem gideyim hep rakiplerle çevriliyim."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Münzevi (İnzivaya çekilmiş kimse)",
+			"source": "PHB",
+			"page": 134,
+			"skillProficiencies": "Tıp, Din",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Tıp, Din"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Otacılık Kiti"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Duaların yada araştırmandan notlar ile dolu bir tomar kabı, bir kış battaniyesi, bir set günlük kıyafet, bir otacılık kiti ve 5 gp"
+					]
+				},
+				{
+					"name": "Özellik: Keşif",
+					"type": "entries",
+					"entries": [
+						"İnziva sonucu özgün ve güçlü bir şeyi keşfettin. Bu buluşun yapısı inzivanın yapısına bağlıdır. Evren, tanrılar, dış boyutlardan güçlü varlıklar yada doğanın güçleri hakkında büyük bir gerçeklik olabilir. Kimsenin görmediği bir yer olabilir. Unutulmuş bir gerçeği ortaya çıkarmış yada tarihi yeniden yazacak geçmişten bir kutsal emanet bulmuş olabilirsin. Seni sürgüne göndermiş kişilere zarar verecek bir bilgi olabilir, bu yüzden medeniyete dönersin.",
+						"Keşfinin detayları ve serüvenin üzerindeki etkisini DM'in ile konuş."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Uzmanlık Dalı",
+					"type": "entries",
+					"entries": [
+						"İnzivanın sebebi neydi ve neden buna son veriyorsun? İnzivanın yapısına DM'in ile konuşup karar verebilirsin yada aşağıdaki tabloda zar atıp rastgele belirleyebilirsin.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"İnziva Hayatı"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Ruhsal aydınlanma peşindeydim."
+								],
+								[
+									"2",
+									"Dini tarikatımın öğretileri yönünde hareket ettim."
+								],
+								[
+									"3",
+									"İşlemediğim bir suç için sürgüne gönderildim."
+								],
+								[
+									"4",
+									"Hayatımı değiştiren bir olaydan sonra toplumdan uzaklaştım."
+								],
+								[
+									"5",
+									"Sanat, edebiyat, müzik yada manifesto üzerinde çalışmak için sessiz bir yere ihtiyacım vardı."
+								],
+								[
+									"6",
+									"Medeniyetten uzak, doğa ile başbaşa kalmam gerekiyordu."
+								],
+								[
+									"7",
+									"Kadim bir kalıntı yada yadigarın bakıcısıydım."
+								],
+								[
+									"8",
+									"Bir kişi, yer yada ruhsal önem barındıran bir emanet peşinde olan bir seyyahtım."
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Bazı münzeviler yalnız yaşama çok uygundur, diğerleri ise dost hasreti çekerler. İnzivayı sevselerde bitirmek isteselerde bu yaşam onların davranış ve ideallerini şekillendirir. Bazıları toplumdan uzakta geçirdikleri yıllarda akıllarını yitirirler.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"O kadar uzun süredir yalnızım ki çok nadir konuşurum, genellikle hareketler ve homurtular ile anlaşırım."
+								],
+								[
+									"2",
+									"Felaket karşısında bile daima sakinimdir."
+								],
+								[
+									"3",
+									"Toplumumun lideri her durumda bilge bir şey söyleyebilirdi, bende bu bilgeliği paylaşmayı severim."
+								],
+								[
+									"4",
+									"Acı çeken herkese karşı inanılmaz empatim vardır."
+								],
+								[
+									"5",
+									"Sosyal beklentiler ve görgü kurallarından bihaberim."
+								],
+								[
+									"6",
+									"Başıma gelen her şeyi bir büyük evrensel plana bağlarım."
+								],
+								[
+									"7",
+									"Sıklıkla kendi düşüncelerimde kaybolurum, çevreme hiç dikkat etmem."
+								],
+								[
+									"8",
+									"Büyük bir felsefe teorisi üzerinde çalışıyorum ve fikirlerimi paylaşmayı severim."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"İyilik. Bana bahşedilenler herkesle paylaşılmalı, sadece kendi yararıma olmamalıdır. (İyi)"
+								],
+								[
+									"2",
+									"Mantık. Duygular mantıksal düşüncemizi, doğru yada yanlış anlayışımızı bulandırmamalıdır. (Kuralcı)"
+								],
+								[
+									"3",
+									"Özgür Düşünce. İlerlemenin sütunları merak ve sorgudur. (Düzensiz)"
+								],
+								[
+									"4",
+									"Güç. İnziva ve düşünce mistik yada büyülü güce giden yollardır. (Kötü)"
+								],
+								[
+									"5",
+									"Yaşa ve Yaşat. Diğerlerinin yaşamlarına karışmak sadece sorun yaratır. (Nötr)"
+								],
+								[
+									"6",
+									"Kendini Tanıma. Kendini tanırsan başka öğrenecek hiçbir şey kalmaz. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"İnzivam, tarikatım yada birliğimin diğer üyelerinden daha değerli hiçbir şey yoktur."
+								],
+								[
+									"2",
+									"Hala benim peşimde olabilecek kişilerden saklanmak için inzivaya çekildim. Bir gün onlarla yüzleşmeliyim."
+								],
+								[
+									"3",
+									"İnzivamda aradığım aydınlanmanın hala peşindeyim ve hala ulaşamadım."
+								],
+								[
+									"4",
+									"Sahip olamayacağım birini sevdiğim için inzivaya çekildim."
+								],
+								[
+									"5",
+									"Keşfim açığa çıkarsa dünyanın sonunu getirebilir."
+								],
+								[
+									"6",
+									"İnzivam bana sadece benim yokedebileceğim bir büyük kötülüğe karşı irfan kazandırdı."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Dünyaya döndüğümden beri onun sunduğu zevkleri biraz fazla tadıyorum."
+								],
+								[
+									"2",
+									"İnzivamın söndüremediği karanlık, kanasusamış düşünceler barındırıyorum."
+								],
+								[
+									"3",
+									"Düşüncelerim ve felsefemde dogmacıyım."
+								],
+								[
+									"4",
+									"Tartışmaları kazanma isteğim, dostluklar ve uyumun üzerinde bulunuyor."
+								],
+								[
+									"5",
+									"Kaybolmuş biraz bilgi için gereğinden fazlasını tehlikeye atarım."
+								],
+								[
+									"6",
+									"Sır tutmayı severim ve onları kimse ile paylaşmam."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Mirasçı",
+			"source": "SCAG",
+			"page": 150,
+			"skillProficiencies": "Hayatta Kalma",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Hayatta Kalma artı Arcana, Tarih yada Din arasından seçeceğin biri"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin biri"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir oyun seti yada bir müzik enstrümanı"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Mirasın, bir set yolcu kıyafeti, bu geçmiş ile seçtiğin zanaatkar alet uzmanlığının alet seti ve 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Miras",
+					"type": "entries",
+					"entries": [
+						"Aşağıdaki tablodaki miras seçeneklerinden birini seç yada rastgele belirle. DM ile birlikte detayları üretin: Bu miras neden bu kadar önemli ve asıl hikayesi nedir? DM'in bu kısımları oyunun bir parçası olarak kendi üretmesine izin verebilirsin, sende karakterinle birlikte öğrenirsin.",
+						"DM senin mirasını bir hikaye kancası olarak kullanabilir, seni onun tarihini yada aslını öğrenmek için bir maceraya gönderebilir, mirasa sahip olmak isteyen yada gerçeği öğrenmeni engellemeye çalışan gruplar ile karşılaşmanı sağlayabilir. DM aynı zamanda mirasın özelliklerini ve eşyanın tarihi ve önemine nasıl bağlandığını da belirler. Örneğin, nesne küçük bir büyülü eşya olabilir, yada mütevazı bir güçle başlayıp zamanla çok daha güçlenebilir. Yada mirasın gücü ilk bakışta ortada olmayabilir ama sadece belirli durumlar gerçekleştiğinde ortaya çıkar.",
+						"Maceracılığa başladığında yoldaşlarına mirasın hakkında bilgi verip vermemek sana kalmıştır. Üzerine dikkatleri çekmektense mirasının neler yapabildiğini öğrenene kadar onu bir sır olarak tutmak akıllıca olabilir.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Nesne yada eşya:"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Harita, günlük yada mektup gibi bir döküman"
+								],
+								[
+									"2-3",
+									"bir süs eşyası"
+								],
+								[
+									"4",
+									"bir parça kıyafet"
+								],
+								[
+									"5",
+									"bir parça mücevher"
+								],
+								[
+									"6",
+									"bir arcane kitap yada formül notları"
+								],
+								[
+									"7",
+									"yazılı bir hikaye, şarkı, şiir yada sır"
+								],
+								[
+									"8",
+									"bir dövme yada benzeri bir beden çizimi"
+								]
+							]
+						}
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Alternatif Şehir Bekçisi (Dedektif)",
+			"source": "SCAG",
+			"page": 145,
+			"skillProficiencies": "Sezgi, Araştırma",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Sezgi, Araştırma"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin iki tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Birimin ve rütbene uygun bir üniforma, yardım çağrısı için bir boru, bir çift kelepçe ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Bekçinin Gözü",
+					"type": "entries",
+					"entries": [
+						"Yasaları uygulama ve suçluları yakalamada sahip olduğun deneyim sayesinde yerel kanun adamlarını ve suçluları hızlıca sezebilirsin. Kolayca yerel karakol ve benzeri organizasyonları yada suç yuvalarını bulabilirsin, ama ilk seçenekte daha hoş karşılanacaksındır."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Tarikat Şövalyesi",
+			"source": "SCAG",
+			"page": 151,
+			"skillProficiencies": "İkna",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"İkna artı Arcana, Tarih, Doğa yada Din arasından tarikatına uygun olan biri"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir oyun seti yada müzik enstrümanı"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin biri"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir set yolcu kıyafeti, tarikattaki yerini yada rütbeni bildiren bir damga, sancak yada mühür ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Şövalye Saygınlığı",
+					"type": "entries",
+					"entries": [
+						"Kendi şövalyelik tarikatının üyelerinden ve amaçlarına sempati duyanlardan sığınak ve yardım alırsın. Eğer tarikatın dini ise, tanrın adına yapılmış tapınaklarda ve diğer dini topluluklarda da aynı yardımı bulabilirsin. Kentsel tarikatların şövalyeleri, yalnız bir yerleşim de olsa büyük bir ulusa da hizmet etse daima toplumdan yardım alabilir ve felsefi tarikatların şövalyeleri ise idealleri peşinde koşarken yardım ettikleri yada ideallerini paylaşanlardan yardım alabilirler.",
+						"Bu yardım genelde sığınak ve yemek, gerekirse şifa ve bakım, nadiren de yalnız kalmış bir şövalyi kurtarmaya koşan bir grup vatandaş yada adil olmayan bir durumda yargılanan şövalyeyi şehirden kaçırma gibi riskli bir girişim olabilir."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Kıdemli Paralı Asker",
+			"source": "SCAG",
+			"page": 152,
+			"skillProficiencies": "Atletizm, İkna",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Atletizm, İkna"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip oyun seti, araçlar (kara)"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bölüğünün üniforması (kalite olarak yolcu kıyafeti), rütbe sembolü, seçeceğin bir oyun seti ve son maaşının geriye kalanını içeren bir kese (10 gp)."
+					]
+				},
+				{
+					"name": "Özellik: Paralı Asker Hayatı",
+					"type": "entries",
+					"entries": [
+						"Paralı askerlik hayatını bunu sadece yaşayarak öğrenebilecek bir kişi gibi biliyorsun. Paralı asker bölüklerini hemen sembollerinden tanıyabilirsin ve haklarında biraz bilgi sahibisindir, örneğin onları en son dönemde kimin kiraladığı gibi. Yerel dili bildiğin sürece her yerde paralı askerlerin takıldığı tavernaları ve içki salonlarını bulabilirsin. Maceralar arasında, rahat bir yaşam biçimi sürdürmene yetebilecek kadar iş bulabilirsin."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Soylu",
+			"source": "PHB",
+			"page": 135,
+			"skillProficiencies": "Tarih, İkna",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Tarih, İkna"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip oyun seti"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir set kaliteli kıyafet, damga yüzüğü, soyağacı tomarı, ve 25 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Ayrıcalık Pozisyonu",
+					"type": "entries",
+					"entries": [
+						"Soylu doğumun sayesinde kişiler senin hakkında iyi düşünür. Üst toplumda yerin vardır ve nereye gidersen git kişiler orada bulunma hakkın olduğunu varsayar. Avamlar seni tatmin etmek için ellerinden geleni yaparlar ve diğer soylular seni kendi sosyal gruplarının bir parçası olarak görürler. Eğer ihtiyacın olursa yerli bir soylu ile görüşme ayarlayabilirsin."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Soylular bir çok kişinin deneyimleyemeyeceği bir hayatta yetişirler ve kişilikleri bu yetişme şeklini yansıtır. Bir soylu ünvanı ailene, diğer soylulara (hükümdar dahil), ailenin himayesindekilere yada ünvanın kendisine sayısız bağ ve sorumluluk ile gelir. Bu sorumluluk bir soylunun kuyusunu kazmak için çok uygun bir yoldur.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Dokunaklı iltifatlarım konuştuğum herkesi dünyadaki en önemli kişi gibi hissettirir."
+								],
+								[
+									"2",
+									"Halk beni cömertliğim ve nezaketim dolayısıyla sever."
+								],
+								[
+									"3",
+									"Benim soylu duruşum sayesinde kimse benim avam sınıfının üzerinde olduğumdan şüphe edemez."
+								],
+								[
+									"4",
+									"Son modayı takip etmek ve iyi görünmek için çok çaba sarfederim."
+								],
+								[
+									"5",
+									"Ellerimi kirletmeyi sevmem ve asla uygunsuz konaklamayı kabul edemem."
+								],
+								[
+									"6",
+									"Soylu doğumuma rağmen kendimi diğerlerinin üzerinde görmem. Hepimiz aynı kanı taşırız."
+								],
+								[
+									"7",
+									"Benim onayım bir kere kaybedildimi sonsuza kadar kaybolmuştur."
+								],
+								[
+									"8",
+									"Eğer beni incitirsen seni ezerim, adını mahvederim ve topraklarını tuzlarım."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Saygı. Pozisyonumdan dolayı ben saygı görürüm, ama tüm kişiler statülerine bakılmaksızın saygı ve haysiyeti hakeder. (İyi)"
+								],
+								[
+									"2",
+									"Sorumluluk. Benim vazifem üstlerimin otoritesine saygı duymaktır, astlarımında bana saygı duyması gerekir. (Kuralcı)"
+								],
+								[
+									"3",
+									"Bağımsızlık. Ailemin desteği olmadan kendi başımın çaresine bakabileceğimi kanıtlamam gerekir. (Düzensiz)"
+								],
+								[
+									"4",
+									"Güç. Daha fazla güç sahibi olursam kimse bana ne yapacağımı söyleyemez. (Kötü)"
+								],
+								[
+									"5",
+									"Aile. Hiçbir şey aileden önemli değildir. (Herhangi biri)"
+								],
+								[
+									"6",
+									"Soylu Sorumluluğu. Vazifem himayem altındakilere bakmak ve korumaktır. (İyi)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Ailemin onayını almak için her tür zorlukla yüzleşirim."
+								],
+								[
+									"2",
+									"Ailemin başka bir soylu aile ile dostluğu ne pahasına olursa olsun korunmalıdır."
+								],
+								[
+									"3",
+									"Hiçbir şey diğer aile bireylerim kadar önemli değildir."
+								],
+								[
+									"4",
+									"Ailemin nefret ettiği bir ailenin varisine aşığım."
+								],
+								[
+									"5",
+									"Hükümdarıma sadakatim asla sarsılmaz."
+								],
+								[
+									"6",
+									"Halk beni bir halk kahramanı olarak görmeli."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Gizlice herkesin benim astım olduğuna inanırım."
+								],
+								[
+									"2",
+									"Ailemi sonsuza kadar mahvedebilecek bir skandal sır saklıyorum."
+								],
+								[
+									"3",
+									"Bana söylenen her sözde gizlenmiş hakaretler ve tehditler duyarım, çabuk sinirlenirim."
+								],
+								[
+									"4",
+									"Cinsel zevklere karşı doyumsuz bir arzum vardır."
+								],
+								[
+									"5",
+									"Aslında, dünya benim etrafımda dönüyor."
+								],
+								[
+									"6",
+									"Sözlerim ve eylemlerimle sıkça aileme utanç veririm."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Yabancı",
+			"source": "PHB",
+			"page": 136,
+			"skillProficiencies": "Atletizm, Hayatta Kalma",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Atletizm, Hayatta Kalma"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip müzik enstrümanı"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir asa, bir av kapanı, avladığın bir hayvandan hatıra, bir set yolcu kıyafeti ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Gezgin",
+					"type": "entries",
+					"entries": [
+						"Haritalar ve coğrafya için muazzam bir hafızan var, arazinin, yerleşimlerin ve çevrendeki diğer özelliklerin genel hatlarını daima hatırlayabilirsin. Ek olarak, bulunduğun arazide meyve, küçük hayvanlar ve su gibi kaynakların bulunması durumunda kendin ve diğer 5 kişinin günlük yemek ve içme suyu ihtiyacını karşılayabilirsin."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Uzmanlık Dalı",
+					"type": "entries",
+					"entries": [
+						"Garip yerlerde bulundun ve diğerlerinin hayal bile edemeyeceği şeyler gördün. Gittiğin uzak diyarları ve onların seni nasıl etkilediğini düşün. Karakterine en uygununu kendin seçebilir yada bu tablo üzerinde zar atarak seyahatlerin sırasındaki mesleğini belirleyebilirsin.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d10",
+									"Asıl"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Ormancı"
+								],
+								[
+									"2",
+									"Avcı"
+								],
+								[
+									"3",
+									"Gecekonducu"
+								],
+								[
+									"4",
+									"Rehber"
+								],
+								[
+									"5",
+									"Sürgün edilmiş yada toplumdan kovulmuş biri"
+								],
+								[
+									"6",
+									"Ödül Avcısı"
+								],
+								[
+									"7",
+									"Hacı"
+								],
+								[
+									"8",
+									"Göçebe kabileden biri"
+								],
+								[
+									"9",
+									"Avcı-toplayıcı"
+								],
+								[
+									"10",
+									"Yağmacı kabileden biri"
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Medeni halkın gözünde kaba ve görgüsüz olarak görülen yabancıların şehir hayatındaki inceliklere pek saygıları yoktur. Parçası oldukları kabile, aile, klan ve doğal ortama olan bağları onlar için en önemli bağdır.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"İçimdeki seyahat tutkusu yüzünden evden uzaklaştım."
+								],
+								[
+									"2",
+									"Dostlarıma sanki onlar yeni doğmuş köpek yavrularıymışçasına bakar, korurum."
+								],
+								[
+									"3",
+									"Bir keresinde klanımı yaklaşan bir orc ordusuna karşı uyarabilmek için durmaksızın 25 mil koştum. Zorunda kalırsam yine yaparım."
+								],
+								[
+									"4",
+									"Doğayı inceleyerek her durumdan bir ders çıkarabilirim."
+								],
+								[
+									"5",
+									"Zengin yada iyi huylu kişilere güvenmem. Para ve efendilik seni aç bir owlbear karşısında korumaz."
+								],
+								[
+									"6",
+									"Daima bir şeyleri alır, dalgınlıkla onlarla oyalanır ve bazen yanlışlıkla onları kırarım."
+								],
+								[
+									"7",
+									"Hayvanların yanında kişilerin yanında olduğumdan daha rahat hissederim."
+								],
+								[
+									"8",
+									"Aslında ben kurtlar tarafından yetiştirildim."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Değişim. Yaşam mevsimler gibi sürekli değişim içindedir, bizde onunla değişmeliyiz. (Düzensiz)"
+								],
+								[
+									"2",
+									"İyilik. Bütün kabile için en fazla mutluluğu yaratmak her bireyin görevidir. (İyi)"
+								],
+								[
+									"3",
+									"Onur. Eğer kendi onuruma leke sürersem, bütün klanıma leke sürmüş olurum. (Kuralcı)"
+								],
+								[
+									"4",
+									"Güç. En güçlü olan yönetir. (Kötü)"
+								],
+								[
+									"5",
+									"Doğa. Doğal dünya tüm medeniyetin yapılarından daha önemlidir. (Nötr)"
+								],
+								[
+									"6",
+									"Şan. Kendim ve klanım için savaşta şanlanmalıyım. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Ailem, klanım yada kabilem hayatımdaki en önemli şeydir, benden uzakta olsalar bile."
+								],
+								[
+									"2",
+									"Yurdumun bozulmamış doğasına açılan bir yara, benim bedenime açılmış bir yaradır."
+								],
+								[
+									"3",
+									"Anayurdumu mahveden kötülere bütün gazabımı göstereceğim."
+								],
+								[
+									"4",
+									"Kabilemin sonuncusuyum ve bu yüzden adlarımızın efsanelerde anılmasını sağlamak bana düşer."
+								],
+								[
+									"5",
+									"Yaklaşan bir felaket hakkında görülerim var ve onu durdurabilmek için elimden geleni yaparım."
+								],
+								[
+									"6",
+									"Kabilemin devamını sağlamak için çocuk yapmak benim görevim."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Bira, şarap ve tüm sarhoş edici maddelere fazla düşkünüm."
+								],
+								[
+									"2",
+									"Dolu dolu yaşanan bir hayatta temkinin yeri yoktur."
+								],
+								[
+									"3",
+									"Bana yapılan tüm hakaretleri hatırlarım ve bana yanlış yapan herkese karşı içimden kin beslerim."
+								],
+								[
+									"4",
+									"Diğer ırklar, kabileler ve toplumların bireylerine zor güvenirim."
+								],
+								[
+									"5",
+									"Neredeyse tüm zorluklara benim cevabım şiddettir."
+								],
+								[
+									"6",
+									"Kendini kurtaramayanları kurtarmamı bekleme. Zayıfın yok olması ve güçlünün hayatta kalması doğanın kuralıdır."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Bilge",
+			"source": "PHB",
+			"page": 137,
+			"skillProficiencies": "Arcana, Tarih",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Arcana, Tarih"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin iki tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir şişe siyah mürekkep, bir tüy, bir küçük bıçak, hala yanıtlayamadığın bir soru içeren ölmüş bir iş arkadaşından gelen bir mektup, bir set günlük kıyafet ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Araştırmacı",
+					"type": "entries",
+					"entries": [
+						"Bir bilgiyi hatırlamaya yada öğrenmeye çalıştığında eğer o bilgiye sahip değilsen genelde nereden yada kimden öğrenebileceğini bilirsin. Genelde bu bilgi bir kütüphane, manastır arşivi, üniversite yada bir bilge veya benzeri zeki bir varlıktan gelir. DM aradığın bilginin ulaşılamaz bir yerde olduğuna yada bulunamayacağına karar verebilir. Çoklu evrenin en derin sırlarını açığa çıkarma uzun bir macera hatta tüm kampanya boyunca sürebilir."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Uzmanlık Dalı",
+					"type": "entries",
+					"entries": [
+						"Bilgin olduğun konu ve eğitimini seçmek için d8 atıp aşağıdaki tablodan seçebilirsin.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Araştırma Alanı"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Simyacı"
+								],
+								[
+									"2",
+									"Gök bilimci"
+								],
+								[
+									"3",
+									"İtibardan yoksun bir akademisyen"
+								],
+								[
+									"4",
+									"Kütüphaneci"
+								],
+								[
+									"5",
+									"Profesör"
+								],
+								[
+									"6",
+									"Araştırmacı"
+								],
+								[
+									"7",
+									"Büyücü çırağı"
+								],
+								[
+									"8",
+									"Katip"
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Bilgeler kapsamlı araştırmaları ile bilinirler ve nitelikleri de bu hayat tarzını yansıtır. Bilgelik arayışına bağlı yapıları ile bir bilge için bilgi, idealleri için bir araç yada ulaşmak istedikleri sonuç olabilir.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Üstün bilgelik izlenimi veren çok heceli kelimeler kullanırım."
+								],
+								[
+									"2",
+									"Dünyanın en büyük kütüphanelerindeki tüm kitapları okudum ve bununla övünmeyi de severim."
+								],
+								[
+									"3",
+									"Benim kadar zeki olmayanlara yardım etmeye alışkınım ve her şeyi diğerlerine sabırla açıklayabilirim."
+								],
+								[
+									"4",
+									"Güzel bir gizemden çok sevdiğim hiçbir şey yoktur."
+								],
+								[
+									"5",
+									"Kendi yargımı yaratmadan önce bir tartışmanın her iki yanını da dinlerim."
+								],
+								[
+									"6",
+									"Ben . . . aptallarla . . . konuşurken . . . daima . . . yavaş . . . konuşurum . . . ve . . . kendimle . . . karşılaştırınca . . . neredeyse . . . herkes . . . aptaldır."
+								],
+								[
+									"7",
+									"Sosyal durumlarda korkunç derecede garibimdir."
+								],
+								[
+									"8",
+									"Daima kişilerin benim sırlarımı çalmaya çalıştığını düşünürüm."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Bilgi. Güç ve kendini geliştirmeye giden yol bilgiden geçer. (Nötr)"
+								],
+								[
+									"2",
+									"Güzellik. Güzel olan bizi kendinden öteye, doğru olana götürür. (İyi)"
+								],
+								[
+									"3",
+									"Mantık. Duygular mantıksal düşüncemizi bulandırmamalıdır. (Kuralcı)"
+								],
+								[
+									"4",
+									"Limitsiz. Tüm varoluşta bulunan sonsuz olasılığı hiçbir şey engellememelidir. (Düzensiz)"
+								],
+								[
+									"5",
+									"Güç. Bilgi, güç ve hakimiyete giden yoldur. (Kötü)"
+								],
+								[
+									"6",
+									"Kendini geliştirme. Araştırma hayatının tek amacı bireyin kendini geliştirmesidir. (Hiç)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Görevim öğrencilerimi korumaktır."
+								],
+								[
+									"2",
+									"Yanlış kişilerin ellerine geçmemesi gereken, korkunç sırlar saklayan bir kadim yazıta sahibim."
+								],
+								[
+									"3",
+									"Bir kütüphane, arşiv, üniversite yada manastırı korumaya çalışıyorum."
+								],
+								[
+									"4",
+									"Tüm hayatımın çalışması belirli bir bilgi alanı hakkında yazdığım bir seri yazıttır."
+								],
+								[
+									"5",
+									"Tüm hayatım boyunca belirli bir sorunun cevabını aradım."
+								],
+								[
+									"6",
+									"Bilgi için ruhumu sattım. Büyük işler başarıp onu geri kazanmayı umuyorum."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Bilgi vaadi ile kolaylıkla dikkatim dağılabilir."
+								],
+								[
+									"2",
+									"Kişiler bir iblis gördüğünde korkup kaçarlar. Bense durup anatomisi hakkında notlar alırım."
+								],
+								[
+									"3",
+									"Kadim bir sırrın keşfi bir medeniyete bedeldir."
+								],
+								[
+									"4",
+									"Karmaşık çözümler bulmak için genelde basit olanları görmezden gelirim."
+								],
+								[
+									"5",
+									"Düşünmeden konuşup istemsizce diğerlerine hakaret ederim."
+								],
+								[
+									"6",
+									"Hayatım pahasına sır tutamam, yada başkasının hayatı pahasına."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Denizci",
+			"source": "PHB",
+			"page": 139,
+			"skillProficiencies": "Atletizm, Algı",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Atletizm, Algı"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Rotacı aletleri, araçlar (su)"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir bağlama direği (sopa), 50 feetlik ipek halat, tavşan ayağı yada delikli taş gibi bir şans tılsımı, bir set günlük kıyafet ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Gemi Geçişi",
+					"type": "entries",
+					"entries": [
+						"İhtiyaç duyduğunda bir yelkenli gemide sen ve maceracı dostların için ücretsiz yolculuk ayarlayabilirsin. Daha önce çalıştığın bir gemi yada iyi ilişkilerin olan (belki eski bir dostun kaptanlık yaptığı) bir gemi olabilir. Bir iyilik istediğin için tarih yada rotanın senin tüm ihtiyaçlarına uyması garanti değildir. DM'in gideceğin yere ne sürede varacağına karar verir. Ücretsiz geçişin karşılığında sen ve dostlarının gemide işlere yardım etmeniz beklenir."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Sailors can be a rough lot, but the responsibilities of life on a ship make them generally reliable as well. Life aboard a ship shapes their outlook and forms their most important attachments.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Dostlarım ne olursa olsun bana güvenebileceklerini bilirler."
+								],
+								[
+									"2",
+									"İş bittiğinde sıkı eğlenebilmek için çok sıkı çalışırım."
+								],
+								[
+									"3",
+									"Yeni limanlara yelken açıp bira eşliğinde yeni dostlar edinmeyi severim."
+								],
+								[
+									"4",
+									"Güzel bir hikaye uğruna gerçeği biraz değiştirmekten kaçınmam."
+								],
+								[
+									"5",
+									"Bence bir bar kavgası yeni bir şehri tanımak için güzel bir yoldur."
+								],
+								[
+									"6",
+									"Asla dostça bir bahisten kaçınmam."
+								],
+								[
+									"7",
+									"Kullandığım dil bir otyugh yuvası kadar pistir."
+								],
+								[
+									"8",
+									"İyi yapılmış bir işi severim, özellikle başkasını onu yapmak için ikna edebiliyorsam."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Saygı. Gemiyi bir arada tutan şey kaptan ve tayfanın karşılıklı duyduğu saygıdır. (İyi)"
+								],
+								[
+									"2",
+									"Adalet. Hepimiz işi yaparız ve hepimiz ödülü paylaşırız. (Kuralcı)"
+								],
+								[
+									"3",
+									"Özgürlük. Deniz özgürlüktür, istediğin yere gidip istediğini yapma özgürlüğü. (Düzensiz)"
+								],
+								[
+									"4",
+									"Ustalık. Ben bir yırtıcıyım, denizdeki diğer gemilerde benim avlarım. (Kötü)"
+								],
+								[
+									"5",
+									"Halk. Ben ideallere değil tayfa dostlarıma bağlıyım. (Nötr)"
+								],
+								[
+									"6",
+									"Arzu. Birgün kendi gemime sahip olup kendi kaderimin rotasını izleyeceğim. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Önce kaptanıma sadığım, diğer şeyler ikincildir."
+								],
+								[
+									"2",
+									"En önemlisi gemidir, tayfa ve kaptanlar gelir geçer."
+								],
+								[
+									"3",
+									"Daima ilk gemimi hatırlayacağım."
+								],
+								[
+									"4",
+									"Bir liman kasabasında gözleri neredeyse beni denizden çalan bir sevdiğim var."
+								],
+								[
+									"5",
+									"Hile ile ganimetteki adil payımdan oldum ve onu geri alma niyetindeyim."
+								],
+								[
+									"6",
+									"Acımasız korsanlar kaptanımı ve tayfa dostlarımı katlettiler, gemimizi yağmaladılar ve beni de ölmeye terkettiler. İntikam benim olacak."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Yanlış olsalar bile emirlere itaat ederim."
+								],
+								[
+									"2",
+									"Fazladan işten kaçınmak için her şeyi söylerim."
+								],
+								[
+									"3",
+									"Biri benim cesaretimi sorguladığında durum ne kadar tehlikeli olursa olsun asla geri çekilmem."
+								],
+								[
+									"4",
+									"Bir kere içmeye başladığımda durmak benim için zordur."
+								],
+								[
+									"5",
+									"Kendimi gözüme çarpan bozuklukları ve diğer değerlileri cebime atmaktan alıkoyamıyorum."
+								],
+								[
+									"6",
+									"Gururum muhtemelen benim sonum olacak."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Asker",
+			"source": "PHB",
+			"page": 140,
+			"skillProficiencies": "Atletizm, Gözdağı",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Atletizm, Gözdağı"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip oyun seti, araçlar (kara)"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir rütbe sembolü, düşmandan alınmış bir hatıra (bir hançer, kırık kılıç yada bir sancak parçası), bir set kemik zar yada oyun kağıtları, bir set günlük kıyafet ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Askeri Rütbe",
+					"type": "entries",
+					"entries": [
+						"Askerlik kariyerinden bir rütben var. Eski askeri organizasyonuna sadık askerler hala senin nüfuz ve otoriteni sayarlar ve senden düşük rütbeleri varsa sana saygı gösterirler. Rütbeni diğer askerler üzerinde nüfuz sahibi olmak ve geçici kullanım için ekipman yada at talep etmek için kullanabilirsin. Genellikle rütbenin tanındığı müttefiklerinin askeri kamplarına giriş iznin olur."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Uzmanlık Dalı",
+					"type": "entries",
+					"entries": [
+						"Asker olarak geçirdiğin zamanda birimin yada ordunda belirli bir görevin vardı. Görevini belirlemek için aşağıdaki seçeneklerden seç yada d8 at:",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Görev"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Komutan"
+								],
+								[
+									"2",
+									"Öncü"
+								],
+								[
+									"3",
+									"Piyade"
+								],
+								[
+									"4",
+									"Süvari"
+								],
+								[
+									"5",
+									"Şifacı"
+								],
+								[
+									"6",
+									"Levazım subayı"
+								],
+								[
+									"7",
+									"Sancak taşıyıcı"
+								],
+								[
+									"8",
+									"Yardımcı ekip (aşçı, demirci, vb.)"
+								]
+							]
+						}
+					]
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"Savaşın dehşeti ve askeri hizmetin sıkı disiplini tüm askerler üzerinde izini bırakır. İdeallerini şekillendirir, güçlü bağlar yaratır ve sıkça onları yaralı ve korku, utanç ve nefrete karşı korunmasız bırakır.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Daima kibar ve saygılıyımdır."
+								],
+								[
+									"2",
+									"Savaş anıları peşimi bırakmaz. Şiddet görüntülerini aklımdan çıkaramam."
+								],
+								[
+									"3",
+									"Çok fazla dost kaybettim, bu yüzden yenilerini kazanmam zaman alır."
+								],
+								[
+									"4",
+									"Askeri deneyimimden neredeyse tüm savaş durumlarına uyan ikaz edici ve ilham verici hikayeler ile doluyum."
+								],
+								[
+									"5",
+									"Korkmadan bir cehennem köpeğini sadece bakışlarımla alt edebilirim."
+								],
+								[
+									"6",
+									"Güçlü olmayı seviyorum ve bir şeyleri kırmaktan zevk alırım."
+								],
+								[
+									"7",
+									"Kaba bir mizah anlayışım var."
+								],
+								[
+									"8",
+									"Sorunlarımla doğrudan yüzleşirim. Basit ve direkt bir çözüm başarıya giden en iyi yoldur."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"İyilik. Bizim işimiz diğerlerini korumak için hayatlarımızdan vazgeçmektir. (İyi)"
+								],
+								[
+									"2",
+									"Sorumluluk. Yapmam gerekeni yapıp adil otoriteye itaat ederim. (Kuralcı)"
+								],
+								[
+									"3",
+									"Bağımsızlık. Kişiler emirlere sorgusuz itaat ettiğinde bir tip tiranlığı benimsemiş olurlar. (Düzensiz)"
+								],
+								[
+									"4",
+									"Güç. Hayatta da savaştaki gibidir, güçlü olan kazanır. (Kötü)"
+								],
+								[
+									"5",
+									"Yaşa ve Yaşat. İdealler uğrunda öldürmeye yada savaşa girmeye değmezler. (Nötr)"
+								],
+								[
+									"6",
+									"Millet. Benim şehrim, milletim yada halkım önemli olan tek şeydir. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Hala birlikte görev yapmış olduğum kişiler için canımdan vazgeçerim."
+								],
+								[
+									"2",
+									"Savaş alanında biri benim hayatımı kurtardı. Bu güne kadar kimseyi geride bırakmadım, bırakmamda."
+								],
+								[
+									"3",
+									"Onurum hayatımdır."
+								],
+								[
+									"4",
+									"Birliğimin yaşadığı ezici malubiyeti yada bunu gerçekleştiren düşmanları asla unutamam."
+								],
+								[
+									"5",
+									"Yanımda savaşanlar uğrunda ölmeye değecek olanlardır."
+								],
+								[
+									"6",
+									"Kendileri için savaşamayanlar için savaşırım."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Savaşta yüzleştiğimiz korkunç düşman beni hala korkudan titretir."
+								],
+								[
+									"2",
+									"Kendini kanıtlamış bir savaşçı olmayanlara saygım yoktur."
+								],
+								[
+									"3",
+									"Savaşta bir çok cana mal olan korkunç bir hata yaptım ve bunu sır olarak saklamak için her şeyi yaparım."
+								],
+								[
+									"4",
+									"Düşmanlarıma olan nefretim kör edici ve mantık dışıdır."
+								],
+								[
+									"5",
+									"Ben yasaya uyarım, yasa sefalete yol açsa bile."
+								],
+								[
+									"6",
+									"Hatamı kabul etmektense zırhımı yemeyi tercih ederim."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Şehir Ödül Avcısı",
+			"source": "SCAG",
+			"page": 153,
+			"skillProficiencies": "",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Aldatma, Sezgi, İkna ve Gizlenme arasından iki tane seç"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin iki tip oyun seti, bir müzik enstrümanı ve hırsız aletleri"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Görevine uygun bir set kıyafet ve 20 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Kulağı Tetikte",
+					"type": "entries",
+					"entries": [
+						"Seçilmiş avlarının geçtiği toplum kesimlerindeki kişilerle sıkı iletişim halindesin. Bu kişiler suç dünyası içindekiler, sokaklardaki serseriler yada üst toplumun üyeleri olabilir. Bu bağ her ziyaret ettiğin şehirde bir aracı, sana yerel kişiler ve yerler hakkında bilgi veren bir kişi olur."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Sokak Çocuğu",
+			"source": "PHB",
+			"page": 141,
+			"skillProficiencies": "El Çabukluğu, Gizlenme",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"El Çabukluğu, Gizlenme"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Kılık değiştirme kiti, hırsız aletleri"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Küçük bir bıçak, büyüdüğün şehrin haritası, evcil bir fare, ebeveynlerini hatırlatan bir yadigar, bir set günlük kıyafet ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Şehrin Sırları",
+					"type": "entries",
+					"entries": [
+						"Şehirlerdeki gizli düzen ve akışı bilirsin ve diğerlerinin gözden kaçıracağı geçitler bulabilirsin. Savaşta olmadığın zamanlarda, sen (ve seninle gelen dostların) şehirdeki iki nokta arasında normalin iki katı hızda seyahat edebilirsin."
+					],
+					"data": {
+						"isFeature": true
+					}
+				},
+				{
+					"name": "Tavsiye Edilen Nitelikler",
+					"type": "entries",
+					"entries": [
+						"İyisi ve kötüsüyle sokak çocuklarının hayatı çaresizlik ve sefalet ile şekillenir. Motivasyonları ya sokaklarda hayatı paylaştıkları kişilere olan bağları yada iyi bir yaşantı bulma arzularından gelir. Belki onlara kötü davranan tüm zenginlerden intikam alma arzusu da olabilir.",
+						{
+							"type": "table",
+							"colLabels": [
+									"d8",
+									"Kişilik Özelliği"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Ceplerim yemek artıkları ve ıvır zıvır ile doludur."
+								],
+								[
+									"2",
+									"Çok soru sorarım."
+								],
+								[
+									"3",
+									"Diğerlerinin bana erişemeyeceği ufak yerlere sıkışmayı severim."
+								],
+								[
+									"4",
+									"Sahip olduğum her şey kucağımda kollarımla sardığım bir bohçada iken sırtımı bir duvara yada ağaca yaslayarak uyurum."
+								],
+								[
+									"5",
+									"Bir domuz gibi yerim ve görgüsüzümdür."
+								],
+								[
+									"6",
+									"Bana iyi davranan herkesin kötü niyeti olduğunu düşünürüm."
+								],
+								[
+									"7",
+									"Banyo yapmayı sevmem."
+								],
+								[
+									"8",
+									"Diğerlerinin göz kırptıkları yada sakladıkları şeyleri açıkça söylerim."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"İdeal"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Saygı. Zengin yada fakir, herkes saygıyı hakeder. (İyi)"
+								],
+								[
+									"2",
+									"Toplum. Biz birbirimize sahip çıkmak zorundayız, çünkü başka kimse bunu yapmayacak. (Kuralcı)"
+								],
+								[
+									"3",
+									"Değişim. Alttaki yükseltilir ve görkemli olan indirilir. Değişim doğanın yapısında vardır. (Düzensiz)"
+								],
+								[
+									"4",
+									"Karşılık. Zenginlere sokaklarda yaşam ve ölümün nasıl bir şey olduğu gösterilmeli. (Kötü)"
+								],
+								[
+									"5",
+									"Halk. Bana yardım edenlere bende yardım ederim, bizi hayatta tutan budur. (Nötr)"
+								],
+								[
+									"6",
+									"Arzu. Daha iyi bir yaşamı hakettiğimi kanıtlayacağım. (Herhangi biri)"
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Bağ"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Şehrim benim evimdir ve onu korumak için savaşırım."
+								],
+								[
+									"2",
+									"Diğerleri benim yaşadığımı yaşamasın diye bir yetimhaneye destek oluyorum."
+								],
+								[
+									"3",
+									"Hayatımı bana sokaklarda yaşamayı öğreten başka bir sokak çocuğuna borçluyum."
+								],
+								[
+									"4",
+									"Bana acıyan kişiye asla ödeyemeyeceğim bir borcum var."
+								],
+								[
+									"5",
+									"Sefaletimden önemli birini soyarak kurtuldum ve bu yüzden aranıyorum."
+								],
+								[
+									"6",
+									"Başka kimse benim yaşadığım zorluklara katlanmamalı."
+								]
+							]
+						},
+						{
+							"type": "table",
+							"colLabels": [
+									"d6",
+									"Kusur"
+							],
+							"colStyles": [
+									"col-xs-1 text-align-center",
+									"col-xs-11"
+							],
+							"rows": [
+								[
+									"1",
+									"Eğer sayıca üstünlerse o dövüşten kaçarım."
+								],
+								[
+									"2",
+									"Altın benim için çok para gibi görünür ve fazlasına sahip olmak için her şeyi yaparım."
+								],
+								[
+									"3",
+									"Asla kendim dışında kimseye tamamen güvenemem."
+								],
+								[
+									"4",
+									"Adil dövüşmektense birini uykusunda öldürmeyi tercih ederim."
+								],
+								[
+									"5",
+									"Eğer benim daha fazla ihtiyacım varsa bu hırsızlık sayılmaz."
+								],
+								[
+									"6",
+									"Kendilerini koruyamayan kişiler başlarına gelenleri hakeder."
+								]
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Uthgardt Kabile Üyesi",
+			"source": "SCAG",
+			"page": 153,
+			"skillProficiencies": "Atletizm, Hayatta Kalma",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Atletizm, Hayatta Kalma"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir tane"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip müzik enstrümanı yada zanaatkar aleti"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir av kapanı, bir totem sembolü yada Uthgar'a ve kabile totemine sadakatini gösteren bir set dövme, bir set yolcu kıyafet ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Uthgardt Soyu",
+					"type": "entries",
+					"entries": [
+						"Sadece kabilenin toprakları değil, tüm Kuzey'in arazisi ve doğal kaynakları hakkında muazzam bilgi sahibisindir. Yabani alanlara o kadar alışkınsın ki orada yiyecek ve su aradığında normalin iki katı bulabilirsin.",
+						"Ek olarak, kendi halkın ve kabilenin dostlarının misafirperverliğini isteyebilirsin, bu dostlar druid çemberlerinin üyeleri, göçebe elf kabileleri, Harper'lar ve İlk Çember'in tanrılarına adanmış rahipler olabilirler."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Waterdhavian Soylusu",
+			"source": "SCAG",
+			"page": 154,
+			"skillProficiencies": "Tarih, İkna",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Tarih, İkna"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir tane"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip oyun seti yada bir müzik enstrümanı"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir set kaliteli kıyafet, bir damga yüzüğü yada broş, bir soyağacı tomarı, bir matara dolusu kaliteli zzar yada şarap ve 20 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Bakımlı",
+					"type": "entries",
+					"entries": [
+						"Waterdeep'te yada Kuzey'de başka bir yerdeyken ailen günlük ihtiyaçlarını karşılar. Adın ve damgan harcamalarının çoğunu karşılamaya yeterlidir; hanlar, tavernalar, ve içki salonları borcunu kaydedip Waterdeep'te ailenin konağına fatura gönderirler.",
+						"Bu avantaj günlük 2 gp ödemeden rahat bir yaşam biçimi sürmeni sağlar, yada zengin veya aristokratik yaşam biçimi masrafından o miktar düşülür. Daha düşük bir yaşam biçimi sürüp aradaki farkı nakit paraya çeviremezsin, bu özellik doğrudan sana verilen günlük nakit değil bir tip kredidir."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Alternatif Suçlu (Ajan)",
+			"source": "PHB",
+			"page": 130,
+			"skillProficiencies": "Aldatma, Gizlenme",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Aldatma, Gizlenme"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip oyun seti, hırsız aletleri"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir levye, bir set günlük kapüşonlu siyah kıyafet ve 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Ajan Aracısı",
+					"type": "entries",
+					"entries": [
+						"Seni diğer ajanların bulunduğu bir ağa bağlayan güvenilir bir aracın var. Bu aracıdan mesaj alma ve iletmeyi bilirsin, uzun mesafelerde bile. Özellikle senin için mesaj iletebilecek yerel habercileri, yozlaşmış kervan başlarını ve denizcileri tanırsın."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Alternatif Gösteri Adamı (Gladyatör)",
+			"source": "PHB",
+			"page": 131,
+			"skillProficiencies": "Akrobasi, Performans",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Akrobasi, Performans"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Kılık değiştirme kiti, bir tip müzik enstrümanı"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Pahalı olmayan ama alışılmadık bir silah, üç dişli mızrak yada bir ağ gibi, bir hayranın hediyesi (aşk mektubu, bir tutam saç yada bir hediyelik eşya), bir kostüm ve 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: İstek Üzerine",
+					"type": "entries",
+					"entries": [
+						"Eğlence için dövüş olanağı bulunan tüm yerleşimlerde daima gösteri yapabilecek bir yer bulabilirsin, bu bir arena yada gizli bir dövüş kulübü olabilir. Her gece gösteri yaptığın sürece bu tip bir yerde ücretsiz yatak ve yiyecek sağlanır, yerin kalitesine göre mütevazı yada rahat olur. Ek olarak performansın seni yerel bir figür haline getirir. Gösteri yaptığın bir kasabada yabancılar seni tanıdığında genelde senden hoşlanırlar."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Alternatif Loca Zanaatkarı (Loca Tüccarı)",
+			"source": "PHB",
+			"page": 133,
+			"skillProficiencies": "Sezgi, İkna",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Sezgi, İkna"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Rotacı aletleri yada fazladan bir dil"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir katır ve araba, locandan bir tanıtım mektubu, bir set yolcu kıyafeti ve 15 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Loca Üyeliği",
+					"type": "entries",
+					"entries": [
+						"Locanın yada ticari bir birliğin saygıdeğer bir üyesi olarak bu üyeliğin sağladığı ayrıcalıklardan faydalanabilirsin. Üye dostların sana yemek ve yatak sağlayacaktır, gerekirse cenazeni de yaparlar. Bazı şehir ve kasabalarda loca salonu meslektaşların ile buluşmak için bir merkez olur. Potansiyel patronlar, hizmetçiler yada dostlar bulmak için iyi bir fırsattır.",
+						"Localar ve birlikler genellikle muazzam politik güce sahiptirler. Eğer bir durumda suçlanıyorsan locan seni korumak için elinden geleni yapar, tabii suça karşı düzgün bir savunma ortaya koyulabilirse ve suçun çok ağır değilse. Eğer hatrı sayılan bir üyeysen güçlü politik figürlere de erişimin olabilir. Bu tip bağlantılar locaya yapılacak büyülü eşya yada para bağışı gerektirebilir.",
+						"Locaya aylık 5 gp üyelik aidatı ödemen gerekir. Loca ile aranı iyi tutabilmek için eğer ödemeyi kaçırırsan aradaki farkı faizi ile ödemelisin."
+					],	
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Alternatif Soylu (Şövalye)",
+			"source": "PHB",
+			"page": 136,
+			"skillProficiencies": "Tarih, İkna",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Tarih, İkna"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Bir tip oyun seti"
+					]
+				},
+				{
+					"name": "Diller",
+					"type": "entries",
+					"entries": [
+						"Seçeceğin bir tane"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Gönlünü verdiğin soylu bir lord yada leydiye ait bir sancak yada başka bir sembol, bir set kaliteli kıyafet, bir damga yüzüğü, soyağacı tomarı ve 25 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Soylu (Şövalye)",
+					"type": "entries",
+					"entries": [
+						"Şövalyelik, soyluluk ünvanları arasında en aşağılarda yer alabilir ama kişiye yükselebilme imkanı verir. Eğer şövalye olmak istersen, Ayrıcalık Pozisyonu yerine Uşaklar özelliğini seçersin.",
+						"Mertlik ve soylu bir aşk idealinin sembolü olarak, gönlünü verdiğin bir soyluya ait sancak yada başka bir yadigar taşıyıp o kişiye erdemle bağlı olduğunu gösterebilirsin."
+					]
+				},
+				{
+					"name": "Özellik: Uşaklar",
+					"type": "entries",
+					"entries": [
+						"Ailene sadık üç uşağın hizmetine sahipsin. Bu uşaklar görevliler yada haberciler olabilirler, hatta bir tanesi vekilharcın olabilir. <b>Uşaklarından biri kendi şövalyeliğine yolu açmak için sana eğitim karşılığında yaverlik eden bir soyludur </b> (Bu kişi senin bağın olabilir.). Geri kalan iki uşağın atına bakacak bir seyis ve zırhının bakımını yapan (hatta giymene yardım eden) bir hizmetçi olabilir.",
+						"Uşakların senin için sıradan işleri yaparlar ama senin için savaşmazlar ve seni açıkça tehlikeli olan yerlere (zindanlar gibi) giderken izlemezler. Eğer sıkça hayatları tehlikeye giriyorsa yada suistimal ediliyorlarsa yanından ayrılırlar."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		},
+		{
+			"name": "Alternatif Denizci (Korsan)",
+			"source": "PHB",
+			"page": 139,
+			"skillProficiencies": "Atletizm, Algı",
+			"entries": [
+				{
+					"name": "Beceri Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Atletizm, Algı"
+					]
+				},
+				{
+					"name": "Alet Uzmanlıkları",
+					"type": "entries",
+					"entries": [
+						"Rotacı aletleri, araçlar (su)"
+					]
+				},
+				{
+					"name": "Ekipman",
+					"type": "entries",
+					"entries": [
+						"Bir bağlama direği (sopa), 50 feetlik ipek halat, tavşan ayağı yada delikli taş gibi bir şans tılsımı, bir set günlük kıyafet ve 10 gp içeren bir kese"
+					]
+				},
+				{
+					"name": "Özellik: Kötü Şöhret",
+					"type": "entries",
+					"entries": [
+						"Nereye gidersen git kişiler senin şöhretin yüzünden senden korkarlar. Medeni bir yerleşimdeyken, tavernada hesabı ödememe yada kapı kırma gibi küçük suçların gözardı edilebilir, çünkü bir çok kişi seni şikayet etmeye korkacaktır."
+					],
+					"data": {
+						"isFeature": true
+					}
+				}
+			]
+		}
+	]
+}

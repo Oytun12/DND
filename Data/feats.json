@@ -1,0 +1,1264 @@
+{
+	"feat": [
+		{
+			"name": "Actor (Aktör)",
+			"source": "PHB",
+			"page": 165,
+			"entries": [
+				"Taklit ve tiyatrodaki yeteneğin sayesinde şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Kendini başka bir kişi olarak göstermeye çalışırken atacağın Karizma ({@skill Aldatma}) ve Karizma ({@skill Performans}) zarlarında avanatajın olur.",
+						"Başka bir kişinin konuşmasını ya da bir varlığın seslerini taklit edebilirsin. En az 1 dakika boyunca kişiyi konuşurken dinlemiş ya da varlığı sesi çıkarırken duymuş olmalısın. Senin Karizma ({@skill Aldatma}) zarına karşı atılmış başarılı bir Akıl ({@skill Sezgi}) zarı ile etkinin sahte olduğu anlaşılabilir."
+					]
+				}
+			],
+			"ability": {
+				"kar": 1
+			}
+		},
+		{
+			"name": "Alert (Tetikte)",
+			"source": "PHB",
+			"page": 165,
+			"entries": [
+				"Daima tehlikeye karşı tetiktesindir, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Öncelik zarlarında +5 bonusun olur.",
+						"Bilinçli olduğun sürece sürprize uğrayamazsın.",
+						"Diğer varlıklar senin tarafından görülmemiş olmaktan dolayı sana karşı saldırılarında avantaj almazlar."
+					]
+				}
+			]
+		},
+		{
+			"name": "Athlete (Atlet)",
+			"source": "PHB",
+			"page": 165,
+			"entries": [
+				"Şu özellikleri kazanmak için kapsamlı bir fiziksel eğitimden geçtin:",
+				{
+					"type": "list",
+					"items": [
+						"Yerdeyken ayağa kalkmak sadece 5 feet hareket kullanır.",
+						"Tırmanma sana fazladan harekete mal olmaz.",
+						"10 feet yerine sadece 5 feet giderek koşup uzun atlama ya da yüksek atlama yapabilirsin."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"çev"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Charger (Hücumcu)",
+			"source": "PHB",
+			"page": 165,
+			"entries": [
+				"Eylemini Depar için kullandığında, bonus eylemin ile bir yakın dövüş silahı saldırısı yapabilir ya da bir varlığı itebilirsin.",
+				"Eğer bu bonus eylemi kullanmadan hemen önce düz hizada en az 10 feet gidersen, ya saldırının hasar zarına +5 alırsın (saldırı yapmayı seçip vurursan) ya da varlığı 10 feet itersin (eğer itmeyi seçip başarılı olursan)."
+			]
+		},
+		{
+			"name": "Crossbow Expert (Arbalet Uzmanı)",
+			"source": "PHB",
+			"page": 165,
+			"entries": [
+				"Arbalet ile kapsamlı alıştırmaların sayesinde şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Uzman olduğun arbaletlerde Kurmalı özelliğini yok sayarsın.",
+						"Düşman bir varlığın 5 feet yakınında olması menzilli saldırı zarlarında dezavantaj vermez.",
+						"Saldırı eylemini kullanıp tek elli bir silah ile saldırdığında, bonus eylemini kullanıp tuttuğun bir el arbaleti ile saldırı yapabilirsin."
+					]
+				}
+			]
+		},
+		{
+			"name": "Defensive Duelist (Savunma Düellocusu)",
+			"source": "PHB",
+			"page": 165,
+			"prerequisite": [
+				{
+					"ability": [
+						{
+							"çev": 13
+						}
+					]
+				}
+			],
+			"entries": [
+				"Uzman olduğun bir beceri silahı tutarken başka bir varlık sana yakın dövüş saldırısı ile vurursa, reaksiyonunu kullanıp o saldırıya karşı AC'ne uzmanlık bonusunu ekleyerek potansiyel olarak saldırının seni ıskalamasını sağlayabilirsin."
+			]
+		},
+		{
+			"name": "Dual Wielder (Çift Kuşanan)",
+			"source": "PHB",
+			"page": 165,
+			"entries": [
+				"İki silah ile dövüşme tekniğinde uzmanlaşıp şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Her elinde ayrı bir yakın dövüş silahı tutarken AC'ne +1 bonus alırsın.",
+						"Kullandığın silahlar hafif olmasa da iki silahlı dövüşebilirsin.",
+						"Normalde tek silah çekebilirken sen iki silahı aynı anda çekebilirsin."
+					]
+				}
+			]
+		},
+		{
+			"name": "Dungeon Delver (Zindan Araştırmacısı)",
+			"source": "PHB",
+			"page": 166,
+			"entries": [
+				"Çoğu zindanda bulunan gizli kapılara ve tuzaklara dikkat ederek şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Gizli kapıların varlığını tespit etmek için atacağın Akıl ({@skill Algılama}) ve Zeka ({@skill Araştırma}) zarlarında avantajın olur.",
+						"Tuzaklara karşı direnmek ya da kaçınmak için atacağın kurtulma zarlarında avantajın olur.",
+						"Tuzaklardan gelen hasarlara karşı direncin olur."
+					]
+				}
+			]
+		},
+		{
+			"name": "Durable (Sağlam)",
+			"source": "PHB",
+			"page": 166,
+			"entries": [
+				"Sert ve dayanıklı olarak şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"HP yenilemek için HD attığında, zardan yenileyeceğin minimum HP Dayanıklılık bonusunun iki katı (en az 2) olur."
+					]
+				}
+			],
+			"ability": {
+				"day": 1
+			}
+		},
+		{
+			"name": "Elemental Adept (Elemental Üstadı)",
+			"source": "PHB",
+			"page": 166,
+			"prerequisite": [
+				{
+					"spellcasting": true
+				}
+			],
+			"entries": [
+				"Bu hüneri kazandığında şunlardan bir hasar tipi seç: asit, soğuk, ateş, yıldırım, ya da ses.",
+				"Kullandığın büyüler bu hasar tipine olan direnci yok sayar. Ek olarak bu hasar tipinde hasar veren bir büyü için hasar zarı attığında, zarda gelen 1'leri 2 sayabilirsin.",
+				"Bu hüneri birden çok kez seçebilirsin. Her seferinde farklı bir hasar tipi seçmen gerekir."
+			]
+		},
+		{
+			"name": "Grappler (Boğuşan)",
+			"source": "PHB",
+			"page": 167,
+			"prerequisite": [
+				{
+					"ability": [
+						{
+							"kuv": 13
+						}
+					]
+				}
+			],
+			"entries": [
+				"Yakın mesafe boğuşma ve yakalama becerilerini geliştirdin. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Yakaladığın bir varlığa karşı saldırı zarlarında avantajın olur.",
+						"Eylemini kullanıp yakaladığın bir varlığı sabitlemeye çalışabilirsin. Bunun için bir yakalama zarı daha at. Başarılı olursan sen ve varlık yakalanma sona erene kadar kısıtlanırsınız."
+					]
+				}
+			]
+		},
+		{
+			"name": "Great Weapon Master (Büyük Silah Üstadı)",
+			"source": "PHB",
+			"page": 167,
+			"entries": [
+				"Silahının ağırlığını avantajına kullanmayı öğrendin, ivmesi ile darbelerini güçlendirebilirsin. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Sıranda bir yakın dövüş silahı ile kritik vurduğunda ya da bir varlığı 0 HP'ye düşürdüğünde bonus eylem olarak bir yakın dövüş saldırısı daha yapabilirsin.",
+						"Uzman olduğun ağır bir silah ile yakın dövüş saldırısı yapmadan önce, saldırı zarına -5 almayı seçebilirsin. Eğer saldırı vurursa, saldırının hasarına +10 eklersin."
+					]
+				}
+			]
+		},
+		{
+			"name": "Healer (Şifacı)",
+			"source": "PHB",
+			"page": 167,
+			"entries": [
+				"Yetenekli bir hekimsin, yaraları çabucak sarıp dostlarını yeniden dövüşe sokabilirsin. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Ölmekte olan bir varlığı stabilize etmek için bir şifacı kiti kullandığında varlık aynı zamanda 1 HP yeniler.",
+						"Eylem olarak, şifacı kitinin 1 kullanımını harcayıp bir varlığı {@dice 1d6+4} + maksimum HD sayısı kadar HP iyileştirirsin. Varlık bu hüner ile kısa ya da uzun dinlenme bitirmeden yeniden iyileşemez."
+					]
+				}
+			]
+		},
+		{
+			"name": "Heavily Armored (Ağır Zırhlı)",
+			"source": "PHB",
+			"page": 167,
+			"prerequisite": [
+				{
+					"proficiency": [
+						{
+							"zırh": "orta"
+						}
+					]
+				}
+			],
+			"entries": [
+				"Ağır zırhların kullanımınında eğitim aldın, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Ağır zırhlar ile uzmanlık kazanırsın."
+					]
+				}
+			],
+			"ability": {
+				"kuv": 1
+			}
+		},
+		{
+			"name": "Heavy Armor Master (Ağır Zırh Üstadı)",
+			"source": "PHB",
+			"page": 167,
+			"prerequisite": [
+				{
+					"proficiency": [
+						{
+							"zırh": "ağır"
+						}
+					]
+				}
+			],
+			"entries": [
+				"Diğerlerini öldürebilecek saldırıları zırhın ile saptırmayı öğrendin. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Ağır zırh giyerken büyüsüz silahlardan aldığın ezme, delme ve kesme hasarı 3 azalır."
+					]
+				}
+			],
+			"ability": {
+				"kuv": 1
+			}
+		},
+		{
+			"name": "Inspiring Leader (İlham Verici Lider)",
+			"source": "PHB",
+			"page": 167,
+			"prerequisite": [
+				{
+					"ability": [
+						{
+							"kar": 13
+						}
+					]
+				}
+			],
+			"entries": [
+				"10 dakika harcayarak dostlarına ilham verip savaşma azimlerini artırırsın. Bunu yaptığında 30 feet çevrende seni anlayabilen ve gören ya da duyan 6'ya kadar dost varlık (buna kendini de dahil edebilirsin) seç. Her varlık senin seviyen + Karizma bonusun kadar geçici HP kazanır. Bir varlık kısa ya da uzun dinlenme bitirmeden bu hünerden yeniden geçici HP kazanamaz."
+			]
+		},
+		{
+			"name": "Keen Mind (Keskin Zihin)",
+			"source": "PHB",
+			"page": 167,
+			"entries": [
+				"Olağanüstü hassasiyetle zamanı, yönü ve detayı takip edebilen bir zihnin var. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Daima hangi yönün kuzey olduğunu bilirsin.",
+						"Daima bir sonraki gün doğumu ya da batımına kalan saati bilirsin.",
+						"Son ay içinde gördüğün ya da duyduğun her şeyi doğru bir şekilde hatırlarsın."
+					]
+				}
+			],
+			"ability": {
+				"zek": 1
+			}
+		},
+		{
+			"name": "Lightly Armored (Hafif Zırhlı)",
+			"source": "PHB",
+			"page": 167,
+			"entries": [
+				"Hafif zırhların kullanımınında ustalaşmak için eğitim aldın, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Hafif zırhlarla uzmanlık kazanırsın."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"çev"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Linguist (Dilbilimci)",
+			"source": "PHB",
+			"page": 167,
+			"entries": [
+				"Dilleri ve kodları araştırdın, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Seçeceğin 3 dili öğrenirsin.",
+						"Becerikli bir şekilde yazılı kodlar oluşturabilirsin. Diğerlerinin kodu çözebilmeleri için, bunu senin öğretmen, Zeka zarı atmaları (DC = Zeka skorun + uzmanlık bonusundur), ya da büyü kullanmaları gerekir."
+					]
+				}
+			],
+			"ability": {
+				"zek": 1
+			}
+		},
+		{
+			"name": "Lucky (Şanslı)",
+			"source": "PHB",
+			"page": 167,
+			"entries": [
+				"Tam zamanında kendini gösteren açıklanamaz bir şansın var.",
+				"3 şans puanın var. Ne zaman bir saldırı, beceri ya da kurtulma zarı atsan bir şans puanı harcayıp fazladan bir d20 atabilirsin. Şans puanını zarı attıktan sonra harcamaya karar verebilirsin, ama sonuç açıklanmadan önce olmalı. Hangi d20'nin saldırı, beceri ya da kurtulma zarı için kullanılacağına sen karar verirsin.",
+				"Sana karşı bir saldırı yapıldığında da şans puanı harcayabilirsin. d20'lik bir zar at ve sonra saldırının hangi zarı kullanacağına karar ver. Eğer birden fazla varlık bir sonucu etkilemek için şans puanı harcarsa, puanlar birbirini iptal eder, fazladan bir zar atılmaz.",
+				"Harcadığın şans puanları uzun dinlenme bitirdiğinde yenilenir."
+			]
+		},
+		{
+			"name": "Mage Slayer (Büyücü Avcısı)",
+			"source": "PHB",
+			"page": 168,
+			"entries": [
+				"Büyü kullanıcılarına karşı yakın dövüş teknikleri üzerine çalıştın, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"5 feet yakınındaki bir varlık büyü yaptığında, reaksiyonunu kullanarak o varlığa bir yakın dövüş silahı saldırısı yapabilirsin.",
+						"Bir büyüye konsantre olan bir varlığa hasar verdiğinde, o varlık konsantrasyonunu korumak için attığı kurtulma zarında dezavantajlı olur.",
+						"5 feet yakınındaki bir varlık tarafından kullanılan büyülere karşı atacağın kurtulma zarlarında avantajın olur."
+					]
+				}
+			]
+		},
+		{
+			"name": "Magic Initiate (Büyü Öğrencisi)",
+			"source": "PHB",
+			"page": 168,
+			"entries": [
+				"Bir sınıf seç: {@filter ozan|spells|level=0;1|class=bard}, {@filter rahip|spells|level=0;1|class=cleric}, {@filter druid|spells|level=0;1|class=druid}, {@filter sorcerer|spells|level=0;1|class=sorcerer}, {@filter warlock|spells|level=0;1|class=warlock}, ya da {@filter büyücü|spells|level=0;1|class=wizard}. O sınıfın büyü listesinden iki cantrip seçip öğrenebilirsin.",
+				"Ek olarak aynı listeden bir 1. seviye büyü seç. O büyüyü öğrenirsin ve en düşük seviyede kullanabilirsin. Kullandığında, bu özellik ile yeniden kullanabilmek için uzun dinlenme bitirmen gerekir.",
+				"Bu büyüler için büyü yapma yeteneğin seçtiğin sınıfa göre değişir: {@filter ozan|spells|level=0;1|class=bard}, {@filter sorcerer|spells|level=0;1|class=sorcerer}, ya da {@filter warlock|spells|level=0;1|class=warlock} için Karizma; {@filter rahip|spells|level=0;1|class=cleric} ya da {@filter druid|spells|level=0;1|class=druid} için Akıl; ya da {@filter büyücü|spells|level=0;1|class=wizard} için Zeka."
+			]
+		},
+		{
+			"name": "Martial Adept (Askeri Üstat)",
+			"source": "PHB",
+			"page": 168,
+			"entries": [
+				"Özel dövüş manevraları yapmanı sağlayan askeri eğitimin var. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Savaşçı sınıfının {@class Savaşçı|phb|Savaş Üstadı|Savaş Üstadı|phb|Savaş Modeli 3} modeli için mevcut olan manevralardan 2 tane seçersin. Eğer manevra hedefinin kurtulma zarı atmasını gerektiriyorsa, kurtulma zarı DC'si 8 + uzmanlık bonusun + Kuvvet ya da Çeviklik bonusun (senin seçimin) olur.",
+						"Eğer üstünlük zarın varsa mevcut havuza bir tane daha eklersin; yoksa, bir üstünlük zarın olur, buda d6'dır. Bu zar manevralarını yapmanı sağlar. Bir üstünlük zarı onu kullandığında harcanır. Harcanmış üstünlük zarını kısa ya da uzun dinlenme bitirdiğinde yenilersin."
+					]
+				}
+			]
+		},
+		{
+			"name": "Medium Armor Master (Orta Zırh Üstadı)",
+			"source": "PHB",
+			"page": 168,
+			"prerequisite": [
+				{
+					"proficiency": [
+						{
+							"zırh": "orta"
+						}
+					]
+				}
+			],
+			"entries": [
+				"Orta zırhlarla hareket alıştırmaları yaptın ve şu özellikleri kazandın:",
+				{
+					"type": "list",
+					"items": [
+						"Orta zırh giyme Çeviklik ({@skill Gizlenme}) zarlarında dezavantaj vermez.",
+						"Orta zırh giyerken eğer Çevikliğin 16 veya üzeri ise AC'ne 2 yerine 3 bonus ekleyebilirsin."
+					]
+				}
+			]
+		},
+		{
+			"name": "Mobile (Hareketli)",
+			"source": "PHB",
+			"page": 168,
+			"entries": [
+				"İstisnai bir hıza ve çevikliğe sahipsin. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Hızın 10 feet artar.",
+						"Depar eylemini kullandığında, o sıra için zorlu yüzeyler sana fazladan harekete mal olmaz.",
+						"Bir varlığa yakın dövüş saldırısı yaptığında, vursan da ıskalasan da sıranın sonuna kadar o varlıktan fırsat saldırısı tetiklemezsin."
+					]
+				}
+			]
+		},
+		{
+			"name": "Moderately Armored (Orta Zırhlı)",
+			"source": "PHB",
+			"page": 168,
+			"prerequisite": [
+				{
+					"proficiency": [
+						{
+							"zırh": "hafif"
+						}
+					]
+				}
+			],
+			"entries": [
+				"Orta zırhlar ve kalkanların kullanımınında ustalaşmak için eğitimden geçtin, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Orta zırhlar ve kalkanlarla uzmanlık kazanırsın."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"çev"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Mounted Combatant (Binekli Savaşçı)",
+			"source": "PHB",
+			"page": 168,
+			"entries": [
+				"Bineğin üzerindeyken yüzleşmesi tehlikeli bir rakipsin. Binek üzerindeyken ve bilinçsiz değilken şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Bineğinden daha küçük olan tüm bineksiz varlıklara karşı yakın dövüş saldırılarında avantajın olur.",
+						"Bineğine gelen bir saldırının seni hedef almasını sağlayabilirsin.",
+						"Eğer bineğin yarı hasar almak için Çeviklik kurtulma zarı atabileceği bir etkiye maruz kalınca, başarılı olursa hiç hasar almaz ve başarısız olursa sadece yarı hasar alır."
+					]
+				}
+			]
+		},
+		{
+			"name": "Observant (Gözlemci)",
+			"source": "PHB",
+			"page": 168,
+			"entries": [
+				"Çevrendeki detayları hızlıca farkederek şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Eğer bir varlık senin anladığın bir dilde konuşurken ağzını görebiliyorsan, dudaklarını okuyarak ne dediğini anlayabilirsin.",
+						"Pasif Akıl ({@skill Algılama}) ve pasif Zeka ({@skill İnceleme}) skorlarına +5 bonusun olur."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"zek",
+							"akı"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Polearm Master (Kargı Üstadı)",
+			"source": "PHB",
+			"page": 168,
+			"entries": [
+				"Erişimli silahlarla düşmanlarını uzakta tutabilirsin. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Baltalı kargı ya da asa ile Saldırı eylemini kullandığında, bonus eylem kullanarak silahın diğer ucuyla bir yakın dövüş saldırısı daha yapabilirsin. Bu saldırı asıl saldırı ile aynı yetenek bonusunu kullanır. Bu saldırı için silahın hasar zarı d4'tür ve hasar ezme hasarı verir.",
+						"Baltalı kargı, kargı, ya da asa kullanırken erişimine giren diğer varlıklar senden fırsat saldırısı tetikler."
+					]
+				}
+			]
+		},
+		{
+			"name": "Resilient (Dirençli)",
+			"source": "PHB",
+			"page": 168,
+			"entries": [
+				"Bir yetenek skoru seç. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Seçilen yetenek ile atacağın kurtulma zarlarında uzmanlık kazanırsın."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"çev",
+							"day",
+							"zek",
+							"akı",
+							"kar"
+						],
+						"amount": 1,
+						"textreference": true
+					}
+				]
+			}
+		},
+		{
+			"name": "Ritual Caster (Ritüel Büyü Kullanıcısı)",
+			"source": "PHB",
+			"page": 169,
+			"prerequisite": [
+				{
+					"ability": [
+						{
+							"zek": 13
+						},
+						{
+							"akı": 13
+						}
+					]
+				}
+			],
+			"entries": [
+				"Ritüel olarak kullanabileceğin birkaç büyü öğrendin. Bu büyüler kullanırken elinde olması gereken bir ritüel kitabında yazılı olur.",
+				"Bu hüneri seçtiğinde, seçeceğin iki 1. seviye büyü içeren bir ritüel kitabı elde edersin. Şu sınıflardan birini seç: ozan, rahip, druid, sorcerer, warlock, ya da büyücü. Büyülerini o sınıfın büyü listesinden seçmen ve büyülerin ritüel etiketine sahip olması gerekir. Seçtiğin sınıf aynı zamanda bu büyüler için büyü yapma yeteneğini de belirler: ozan, sorcerer, ya da warlock için Karizma; rahip ya da druid için Akıl; ya da büyücü için Zeka.",
+				"Bir büyülü tomar ya da büyücü kitabı gibi yazılı şekilde bir büyüye rastlarsan, onu ritüel kitabına eklemen mümkündür. Büyü, seçtiğin sınıfın listesinde olmalı, büyünün seviyesi senin seviyenin yarısından (üste yuvarlanır) fazla olmamalı, ve ritüel etiketine sahip olmalıdır. Bu ritüel kitabına büyü kopyalama süreci büyü seviyesi başına 2 saat alır ve seviye başı 50 gp'ye mal olur. Masraf, büyüyü öğrenirken harcadığın materyal bileşenler ve yazmak için kullandığın özel mürekkepleri temsil eder."
+			]
+		},
+		{
+			"name": "Savage Attacker (Acımasız Saldırgan)",
+			"source": "PHB",
+			"page": 169,
+			"entries": [
+				"Her sıranda bir kereliğine yakın dövüş silahı saldırısı için hasar zarı attığında silahın hasar zarını yeniden atıp istediğin sonucu kullanabilirsin."
+			]
+		},
+		{
+			"name": "Sentinel (Bekçi)",
+			"source": "PHB",
+			"page": 169,
+			"entries": [
+				"Düşmanın savunmasındaki her açıklıktan faydalanan tekniklerde ustalaştın, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Bir varlığa fırsat saldırısı ile vurduğunda, varlığın hızı o sıranın sonuna kadar 0 olur.",
+						"Varlıklar senin erişiminden çıkmadan önce Ayrılma eylemini kullansalar bile senden fırsat saldırısı tetiklerler.",
+						"Senin 5 feet yakınındaki bir varlık senin dışında bir varlığa (bu hüneri olmayan) saldırdığında reaksiyonunu kullanıp saldıran varlığa bir yakın dövüş silahı saldırısı yapabilirsin."
+					]
+				}
+			]
+		},
+		{
+			"name": "Sharpshooter (Keskin Nişancı)",
+			"source": "PHB",
+			"page": 170,
+			"entries": [
+				"Menzilli silahlarda ustalaştın ve diğerlerinin imkansız diyeceği atışlar yapabiliyorsun. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Uzun menzilde menzilli silah saldırısı yapma sana dezavantaj vermez.",
+						"Menzilli silah saldırıların yarı ve üç çeyrek siperi yok sayar.",
+						"Uzman olduğun bir menzilli silahla saldırı yapmadan önce, saldırı zarına -5 almayı seçebilirsin. Eğer saldırı vurursa hasara +10 eklersin."
+					]
+				}
+			]
+		},
+		{
+			"name": "Shield Master (Kalkan Üstadı)",
+			"source": "PHB",
+			"page": 170,
+			"entries": [
+				"Kalkanları sadece savunma için değil saldırı için de kullanırsın. Kalkan kullanırken şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Eğer sıranda Saldırı eylemini kullanırsan, bonus eylemini kullanarak kalkanınla 5 feet yakınındaki bir varlığı itmeyi deneyebilirsin.",
+						"Eğer bilinçsiz değilsen, sadece seni hedef alan bir etki ya da büyüye karşı atacağın Çeviklik kurtulma zarına kalkanın AC bonusunu ekleyebilirsin.",
+						"Eğer yarı hasar almak için Çeviklik kurtulma zarı atmanı gerektiren bir etkiye maruz kalırsan, reaksiyonunu kullanıp kalkanı etki ile senin arana yerleştirerek kurtulma zarında başarılı olursan hiç hasar almazsın, başarısız olursan da yarı hasar alırsın."
+					]
+				}
+			]
+		},
+		{
+			"name": "Skilled (Becerili)",
+			"source": "PHB",
+			"page": 170,
+			"entries": [
+				"İstediğin kombinasyonda seçeceğin 3 beceri ya da alette uzmanlık kazanırsın."
+			]
+		},
+		{
+			"name": "Skulker (Gizlenme Üstadı)",
+			"source": "PHB",
+			"page": 170,
+			"prerequisite": [
+				{
+					"ability": [
+						{
+							"çev": 13
+						}
+					]
+				}
+			],
+			"entries": [
+				"Gölgelerden hareket etmede ustasın. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Saklanmaya çalıştığın varlıktan sadece hafifçe örtülüyken bile saklanmayı deneyebilirsin.",
+						"Bir varlıktan gizliyken menzilli silah saldırısı yapıp ıskalarsan, bu saldırı pozisyonunu ele vermez.",
+						"Loş ışık senin görüş gerektiren Akıl ({@skill Algılama}) zarlarına dezavantaj vermez."
+					]
+				}
+			]
+		},
+		{
+			"name": "Spell Sniper (Büyü Nişancısı)",
+			"source": "PHB",
+			"page": 170,
+			"prerequisite": [
+				{
+					"spellcasting": true
+				}
+			],
+			"entries": [
+				"Belirli tipte büyülerle saldırılarını geliştirecek teknikler öğrendin, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Saldırı zarı atmanı gerektiren bir büyü kullandığında büyünün menzili ikiye katlanır.",
+						"Menzilli büyü saldırıların yarı ve üç çeyrek siperi yok sayar.",
+						"Saldırı zarı gerektiren bir cantrip öğrenirsin. Cantripi ozan, rahip, druid, sorcerer, warlock, ya da büyücü listesinden seç. Bu büyü için büyü yapma yeteneğin seçtiğin listeye bağlıdır: ozan, sorcerer, ya da warlock için Karizma; rahip ya da druid için Akıl; ya da büyücü için Zeka."
+					]
+				}
+			]
+		},
+		{
+			"name": "Svirfneblin Magic (Svirfneblin Büyüsü)",
+			"source": "EEPC",
+			"page": 7,
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "gnome",
+							"subrace": "derin"
+						}
+					]
+				}
+			],
+			"entries": [
+				"Atalarının kanındaki büyü yapma yeteneği sende de var. Bu yetenek sana {@spell nondetection} büyüsünü kendi üzerinde istediğinde materyal bileşen gerekmeden kullanmanı sağlıyor. Bu yetenekle şu büyüleri de birer kere kullanabilirsin: {@spell blindness/deafness}, {@spell blur}, ve {@spell disguise self}. Uzun dinlenme bitirdiğinde bu büyüleri yeniden kullanabilirsin.",
+				"Zeka bu büyüler için büyü yapma yeteneğindir ve onları en düşük seviyelerinde kullanırsın."
+			]
+		},
+		{
+			"name": "Tavern Brawler (Bar Dövüşçüsü)",
+			"source": "PHB",
+			"page": 170,
+			"entries": [
+				"O an elinde ne silah varsa kullanarak dövüşmeye alışkınsın, şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Doğaçlama silahlarla uzmanlığın var.",
+						"Silahsız saldırıların hasar için d4 kullanır.",
+						"Sıranda bir varlığa silahsız saldırı ya da doğaçlama silah ile vurunca, bonus eylem kullanıp hedefi yakalamayı deneyebilirsin."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"day"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Tough (Çetin)",
+			"source": "PHB",
+			"page": 170,
+			"entries": [
+				"Bu hüneri seçtiğinde HP maksimumun seviyenin iki katı kadar artar. Sonrasında her seviye yükselişinde HP maksimumun 2 artar."
+			]
+		},
+		{
+			"name": "War Caster (Savaş Büyücüsü)",
+			"source": "PHB",
+			"page": 170,
+			"prerequisite": [
+				{
+					"spellcasting": true
+				}
+			],
+			"entries": [
+				"Dövüş sırasında büyü yapma alıştırmaları ile sana şu özellikleri kazandıracak teknikler öğrendin:",
+				{
+					"type": "list",
+					"items": [
+						"Hasar aldığında bir büyüdeki konsantrasyonunu korumak için atacağın Dayanıklılık kurtulma zarlarında avantajın olur.",
+						"Büyülerin bedensel bileşenlerini tek ya da her iki elinde silah ya da kalkan olsa da gerçekleştirebilirsin.",
+						"Düşman bir varlığın hareketi senden fırsat saldırısı tetiklediğinde reaksiyonunu kullanıp varlığa fırsat saldırısı yapmaktansa bir büyü kullanabilirsin. Büyünün kullanma süresi 1 eylem olmalı ve sadece o varlığı hedef almalı."
+					]
+				}
+			]
+		},
+		{
+			"name": "Weapon Master (Silah Üstadı)",
+			"source": "PHB",
+			"page": 170,
+			"entries": [
+				"Çeşitli silahlarla kapsamlı alıştırmalar yaptın ve şu özellikleri kazandın:",
+				{
+					"type": "list",
+					"items": [
+						"Seçeceğin dört basit ya da askeri silah ile uzmanlık kazanırsın."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"çev"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+				{
+			"name": "Bountiful Luck (Bol Şans)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "buçukluk"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 73,
+			"entries": [
+				"Halkının sıradışı bir şansı vardır ve sen bunu mistik olarak dostlarına aktarmayı öğrendin. Nasıl yaptığından sende emin değilsin, sen sadece dilersin ve bu gerçekleşir. Kesinlikle kaderin bir lütfu!",
+				"30 feet yakınındaki görebildiğin bir dostun, bir saldırı, beceri ya da kurtulma zarında d20'de 1 atarsa reaksiyonunu kullanıp dostuna o zarı yeniden attırabilirsin. Dostun yeni sonucu kullanır.",
+				"Bu özelliği kullandığında, bir sonraki sıranın sonuna kadar Şanslı ırk özelliğini kullanamazsın."
+
+			]
+		},
+		{
+			"name": "Dragon Fear (Ejderha Korkusu)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "ejderdoğan"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 74,
+			"entries": [
+				"Öfkeliyken korku saçarsın. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Yıkıcı enerji üflemek yerine Nefes Silahı kullanımını harcayıp kükrersin, 30 feet yakınındaki seçtiğin her varlık Akıl kurtulma zarı (DC = 8 + uzmanlık bonusu + Karizma bonusu) atar. Bir hedef eğer seni göremiyor ya da duyamıyorsa otomatik olarak kurtulma zarında başarılı olur. Başarısız olursa hedef senden bir dakikalığına korkar. Eğer korkan hedef hasar alırsa kurtulma zarını tekrarlayabilir, başarılı bir zarda etki sonlanır."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"day",
+							"kar"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Dragon Hide (Ejderha Derisi)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "ejderdoğan"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 74,
+			"entries": [
+				"Ejderha atalarınınkine benzer pulların ve pençelerin vardır. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Pulların sertleşir. Zırh giymiyorken AC'ni 13 + Çeviklik bonusu olarak hesaplayabilirsin. Kalkan kullanıp hala bu özellikten faydalanabilirsin.",
+						"Parmak uçlarından çıkarabildiğin pençelerin olur. Tırnakları çıkarma ya da geri çekme eylem gerektirmez. Pençelerin doğal silahlarındır ve onlarla silahsız saldırı yapabilirsin. Eğer onlarla vurursan normal ezme hasarı yerine {@dice 1d4} + Kuvvet bonusun kadar kesme hasarı verirsin."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"day",
+							"kar"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Drow High Magic (Ulu Drow Büyüsü)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "elf",
+							"subrace": "drow"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 74,
+			"entries": [
+				"Karanlık elflere ait olan büyü bilgin artar. {@spell Detect magic} büyüsünü öğrenirsin ve istediğinde büyü yuvası harcamadan kullanabilirsin. Aynı zamanda {@spell levitate} ve {@spell dispel magic} büyülerini de öğrenirsin ve onları birer kere büyü yuvası harcamadan kullanabilirsin. Bu iki büyüyü bu şekilde yeniden kullanabilmek için uzun dinlenme bitirmen gerekir. Bu üç büyü için büyü yapma yeteneğin Karizmadır."
+			]
+		},
+		{
+			"name": "Dwarven Fortitude (Cüce Bünyesi)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "cüce"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 74,
+			"entries": [
+				"Damarlarında cüce kahramanlarının kanı akar. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Savaşta ne zaman Kaçınma eylemini kullanırsan bir HD harcayarak iyileşebilirsin. Zarı at, Dayanıklılık bonusunu ekle ve toplamı kadar (en az 1) HP yenile."
+					]
+				}
+			],
+			"ability": {
+				"day": 1
+			}
+		},
+		{
+			"name": "Elven Accuracy (Elf İsabeti)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "elf"
+						},
+						{
+							"name": "yarı-elf"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 74,
+			"entries": [
+				"Elflerin nişancılığı efsanevidir, özellikle elf okçu ve büyücülerinin. Kaba kuvvettense incelik isteyen saldırılar ile olağanüstü isabetin vardır. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Ne zaman Çeviklik, Zeka, Akıl ya da Karizma kullanan bir saldırı zarında avantajın olursa zarlardan birini tek sefer yeniden atabilirsin."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"çev",
+							"zek",
+							"akı",
+							"kar"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Fade Away (Kaybol)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "gnome"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 74,
+			"entries": [
+				"Halkın illüzyon büyüsüne yatkın ve zekidir. Hasar aldığında kaybolmanı sağlayan bir büyülü numara öğrendin. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Hasar aldıktan hemen sonra reaksiyonunu kullanarak bir sonraki sıranın sonuna ya da sen saldırana, hasar verene veya birini kurtulma zarı atmaya zorlayana dek görünmez olursun. Bu özelliği kullandığında bir daha kısa ya da uzun dinlenme bitirene kadar kullanamazsın."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"çev",
+							"zek"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Fey Teleportation (Fey Işınlanması)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "elf",
+							"subrace": "ulu"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 74,
+			"entries": [
+				"Ulu elf tarihi araştırmaların sana eladrin kuzenlerin dışında diğer elflerde nadir görülen bir fey gücü kattı. Fey soyundan güç alıp, anlık olarak Feywild'dan geçerek bir yerden diğerine olan yolunu kısaltırsın. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Sylvan dilini okuyabilir, yazabilir ve konuşabilirsin.",
+						"{@spell Misty step} büyüsünü öğrenirsin ve bir kez büyü yuvası harcamadan kullanabilirsin. Bu şekilde yeniden kullanabilmek için kısa ya da uzun dinlenme bitirmen gerekir. Bu büyü için büyü yapma yeteneğin Zekadır."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"zek",
+							"kar"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Flames of Phlegethos (Phlegethos Alevleri)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "tiefling"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 74,
+			"entries": [
+				"Emirlerine uyması için cehennem ateşini çağırmayı öğrenirsin. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Kullandığın bir büyü için ateş hasar zarı attığında gelen 1'leri yeniden atabilirsin ama yeni sonucu kullanmak zorundasın, yeniden 1 olsa bile.",
+						"Ne zaman ateş hasarı veren bir büyü kullansan, bir sonraki sıranın sonuna kadar çevreni alevler ile kaplayabilirsin. Alevler sana ya da ekipmanına hasar vermez ve 30 feet parlak ışık, sonrasında 30 feet de loş ışık saçarlar. Alevler mevcutken 5 feet yakınında olup sana yakın dövüş saldırısı ile vuran tüm varlıklar 1d4 ateş hasarı alır."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"zek",
+							"kar"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Infernal Constitution (Infernal Dayanıklılık)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "tiefling"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 75,
+			"entries": [
+				"İçindeki zebani kanı güçlü olduğu için bazı zebanilerde varolana yakın bir direncin olur. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Soğuk ve zehir hasarına direncin olur.",
+						"Zehirlenmeye karşı atacağın kurtulma zarlarında avantajın olur."
+					]
+				}
+			],
+			"ability": {
+				"day": 1
+			}
+		},
+		{
+			"name": "Orcish Fury (Orc Öfkesi)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "yarı-orc"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 75,
+			"entries": [
+				"Bitmek bilmeyen bir öfken vardır. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Basit ya da askeri silah kullanan bir saldırı ile vurduğunda, silahın hasar zarlarından birini fazladan bir kere atıp hasara ekleyebilirsin. Bu özelliği yeniden kullanabilmek için kısa ya da uzun dinlenme bitirmen gerekir.",
+						"Amansız Dayanıklılık özelliğini kullandıktan hemen sonra reaksiyonunu kullanarak bir silah saldırısı yapabilirsin."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"day"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Prodigy (Deha)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "yarı-elf"
+						},
+						{
+							"name": "yarı-orc"
+						},
+						{
+							"name": "insan"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 75,
+			"entries": [
+				"Yeni şeyler öğrenmeye yatkınsın. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Seçeceğin bir beceri uzmanlığı, bir alet uzmanlığı ve bir dil öğrenirsin.",
+						"Uzmanlığın olan bir beceri seç. O beceri ile ekspertiz kazanırsın. Bunun anlamı, o beceri ile atacağın zarlarda uzmanlık bonusun ikiye katlanır. Seçtiğin beceri Ekspertiz gibi zaten uzmanlık bonusunu ikiye katlayan bir özellikten faydalanıyor olamaz."
+					]
+				}
+			]
+		},
+		{
+			"name": "Second Chance (İkinci Şans)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "buçukluk"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 75,
+			"entries": [
+				"Biri sana vurmaya çalıştığında şans senin yanında olur. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Görebildiğin bir varlık sana bir saldırı zarı ile vurduğunda reaksiyonunu kullanıp o zarı tekrar attırabilirsin. Bu özelliği bir kere kullandığında bir daha yeni bir öncelik zarı atana kadar veya kısa ya da uzun dinlenme bitirene kadar kullanamazsın."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"çev",
+							"day",
+							"kar"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Squat Nimbleness (Bodur Çevikliği)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "cüce"
+						},
+						{
+							"name": "küçük ırk"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 75,
+			"entries": [
+				"Irkına göre alışılmadık bir çevikliğin var. Şu özellikleri kazanırsın:",
+				{
+					"type": "list",
+					"items": [
+						"Yürüme hızın 5 feet artar.",
+						"{@skill Akrobasi} ya da {@skill Atletizm} becerilerinden birinde uzmanlık kazanırsın (senin seçimin).",
+						"Yakalanma durumundan kurtulmak için atacağın Kuvvet ({@skill Atletizm}) ya da Çeviklik ({@skill Akrobasi}) zarlarında avantajın olur."
+					]
+				}
+			],
+			"ability": {
+				"choose": [
+					{
+						"from": [
+							"kuv",
+							"çev"
+						],
+						"amount": 1
+					}
+				]
+			}
+		},
+		{
+			"name": "Wood Elf Magic (Orman Elfi Büyüsü)",
+			"prerequisite": [
+				{
+					"race": [
+						{
+							"name": "elf",
+							"subrace": "orman"
+						}
+					]
+				}
+			],
+			"source": "XGE",
+			"page": 75,
+			"entries": [
+				"Halkın tarafından korunan kadim ormanların büyüsünü öğrenirsin. Seçeceğin bir druid cantripi öğrenirsin. Aynı zamanda {@spell longstrider} ve {@spell pass without trace} büyülerini de öğrenirsin ve onları birer kez büyü yuvası harcamadan kullanabilirsin. Büyüleri bu şekilde yeniden kullanabilmek için uzun dinlenme bitirmen gerekir. Bu üç büyü için büyü yapma yeteneğin Akıldır."
+			]
+		}
+	]
+}

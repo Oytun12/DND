@@ -7266,6 +7266,205 @@
 										]
 									},
 									{
+										"type": "options",
+										"name": "Savaş Üstadı: Ek Manevralar_1",
+										"entries": [
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Komutanın Saldırısı",
+														"entries": [
+															"Sıranda Saldırı eylemini kullandığında saldırılarından birini kullanmayıp bonus eylemini kullanarak dostlarından birini saldırı için yönlendirebilirsin. Bunu yaptığında, seni görebilen ya da duyabilen bir dost varlığı seç ve bir üstünlük zarı harca. O varlık hemen reaksiyonunu kullanıp bir silahlı saldırı yapabilir, üstünlük zarınıda saldırının hasar zarına ekler."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Silahsızlandıran Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı ile vurduğunda bir üstünlük zarı harcayıp hedefi silahsızlandırmaya çalışarak, seçtiğin tuttuğu bir eşyayı düşürmeye zorlayabilirsin. Üstünlük zarını saldırının hasar zarına eklersin ve hedef Kuvvet kurtulma zarı atar. Başarısız olursa seçtiğin nesne ayağının dibine düşer."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Dikkat Dağıtan Darbe",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda, bir üstünlük zarı harcayarak varlığın dikkatini dağıtıp dostların için bir fırsat yaratabilirsin. Üstünlük zarını saldırının hasar zarına eklersin. Hedefe karşı senin dışında bir varlık tarafından yapılan ilk saldırı avantaj ile yapılır, bu senin bir sonraki sıranın başlangıcına kadar geçerlidir."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kaçamak Adımlar",
+														"entries": [
+															"Hareket ettiğinde bir üstünlük zarı harcayıp zarı atarak sonucu sen durana kadar AC'ne eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Aldatan Saldırı",
+														"entries": [
+															"5 fit yakınındaki bir varlığı hedef seçerek, sıranda bonus eylem olarak bir üstünlük zarı harcayıp sahte bir saldırı yapabilirsin. Bu sıra içinde o hedefe karşı yaptığın bir sonraki saldırı avantajlı olur. Eğer bu saldırı vurursa üstünlük zarını hasar zarına ekleyebilirsin.",
+															"Avantajı kazandığın sıranda kullanmazsan kaybedersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kışkırtan Saldırı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda, bir üstünlük zarı harcayıp hedefi sana saldırmak için kışkırtmayı deneyebilirsin. Üstünlük zarını saldırının hasar zarına eklersin ve hedef bir Akıl kurtulma zarı atar. Başarısız olursa senin bir sonraki sıranın sonuna kadar, hedefin senin dışında tüm varlıklara karşı saldırılarında dezavantajı olur."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Atılma Saldırısı",
+														"entries": [
+															"Sıranda bir yakın dövüş silahı saldırısı yaptığında, bir üstünlük zarı harcayıp o saldırının erişimini 5 fit artırabilirsin. Eğer vurursan üstünlük zarını saldırının hasar zarına eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Manevra Saldırısı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırıyla vurduğunda bir üstünlük zarı harcayıp dostlarından birini daha avantajlı bir pozisyona gönderebilirsin. Üstünlük zarını saldırının hasar zarına ekle ve seni görebilen ya da duyabilen bir dost varlık seç. O varlık reaksiyonunu kullanıp, senin saldırının hedefinden fırsat saldırısı tetiklemeden hızının yarısı kadar ilerleyebilir."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Tehditkar Saldırı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda bir üstünlük zarı harcayıp hedefi korkutmayı deneyebilirsin. Üstünlük zarını saldırının hasarına eklersin ve hedef Akıl kurtulma zarı atar. Başarısız olursa bir sonraki sıranın sonuna kadar senden korkar."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Savuştur",
+														"entries": [
+															"Başka bir varlık sana bir yakın dövüş saldırısı ile hasar verdiğinde reaksiyonunu kullanıp bir üstünlük zarı harcayarak gelen hasarı zarın sonucu + Çeviklik bonusun kadar düşürebilirsin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kesin Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı yaptığında, bir üstünlük zarı harcayıp bunu saldırı zarına ekleyebilirsin. Bu manevrayı saldırı zarını atmadan önce veya sonra kullanabilirsin ama saldırının sonuçları belirlenmeden önce kullanmalısın."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "İten Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı ile vurduğunda, bir üstünlük zarı harcayıp hedefi itmeye çalışabilirsin. Üstünlük zarını saldırının hasarına eklersin ve eğer hedef Büyük ya da daha küçükse Kuvvet kurtulma zarı atar. Başarısız olursa hedefi senden 15 fit'e kadar uzağa itebilirsin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Toparla",
+														"entries": [
+															"Sıranda bonus eylem kullanarak bir üstünlük zarı harcayıp dostlarından birini azimlendirebilirsin. Bunu yaptığında seni görebilen ya da duyabilen bir dost varlık seç. O varlık senin üstünlük zarın + Karizma bonusun kadar geçici HP kazanır."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Karşı Hamle",
+														"entries": [
+															"Bir varlık seni bir yakın dövüş saldırısı ile ıskaladığında, reaksiyonunu kullanıp bir üstünlük zarı harcayarak o varlığa karşı bir yakın dövüş silahı saldırısı yapabilirsin. Eğer vurursan üstünlük zarını saldırının hasarına eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Geniş Saldırı",
+														"entries": [
+															"Bir varlığa yakın dövüş silahı saldırısı ile vurduğunda, bir üstünlük zarı harcayarak aynı saldırı ile başka bir varlığa da hasar vermeye çalışabilirsin. Asıl hedefin 5 fit yakınında ve senin menzilinde bir hedef seç. Eğer asıl saldırı ikinci hedefe de vurabiliyorsa, hedef üstünlük zarın kadar hasar alır. Hasar tipi asıl saldırının hasarıyla aynıdır."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Çelme Saldırısı",
+														"entries": [
+															"Bir varlığa silahlı saldırıyla vurduğunda, bir üstünlük zarı harcayıp hedefi düşürmeye çalışabilirsin. Üstünlük zarını saldırının hasarına eklersin ve eğer hedef Büyük ya da daha küçükse Kuvvet kurtulma zarı atar. Başarısız olursa hedefi yere düşürürsün."
+														]
+													}
+												]
+											}
+										]
+									},
+									{
 										"type": "entries",
 										"name": "Ek Üstünlük Zarı",
 										"entries": [
@@ -7305,6 +7504,205 @@
 										]
 									},
 									{
+										"type": "options",
+										"name": "Savaş Üstadı: Ek Manevralar_2",
+										"entries": [
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Komutanın Saldırısı",
+														"entries": [
+															"Sıranda Saldırı eylemini kullandığında saldırılarından birini kullanmayıp bonus eylemini kullanarak dostlarından birini saldırı için yönlendirebilirsin. Bunu yaptığında, seni görebilen ya da duyabilen bir dost varlığı seç ve bir üstünlük zarı harca. O varlık hemen reaksiyonunu kullanıp bir silahlı saldırı yapabilir, üstünlük zarınıda saldırının hasar zarına ekler."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Silahsızlandıran Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı ile vurduğunda bir üstünlük zarı harcayıp hedefi silahsızlandırmaya çalışarak, seçtiğin tuttuğu bir eşyayı düşürmeye zorlayabilirsin. Üstünlük zarını saldırının hasar zarına eklersin ve hedef Kuvvet kurtulma zarı atar. Başarısız olursa seçtiğin nesne ayağının dibine düşer."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Dikkat Dağıtan Darbe",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda, bir üstünlük zarı harcayarak varlığın dikkatini dağıtıp dostların için bir fırsat yaratabilirsin. Üstünlük zarını saldırının hasar zarına eklersin. Hedefe karşı senin dışında bir varlık tarafından yapılan ilk saldırı avantaj ile yapılır, bu senin bir sonraki sıranın başlangıcına kadar geçerlidir."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kaçamak Adımlar",
+														"entries": [
+															"Hareket ettiğinde bir üstünlük zarı harcayıp zarı atarak sonucu sen durana kadar AC'ne eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Aldatan Saldırı",
+														"entries": [
+															"5 fit yakınındaki bir varlığı hedef seçerek, sıranda bonus eylem olarak bir üstünlük zarı harcayıp sahte bir saldırı yapabilirsin. Bu sıra içinde o hedefe karşı yaptığın bir sonraki saldırı avantajlı olur. Eğer bu saldırı vurursa üstünlük zarını hasar zarına ekleyebilirsin.",
+															"Avantajı kazandığın sıranda kullanmazsan kaybedersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kışkırtan Saldırı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda, bir üstünlük zarı harcayıp hedefi sana saldırmak için kışkırtmayı deneyebilirsin. Üstünlük zarını saldırının hasar zarına eklersin ve hedef bir Akıl kurtulma zarı atar. Başarısız olursa senin bir sonraki sıranın sonuna kadar, hedefin senin dışında tüm varlıklara karşı saldırılarında dezavantajı olur."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Atılma Saldırısı",
+														"entries": [
+															"Sıranda bir yakın dövüş silahı saldırısı yaptığında, bir üstünlük zarı harcayıp o saldırının erişimini 5 fit artırabilirsin. Eğer vurursan üstünlük zarını saldırının hasar zarına eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Manevra Saldırısı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırıyla vurduğunda bir üstünlük zarı harcayıp dostlarından birini daha avantajlı bir pozisyona gönderebilirsin. Üstünlük zarını saldırının hasar zarına ekle ve seni görebilen ya da duyabilen bir dost varlık seç. O varlık reaksiyonunu kullanıp, senin saldırının hedefinden fırsat saldırısı tetiklemeden hızının yarısı kadar ilerleyebilir."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Tehditkar Saldırı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda bir üstünlük zarı harcayıp hedefi korkutmayı deneyebilirsin. Üstünlük zarını saldırının hasarına eklersin ve hedef Akıl kurtulma zarı atar. Başarısız olursa bir sonraki sıranın sonuna kadar senden korkar."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Savuştur",
+														"entries": [
+															"Başka bir varlık sana bir yakın dövüş saldırısı ile hasar verdiğinde reaksiyonunu kullanıp bir üstünlük zarı harcayarak gelen hasarı zarın sonucu + Çeviklik bonusun kadar düşürebilirsin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kesin Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı yaptığında, bir üstünlük zarı harcayıp bunu saldırı zarına ekleyebilirsin. Bu manevrayı saldırı zarını atmadan önce veya sonra kullanabilirsin ama saldırının sonuçları belirlenmeden önce kullanmalısın."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "İten Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı ile vurduğunda, bir üstünlük zarı harcayıp hedefi itmeye çalışabilirsin. Üstünlük zarını saldırının hasarına eklersin ve eğer hedef Büyük ya da daha küçükse Kuvvet kurtulma zarı atar. Başarısız olursa hedefi senden 15 fit'e kadar uzağa itebilirsin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Toparla",
+														"entries": [
+															"Sıranda bonus eylem kullanarak bir üstünlük zarı harcayıp dostlarından birini azimlendirebilirsin. Bunu yaptığında seni görebilen ya da duyabilen bir dost varlık seç. O varlık senin üstünlük zarın + Karizma bonusun kadar geçici HP kazanır."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Karşı Hamle",
+														"entries": [
+															"Bir varlık seni bir yakın dövüş saldırısı ile ıskaladığında, reaksiyonunu kullanıp bir üstünlük zarı harcayarak o varlığa karşı bir yakın dövüş silahı saldırısı yapabilirsin. Eğer vurursan üstünlük zarını saldırının hasarına eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Geniş Saldırı",
+														"entries": [
+															"Bir varlığa yakın dövüş silahı saldırısı ile vurduğunda, bir üstünlük zarı harcayarak aynı saldırı ile başka bir varlığa da hasar vermeye çalışabilirsin. Asıl hedefin 5 fit yakınında ve senin menzilinde bir hedef seç. Eğer asıl saldırı ikinci hedefe de vurabiliyorsa, hedef üstünlük zarın kadar hasar alır. Hasar tipi asıl saldırının hasarıyla aynıdır."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Çelme Saldırısı",
+														"entries": [
+															"Bir varlığa silahlı saldırıyla vurduğunda, bir üstünlük zarı harcayıp hedefi düşürmeye çalışabilirsin. Üstünlük zarını saldırının hasarına eklersin ve eğer hedef Büyük ya da daha küçükse Kuvvet kurtulma zarı atar. Başarısız olursa hedefi yere düşürürsün."
+														]
+													}
+												]
+											}
+										]
+									},
+									{
 										"type": "entries",
 										"name": "Gelişmiş Dövüş Üstünlüğü (d10)",
 										"entries": [
@@ -7322,6 +7720,205 @@
 										"name": "Ek Manevralar",
 										"entries": [
 											"15. seviyede seçeceğin iki ek manevra öğrenirsin."
+										]
+									},
+									{
+										"type": "options",
+										"name": "Savaş Üstadı: Ek Manevralar_3",
+										"entries": [
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Komutanın Saldırısı",
+														"entries": [
+															"Sıranda Saldırı eylemini kullandığında saldırılarından birini kullanmayıp bonus eylemini kullanarak dostlarından birini saldırı için yönlendirebilirsin. Bunu yaptığında, seni görebilen ya da duyabilen bir dost varlığı seç ve bir üstünlük zarı harca. O varlık hemen reaksiyonunu kullanıp bir silahlı saldırı yapabilir, üstünlük zarınıda saldırının hasar zarına ekler."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Silahsızlandıran Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı ile vurduğunda bir üstünlük zarı harcayıp hedefi silahsızlandırmaya çalışarak, seçtiğin tuttuğu bir eşyayı düşürmeye zorlayabilirsin. Üstünlük zarını saldırının hasar zarına eklersin ve hedef Kuvvet kurtulma zarı atar. Başarısız olursa seçtiğin nesne ayağının dibine düşer."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Dikkat Dağıtan Darbe",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda, bir üstünlük zarı harcayarak varlığın dikkatini dağıtıp dostların için bir fırsat yaratabilirsin. Üstünlük zarını saldırının hasar zarına eklersin. Hedefe karşı senin dışında bir varlık tarafından yapılan ilk saldırı avantaj ile yapılır, bu senin bir sonraki sıranın başlangıcına kadar geçerlidir."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kaçamak Adımlar",
+														"entries": [
+															"Hareket ettiğinde bir üstünlük zarı harcayıp zarı atarak sonucu sen durana kadar AC'ne eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Aldatan Saldırı",
+														"entries": [
+															"5 fit yakınındaki bir varlığı hedef seçerek, sıranda bonus eylem olarak bir üstünlük zarı harcayıp sahte bir saldırı yapabilirsin. Bu sıra içinde o hedefe karşı yaptığın bir sonraki saldırı avantajlı olur. Eğer bu saldırı vurursa üstünlük zarını hasar zarına ekleyebilirsin.",
+															"Avantajı kazandığın sıranda kullanmazsan kaybedersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kışkırtan Saldırı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda, bir üstünlük zarı harcayıp hedefi sana saldırmak için kışkırtmayı deneyebilirsin. Üstünlük zarını saldırının hasar zarına eklersin ve hedef bir Akıl kurtulma zarı atar. Başarısız olursa senin bir sonraki sıranın sonuna kadar, hedefin senin dışında tüm varlıklara karşı saldırılarında dezavantajı olur."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Atılma Saldırısı",
+														"entries": [
+															"Sıranda bir yakın dövüş silahı saldırısı yaptığında, bir üstünlük zarı harcayıp o saldırının erişimini 5 fit artırabilirsin. Eğer vurursan üstünlük zarını saldırının hasar zarına eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Manevra Saldırısı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırıyla vurduğunda bir üstünlük zarı harcayıp dostlarından birini daha avantajlı bir pozisyona gönderebilirsin. Üstünlük zarını saldırının hasar zarına ekle ve seni görebilen ya da duyabilen bir dost varlık seç. O varlık reaksiyonunu kullanıp, senin saldırının hedefinden fırsat saldırısı tetiklemeden hızının yarısı kadar ilerleyebilir."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Tehditkar Saldırı",
+														"entries": [
+															"Bir varlığa silahlı bir saldırı ile vurduğunda bir üstünlük zarı harcayıp hedefi korkutmayı deneyebilirsin. Üstünlük zarını saldırının hasarına eklersin ve hedef Akıl kurtulma zarı atar. Başarısız olursa bir sonraki sıranın sonuna kadar senden korkar."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Savuştur",
+														"entries": [
+															"Başka bir varlık sana bir yakın dövüş saldırısı ile hasar verdiğinde reaksiyonunu kullanıp bir üstünlük zarı harcayarak gelen hasarı zarın sonucu + Çeviklik bonusun kadar düşürebilirsin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Kesin Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı yaptığında, bir üstünlük zarı harcayıp bunu saldırı zarına ekleyebilirsin. Bu manevrayı saldırı zarını atmadan önce veya sonra kullanabilirsin ama saldırının sonuçları belirlenmeden önce kullanmalısın."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "İten Saldırı",
+														"entries": [
+															"Bir varlığa silahlı saldırı ile vurduğunda, bir üstünlük zarı harcayıp hedefi itmeye çalışabilirsin. Üstünlük zarını saldırının hasarına eklersin ve eğer hedef Büyük ya da daha küçükse Kuvvet kurtulma zarı atar. Başarısız olursa hedefi senden 15 fit'e kadar uzağa itebilirsin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Toparla",
+														"entries": [
+															"Sıranda bonus eylem kullanarak bir üstünlük zarı harcayıp dostlarından birini azimlendirebilirsin. Bunu yaptığında seni görebilen ya da duyabilen bir dost varlık seç. O varlık senin üstünlük zarın + Karizma bonusun kadar geçici HP kazanır."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Karşı Hamle",
+														"entries": [
+															"Bir varlık seni bir yakın dövüş saldırısı ile ıskaladığında, reaksiyonunu kullanıp bir üstünlük zarı harcayarak o varlığa karşı bir yakın dövüş silahı saldırısı yapabilirsin. Eğer vurursan üstünlük zarını saldırının hasarına eklersin."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Geniş Saldırı",
+														"entries": [
+															"Bir varlığa yakın dövüş silahı saldırısı ile vurduğunda, bir üstünlük zarı harcayarak aynı saldırı ile başka bir varlığa da hasar vermeye çalışabilirsin. Asıl hedefin 5 fit yakınında ve senin menzilinde bir hedef seç. Eğer asıl saldırı ikinci hedefe de vurabiliyorsa, hedef üstünlük zarın kadar hasar alır. Hasar tipi asıl saldırının hasarıyla aynıdır."
+														]
+													}
+												]
+											},
+											{
+												"type": "entries",
+												"entries": [
+													{
+														"type": "entries",
+														"name": "Çelme Saldırısı",
+														"entries": [
+															"Bir varlığa silahlı saldırıyla vurduğunda, bir üstünlük zarı harcayıp hedefi düşürmeye çalışabilirsin. Üstünlük zarını saldırının hasarına eklersin ve eğer hedef Büyük ya da daha küçükse Kuvvet kurtulma zarı atar. Başarısız olursa hedefi yere düşürürsün."
+														]
+													}
+												]
+											}
 										]
 									},
 									{
