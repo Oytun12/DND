@@ -25,7 +25,7 @@
                     <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
                     <div class="titles">
                         <h1 class="main-title">D&D 5e Türkçe</h1>
-                        <span class="sub-title">Karakter Motoru v2.2</span>
+                        <span class="sub-title">Karakter Motoru v2.4</span>
                     </div>
                 </div>
 
@@ -45,6 +45,7 @@
                     <li><a href="../../index.html">Ana Sayfa</a></li>
                     <li><a href="../../Sayfalar/Race/race.html">Irklar</a></li>
                     <li><a href="../../Sayfalar/Class/class.html">Sınıflar</a></li>
+                    <li><a href="../../Sayfalar/Envanter/envanter.html">Ekipmanlar</a></li>
                 </ul>
             </nav>
         </header>
@@ -54,13 +55,31 @@
             <main class="wizard-container">
                 
                 <div class="step-indicator">
+                    
+                    <div class="step-badge step-nav-btn" 
+                         :class="{ 'disabled': currentStep === 0 }"
+                         @click="prevStep">
+                        <div class="step-number">←</div>
+                        <span class="step-name">Geri</span>
+                    </div>
+
                     <div v-for="(step, index) in steps" :key="index" 
                          class="step-badge" 
                          :class="{ 'active': currentStep === index, 'completed': currentStep > index }">
                         <div class="step-number">{{ index + 1 }}</div>
                         <span class="step-name">{{ step.title }}</span>
                     </div>
+
+                    <div class="step-badge step-nav-btn" 
+                         :class="{ 'disabled': currentStep === steps.length - 1 }"
+                         @click="nextStep">
+                        <div class="step-number">→</div>
+                        <span class="step-name">İleri</span>
+                    </div>
+
                 </div>
+
+
 
                 <div class="step-content">
                     
@@ -73,7 +92,7 @@
                     <div v-show="currentStep === 1" class="step-pane">
                         
                         <div class="controls-grid">
-                            <div class="form-group" style="grid-column: span 2;">
+                            <div class="form-group full-width">
                                 <label>Irk Seçiniz:</label>
                                 <select v-model="selectedFlatOption" class="main-select">
                                     <option :value="null">-- Irk Seçiniz --</option>
@@ -112,7 +131,6 @@
                     </div>
 
                     <div v-show="currentStep === 2" class="step-pane">
-                        
                         <div class="controls-grid">
                             <div class="form-group">
                                 <label>Sınıf:</label>
@@ -140,25 +158,19 @@
 
                             <div class="level-stream">
                                 <div v-for="step in activeFeatures" :key="step.level" class="level-card">
-                                    
                                     <div class="level-badge">{{ step.level }}</div>
-                                    
                                     <div class="features-list">
                                         
                                         <template v-for="feat in step.features" :key="'main-'+feat.name">
-                                            
                                             <div v-if="feat.name === 'Yetenek Skoru Gelişimi'" class="feature-item">
-                                                
                                                 <h4 style="color: #e67e22;">{{ feat.name }}</h4>
-                                                
                                                 <div class="feature-text">
                                                     <p>Bu seviyede stat artışı ya da bir feat seçimi tercih edilebilir.</p>
                                                     <p style="font-size: 0.9em; color: #aaa; margin-top: 5px; font-style: italic;">
                                                         Feat'ler burada listelenmiştir fakat bu alan boş bırakılabilir.
                                                     </p>
                                                 </div>
-
-                                                <div class="choice-wrapper" style="margin-top: 15px;">
+                                                <div class="choice-wrapper">
                                                     <div class="choice-container">
                                                         <label>Feat Seçimi (Opsiyonel):</label>
                                                         <select v-model="store.abilities.asi[step.level].feat" class="mini-select">
@@ -167,14 +179,12 @@
                                                         </select>
                                                     </div>
                                                 </div>
-
-                                                <div class="choice-wrapper" style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 10px;">
-                                                    <p style="font-size: 0.9em; margin-bottom: 10px; color: #ccc;">
+                                                <div class="choice-wrapper" style="border-top: 1px dashed #444;">
+                                                    <p style="font-size: 0.9em; color: #ccc;">
                                                         Seçtiğiniz feat stat artışı sağlıyorsa veya stat artışı seçtiyseniz gerekli yükseltmeyi buradan uygulayabilirsiniz. (+1 Puan)
                                                         <br>
                                                         <span style="color: #b52b2b;">(Not: Bu yetenek ile hiç bir stat 20'nin üstüne arttırılamaz.)</span>
                                                     </p>
-                                                    
                                                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                                                         <div>
                                                             <label>Yükseltme 1:</label>
@@ -196,23 +206,16 @@
 
                                             <div v-else-if="!feat.isSubclass" class="feature-item">
                                                 <h4>{{ feat.name }}</h4>
-                                                
                                                 <div class="feature-text">
                                                     <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt" style="margin-bottom: 5px;"></p>
                                                 </div>
-
                                                 <div v-if="feat.hasOptions">
                                                     <div v-for="i in feat.selectionCount" :key="i" class="choice-wrapper">
                                                         <div class="choice-container">
                                                             <label>Seçim {{ i }}:</label>
                                                             <select v-model="userChoices[feat.name + '-' + step.level + '_' + (i-1)]" class="mini-select">
                                                                 <option :value="undefined">-- Seçiniz --</option>
-                                                                <option 
-                                                                    v-for="opt in getAvailableOptions(feat.options, feat.name + '-' + step.level + '_' + (i-1))" 
-                                                                    :key="opt.name" 
-                                                                    :value="opt">
-                                                                    {{ opt.name }}
-                                                                </option>
+                                                                <option v-for="opt in getAvailableOptions(feat.options, feat.name + '-' + step.level + '_' + (i-1))" :key="opt.name" :value="opt">{{ opt.name }}</option>
                                                             </select>
                                                         </div>
                                                         <div v-if="getChoiceDetail(feat.name, step.level, i-1)" class="choice-result">
@@ -228,37 +231,23 @@
                                             <label class="selection-label">✨ {{ selectedClass.subclassTitle || 'Bir Yol' }} Seçin:</label>
                                             <select v-model="selectedSubclass" class="embedded-select">
                                                 <option :value="null">-- Seçim Yapınız --</option>
-                                                <option v-for="sub in subclassOptions" :key="sub.name" :value="sub">
-                                                    {{ sub.name }}
-                                                </option>
+                                                <option v-for="sub in subclassOptions" :key="sub.name" :value="sub">{{ sub.name }}</option>
                                             </select>
                                         </div>
 
                                         <template v-for="feat in step.features" :key="'sub-'+feat.name">
                                             <div v-if="feat.isSubclass" class="feature-item subclass-item">
-                                                <h4>
-                                                    {{ feat.name }} 
-                                                    <span class="subclass-tag">
-                                                        {{ selectedClass.subclassTitle || 'Alt Sınıf' }}
-                                                    </span>
-                                                </h4>
-                                                
+                                                <h4>{{ feat.name }} <span class="subclass-tag">{{ selectedClass.subclassTitle || 'Alt Sınıf' }}</span></h4>
                                                 <div class="feature-text">
                                                     <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt" style="margin-bottom: 5px;"></p>
                                                 </div>
-
                                                 <div v-if="feat.hasOptions">
                                                     <div v-for="i in feat.selectionCount" :key="i" class="choice-wrapper">
                                                         <div class="choice-container">
                                                             <label>Seçim {{ i }}:</label>
                                                             <select v-model="userChoices[feat.name + '-' + step.level + '_' + (i-1)]" class="mini-select">
                                                                 <option :value="undefined">-- Seçiniz --</option>
-                                                                <option 
-                                                                    v-for="opt in getAvailableOptions(feat.options, feat.name + '-' + step.level + '_' + (i-1))" 
-                                                                    :key="opt.name" 
-                                                                    :value="opt">
-                                                                    {{ opt.name }}
-                                                                </option>
+                                                                <option v-for="opt in getAvailableOptions(feat.options, feat.name + '-' + step.level + '_' + (i-1))" :key="opt.name" :value="opt">{{ opt.name }}</option>
                                                             </select>
                                                         </div>
                                                         <div v-if="getChoiceDetail(feat.name, step.level, i-1)" class="choice-result">
@@ -267,10 +256,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </template>
-
                                     </div>
                                 </div>
                             </div>
@@ -286,7 +273,6 @@
                         <h2>Geçmiş (Background)</h2>
                         <p>Bu bölüm geliştirilme aşamasındadır.</p>
                     </div>
-
                 </div>
 
                 <div class="control-panel">
@@ -296,9 +282,7 @@
             </main>
 
             <aside class="live-sheet" :class="{ 'mobile-open': isMobileSheetOpen }">
-                
                 <div class="mobile-close-btn" @click="toggleMobileSheet">✖</div>
-
                 <div class="sheet-header">
                     <h3>{{ store.meta.name || 'İsimsiz' }}</h3>
                     <div class="subtitle">
@@ -308,28 +292,21 @@
                         {{ selectedClass?.name || 'Sınıf?' }}
                     </div>
                 </div>
-
                 <div class="sheet-stats">
                     <div class="stat-box" v-for="(val, key) in finalAbilityScores" :key="key">
                         <span class="stat-label">{{ key.toUpperCase() }}</span>
-                        <span class="stat-val" :style="statBonuses[key] > 0 ? 'color: #4caf50' : ''">
-                            {{ val }}
-                        </span>
+                        <span class="stat-val" :style="statBonuses[key] > 0 ? 'color: #4caf50' : ''">{{ val }}</span>
                         <span class="stat-mod">{{ Math.floor((val - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((val - 10) / 2) }}</span>
                     </div>
                 </div>
-
                 <div class="pb-box">
                     <span class="pb-label">Uzmanlık Puanı</span>
                     <span class="pb-val">+{{ proficiencyBonus }}</span>
                 </div>
-                
                 <div class="sheet-section">
                     <h4 style="border-bottom: 1px solid #b52b2b; padding-bottom: 5px; margin-bottom: 10px; color: #b52b2b;">Yetenekler (Skills)</h4>
-                    
                     <div class="skills-container">
                         <div v-for="skill in calculatedSkills" :key="skill.id" class="skill-row">
-                            
                             <div class="skill-left">
                                 <div class="skill-dots">
                                     <div class="dot" :class="{ 'active': skill.profLevel >= 1 }"></div>
@@ -340,25 +317,24 @@
                                     <span class="skill-attr">({{ skill.attrLabel }})</span>
                                 </div>
                             </div>
-
                             <div class="skill-val">
                                 {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </aside>
-
-        </div> <div class="mobile-sheet-toggle" @click="toggleMobileSheet">
+        </div>
+        
+        <div class="mobile-sheet-toggle" @click="toggleMobileSheet">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20ZM8 12V14H16V12H8ZM8 16V18H13V16H8Z"/>
             </svg>
         </div>
 
-    </div> <script type="module" src="./appKarYa.js"></script>
+    </div>
 
+    <script type="module" src="./appKarYa.js"></script>
     <script>
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');

@@ -187,7 +187,43 @@ const app = createApp({
         const optionSourceMap = { "Ek Manevralar": "Savaş Üstadı: Manevralar", "Ek Metabüyü": "Metabüyü" };
 
         const getHitDie = (cls) => cls?.hd?.faces || '?';
-        const parseTags = (text) => text ? text.replace(/\{@(\w+)\s+([^}]+)\}/g, (_, __, c) => `<span class="dnd-link">${c.split('|')[0]}</span>`) : "";
+        // --- ETİKETLERİ LİNKE ÇEVİRME ---
+        const parseTags = (text) => {
+            if (!text) return "";
+
+            // Regex: {@tag content} formatını yakalar
+            // Örn: {@spell Eldritch Blast (Eldritch Patlaması)|phb}
+            return text.replace(/\{@(\w+)\s+([^}]+)\}/g, (match, tag, content) => {
+                
+                // İçerik bazen "İsim|Kaynak" şeklinde gelir. Parçalayalım.
+                let [name, source] = content.split('|');
+                
+                // Görüntülenecek metin (Name)
+                let displayText = name;
+
+                // 1. EĞER BU BİR BÜYÜ İSE ({@spell ...})
+                if (tag === 'spell') {
+                    // URL için ismi temizle:
+                    // 1. Küçük harfe çevir
+                    // 2. Boşlukları %20 yap
+                    // 3. Türkçe karakterleri de encodeURI halleder ama garanti olsun diye basit encode
+                    let urlName = encodeURIComponent(name.toLowerCase());
+                    
+                    // Kaynak varsa (phb, xge vb.) ekle, yoksa phb varsayalım
+                    let urlSource = source ? `_${source.toLowerCase()}` : '_phb';
+                    
+                    // 5eTürkçe URL yapısı: spells.html#isim_kaynak
+                    // Örn: https://kanguen.github.io/spells.html#eldritch%20blast%20(eldritch%20patlamas%c4%b1)_phb
+                    const targetUrl = `https://kanguen.github.io/spells.html#${urlName}${urlSource}`;
+
+                    return `<a href="${targetUrl}" target="_blank" class="dnd-link spell-link" title="Büyü detayını gör">✨ ${displayText}</a>`;
+                }
+
+                // 2. DİĞER ETİKETLER (item, creature vb.) - Şimdilik sadece text kalsın
+                // İstersen bunları da bestiary.html veya items.html'e yönlendirebiliriz.
+                return `<span class="dnd-link">${displayText}</span>`;
+            });
+        };
         const formatEntry = (entry) => { if(!entry) return ""; if(typeof entry==='string') return parseTags(entry); if(entry.type==='options') return ""; if(entry.entries) return entry.entries.map(e=>formatEntry(e)).join("<br>"); if(entry.type==='list'&&entry.items) return "<ul>"+entry.items.map(i=>"<li>"+formatEntry(i)+"</li>").join("")+"</ul>"; return entry.name||""; };
         const extractOptions = (feat) => { if(!feat) return null; if(feat.type==='options'&&feat.entries) return feat.entries; if(feat.entries&&Array.isArray(feat.entries)) { for(const e of feat.entries) if(e.type==='options'&&e.entries) return e.entries; } return null; };
         const findOptionsByName = (targetName) => { if(!selectedSubclass.value?.subclassFeatures) return null; for(const grp of selectedSubclass.value.subclassFeatures) for(const f of grp) if(f.name===targetName) return extractOptions(f); return null; };
