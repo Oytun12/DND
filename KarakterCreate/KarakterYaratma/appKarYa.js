@@ -264,7 +264,7 @@ const app = createApp({
             { id: 'roll_4d6', name: 'Zar At (4d6)' },
             { id: 'roll_5d6', name: 'Zar At (5d6)' }
         ];
-        const selectedScoreMethod = ref('manual');
+        const selectedScoreMethod = ref('point_buy_flex');
         const standardArrayValues = [15, 14, 13, 12, 10, 8];
         const rolledPool = ref([]);
         const hasRolled = ref(false);
