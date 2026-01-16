@@ -563,6 +563,83 @@ const app = createApp({
         const currentUsedSkills = computed(() => store.skills.proficiencies.length + store.skills.expertises.length);
 
         // ============================================================
+        //  CHARACTER SEED SYSTEM (Tohum Sistemi)
+        // ============================================================
+
+        // 1. SEED OLUŞTURUCU (Karakter seçimlerini şifreli koda çevirir)
+        const characterSeed = computed(() => {
+            // Sadece gerekli "kimlik" bilgilerini alıyoruz (Dosyaların tamamını değil)
+            const exportData = {
+                n: store.meta.name,
+                r: store.race.selected?.name,
+                sr: store.race.subrace?.name,
+                c: store.class.selected?.name,
+                sc: store.class.subclass?.name,
+                l: store.class.level,
+                b: store.abilities.base,
+                asi: store.abilities.asi,
+                bg: store.background.selected?.name,
+                p: store.skills.proficiencies,
+                e: store.skills.expertises,
+                ch: userChoices.value
+            };
+
+            try {
+                // Veriyi stringe çevir ve Base64 ile şifrele
+                const jsonStr = JSON.stringify(exportData);
+                // Türkçe karakter desteği için URI encode/decode hilesi
+                return btoa(unescape(encodeURIComponent(jsonStr)));
+            } catch (e) {
+                return "Seed Oluşturulamadı";
+            }
+        });
+
+        // 2. SEED'DEN YÜKLEME (Dışarıdan gelen kodu karaktere çevirir)
+        const loadFromSeed = (seed) => {
+            try {
+                const decoded = decodeURIComponent(escape(atob(seed)));
+                const data = JSON.parse(decoded);
+
+                // Meta & Seviye
+                store.meta.name = data.n;
+                store.class.level = data.l;
+
+                // Statlar
+                store.abilities.base = data.b;
+                store.abilities.asi = data.asi;
+
+                // Skilller
+                store.skills.proficiencies = data.p;
+                store.skills.expertises = data.e;
+                userChoices.value = data.ch;
+
+                // Nesneleri bulup eşleştirme (JSON listelerinden isimle eşliyoruz)
+                if (data.r) {
+                    const found = flatRaceList.value.find(x => x.label.includes(data.r));
+                    if (found) selectedFlatOption.value = found;
+                }
+
+                if (data.c) {
+                    store.class.selected = classList.value.find(x => x.name === data.c);
+                }
+
+                if (data.bg) {
+                    store.background.selected = backgroundList.value.find(x => x.name === data.bg);
+                }
+
+                alert("Karakter başarıyla yüklendi!");
+            } catch (e) {
+                alert("Geçersiz Seed kodu!");
+                console.error(e);
+            }
+        };
+
+        const copySeed = () => {
+            navigator.clipboard.writeText(characterSeed.value);
+            alert("Seed panoya kopyalandı! Arkadaşlarına gönderebilirsin.");
+        };
+
+        // ============================================================
         //  8. MOBIL UI & EXTRAS
         // ============================================================
         const isMobileSheetOpen = ref(false);
@@ -583,7 +660,8 @@ const app = createApp({
             classSkillInfo,
 
             // Score Engine
-            scoreMethods, selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, standardArrayValues, rollStats, rolledPool, hasRolled, isCapped20
+            scoreMethods, selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, standardArrayValues, rollStats, rolledPool, hasRolled, isCapped20,
+            characterSeed, loadFromSeed, copySeed
         };
     }
 });

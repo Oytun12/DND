@@ -86,8 +86,16 @@
                     
                     <div v-show="currentStep === 0" class="step-pane">
                         <h2>Karakter Konsepti</h2>
+
                         <p>Karakterinizin adını belirleyerek başlayın.</p>
                         <input v-model="store.meta.name" type="text" placeholder="Karakter Adı" class="big-input" style="padding: 10px; width: 100%; font-size: 1.1em; border-radius: 4px; border:1px solid #444; background:#222; color:white;">
+                                                <div class="form-group" style="margin-top: 20px; border: 1px dashed #444; padding: 15px;">
+                            <label>Daha Önce Oluşturulmuş Bir Seed Yükle:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="seedInput" placeholder="Kodu buraya yapıştır..." class="mini-select" style="flex: 1;">
+                                <button @click="loadFromSeed(document.getElementById('seedInput').value)" class="btn btn-secondary">Yükle</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div v-show="currentStep === 1" class="step-pane">
@@ -507,12 +515,12 @@
                     <div class="skills-container">
                         <div v-for="skill in calculatedSkills" :key="skill.id" class="skill-row">
                             <div class="skill-left">
-                                
+
                                 <div class="skill-status-icon">
                                     <span v-if="skill.profLevel === 2" title="Ustalık (Expertise)" style="color: #e67e22; font-size: 1.3em; line-height: 1;">★</span>
-                                    
+
                                     <span v-else-if="skill.profLevel === 1" title="Uzmanlık" style="color: #b52b2b; font-size: 1.3em; line-height: 1;">●</span>
-                                    
+
                                     <span v-else style="color: #333; font-size: 1.3em; line-height: 1;">•</span>
                                 </div>
                                 <div>
@@ -525,6 +533,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="sheet-section" style="border-top: 2px solid #333; margin-top: 20px; padding-top: 15px;">
+                    <h4 style="color: #888; font-size: 0.8em; text-transform: uppercase;">Karakter Tohumu (Seed)</h4>
+                    <div style="background: #111; padding: 10px; border-radius: 4px; border: 1px solid #222;">
+                        <code style="display: block; font-size: 0.7em; color: #4caf50; word-break: break-all; max-height: 60px; overflow-y: auto; margin-bottom: 10px;">
+                            {{ characterSeed }}
+                        </code>
+                        <button @click="copySeed" class="btn btn-primary" style="width: 100%; font-size: 0.8em; padding: 5px;">
+                            📋 Kodu Kopyala / Paylaş
+                        </button>
+                    </div>
+                </div>
                 </div>
             </aside>
         </div>
