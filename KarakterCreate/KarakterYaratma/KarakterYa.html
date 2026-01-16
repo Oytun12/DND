@@ -6,6 +6,7 @@
     <title>Karakter Yaratıcısı - 5eTürkçe</title>
     
     <link rel="stylesheet" href="stylesKarYa.css">
+    <link rel="stylesheet" href="stylesScores.css">
     
     <script type="importmap">
     {
@@ -265,13 +266,200 @@
                     </div>
 
                     <div v-show="currentStep === 3" class="step-pane">
-                        <h2>Yetenek Puanları (Point Buy)</h2>
-                        <p>Bu bölüm geliştirilme aşamasındadır.</p>
+                        
+                        <div class="method-selector">
+                            <h3>Yetenek Puanı Belirleme Yöntemi</h3>
+                            <div class="method-btn-group">
+                                <button v-for="method in scoreMethods" :key="method.id"
+                                        class="method-btn"
+                                        :class="{ 'active': selectedScoreMethod === method.id }"
+                                        @click="selectedScoreMethod = method.id">
+                                    {{ method.name }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div v-if="selectedScoreMethod.includes('point_buy')" class="score-dashboard">
+                            
+                            <div class="budget-display">
+                                Kullanılan Puan: 
+                                <span :class="currentPbCost > pointBuyBudget ? 'budget-debt' : 'budget-ok'">
+                                    {{ currentPbCost }} / {{ pointBuyBudget }}
+                                </span>
+                                <span v-if="currentPbCost > pointBuyBudget" style="display:block; font-size:0.8em; color:#ff4444; margin-top:5px;">
+                                    ⚠️ Bütçeyi aştınız! ({{ currentPbCost - pointBuyBudget }} Puan Borç)
+                                </span>
+                            </div>
+
+                            <div v-for="(label, key) in selectableStats" :key="key" class="score-row">
+                                <div class="score-label">{{ label }}</div>
+                                
+                                <div class="pb-controls">
+                                    <button class="pb-btn minus" @click="changePointBuy(key, -1)">-</button>
+                                    
+                                    <div class="pb-val-display" 
+                                         :style="store.abilities.base[key] > 15 ? 'color: #e67e22; text-shadow:0 0 5px rgba(230, 126, 34, 0.5);' : ''">
+                                        {{ store.abilities.base[key] }}
+                                    </div>
+                                    
+                                    <button class="pb-btn plus" @click="changePointBuy(key, 1)">+</button>
+                                </div>
+
+                                <div style="text-align: right;">
+                                    <div v-if="store.abilities.base[key] > 15" style="font-size: 0.7em; color: #e67e22; margin-bottom: 2px;">
+                                        ⚠️ SINIR AŞILDI
+                                    </div>
+                                    
+                                    <div class="score-total" style="font-size: 0.9em; color:#888;">
+                                        Maliyet: {{ getFlexCost(store.abilities.base[key]) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div v-if="selectedScoreMethod === 'standard_array'" class="score-dashboard">
+                            <p style="text-align:center; color:#aaa; margin-bottom:20px;">
+                                Aşağıdaki değerleri yeteneklerinize atayın: <strong>15, 14, 13, 12, 10, 8</strong>
+                            </p>
+                            <div v-for="(label, key) in selectableStats" :key="key" class="score-row">
+                                <div class="score-label">{{ label }}</div>
+                                <div>
+                                    <select v-model="store.abilities.base[key]" class="mini-select" style="text-align:center;">
+                                        <option :value="0">-- Seç --</option>
+                                        <option v-for="val in standardArrayValues" :key="val" 
+                                                :value="val"
+                                                :disabled="isOptionDisabled(val, key, standardArrayValues)">
+                                            {{ val }} {{ isOptionDisabled(val, key, standardArrayValues) ? '(Kullanıldı)' : '' }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="score-total">{{ store.abilities.base[key] || '-' }}</div>
+                            </div>
+                        </div>
+
+                        <div v-if="selectedScoreMethod.includes('roll')" class="score-dashboard">
+                            
+                            <div v-if="selectedScoreMethod === 'roll_5d6'" style="margin-bottom: 15px; text-align: center;">
+                                <label style="cursor: pointer; color: #e67e22; display: inline-flex; align-items: center; gap: 8px; user-select: none;">
+                                    <input type="checkbox" v-model="isCapped20" style="width: 18px; height: 18px; cursor: pointer;">
+                                    Maksimum 20 ile sınırla (Limit)
+                                </label>
+                                <p style="font-size: 0.8em; color: #888; margin-top: 4px;">
+                                    (Normalde 4 zar toplanır ve 24'e kadar çıkabilir. Bunu seçerseniz 20'yi geçemez.)
+                                </p>
+                            </div>
+
+                            <button v-if="!hasRolled" @click="rollStats" class="roll-btn">
+                                🎲 Zarları At ({{ selectedScoreMethod === 'roll_5d6' ? '5d6' : '4d6' }})
+                            </button>
+                            
+                            <button v-else @click="rollStats" class="btn btn-secondary" style="width:100%; margin-bottom:20px;">
+                                🔄 Tekrar At
+                            </button>
+
+                            <div v-if="hasRolled">
+                                <div class="dice-pool">
+                                    <div v-for="(val, idx) in rolledPool" :key="idx" class="rolled-stat">
+                                        {{ val }}
+                                    </div>
+                                </div>
+                                <p style="text-align:center; color:#aaa; font-size:0.9em;">Yukarıdaki zarları aşağıya yerleştirin.</p>
+                                <hr style="border-color:#333; margin:15px 0;">
+
+                                <div v-for="(label, key) in selectableStats" :key="key" class="score-row">
+                                    <div class="score-label">{{ label }}</div>
+                                    <div>
+                                        <select v-model="store.abilities.base[key]" class="mini-select">
+                                            <option :value="0">-- Ata --</option>
+                                            <option v-for="val in [...new Set(rolledPool)].sort((a,b)=>b-a)" :key="val" 
+                                                    :value="val"
+                                                    :disabled="isOptionDisabled(val, key, rolledPool)">
+                                                {{ val }} {{ isOptionDisabled(val, key, rolledPool) ? '(Kullanıldı)' : '' }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="score-total">{{ store.abilities.base[key] || '-' }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="selectedScoreMethod === 'manual'" class="score-dashboard">
+                            <p style="text-align:center; color:#e67e22; margin-bottom:20px;">
+                                Dikkat: Hiçbir kısıtlama yoktur. İstediğiniz değeri girebilirsiniz.
+                            </p>
+                            <div v-for="(label, key) in selectableStats" :key="key" class="score-row">
+                                <div class="score-label">{{ label }}</div>
+                                <div>
+                                    <input type="number" v-model="store.abilities.base[key]" class="big-input" style="text-align:center; padding:5px;">
+                                </div>
+                                <div class="score-total">{{ store.abilities.base[key] }}</div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div v-show="currentStep === 4" class="step-pane">
-                        <h2>Geçmiş (Background)</h2>
-                        <p>Bu bölüm geliştirilme aşamasındadır.</p>
+    
+                        <div class="controls-grid">
+                            <div class="form-group full-width">
+                                <label>Karakter Geçmişi (Background):</label>
+                                <select v-model="store.background.selected" class="main-select">
+                                    <option :value="null">-- Bir Geçmiş Seçin --</option>
+                                    <option v-for="bg in backgroundList" :key="bg.name" :value="bg">
+                                        {{ bg.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    
+                        <div class="budget-status" style="flex-direction: column; align-items: flex-start; gap: 10px; padding: 15px;">
+                            <h4 style="margin:0; color:#b52b2b;">Yetenek Analizi</h4>
+                                                
+                            <div style="width: 100%; display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                <span>Uzmanlık Yuvası:</span>
+                                <strong :class="{'over-budget': currentProfCount > skillBudget}">
+                                    {{ currentProfCount }} / {{ skillBudget }}
+                                </strong>
+                            </div>
+                        
+                            <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 5px;">
+                                <span>Ustalık Yuvası (Expertise):</span>
+                                <strong :class="{'over-budget': currentExpertCount > expertiseBudget}">
+                                    {{ currentExpertCount }} / {{ expertiseBudget }}
+                                </strong>
+                            </div>
+                        </div>
+                    
+                        <div v-if="store.background.selected" class="choice-wrapper" style="border-color: #4caf50; background: rgba(76, 175, 80, 0.05); margin-bottom: 20px;">
+                            <h5 style="margin:0; color:#4caf50;">💡 {{ store.background.selected.name }} İçin Önerilenler</h5>
+                            <p style="font-size: 0.85em; margin: 5px 0; color: #eee;">
+                                Kural kitabına göre şu yetenekler önerilir: <strong>{{ store.background.selected.skillProficiencies }}</strong>
+                            </p>
+                        </div>
+                    
+                        <div class="skill-picker-grid">
+                            <div v-for="skill in calculatedSkills" 
+                                 :key="skill.id" 
+                                 class="skill-card"
+                                 :class="{ 'is-prof': skill.profLevel === 1, 'is-expert': skill.profLevel === 2 }"
+                                 @click="toggleSkill(skill.id)">
+                                
+                                <div class="skill-bonus-tag">
+                                    {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
+                                </div>
+                                
+                                <div class="skill-info">
+                                    <span class="name">{{ skill.name }}</span>
+                                    <span class="attr">{{ skill.attrLabel }} : {{ finalAbilityScores[skill.attr] }}</span>
+                                </div>
+                            
+                                <div style="margin-right:10px; font-size: 1.2em;">
+                                    <span v-if="skill.profLevel === 1" title="Uzman (Proficient)" style="color: #b52b2b;">●</span>
+                                    <span v-if="skill.profLevel === 2" title="Usta (Expertise)" style="color: #e67e22;">★</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

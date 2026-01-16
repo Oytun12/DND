@@ -1,0 +1,172 @@
+/* ============================================================
+   PUANLAMA EKRANI (SCORE ENGINE) STİLLERİ
+   ============================================================ */
+
+/* Yöntem Seçici (En Üstteki Büyük Kutu) */
+.method-selector {
+    background-color: #222;
+    border: 1px solid #444;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.method-selector h3 { margin-top: 0; color: #b52b2b; }
+
+.method-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.method-btn {
+    background: #333;
+    border: 1px solid #555;
+    color: #ccc;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9em;
+}
+
+.method-btn:hover { background: #444; color: #fff; }
+.method-btn.active { background: #b52b2b; border-color: #b52b2b; color: #fff; box-shadow: 0 0 10px rgba(181, 43, 43, 0.4); }
+
+/* Puanlama Alanı (Grid Yapısı) */
+.score-dashboard {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+}
+
+.score-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 80px; /* Label - Kontrol - Sonuç */
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2a2a2a;
+}
+.score-row:last-child { border-bottom: none; }
+
+.score-label { font-weight: bold; color: #eee; font-size: 1.1em; }
+.score-total { font-weight: bold; font-size: 1.2em; text-align: center; color: #fff; background: #111; padding: 5px; border-radius: 4px; border: 1px solid #333; }
+
+/* Point Buy Kontrolleri */
+.pb-controls { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.pb-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%; border: none;
+    font-weight: bold; cursor: pointer;
+    background: #444; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+}
+.pb-btn:hover { background: #666; }
+.pb-btn.minus { background: #8e2b2b; }
+.pb-btn.plus { background: #2b8e48; }
+.pb-val-display { font-size: 1.2em; font-weight: bold; width: 30px; text-align: center; }
+
+/* Puan Bütçesi Göstergesi */
+.budget-display {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #111;
+    border-radius: 4px;
+    font-size: 1.1em;
+}
+.budget-debt { color: #ff4444; font-weight: bold; animation: pulse 1s infinite; }
+.budget-ok { color: #4caf50; font-weight: bold; }
+
+/* Zar Atma Alanı */
+.dice-pool {
+    display: flex; gap: 10px; justify-content: center; margin: 20px 0;
+    flex-wrap: wrap;
+}
+.rolled-stat {
+    background: #222; border: 2px solid #555;
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1.2em; color: #fff;
+    border-radius: 8px;
+    cursor: grab;
+}
+.rolled-stat.assigned { opacity: 0.3; border-color: #333; cursor: not-allowed; }
+
+.roll-btn {
+    width: 100%; padding: 15px;
+    background: linear-gradient(45deg, #b52b2b, #8e2222);
+    color: white; border: none; border-radius: 6px;
+    font-size: 1.1em; font-weight: bold; cursor: pointer;
+    margin-bottom: 20px;
+}
+.roll-btn:hover { filter: brightness(1.2); }
+
+/* Skill Seçim Paneli */
+.skill-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.skill-card {
+    background: #252525;
+    border: 1px solid #444;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+/* Durum Renkleri */
+.skill-card.is-prof { border-color: #b52b2b; background: rgba(181, 43, 43, 0.1); }
+.skill-card.is-expert { border-color: #e67e22; background: rgba(230, 126, 34, 0.15); box-shadow: 0 0 8px rgba(230, 126, 34, 0.3); }
+
+/* Sol Kare Bonus Kutusu */
+.skill-bonus-tag {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    background: #333;
+    border-radius: 4px;
+    color: #888;
+    margin-right: 12px;
+}
+
+.is-prof .skill-bonus-tag { background: #b52b2b; color: white; }
+.is-expert .skill-bonus-tag { background: #e67e22; color: white; }
+
+/* İçerik Yazıları */
+.skill-info { flex: 1; }
+.skill-info .name { display: block; font-size: 0.95em; color: #eee; }
+.skill-info .attr { font-size: 0.75em; color: #666; text-transform: uppercase; }
+
+/* Uyarı Bannerları */
+.budget-status {
+    background: #111;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+.over-budget { color: #ff4444; animation: pulse 1s infinite; }
+
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }

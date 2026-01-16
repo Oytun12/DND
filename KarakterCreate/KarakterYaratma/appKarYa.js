@@ -19,7 +19,12 @@ const app = createApp({
                 base: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
                 asi: {} 
             },
-            background: { selected: null },
+            skills: {
+            proficiencies: [], // Uzmanlık (Proficiency) alanların ID'leri buraya dolacak
+            expertises: []    // Ustalık (Expertise) alanların ID'leri buraya dolacak
+            },
+            background: { selected: null }, // Seçilen geçmiş burada tutulacak
+            skills: { proficiencies: [], expertises: [] }, // Seçilen yetenekler burada tutulacak
             choices: {} 
         });
 
@@ -27,6 +32,21 @@ const app = createApp({
         //  2. NAVIGATION
         // ============================================================
         const currentStep = ref(0);
+
+        const backgroundList = ref([]); // JSON'dan gelecek geçmişler listesi
+
+        // --- 2. VERİ YÜKLEME (ONMOUNTED VEYA DOĞRUDAN) ---
+        const loadBackgrounds = async () => {
+            try {
+                const response = await fetch('../../Data/backgrounds.json');
+                const data = await response.json();
+                backgroundList.value = data.background; // JSON yapısındaki "background" dizisini alıyoruz
+            } catch (err) {
+                console.error("Geçmiş verileri yüklenemedi:", err);
+            }
+        };
+        loadBackgrounds();
+
         const steps = [{ title: "Konsept" }, { title: "Irk" }, { title: "Sınıf" }, { title: "Puanlar" }, { title: "Geçmiş" }];
         const nextStep = () => { if (currentStep.value < steps.length - 1) currentStep.value++; };
         const prevStep = () => { if (currentStep.value > 0) currentStep.value--; };
@@ -296,6 +316,51 @@ const app = createApp({
             return Math.ceil(lvl / 4) + 1;
         });
 
+        // --- DİNAMİK BEYİN: BÜTÇELER VE ANALİZ ---
+
+        // 1. Toplam Uzmanlık (Proficiency) Bütçesi
+        const skillBudget = computed(() => {
+            let total = 0;
+            // SINIF: Seçiliyse puan gelir (Düzenbaz 4, Ozan 3, Diğerleri 2)
+            if (store.class.selected) {
+                const name = store.class.selected.name;
+                if (name === "Düzenbaz") total += 4;
+                else if (name === "Ozan") total += 3;
+                else total += 2;
+            }
+            // GEÇMİŞ: Her geçmiş standart 2 puan verir (Seçiliyse)
+            if (store.background.selected) total += 2;
+
+            // IRK: Varyant İnsan ise +1
+            if (store.race.selected?.name.includes("Varyant")) total += 1;
+
+            return total;
+        });
+
+        // 2. Toplam Ustalık (Expertise) Bütçesi
+        const expertiseBudget = computed(() => {
+            if (!store.class.selected) return 0;
+            const name = store.class.selected.name;
+            // Sadece belirli sınıflar Expertise (Ustalık) hakkı kazanır
+            if (name === "Düzenbaz") return 2; // Lv1'de 2 tane
+            if (name === "Ozan") return 2;    // Lv3'te 2 tane
+            return 0; 
+        });
+
+        // 3. Mevcut Harcama Sayaçları (Kullanılanlar)
+        const currentProfCount = computed(() => store.skills.proficiencies.length);
+        const currentExpertCount = computed(() => store.skills.expertises.length);
+        
+
+        // Uzmanlık ve Ustalık için harcanan toplam puan (Esneklik için hepsini sayıyoruz)
+        const currentUsedSkills = computed(() => {
+            return store.skills.proficiencies.length + store.skills.expertises.length;
+        });
+        // --- ETKİLEŞİM: KUTUYA TIKLAYINCA NE OLSUN? ---
+
+
+
+
         // D. Skill Listesi
         const SKILL_DEFINITIONS = [
             { id: 'acrobatics', name: 'Akrobasi', attr: 'dex' },
@@ -318,28 +383,220 @@ const app = createApp({
             { id: 'survival', name: 'Hayatta Kalma', attr: 'wis' }
         ];
 
-        const calculatedSkills = computed(() => {
-            const stats = finalAbilityScores.value;
-            const pb = proficiencyBonus.value;
-            return SKILL_DEFINITIONS.map(skill => {
-                const score = stats[skill.attr] || 10;
-                const mod = Math.floor((score - 10) / 2);
-                const profLevel = 0; // Şimdilik 0, ileride store'dan çekeceğiz
-                const total = mod + (pb * profLevel);
-                return {
-                    ...skill,
-                    totalBonus: total,
-                    profLevel: profLevel,
-                    attrLabel: statLabels[skill.attr].substring(0, 3) 
-                };
-            });
-        });
+
 
         // --- MOBİL KARAKTER KAĞIDI YÖNETİMİ ---
         const isMobileSheetOpen = ref(false);
         const toggleMobileSheet = () => {
             isMobileSheetOpen.value = !isMobileSheetOpen.value;
         };
+
+        // ============================================================
+        //  7. SCORE ENGINE (PUANLAMA SİSTEMİ)
+        // ============================================================
+        
+        // Yöntemler
+        const scoreMethods = [
+            { id: 'manual', name: 'Manuel Giriş (Özgür)' },
+            { id: 'standard_array', name: 'Standart Dizilim (15,14,13...)' },
+            { id: 'point_buy', name: 'Point Buy (Standart)' },
+            { id: 'point_buy_flex', name: 'Point Buy (Esnek)' },
+            { id: 'roll_4d6', name: 'Zar At (4d6 - Düşüğü At)' },
+            { id: 'roll_5d6', name: 'Buflı Zar (5d6 - Düşüğü At)' }
+        ];
+
+        // Seçili Yöntem (Varsayılan: Point Buy)
+        const selectedScoreMethod = ref('point_buy');
+
+        // --- ORTAK FİLTRELEME MANTIĞI (Kullanılanları Pasif Yap) ---
+
+        // Bir değerin BAŞKA bir stat tarafından kullanılıp kullanılmadığını kontrol eder.
+        // Eğer havuzda o değerden birden fazla varsa (örn: iki tane 14 attı), 
+        // kaç tanesinin kullanıldığını sayar ve ona göre izin verir.
+        const isOptionDisabled = (val, currentKey, pool) => {
+            // 1. Havuzda bu değerden toplam kaç tane var?
+            const totalInPool = pool.filter(n => n === val).length;
+            
+            // 2. Diğer statlar bu değerden kaç tane kullanmış?
+            let usedByOthers = 0;
+            Object.entries(store.abilities.base).forEach(([k, v]) => {
+                // Şu an işlem yaptığımız stat (currentKey) hariç diğerlerine bak
+                if (k !== currentKey && v === val) {
+                    usedByOthers++;
+                }
+            });
+
+            // 3. Eğer kullanılan sayı, havuzdakine eşit veya fazlaysa bu seçenek pasif olsun.
+            return usedByOthers >= totalInPool;
+        };
+
+        // --- POINT BUY MANTIĞI ---
+
+        // 1. Maliyet Hesaplama Fonksiyonu (Standart ve Esnek İçin Ortak)
+        const getFlexCost = (score) => {
+            if (score <= 8) return 0;
+            if (score === 9) return 1;
+            if (score === 10) return 2;
+            if (score === 11) return 3;
+            if (score === 12) return 4;
+            if (score === 13) return 5;
+            if (score === 14) return 7;
+            if (score === 15) return 9;
+            // Buradan sonrası Esnek Mod için artan maliyetler
+            if (score === 16) return 12;
+            if (score === 17) return 15;
+            if (score === 18) return 19;
+            if (score === 19) return 23;
+            if (score >= 20) return 28;
+            return 0;
+        };
+
+        // 2. Bütçe (Her zaman 27 referans alınır)
+        const pointBuyBudget = computed(() => 27);
+
+        // 3. Toplam Maliyeti Canlı Hesapla
+        const currentPbCost = computed(() => {
+            let total = 0;
+            // Mevcut statları dön ve maliyetlerini topla
+            Object.values(store.abilities.base).forEach(val => {
+                total += getFlexCost(val);
+            });
+            return total;
+        });
+
+        // 4. Puan Değiştirme Butonlarının İşlevi
+        const changePointBuy = (stat, delta) => {
+            const current = store.abilities.base[stat];
+            let next = current + delta;
+            
+            // Limit Kontrolleri
+            if (selectedScoreMethod.value === 'point_buy') {
+                // Standart Mod: En az 8, En çok 15
+                if (next < 8) next = 8;
+                if (next > 15) next = 15;
+            } else {
+                // Esnek Mod: En az 8, En çok 20
+                if (next < 8) next = 8;
+                if (next > 20) next = 20; 
+            }
+            
+            // Yeni değeri kaydet
+            store.abilities.base[stat] = next;
+        };
+
+        // --- STANDART DİZİLİM MANTIĞI ---
+        const standardArrayValues = [15, 14, 13, 12, 10, 8];
+
+        // --- ZAR ATMA MANTIĞI ---
+        const rolledPool = ref([]);
+        const hasRolled = ref(false);
+        const isCapped20 = ref(false); // Limit kontrolü için değişken
+
+        const rollStats = () => {
+            const diceCount = selectedScoreMethod.value === 'roll_5d6' ? 5 : 4;
+            const results = [];
+            
+            for (let i = 0; i < 6; i++) {
+                // n tane zar at
+                let rolls = [];
+                for (let d = 0; d < diceCount; d++) {
+                    rolls.push(Math.ceil(Math.random() * 6));
+                }
+                // Küçükten büyüğe sırala
+                rolls.sort((a, b) => a - b);
+                
+                // En düşüğü at (ilk eleman)
+                rolls.shift(); 
+                
+                // Kalanları topla
+                let sum = rolls.reduce((a, b) => a + b, 0);
+
+                // YENİ: Eğer 5d6 ise ve Limit seçiliyse 20'ye sabitle
+                if (selectedScoreMethod.value === 'roll_5d6' && isCapped20.value) {
+                    if (sum > 20) sum = 20;
+                }
+
+                results.push(sum);
+            }
+            // Büyükten küçüğe sırala
+            results.sort((a, b) => b - a);
+            rolledPool.value = results;
+            hasRolled.value = true;
+            
+            // Sıfırla
+            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
+        };
+
+        // Yöntem değişince verileri temizle ve varsayılanları ayarla
+        watch(selectedScoreMethod, (newMethod) => {
+            if (newMethod.includes('point_buy')) {
+                Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 8);
+            } else if (newMethod === 'manual') {
+                Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 10);
+            } else if (newMethod === 'standard_array') {
+                 Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0); // Seçmesi için 0 yap
+            } else {
+                // Zar modları
+                Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
+                hasRolled.value = false;
+                rolledPool.value = [];
+            }
+        });
+        
+        // ============================================================
+        //  8. Karakter Geçmişi MANTIĞI
+        // ============================================================
+
+        // --- YETENEK SEÇİM MANTIĞI ---
+
+        // --- ETKİLEŞİM: KUTUYA TIKLAYINCA NE OLSUN? ---
+
+        const toggleSkill = (skillId) => {
+            const isProf = store.skills.proficiencies.includes(skillId);
+            const isExpert = store.skills.expertises.includes(skillId);
+        
+            if (!isProf && !isExpert) {
+                // Durum: Boş -> Uzmanlık (Proficiency) yap
+                store.skills.proficiencies.push(skillId);
+            } 
+            else if (isProf) {
+                // Durum: Uzman -> Ustalık (Expertise) yap
+                // Uzmanlıktan sil, Ustalığa ekle
+                store.skills.proficiencies = store.skills.proficiencies.filter(id => id !== skillId);
+                store.skills.expertises.push(skillId);
+            } 
+            else {
+                // Durum: Ustalık -> Boş yap
+                store.skills.expertises = store.skills.expertises.filter(id => id !== skillId);
+            }
+        };
+        // 2. Canlı Hesaplama (Sağ panel ve seçim ekranı için)
+        const calculatedSkills = computed(() => {
+            const stats = finalAbilityScores.value;
+            const pb = proficiencyBonus.value;
+        
+            return SKILL_DEFINITIONS.map(skill => {
+                const score = stats[skill.attr] || 10;
+                const mod = Math.floor((score - 10) / 2);
+                
+                let level = 0; // Bonus çarpanı
+                if (store.skills.proficiencies.includes(skill.id)) level = 1;
+                if (store.skills.expertises.includes(skill.id)) level = 2;
+            
+                return {
+                    ...skill,
+                    totalBonus: mod + (pb * level),
+                    profLevel: level,
+                    attrLabel: statLabels[skill.attr].substring(0, 3)
+                };
+            });
+        });
+
+        
+
+        // ============================================================
+        //  9. RETURNED PROPERTIES
+        // ============================================================
 
         return {
             store, currentStep, steps, nextStep, prevStep, loading, error,
@@ -350,7 +607,19 @@ const app = createApp({
             finalAbilityScores, statBonuses,
             selectedRace, selectedSubrace, featList,
             isMobileSheetOpen, toggleMobileSheet,
-            proficiencyBonus, calculatedSkills // <--- Bunlar artık return ediliyor!
+            proficiencyBonus, calculatedSkills, 
+            toggleSkill,backgroundList,
+            skillBudget,
+            currentUsedSkills, currentProfCount, currentExpertCount,
+            expertiseBudget,
+            skillBudget: computed(() => 4), 
+            expertiseBudget: computed(() => store.class.selected?.name === "Düzenbaz" ? 2 : 0),
+            // Score Engine Returnleri
+            scoreMethods, selectedScoreMethod, 
+            isOptionDisabled, // Dropdown disable mantığı
+            getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, // Point Buy
+            standardArrayValues, // Standart Array
+            rollStats, rolledPool, hasRolled, isCapped20, 
         };
     }
 });
