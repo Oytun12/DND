@@ -305,24 +305,67 @@ a.dnd-link.spell-link:hover {
 .skill-attr { color: #666; font-size: 0.85em; margin-left: 3px; }
 .skill-val { font-weight: bold; color: #fff; min-width: 20px; text-align: right; }
 
+/* stylesKarYa.css EN ALTA EKLE */
+
+/* Yeni İkon Kutusu */
+.skill-status-icon {
+    width: 20px;       /* Sabit genişlik: İkon olsa da olmasa da metin kaymaz */
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px; /* İsimle arasındaki boşluk */
+}
+
+/* Satır düzenlemesi (Mevcut skill-row içine etki eder) */
+.skill-row {
+    padding: 4px 0; /* Satır aralığını biraz rahatlatalım */
+}
+
+/*
 .skill-dots { display: flex; gap: 2px; }
 .dot { width: 6px; height: 6px; border-radius: 50%; border: 1px solid #555; background-color: transparent; }
-.dot.active { background-color: #b52b2b; border-color: #b52b2b; }
+.dot.active { background-color: #b52b2b; border-color: #b52b2b; }*/
 
 /* ============================================================
    MOBİL / RESPONSIVE (DÜZELTİLDİ: FAB ORTALANDI)
    ============================================================ */
 .mobile-close-btn, .mobile-sheet-toggle { display: none; }
 
-@media (max-width: 900px) {
-    /* Layout Tek Kolona Düşer */
-    .wizard-layout { grid-template-columns: 1fr; }
+@media (max-width: 800px) {
+
+    /* --- LAYOUT SIFIRLAMA (YENİ EKLENEN KISIM) --- */
+    .wizard-layout { 
+        grid-template-columns: 1fr;
+        /* Dış boşlukları tamamen sıfırla */
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        gap: 0;
+    }
+
+    .wizard-container {
+        /* Kart görünümünden tam ekran görünüme geç */
+        border-radius: 0; 
+        box-shadow: none;
+        /* İçerik kenara yapışmasın diye çok az iç boşluk bırakıyoruz */
+        padding: 15px 10px; 
+        min-height: 100vh; /* Ekranı dikeyde doldur */
+    }
     
+    /* Adım göstergesini mobilde biraz sıkılaştır */
+    .step-indicator {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+
+    /* --------------------------------------------- */
+
     /* Masaüstü Menü Gizle, Mobil İkon Göster */
     .desktop-nav { display: none; }
     .menu-icon { display: block; }
 
-    /* --- YENİ EKLENEN KISIM: SEVİYE KARTI DÖNÜŞÜMÜ --- */
+    /* --- SEVİYE KARTI DÖNÜŞÜMÜ --- */
     
     /* 1. Kartı dikey hizaya çevir (Rozet üste geçsin) */
     .level-card {
@@ -360,15 +403,16 @@ a.dnd-link.spell-link:hover {
         font-weight: normal;
         letter-spacing: 1px;
     }
-    /* -------------------------------------------------- */
 
-    /* SIDEBAR (OFF-CANVAS) */
+    /* --- SIDEBAR (OFF-CANVAS) --- */
     .live-sheet {
         position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
         background-color: #1a1a1a; z-index: 1000; padding: 20px;
         box-shadow: -5px 0 15px rgba(0,0,0,0.8);
         transform: translateX(100%); transition: transform 0.3s ease-in-out;
         max-height: 100vh;
+        /* Mobilde kaydırma için gerekli */
+        overflow-y: auto; 
     }
     .live-sheet.mobile-open { display: block !important; transform: translateX(0); }
 
@@ -378,7 +422,7 @@ a.dnd-link.spell-link:hover {
     }
     .mobile-close-btn:hover { color: #fff; }
 
-    /* MOBİL AÇMA BUTONU (FAB - ORTALANMIŞ) */
+    /* --- MOBİL AÇMA BUTONU (FAB - ORTALANMIŞ) --- */
     .mobile-sheet-toggle {
         display: flex; align-items: center; justify-content: center;
         position: fixed;

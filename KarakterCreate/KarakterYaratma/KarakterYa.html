@@ -432,9 +432,20 @@
                         </div>
                     
                         <div v-if="store.background.selected" class="choice-wrapper" style="border-color: #4caf50; background: rgba(76, 175, 80, 0.05); margin-bottom: 20px;">
-                            <h5 style="margin:0; color:#4caf50;">💡 {{ store.background.selected.name }} İçin Önerilenler</h5>
+                            <h5 style="margin:0; color:#4caf50;">💡 Geçmiş Yetenekleri ({{ store.background.selected.name }})</h5>
                             <p style="font-size: 0.85em; margin: 5px 0; color: #eee;">
-                                Kural kitabına göre şu yetenekler önerilir: <strong>{{ store.background.selected.skillProficiencies }}</strong>
+                                Kural kitabına göre bu 2 yetenek önerilir: <strong>{{ store.background.selected.skillProficiencies }}</strong>
+                            </p>
+                        </div>
+                        <div v-if="classSkillInfo" class="choice-wrapper" style="border-color: #2196f3; background: rgba(33, 150, 243, 0.05); margin-bottom: 20px;">
+                            <h5 style="margin:0; color:#2196f3;">⚔️ Sınıf Yetenekleri ({{ store.class.selected.name }})</h5>
+                            <p style="font-size: 0.85em; margin: 5px 0; color: #eee;" v-html="classSkillInfo"></p>
+                        </div>
+                        <div v-if="raceSkillInfo" class="choice-wrapper" style="border-color: #e67e22; background: rgba(230, 126, 34, 0.05); margin-bottom: 20px;">
+                            <h5 style="margin:0; color:#e67e22;">🧬 Irk Yetenekleri ({{ store.race.selected.name }})</h5>
+                            <p style="font-size: 0.85em; margin: 5px 0; color: #eee;">
+                                {{ raceSkillInfo }}
+                                <br>
                             </p>
                         </div>
                     
@@ -496,16 +507,20 @@
                     <div class="skills-container">
                         <div v-for="skill in calculatedSkills" :key="skill.id" class="skill-row">
                             <div class="skill-left">
-                                <div class="skill-dots">
-                                    <div class="dot" :class="{ 'active': skill.profLevel >= 1 }"></div>
-                                    <div class="dot" :class="{ 'active': skill.profLevel >= 2 }"></div>
+                                
+                                <div class="skill-status-icon">
+                                    <span v-if="skill.profLevel === 2" title="Ustalık (Expertise)" style="color: #e67e22; font-size: 1.3em; line-height: 1;">★</span>
+                                    
+                                    <span v-else-if="skill.profLevel === 1" title="Uzmanlık" style="color: #b52b2b; font-size: 1.3em; line-height: 1;">●</span>
+                                    
+                                    <span v-else style="color: #333; font-size: 1.3em; line-height: 1;">•</span>
                                 </div>
                                 <div>
                                     <span class="skill-name">{{ skill.name }}</span>
                                     <span class="skill-attr">({{ skill.attrLabel }})</span>
                                 </div>
                             </div>
-                            <div class="skill-val">
+                            <div class="skill-val" :style="skill.profLevel > 0 ? 'color:#fff' : 'color:#666'">
                                 {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
                             </div>
                         </div>

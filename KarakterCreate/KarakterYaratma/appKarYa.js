@@ -19,82 +19,91 @@ const app = createApp({
                 base: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
                 asi: {} 
             },
-            skills: {
-            proficiencies: [], // Uzmanlık (Proficiency) alanların ID'leri buraya dolacak
-            expertises: []    // Ustalık (Expertise) alanların ID'leri buraya dolacak
+            background: { selected: null },
+            skills: { 
+                proficiencies: [], // Uzmanlık (Proficiency)
+                expertises: []     // Ustalık (Expertise)
             },
-            background: { selected: null }, // Seçilen geçmiş burada tutulacak
-            skills: { proficiencies: [], expertises: [] }, // Seçilen yetenekler burada tutulacak
             choices: {} 
         });
 
         // ============================================================
-        //  2. NAVIGATION
+        //  2. NAVIGATION & DATA LOADING
         // ============================================================
         const currentStep = ref(0);
-
-        const backgroundList = ref([]); // JSON'dan gelecek geçmişler listesi
-
-        // --- 2. VERİ YÜKLEME (ONMOUNTED VEYA DOĞRUDAN) ---
-        const loadBackgrounds = async () => {
-            try {
-                const response = await fetch('../../Data/backgrounds.json');
-                const data = await response.json();
-                backgroundList.value = data.background; // JSON yapısındaki "background" dizisini alıyoruz
-            } catch (err) {
-                console.error("Geçmiş verileri yüklenemedi:", err);
-            }
-        };
-        loadBackgrounds();
-
         const steps = [{ title: "Konsept" }, { title: "Irk" }, { title: "Sınıf" }, { title: "Puanlar" }, { title: "Geçmiş" }];
+        
         const nextStep = () => { if (currentStep.value < steps.length - 1) currentStep.value++; };
         const prevStep = () => { if (currentStep.value > 0) currentStep.value--; };
 
-        // ============================================================
-        //  3. VERİ YÖNETİMİ
-        // ============================================================
         const loading = ref(true);
         const error = ref(null);
         const classList = ref([]);
-        const raceList = ref([]); 
+        const raceList = ref([]);
+        const backgroundList = ref([]);
         
-        const featList = ref([
-            "Alert (Tetikte)", "Actor (Aktör)", "Athlete (Atlet)", "Charger (Hücumcu)", 
-            "Crossbow Expert (Arbalet Uzmanı)", "Defensive Duelist (Savunmacı Düellocu)",
-            "Dual Wielder (Çift Silahşör)", "Dungeon Delver (Zindan Kaşifi)", 
-            "Durable (Dayanıklı)", "Great Weapon Master (Büyük Silah Ustası)",
-            "Healer (Şifacı)", "Keen Mind (Keskin Zeka)", "Lucky (Şanslı)",
-            "Mage Slayer (Büyücü Katili)", "Mobile (Mobil)", "Observant (Gözlemci)",
-            "Polearm Master (Sırıklı Silah Ustası)", "Resilient (Dirençli)",
-            "Sentinel (Nöbetçi)", "Sharpshooter (Keskin Nişancı)", 
-            "Shield Master (Kalkan Ustası)", "Skulker (Gizlenen)", 
-            "Tough (Sert)", "War Caster (Savaş Büyücüsü)"
-        ]);
-
+        // Verileri Yükle
         onMounted(async () => {
             try {
-                const [classRes, raceRes] = await Promise.all([
+                const [classRes, raceRes, bgRes] = await Promise.all([
                     fetch('../../Data/classes.json'),
-                    fetch('../../Data/races.json')
+                    fetch('../../Data/races.json'),
+                    fetch('../../Data/backgrounds.json')
                 ]);
                 const classData = await classRes.json();
-                const raceData = await raceRes.json();
-                classList.value = classData.class;
-                raceList.value = raceData.race;
+                
+                // Kullanıcının JSON yapısına göre race verisini al
+                // (Bazen {race: [...]} bazen direkt [...] olabilir, kontrol ediyoruz)
+                const rawRaceData = await raceRes.json();
+                raceList.value = Array.isArray(rawRaceData) ? rawRaceData : (rawRaceData.race || []);
+
+                const bgData = await bgRes.json();
+                classList.value = classData.class || [];
+                backgroundList.value = bgData.background || [];
+                
                 loading.value = false;
             } catch (err) {
                 error.value = "Veri yüklenemedi: " + err.message;
+                console.error(err);
             }
         });
 
         // ============================================================
-        //  4. IRK MANTIĞI
+        //  3. HELPER FUNCTIONS (Parsing & Formatting)
+        // ============================================================
+        const parseTags = (text) => {
+            if (!text) return "";
+            return text.replace(/\{@(\w+)\s+([^}]+)\}/g, (match, tag, content) => {
+                let [name, source] = content.split('|');
+                let displayText = name;
+                if (tag === 'spell') {
+                    let urlName = encodeURIComponent(name.toLowerCase());
+                    let urlSource = source ? `_${source.toLowerCase()}` : '_phb';
+                    const targetUrl = `https://kanguen.github.io/spells.html#${urlName}${urlSource}`;
+                    return `<a href="${targetUrl}" target="_blank" class="dnd-link spell-link" title="Büyü detayını gör">✨ ${displayText}</a>`;
+                }
+                return `<span class="dnd-link">${displayText}</span>`;
+            });
+        };
+
+        const formatEntry = (entry) => { 
+            if(!entry) return ""; 
+            if(typeof entry==='string') return parseTags(entry); 
+            if(entry.type==='options') return ""; 
+            if(entry.entries) return entry.entries.map(e=>formatEntry(e)).join("<br>"); 
+            if(entry.type==='list'&&entry.items) return "<ul>"+entry.items.map(i=>"<li>"+formatEntry(i)+"</li>").join("")+"</ul>"; 
+            if(entry.type==='table') return "[Tablo Görüntülenemiyor]"; // Basit tablo placeholder
+            return entry.name||""; 
+        };
+
+        // ============================================================
+        //  4. IRK MANTIĞI (RACE LOGIC)
         // ============================================================
         const selectedFlatOption = ref(null);
         const selectedRace = ref(null);
         const selectedSubrace = ref(null);
 
+        // Irk listesini düzleştir (Subrace'leri ana listeye al)
         const flatRaceList = computed(() => {
             const list = [];
             if (!raceList.value) return [];
@@ -124,6 +133,7 @@ const app = createApp({
             }
         });
 
+        // Irk Stat Seçimi Konfigürasyonu
         const raceChoiceConfig = computed(() => {
             if (!selectedRace.value) return null;
             const source = selectedSubrace.value?.ability ? selectedSubrace.value : selectedRace.value;
@@ -137,16 +147,13 @@ const app = createApp({
             return null;
         });
 
+        // Irk Bonuslarını Hesapla
         const abilityKeyMap = { 'kuv': 'str', 'str': 'str', 'çev': 'dex', 'dex': 'dex', 'day': 'con', 'con': 'con', 'zek': 'int', 'int': 'int', 'akı': 'wis', 'wis': 'wis', 'kar': 'cha', 'cha': 'cha' };
-        
-        const statLabels = { 'str': 'KUV', 'kuv': 'KUV', 'dex': 'ÇEV', 'çev': 'ÇEV', 'con': 'DAY', 'day': 'DAY', 'int': 'ZEK', 'zek': 'ZEK', 'wis': 'AKI', 'akı': 'AKI', 'aki': 'AKI', 'cha': 'KAR', 'kar': 'KAR' };
-
-        const selectableStats = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
-
         const raceBonuses = computed(() => {
             const bonuses = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
             if (!selectedRace.value) return bonuses;
             const getKey = (k) => abilityKeyMap[k.toLowerCase()] || k.toLowerCase();
+            
             const addBonus = (abilityObj) => {
                 if (!abilityObj) return;
                 for (const [key, val] of Object.entries(abilityObj)) {
@@ -157,6 +164,7 @@ const app = createApp({
             };
             if (selectedRace.value.ability) addBonus(selectedRace.value.ability);
             if (selectedSubrace.value && selectedSubrace.value.ability) addBonus(selectedSubrace.value.ability);
+            
             const choiceConfig = raceChoiceConfig.value;
             if (choiceConfig) {
                 Object.values(store.race.abilityChoices).forEach(statKey => {
@@ -169,6 +177,7 @@ const app = createApp({
             return bonuses;
         });
 
+        // Ekrana basılacak özellik metinleri
         const activeRaceTraits = computed(() => {
             if (!selectedRace.value) return [];
             let traits = [];
@@ -192,7 +201,7 @@ const app = createApp({
         });
 
         // ============================================================
-        //  5. SINIF MANTIĞI
+        //  5. SINIF MANTIĞI (CLASS LOGIC)
         // ============================================================
         const selectedClass = ref(null);
         const selectedSubclass = ref(null);
@@ -203,56 +212,16 @@ const app = createApp({
         watch(selectedSubclass, (newVal) => { store.class.subclass = newVal; });
         watch(targetLevel, (newVal) => { store.class.level = newVal; });
 
-        const manualCounts = { "Savaş Üstadı: Manevralar": 3, "Ek Manevralar": 2, "Savaş Üstadı: Ek Manevralar_1": 2, "Savaş Üstadı: Ek Manevralar_2": 2, "Savaş Üstadı: Ek Manevralar_3": 2, "Metabüyü": 2, "Büyüde Uzmanlaşmış Şövalye: Büyüler": 2 };
-        const optionSourceMap = { "Ek Manevralar": "Savaş Üstadı: Manevralar", "Ek Metabüyü": "Metabüyü" };
-
+        // Sınıf Özelliklerini (Feature) Ayrıştırma ve Gösterme
         const getHitDie = (cls) => cls?.hd?.faces || '?';
-        // --- ETİKETLERİ LİNKE ÇEVİRME ---
-        const parseTags = (text) => {
-            if (!text) return "";
-
-            // Regex: {@tag content} formatını yakalar
-            // Örn: {@spell Eldritch Blast (Eldritch Patlaması)|phb}
-            return text.replace(/\{@(\w+)\s+([^}]+)\}/g, (match, tag, content) => {
-                
-                // İçerik bazen "İsim|Kaynak" şeklinde gelir. Parçalayalım.
-                let [name, source] = content.split('|');
-                
-                // Görüntülenecek metin (Name)
-                let displayText = name;
-
-                // 1. EĞER BU BİR BÜYÜ İSE ({@spell ...})
-                if (tag === 'spell') {
-                    // URL için ismi temizle:
-                    // 1. Küçük harfe çevir
-                    // 2. Boşlukları %20 yap
-                    // 3. Türkçe karakterleri de encodeURI halleder ama garanti olsun diye basit encode
-                    let urlName = encodeURIComponent(name.toLowerCase());
-                    
-                    // Kaynak varsa (phb, xge vb.) ekle, yoksa phb varsayalım
-                    let urlSource = source ? `_${source.toLowerCase()}` : '_phb';
-                    
-                    // 5eTürkçe URL yapısı: spells.html#isim_kaynak
-                    // Örn: https://kanguen.github.io/spells.html#eldritch%20blast%20(eldritch%20patlamas%c4%b1)_phb
-                    const targetUrl = `https://kanguen.github.io/spells.html#${urlName}${urlSource}`;
-
-                    return `<a href="${targetUrl}" target="_blank" class="dnd-link spell-link" title="Büyü detayını gör">✨ ${displayText}</a>`;
-                }
-
-                // 2. DİĞER ETİKETLER (item, creature vb.) - Şimdilik sadece text kalsın
-                // İstersen bunları da bestiary.html veya items.html'e yönlendirebiliriz.
-                return `<span class="dnd-link">${displayText}</span>`;
-            });
-        };
-        const formatEntry = (entry) => { if(!entry) return ""; if(typeof entry==='string') return parseTags(entry); if(entry.type==='options') return ""; if(entry.entries) return entry.entries.map(e=>formatEntry(e)).join("<br>"); if(entry.type==='list'&&entry.items) return "<ul>"+entry.items.map(i=>"<li>"+formatEntry(i)+"</li>").join("")+"</ul>"; return entry.name||""; };
         const extractOptions = (feat) => { if(!feat) return null; if(feat.type==='options'&&feat.entries) return feat.entries; if(feat.entries&&Array.isArray(feat.entries)) { for(const e of feat.entries) if(e.type==='options'&&e.entries) return e.entries; } return null; };
+        const optionSourceMap = { "Ek Manevralar": "Savaş Üstadı: Manevralar", "Ek Metabüyü": "Metabüyü" };
+        const manualCounts = { "Savaş Üstadı: Manevralar": 3, "Ek Manevralar": 2, "Savaş Üstadı: Ek Manevralar_1": 2, "Metabüyü": 2, "Büyüde Uzmanlaşmış Şövalye: Büyüler": 2 };
+        
         const findOptionsByName = (targetName) => { if(!selectedSubclass.value?.subclassFeatures) return null; for(const grp of selectedSubclass.value.subclassFeatures) for(const f of grp) if(f.name===targetName) return extractOptions(f); return null; };
         const normalizeOption = (opt) => opt ? (opt.name ? opt : (opt.entries?.[0]?.name ? {...opt.entries[0], entries: opt.entries[0].entries||[]} : {name: "Seçenek", entries:[]})) : {name:"Hata", entries:[]};
         const detectSelectionCount = (name, entries) => { if(manualCounts[name]) return manualCounts[name]; const txt = JSON.stringify(entries).toLowerCase(); return txt.includes("3") ? 3 : txt.includes("2") || txt.includes("iki") ? 2 : 0; };
-        const subclassUnlockLevel = computed(() => selectedClass.value?.classFeatures?.findIndex(grp => grp.some(f => f.gainSubclassFeature)) + 1 || -1);
-        const subclassOptions = computed(() => selectedClass.value?.subclasses || []);
-        const getAvailableOptions = (all, key) => { if(!all) return []; const used = new Set(Object.entries(userChoices.value).filter(([k,v]) => k!==key && v?.name).map(([_,v]) => v.name)); return all.filter(o => !used.has(o.name)); };
-        const getChoiceDetail = (n, l, i) => formatEntry(userChoices.value[`${n}-${l}_${i}`]);
+        
         const processFeature = (feat, isSub) => {
             try {
                 let opts = extractOptions(feat);
@@ -263,15 +232,17 @@ const app = createApp({
                 return { name: feat.name, entries: feat.entries ? feat.entries.map(formatEntry).filter(t=>t) : ["Detay yok"], isSubclass: isSub, hasOptions: !!cleanOpts.length, options: cleanOpts, selectionCount: count };
             } catch(e) { return {name: feat.name, entries:[], isSubclass:false}; }
         };
+
+        const subclassUnlockLevel = computed(() => selectedClass.value?.classFeatures?.findIndex(grp => grp.some(f => f.gainSubclassFeature)) + 1 || -1);
+        const subclassOptions = computed(() => selectedClass.value?.subclasses || []);
+        
         const activeFeatures = computed(() => {
             if (!selectedClass.value) return [];
             const timeline = [];
             let subIdx = 0;
             for (let i = 0; i < targetLevel.value; i++) {
                 const feats = [];
-                if (!store.abilities.asi[i + 1]) {
-                    store.abilities.asi[i + 1] = { feat: null, stat1: null, stat2: null };
-                }
+                if (!store.abilities.asi[i + 1]) store.abilities.asi[i + 1] = { feat: null, stat1: null, stat2: null };
                 selectedClass.value.classFeatures[i]?.forEach(f => {
                     feats.push(processFeature(f, false));
                     if(f.gainSubclassFeature) {
@@ -284,16 +255,86 @@ const app = createApp({
             return timeline;
         });
 
-        // ----------------------------------------------------------------
-        //  6. BONUS VE SKILL HESAPLAMALARI
-        // ----------------------------------------------------------------
+        const getAvailableOptions = (all, key) => { if(!all) return []; const used = new Set(Object.entries(userChoices.value).filter(([k,v]) => k!==key && v?.name).map(([_,v]) => v.name)); return all.filter(o => !used.has(o.name)); };
+        const getChoiceDetail = (n, l, i) => formatEntry(userChoices.value[`${n}-${l}_${i}`]);
+
+        // ============================================================
+        //  6. PUANLAR VE STATLAR (SCORES & STATS)
+        // ============================================================
+        const statLabels = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
+        const selectableStats = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
+
+        const scoreMethods = [
+            { id: 'manual', name: 'Manuel Giriş' },
+            { id: 'standard_array', name: 'Standart Dizilim (15,14...)' },
+            { id: 'point_buy', name: 'Point Buy (Standart)' },
+            { id: 'point_buy_flex', name: 'Point Buy (Esnek)' },
+            { id: 'roll_4d6', name: 'Zar At (4d6)' },
+            { id: 'roll_5d6', name: 'Zar At (5d6)' }
+        ];
+        const selectedScoreMethod = ref('point_buy');
+        const standardArrayValues = [15, 14, 13, 12, 10, 8];
+        const rolledPool = ref([]);
+        const hasRolled = ref(false);
+        const isCapped20 = ref(false);
+
+        // Point Buy Maliyet
+        const getFlexCost = (score) => {
+            if (score <= 8) return 0;
+            if (score === 9) return 1; if (score === 10) return 2; if (score === 11) return 3;
+            if (score === 12) return 4; if (score === 13) return 5; if (score === 14) return 7;
+            if (score === 15) return 9; if (score === 16) return 12; if (score === 17) return 15;
+            if (score === 18) return 19; if (score === 19) return 23; if (score >= 20) return 28;
+            return 0;
+        };
+        const pointBuyBudget = computed(() => 27);
+        const currentPbCost = computed(() => {
+            let total = 0;
+            Object.values(store.abilities.base).forEach(val => total += getFlexCost(val));
+            return total;
+        });
         
-        // A. Tüm Bonuslar (Irk + ASI)
+        const changePointBuy = (stat, delta) => {
+            let next = store.abilities.base[stat] + delta;
+            if (selectedScoreMethod.value === 'point_buy') { if (next < 8) next = 8; if (next > 15) next = 15; }
+            else { if (next < 8) next = 8; if (next > 20) next = 20; }
+            store.abilities.base[stat] = next;
+        };
+
+        const rollStats = () => {
+            const diceCount = selectedScoreMethod.value === 'roll_5d6' ? 5 : 4;
+            const results = [];
+            for (let i = 0; i < 6; i++) {
+                let rolls = [];
+                for (let d = 0; d < diceCount; d++) rolls.push(Math.ceil(Math.random() * 6));
+                rolls.sort((a, b) => a - b); rolls.shift(); 
+                let sum = rolls.reduce((a, b) => a + b, 0);
+                if (selectedScoreMethod.value === 'roll_5d6' && isCapped20.value && sum > 20) sum = 20;
+                results.push(sum);
+            }
+            results.sort((a, b) => b - a);
+            rolledPool.value = results; hasRolled.value = true;
+            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
+        };
+
+        const isOptionDisabled = (val, currentKey, pool) => {
+            const totalInPool = pool.filter(n => n === val).length;
+            let usedByOthers = 0;
+            Object.entries(store.abilities.base).forEach(([k, v]) => { if (k !== currentKey && v === val) usedByOthers++; });
+            return usedByOthers >= totalInPool;
+        };
+
+        watch(selectedScoreMethod, (newMethod) => {
+            if (newMethod.includes('point_buy')) Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 8);
+            else if (newMethod === 'manual') Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 10);
+            else Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
+            if (!newMethod.includes('roll')) { hasRolled.value = false; rolledPool.value = []; }
+        });
+
+        // Final Stat Hesapları
         const statBonuses = computed(() => {
             const totals = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
-            for (const [key, val] of Object.entries(raceBonuses.value)) {
-                if (totals[key] !== undefined) totals[key] += val;
-            }
+            for (const [key, val] of Object.entries(raceBonuses.value)) if (totals[key] !== undefined) totals[key] += val;
             Object.values(store.abilities.asi).forEach(asi => {
                 if (asi.stat1) totals[asi.stat1] += 1;
                 if (asi.stat2) totals[asi.stat2] += 1;
@@ -301,7 +342,6 @@ const app = createApp({
             return totals;
         });
 
-        // B. Final Ability Scores
         const finalAbilityScores = computed(() => {
             const finals = {};
             ['str','dex','con','int','wis','cha'].forEach(k => {
@@ -310,316 +350,240 @@ const app = createApp({
             return finals;
         });
 
-        // C. Proficiency Bonus
-        const proficiencyBonus = computed(() => {
-            const lvl = store.class.level || 1;
-            return Math.ceil(lvl / 4) + 1;
+        const proficiencyBonus = computed(() => Math.ceil(targetLevel.value / 4) + 1);
+
+        // ============================================================
+        //  7. SKILL LOGIC & BUDGETS (THE CORE)
+        // ============================================================
+        
+        // IRK YETENEK KURALLARI (Senin Data Setinle Uyumlu)
+        const getRaceSkillRules = () => {
+            const race = store.race.selected?.name || "";
+            const subrace = store.race.subrace?.name || "";
+            const fullName = `${race} ${subrace}`.toLowerCase();
+            let rules = { fixed: [], bonusBudget: 0, text: null };
+
+            // 1. İNSAN (ALTERNATİF / VARIANT)
+            // JSON'da: name="İnsan", subrace="Alternatif" -> fullName = "insan alternatif"
+            if (fullName.includes("insan") && (fullName.includes("alternatif") || fullName.includes("varyant") || fullName.includes("variant"))) {
+                rules.bonusBudget = 1;
+                rules.text = "Alternatif İnsan: Seçeceğin 1 beceride uzmanlık.";
+            }
+
+            // 2. ELF (Genel - Keskin Duyular)
+            if (fullName.includes("elf")) {
+                // Yarı-Elf (Half-Elf) ile karışmaması için kontrol
+                if (!fullName.includes("yarı") && !fullName.includes("half")) {
+                    rules.fixed.push("perception");
+                    rules.text = "Keskin Duyular: Algı (Perception) yeteneği.";
+                }
+            }
+
+            // 3. YARI-ELF (HALF-ELF) - Beceri Çokluğu
+            if (fullName.includes("yarı-elf") || fullName.includes("yarı elf") || fullName.includes("half-elf")) {
+                rules.bonusBudget = 2;
+                rules.text = "Beceri Çokluğu: Seçeceğin 2 beceride uzmanlık.";
+            }
+
+            // 4. YARI-ORC (HALF-ORC) - Korkutucu
+            if (fullName.includes("yarı-orc") || fullName.includes("yarı orc") || fullName.includes("half-orc")) {
+                rules.fixed.push("intimidation");
+                rules.text = "Korkutucu: Gözdağı (Intimidation) yeteneği.";
+            }
+
+            // 5. GOLIATH - Doğal Atlet (JSON'da var)
+            if (fullName.includes("goliath")) {
+                rules.fixed.push("athletics");
+                rules.text = "Doğal Atlet: Atletizm (Athletics) yeteneği.";
+            }
+
+            // 6. DİĞERLERİ (JSON'da yok ama manuel eklenmişler)
+            if (fullName.includes("bugbear")) { rules.fixed.push("stealth"); rules.text = "Sinsi: Gizlilik (Stealth)."; }
+            if (fullName.includes("changeling")) { rules.fixed.push("deception"); rules.bonusBudget = 1; rules.text = "Şekil Değiştiren: Kandırma + 1 Seçmeli."; }
+            if (fullName.includes("hobgoblin")) { rules.bonusBudget = 2; rules.text = "Askeri Eğitim: +2 Seçmeli Yetenek."; }
+            if (fullName.includes("kenku")) { rules.bonusBudget = 2; rules.text = "Kenku Eğitimi: +2 Seçmeli Yetenek."; }
+            if (fullName.includes("tabaxi")) { rules.fixed.push("perception"); rules.fixed.push("stealth"); rules.text = "Kedi Yetenekleri: Algı ve Gizlilik."; }
+            if (fullName.includes("lizardfolk")) { rules.fixed.push("perception"); rules.fixed.push("survival"); rules.text = "Avcı Güdüsü: Algı ve Hayatta Kalma."; }
+            if (fullName.includes("leonin")) { rules.fixed.push("intimidation"); rules.text = "Kükreme: Gözdağı (Intimidation)."; }
+
+            return rules;
+        };
+
+        const raceSkillInfo = computed(() => getRaceSkillRules().text);
+
+
+        // ============================================================
+        //  SINIF YETENEK BİLGİSİ (CLASS SKILL INFO)
+        // ============================================================
+        const getClassSkillRules = () => {
+            if (!store.class.selected) return null;
+            const cName = store.class.selected.name;
+        
+            // Kullanıcının verdiği listeye göre tanımlar
+            // (Hem Türkçe hem İngilizce isimleri destekler)
+            const defs = {
+                "Barbar": { count: 2, list: "Hayvan İdaresi, Atletizm, Gözdağı, Doğa, Algı, Hayatta Kalma" },
+                "Barbarian": { count: 2, list: "Hayvan İdaresi, Atletizm, Gözdağı, Doğa, Algı, Hayatta Kalma" },
+
+                "Büyücü": { count: 2, list: "Arkana, Tarih, Sezgi, İnceleme, Tıp, Din" },
+                "Wizard": { count: 2, list: "Arkana, Tarih, Sezgi, İnceleme, Tıp, Din" },
+
+                "Druid": { count: 2, list: "Arkana, Hayvan İdaresi, Sezgi, Tıp, Doğa, Algı, Din, Hayatta Kalma" },
+
+                "Düzenbaz": { count: 4, list: "Akrobasi, Atletizm, Aldatma (Kandırma), Sezgi, Gözdağı, İnceleme, Algı, Performans, İkna, El Çabukluğu, Gizlenme" },
+                "Rogue": { count: 4, list: "Akrobasi, Atletizm, Aldatma (Kandırma), Sezgi, Gözdağı, İnceleme, Algı, Performans, İkna, El Çabukluğu, Gizlenme" },
+
+                "Keşiş": { count: 2, list: "Akrobasi, Atletizm, Tarih, Sezgi, Din, Gizlenme" },
+                "Monk": { count: 2, list: "Akrobasi, Atletizm, Tarih, Sezgi, Din, Gizlenme" },
+
+                "Kolcu": { count: 3, list: "Hayvan İdaresi, Atletizm, Sezgi, İnceleme, Doğa, Algı, Gizlenme, Hayatta Kalma" },
+                "Ranger": { count: 3, list: "Hayvan İdaresi, Atletizm, Sezgi, İnceleme, Doğa, Algı, Gizlenme, Hayatta Kalma" },
+
+                "Ozan": { count: 3, list: "İstediğin herhangi 3 yetenek" },
+                "Bard": { count: 3, list: "İstediğin herhangi 3 yetenek" },
+
+                "Paladin": { count: 2, list: "Atletizm, Sezgi, Gözdağı, Tıp, İkna, Din" },
+
+                "Rahip": { count: 2, list: "Tarih, Sezgi, Tıp, İkna, Din" },
+                "Cleric": { count: 2, list: "Tarih, Sezgi, Tıp, İkna, Din" },
+
+                "Savaşçı": { count: 2, list: "Akrobasi, Hayvan İdaresi, Atletizm, Tarih, Sezgi, Gözdağı, Algı, Hayatta Kalma" },
+                "Fighter": { count: 2, list: "Akrobasi, Hayvan İdaresi, Atletizm, Tarih, Sezgi, Gözdağı, Algı, Hayatta Kalma" },
+
+                "Sorserer": { count: 2, list: "Arkana, Aldatma (Kandırma), Sezgi, Gözdağı, İkna, Din" },
+                "Sorcerer": { count: 2, list: "Arkana, Aldatma (Kandırma), Sezgi, Gözdağı, İkna, Din" },
+                "Sihirbaz": { count: 2, list: "Arkana, Aldatma (Kandırma), Sezgi, Gözdağı, İkna, Din" },
+
+                "Warlock": { count: 2, list: "Arkana, Aldatma (Kandırma), Tarih, Gözdağı, İnceleme, Doğa, Din" },
+                "Cadı": { count: 2, list: "Arkana, Aldatma (Kandırma), Tarih, Gözdağı, İnceleme, Doğa, Din" }
+            };
+        
+            return defs[cName] || { count: "?", list: "Bilinmeyen Sınıf" };
+        };
+
+        const classSkillInfo = computed(() => {
+            const info = getClassSkillRules();
+            if (!info) return null;
+            return `Kural kitabına göre bu yeteneklerden <strong>${info.count}</strong> tanesini seçebilirsiniz: ${info.list}.`;
         });
 
-        // --- DİNAMİK BEYİN: BÜTÇELER VE ANALİZ ---
-
-        // 1. Toplam Uzmanlık (Proficiency) Bütçesi
+        // UZMANLIK (PROFICIENCY) BÜTÇESİ
         const skillBudget = computed(() => {
-            let total = 0;
-            // SINIF: Seçiliyse puan gelir (Düzenbaz 4, Ozan 3, Diğerleri 2)
+            let budget = 0;
+            // 1. Sınıf
             if (store.class.selected) {
-                const name = store.class.selected.name;
-                if (name === "Düzenbaz") total += 4;
-                else if (name === "Ozan") total += 3;
-                else total += 2;
+                const cName = store.class.selected.name;
+                if (cName === "Düzenbaz" || cName === "Rogue") budget += 4;
+                else if (["Ozan", "Bard", "Kolcu", "Ranger"].includes(cName)) budget += 3;
+                else budget += 2;
             }
-            // GEÇMİŞ: Her geçmiş standart 2 puan verir (Seçiliyse)
-            if (store.background.selected) total += 2;
-
-            // IRK: Varyant İnsan ise +1
-            if (store.race.selected?.name.includes("Varyant")) total += 1;
-
-            return total;
+            // 2. Geçmiş
+            if (store.background.selected) budget += 2;
+            
+            // 3. Irk (Sabitler + Seçmeliler)
+            const raceRules = getRaceSkillRules();
+            budget += raceRules.fixed.length;
+            budget += raceRules.bonusBudget;
+            
+            return budget;
         });
 
-        // 2. Toplam Ustalık (Expertise) Bütçesi
+        // USTALIK (EXPERTISE) BÜTÇESİ
         const expertiseBudget = computed(() => {
+            let budget = 0;
             if (!store.class.selected) return 0;
-            const name = store.class.selected.name;
-            // Sadece belirli sınıflar Expertise (Ustalık) hakkı kazanır
-            if (name === "Düzenbaz") return 2; // Lv1'de 2 tane
-            if (name === "Ozan") return 2;    // Lv3'te 2 tane
-            return 0; 
+            const cName = store.class.selected.name;
+            const lvl = store.class.level;
+            
+            if (cName === "Düzenbaz" || cName === "Rogue") {
+                if (lvl >= 1) budget += 2;
+                if (lvl >= 6) budget += 2;
+            } else if (cName === "Ozan" || cName === "Bard") {
+                if (lvl >= 3) budget += 2;
+                if (lvl >= 10) budget += 2;
+            }
+            return budget;
         });
 
-        // 3. Mevcut Harcama Sayaçları (Kullanılanlar)
-        const currentProfCount = computed(() => store.skills.proficiencies.length);
-        const currentExpertCount = computed(() => store.skills.expertises.length);
-        
+        // WATCHER: Irk Seçilince Zorunlu Skillleri Ekle
+        watch(() => store.race.selected, () => {
+            const rules = getRaceSkillRules();
+            if (rules.fixed.length > 0) {
+                rules.fixed.forEach(skillId => {
+                    if (!store.skills.proficiencies.includes(skillId)) {
+                        store.skills.proficiencies.push(skillId);
+                    }
+                });
+            }
+        }, { deep: true });
 
-        // Uzmanlık ve Ustalık için harcanan toplam puan (Esneklik için hepsini sayıyoruz)
-        const currentUsedSkills = computed(() => {
-            return store.skills.proficiencies.length + store.skills.expertises.length;
+        // WATCHER: Bütçe Azalırsa Fazlalıkları Sil
+        watch([skillBudget, expertiseBudget], ([newSkillLimit, newExpertiseLimit]) => {
+            if (store.skills.proficiencies.length > newSkillLimit) store.skills.proficiencies.splice(newSkillLimit);
+            if (store.skills.expertises.length > newExpertiseLimit) store.skills.expertises.splice(newExpertiseLimit);
         });
-        // --- ETKİLEŞİM: KUTUYA TIKLAYINCA NE OLSUN? ---
 
-
-
-
-        // D. Skill Listesi
         const SKILL_DEFINITIONS = [
-            { id: 'acrobatics', name: 'Akrobasi', attr: 'dex' },
-            { id: 'animal_handling', name: 'Hayvan Terbiyesi', attr: 'wis' },
-            { id: 'arcana', name: 'Arkana (Büyü İlmi)', attr: 'int' },
-            { id: 'athletics', name: 'Atletizm', attr: 'str' },
-            { id: 'deception', name: 'Kandırma', attr: 'cha' },
-            { id: 'history', name: 'Tarih', attr: 'int' },
-            { id: 'insight', name: 'Sezgi', attr: 'wis' },
-            { id: 'intimidation', name: 'Gözdağı', attr: 'cha' },
-            { id: 'investigation', name: 'Araştırma', attr: 'int' },
-            { id: 'medicine', name: 'Tıp', attr: 'wis' },
-            { id: 'nature', name: 'Doğa', attr: 'int' },
-            { id: 'perception', name: 'Algı', attr: 'wis' },
-            { id: 'performance', name: 'Performans', attr: 'cha' },
-            { id: 'persuasion', name: 'İkna', attr: 'cha' },
-            { id: 'religion', name: 'Din', attr: 'int' },
-            { id: 'sleight_of_hand', name: 'El Çabukluğu', attr: 'dex' },
-            { id: 'stealth', name: 'Gizlilik', attr: 'dex' },
-            { id: 'survival', name: 'Hayatta Kalma', attr: 'wis' }
+            { id: 'acrobatics', name: 'Akrobasi', attr: 'dex' }, { id: 'animal_handling', name: 'Hayvan Terbiyesi', attr: 'wis' },
+            { id: 'arcana', name: 'Arkana', attr: 'int' }, { id: 'athletics', name: 'Atletizm', attr: 'str' },
+            { id: 'deception', name: 'Kandırma', attr: 'cha' }, { id: 'history', name: 'Tarih', attr: 'int' },
+            { id: 'insight', name: 'Sezgi', attr: 'wis' }, { id: 'intimidation', name: 'Gözdağı', attr: 'cha' },
+            { id: 'investigation', name: 'Araştırma', attr: 'int' }, { id: 'medicine', name: 'Tıp', attr: 'wis' },
+            { id: 'nature', name: 'Doğa', attr: 'int' }, { id: 'perception', name: 'Algı', attr: 'wis' },
+            { id: 'performance', name: 'Performans', attr: 'cha' }, { id: 'persuasion', name: 'İkna', attr: 'cha' },
+            { id: 'religion', name: 'Din', attr: 'int' }, { id: 'sleight_of_hand', name: 'El Çabukluğu', attr: 'dex' },
+            { id: 'stealth', name: 'Gizlilik', attr: 'dex' }, { id: 'survival', name: 'Hayatta Kalma', attr: 'wis' }
         ];
-
-
-
-        // --- MOBİL KARAKTER KAĞIDI YÖNETİMİ ---
-        const isMobileSheetOpen = ref(false);
-        const toggleMobileSheet = () => {
-            isMobileSheetOpen.value = !isMobileSheetOpen.value;
-        };
-
-        // ============================================================
-        //  7. SCORE ENGINE (PUANLAMA SİSTEMİ)
-        // ============================================================
-        
-        // Yöntemler
-        const scoreMethods = [
-            { id: 'manual', name: 'Manuel Giriş (Özgür)' },
-            { id: 'standard_array', name: 'Standart Dizilim (15,14,13...)' },
-            { id: 'point_buy', name: 'Point Buy (Standart)' },
-            { id: 'point_buy_flex', name: 'Point Buy (Esnek)' },
-            { id: 'roll_4d6', name: 'Zar At (4d6 - Düşüğü At)' },
-            { id: 'roll_5d6', name: 'Buflı Zar (5d6 - Düşüğü At)' }
-        ];
-
-        // Seçili Yöntem (Varsayılan: Point Buy)
-        const selectedScoreMethod = ref('point_buy');
-
-        // --- ORTAK FİLTRELEME MANTIĞI (Kullanılanları Pasif Yap) ---
-
-        // Bir değerin BAŞKA bir stat tarafından kullanılıp kullanılmadığını kontrol eder.
-        // Eğer havuzda o değerden birden fazla varsa (örn: iki tane 14 attı), 
-        // kaç tanesinin kullanıldığını sayar ve ona göre izin verir.
-        const isOptionDisabled = (val, currentKey, pool) => {
-            // 1. Havuzda bu değerden toplam kaç tane var?
-            const totalInPool = pool.filter(n => n === val).length;
-            
-            // 2. Diğer statlar bu değerden kaç tane kullanmış?
-            let usedByOthers = 0;
-            Object.entries(store.abilities.base).forEach(([k, v]) => {
-                // Şu an işlem yaptığımız stat (currentKey) hariç diğerlerine bak
-                if (k !== currentKey && v === val) {
-                    usedByOthers++;
-                }
-            });
-
-            // 3. Eğer kullanılan sayı, havuzdakine eşit veya fazlaysa bu seçenek pasif olsun.
-            return usedByOthers >= totalInPool;
-        };
-
-        // --- POINT BUY MANTIĞI ---
-
-        // 1. Maliyet Hesaplama Fonksiyonu (Standart ve Esnek İçin Ortak)
-        const getFlexCost = (score) => {
-            if (score <= 8) return 0;
-            if (score === 9) return 1;
-            if (score === 10) return 2;
-            if (score === 11) return 3;
-            if (score === 12) return 4;
-            if (score === 13) return 5;
-            if (score === 14) return 7;
-            if (score === 15) return 9;
-            // Buradan sonrası Esnek Mod için artan maliyetler
-            if (score === 16) return 12;
-            if (score === 17) return 15;
-            if (score === 18) return 19;
-            if (score === 19) return 23;
-            if (score >= 20) return 28;
-            return 0;
-        };
-
-        // 2. Bütçe (Her zaman 27 referans alınır)
-        const pointBuyBudget = computed(() => 27);
-
-        // 3. Toplam Maliyeti Canlı Hesapla
-        const currentPbCost = computed(() => {
-            let total = 0;
-            // Mevcut statları dön ve maliyetlerini topla
-            Object.values(store.abilities.base).forEach(val => {
-                total += getFlexCost(val);
-            });
-            return total;
-        });
-
-        // 4. Puan Değiştirme Butonlarının İşlevi
-        const changePointBuy = (stat, delta) => {
-            const current = store.abilities.base[stat];
-            let next = current + delta;
-            
-            // Limit Kontrolleri
-            if (selectedScoreMethod.value === 'point_buy') {
-                // Standart Mod: En az 8, En çok 15
-                if (next < 8) next = 8;
-                if (next > 15) next = 15;
-            } else {
-                // Esnek Mod: En az 8, En çok 20
-                if (next < 8) next = 8;
-                if (next > 20) next = 20; 
-            }
-            
-            // Yeni değeri kaydet
-            store.abilities.base[stat] = next;
-        };
-
-        // --- STANDART DİZİLİM MANTIĞI ---
-        const standardArrayValues = [15, 14, 13, 12, 10, 8];
-
-        // --- ZAR ATMA MANTIĞI ---
-        const rolledPool = ref([]);
-        const hasRolled = ref(false);
-        const isCapped20 = ref(false); // Limit kontrolü için değişken
-
-        const rollStats = () => {
-            const diceCount = selectedScoreMethod.value === 'roll_5d6' ? 5 : 4;
-            const results = [];
-            
-            for (let i = 0; i < 6; i++) {
-                // n tane zar at
-                let rolls = [];
-                for (let d = 0; d < diceCount; d++) {
-                    rolls.push(Math.ceil(Math.random() * 6));
-                }
-                // Küçükten büyüğe sırala
-                rolls.sort((a, b) => a - b);
-                
-                // En düşüğü at (ilk eleman)
-                rolls.shift(); 
-                
-                // Kalanları topla
-                let sum = rolls.reduce((a, b) => a + b, 0);
-
-                // YENİ: Eğer 5d6 ise ve Limit seçiliyse 20'ye sabitle
-                if (selectedScoreMethod.value === 'roll_5d6' && isCapped20.value) {
-                    if (sum > 20) sum = 20;
-                }
-
-                results.push(sum);
-            }
-            // Büyükten küçüğe sırala
-            results.sort((a, b) => b - a);
-            rolledPool.value = results;
-            hasRolled.value = true;
-            
-            // Sıfırla
-            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
-        };
-
-        // Yöntem değişince verileri temizle ve varsayılanları ayarla
-        watch(selectedScoreMethod, (newMethod) => {
-            if (newMethod.includes('point_buy')) {
-                Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 8);
-            } else if (newMethod === 'manual') {
-                Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 10);
-            } else if (newMethod === 'standard_array') {
-                 Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0); // Seçmesi için 0 yap
-            } else {
-                // Zar modları
-                Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
-                hasRolled.value = false;
-                rolledPool.value = [];
-            }
-        });
-        
-        // ============================================================
-        //  8. Karakter Geçmişi MANTIĞI
-        // ============================================================
-
-        // --- YETENEK SEÇİM MANTIĞI ---
-
-        // --- ETKİLEŞİM: KUTUYA TIKLAYINCA NE OLSUN? ---
 
         const toggleSkill = (skillId) => {
             const isProf = store.skills.proficiencies.includes(skillId);
             const isExpert = store.skills.expertises.includes(skillId);
-        
-            if (!isProf && !isExpert) {
-                // Durum: Boş -> Uzmanlık (Proficiency) yap
-                store.skills.proficiencies.push(skillId);
-            } 
+            if (!isProf && !isExpert) store.skills.proficiencies.push(skillId);
             else if (isProf) {
-                // Durum: Uzman -> Ustalık (Expertise) yap
-                // Uzmanlıktan sil, Ustalığa ekle
                 store.skills.proficiencies = store.skills.proficiencies.filter(id => id !== skillId);
                 store.skills.expertises.push(skillId);
-            } 
-            else {
-                // Durum: Ustalık -> Boş yap
-                store.skills.expertises = store.skills.expertises.filter(id => id !== skillId);
-            }
+            } else store.skills.expertises = store.skills.expertises.filter(id => id !== skillId);
         };
-        // 2. Canlı Hesaplama (Sağ panel ve seçim ekranı için)
+
         const calculatedSkills = computed(() => {
             const stats = finalAbilityScores.value;
             const pb = proficiencyBonus.value;
-        
             return SKILL_DEFINITIONS.map(skill => {
                 const score = stats[skill.attr] || 10;
                 const mod = Math.floor((score - 10) / 2);
-                
-                let level = 0; // Bonus çarpanı
+                let level = 0;
                 if (store.skills.proficiencies.includes(skill.id)) level = 1;
                 if (store.skills.expertises.includes(skill.id)) level = 2;
-            
-                return {
-                    ...skill,
-                    totalBonus: mod + (pb * level),
-                    profLevel: level,
-                    attrLabel: statLabels[skill.attr].substring(0, 3)
-                };
+                return { ...skill, totalBonus: mod + (pb * level), profLevel: level, attrLabel: statLabels[skill.attr].substring(0, 3) };
             });
         });
 
-        
+        const currentProfCount = computed(() => store.skills.proficiencies.length + store.skills.expertises.length);
+        const currentExpertCount = computed(() => store.skills.expertises.length);
+        const currentUsedSkills = computed(() => store.skills.proficiencies.length + store.skills.expertises.length);
 
         // ============================================================
-        //  9. RETURNED PROPERTIES
+        //  8. MOBIL UI & EXTRAS
         // ============================================================
+        const isMobileSheetOpen = ref(false);
+        const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
+        const featList = ref([ "Alert", "Actor", "Athlete", "Charger", "Crossbow Expert", "Defensive Duelist", "Dual Wielder", "Dungeon Delver", "Durable", "Great Weapon Master", "Healer", "Keen Mind", "Lucky", "Mage Slayer", "Mobile", "Observant", "Polearm Master", "Resilient", "Sentinel", "Sharpshooter", "Shield Master", "Skulker", "Tough", "War Caster" ]);
 
         return {
             store, currentStep, steps, nextStep, prevStep, loading, error,
-            raceList, flatRaceList, selectedFlatOption, activeRaceTraits, raceBonuses, raceChoiceConfig, 
-            statLabels, selectableStats,
-            classList, selectedClass, selectedSubclass, targetLevel, activeFeatures, subclassOptions, subclassUnlockLevel,
-            getHitDie, userChoices, getChoiceDetail, getAvailableOptions, 
-            finalAbilityScores, statBonuses,
-            selectedRace, selectedSubrace, featList,
-            isMobileSheetOpen, toggleMobileSheet,
-            proficiencyBonus, calculatedSkills, 
-            toggleSkill,backgroundList,
-            skillBudget,
+            raceList, flatRaceList, selectedFlatOption, activeRaceTraits, raceBonuses, raceChoiceConfig,
+            statLabels, selectableStats, classList, selectedClass, selectedSubclass, targetLevel, activeFeatures, subclassOptions, subclassUnlockLevel,
+            getHitDie, userChoices, getChoiceDetail, getAvailableOptions,
+            finalAbilityScores, statBonuses, selectedRace, selectedSubrace, featList,
+            isMobileSheetOpen, toggleMobileSheet, proficiencyBonus, calculatedSkills, toggleSkill, backgroundList,
+            
+            // Skill Budgets & Info
+            skillBudget, expertiseBudget, raceSkillInfo, 
             currentUsedSkills, currentProfCount, currentExpertCount,
-            expertiseBudget,
-            skillBudget: computed(() => 4), 
-            expertiseBudget: computed(() => store.class.selected?.name === "Düzenbaz" ? 2 : 0),
-            // Score Engine Returnleri
-            scoreMethods, selectedScoreMethod, 
-            isOptionDisabled, // Dropdown disable mantığı
-            getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, // Point Buy
-            standardArrayValues, // Standart Array
-            rollStats, rolledPool, hasRolled, isCapped20, 
+            classSkillInfo,
+
+            // Score Engine
+            scoreMethods, selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, standardArrayValues, rollStats, rolledPool, hasRolled, isCapped20
         };
     }
 });
