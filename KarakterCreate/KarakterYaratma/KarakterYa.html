@@ -89,11 +89,11 @@
 
                         <p>Karakterinizin adını belirleyerek başlayın.</p>
                         <input v-model="store.meta.name" type="text" placeholder="Karakter Adı" class="big-input" style="padding: 10px; width: 100%; font-size: 1.1em; border-radius: 4px; border:1px solid #444; background:#222; color:white;">
-                                                <div class="form-group" style="margin-top: 20px; border: 1px dashed #444; padding: 15px;">
+                        <div class="form-group" style="margin-top: 20px; border: 1px dashed #444; padding: 15px; background: rgba(255,255,255,0.02);">
                             <label>Daha Önce Oluşturulmuş Bir Seed Yükle:</label>
                             <div style="display: flex; gap: 10px;">
-                                <input type="text" id="seedInput" placeholder="Kodu buraya yapıştır..." class="mini-select" style="flex: 1;">
-                                <button @click="loadFromSeed(document.getElementById('seedInput').value)" class="btn btn-secondary">Yükle</button>
+                                <input v-model="seedText" type="text" placeholder="Kodu buraya yapıştır..." class="mini-select" style="flex: 1; font-family: monospace; font-size: 0.8em;">
+                                <button @click="loadFromSeed" class="btn btn-secondary">Yükle</button>
                             </div>
                         </div>
                     </div>
@@ -394,12 +394,15 @@
 
                         <div v-if="selectedScoreMethod === 'manual'" class="score-dashboard">
                             <p style="text-align:center; color:#e67e22; margin-bottom:20px;">
-                                Dikkat: Hiçbir kısıtlama yoktur. İstediğiniz değeri girebilirsiniz.
+                                Manuel Mod: Seed ile yüklenen veya serbestçe girdiğiniz değerler kullanılır.
                             </p>
                             <div v-for="(label, key) in selectableStats" :key="key" class="score-row">
                                 <div class="score-label">{{ label }}</div>
                                 <div>
-                                    <input type="number" v-model="store.abilities.base[key]" class="big-input" style="text-align:center; padding:5px;">
+                                    <input type="number" 
+                                           v-model.number="store.abilities.base[key]" 
+                                           class="big-input" 
+                                           style="text-align:center; padding:5px; width: 80px;">
                                 </div>
                                 <div class="score-total">{{ store.abilities.base[key] }}</div>
                             </div>
@@ -502,7 +505,7 @@
                 <div class="sheet-stats">
                     <div class="stat-box" v-for="(val, key) in finalAbilityScores" :key="key">
                         <span class="stat-label">{{ key.toUpperCase() }}</span>
-                        <span class="stat-val" :style="statBonuses[key] > 0 ? 'color: #4caf50' : ''">{{ val }}</span>
+                        <span class="stat-val" :style="(statBonuses && statBonuses[key] > 0) ? 'color: #4caf50' : ''">{{ val }}</span>
                         <span class="stat-mod">{{ Math.floor((val - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((val - 10) / 2) }}</span>
                     </div>
                 </div>
