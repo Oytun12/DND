@@ -7,13 +7,16 @@
     
     <link rel="stylesheet" href="stylesKarYa.css">
     <link rel="stylesheet" href="stylesScores.css">
+    <link rel="stylesheet" href="stylesScores.css">
     
-    <script type="importmap">
-    {
-        "imports": {
-            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
-        }
-    }
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+        
+            <script type="importmap">
+            {
+                "imports": {
+                    "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+                }
+            }
     </script>
 </head>
 <body>
@@ -534,16 +537,23 @@
                         </div>
                     </div>
                     <div class="sheet-section" style="border-top: 2px solid #333; margin-top: 20px; padding-top: 15px;">
-                    <h4 style="color: #888; font-size: 0.8em; text-transform: uppercase;">Karakter Tohumu (Seed)</h4>
-                    <div style="background: #111; padding: 10px; border-radius: 4px; border: 1px solid #222;">
-                        <code style="display: block; font-size: 0.7em; color: #4caf50; word-break: break-all; max-height: 60px; overflow-y: auto; margin-bottom: 10px;">
-                            {{ characterSeed }}
-                        </code>
-                        <button @click="copySeed" class="btn btn-primary" style="width: 100%; font-size: 0.8em; padding: 5px;">
-                            📋 Kodu Kopyala / Paylaş
-                        </button>
+                        <h4 style="color: #888; font-size: 0.8em; text-transform: uppercase;">Karakter Paylaşımı</h4>
+
+                        <div style="background: #111; padding: 10px; border-radius: 4px; border: 1px solid #222; margin-bottom: 10px;">
+                            <code style="display: block; font-size: 0.7em; color: #4caf50; word-break: break-all; max-height: 40px; overflow-y: auto;">
+                                {{ characterSeed }}
+                            </code>
+                        </div>                  
+
+                        <div style="display: flex; gap: 10px;">
+                            <button @click="copySeed" class="btn btn-secondary" style="flex: 1; font-size: 0.8em; padding: 8px;">
+                                📋 Kodu Kopyala
+                            </button>
+                            <button @click="copyLink" class="btn btn-primary" style="flex: 1; font-size: 0.8em; padding: 8px;">
+                                🔗 Linki Kopyala
+                            </button>
+                        </div>
                     </div>
-                </div>
                 </div>
             </aside>
         </div>

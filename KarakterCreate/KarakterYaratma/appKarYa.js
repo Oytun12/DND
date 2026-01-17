@@ -27,6 +27,31 @@ const app = createApp({
             choices: {} 
         });
 
+        // appKarYa.js > setup() içine:
+
+        // --- YARDIMCI: Boş Verileri Temizle ---
+        const cleanObject = (obj) => {
+            if (typeof obj !== 'object' || obj === null) return obj;
+
+            if (Array.isArray(obj)) {
+                const cleanedArray = obj.map(cleanObject).filter(item => 
+                    item !== null && item !== undefined && item !== "" && 
+                    (typeof item !== 'object' || Object.keys(item).length > 0)
+                );
+                return cleanedArray.length > 0 ? cleanedArray : undefined;
+            }       
+
+            const cleanedObj = {};
+            Object.keys(obj).forEach(key => {
+                const value = cleanObject(obj[key]);
+                if (value !== null && value !== undefined && value !== "" && 
+                   (typeof value !== 'object' || Object.keys(value).length > 0)) {
+                    cleanedObj[key] = value;
+                }
+            });
+            return Object.keys(cleanedObj).length > 0 ? cleanedObj : undefined;
+        };
+
         // ============================================================
         //  2. NAVIGATION & DATA LOADING
         // ============================================================
@@ -66,8 +91,19 @@ const app = createApp({
                     const bgData = await bgRes.json();
                     backgroundList.value = bgData.background || [];
                 }
+                
             
                 loading.value = false;
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlSeed = urlParams.get('seed');
+                if (urlSeed) {
+                    seedText.value = urlSeed;
+                    // Veriler (JSON) yüklendikten hemen sonra seed'i işlememiz lazım.
+                    // DOM ve listeler tam hazır olsun diye minik bir gecikme iyidir.
+                    setTimeout(() => {
+                        loadFromSeed();
+                    }, 500);
+                }
             } catch (err) {
                 error.value = "Veri yükleme hatası: " + err.message + ". (Lütfen Live Server kullanın veya JSON yollarını kontrol edin.)";
                 console.error(err);
@@ -455,52 +491,110 @@ const app = createApp({
         const seedText = ref('');
 
         const characterSeed = computed(() => {
+            // 1. Ham veriyi hazırla
             const exportData = {
-                n: store.meta.name, r: store.race.selected?.name, sr: store.race.subrace?.name, ac: store.race.abilityChoices,
-                c: store.class.selected?.name, sc: store.class.subclass?.name, l: targetLevel.value,
-                b: store.abilities.base, asi: store.abilities.asi, bg: store.background.selected?.name,
-                p: store.skills.proficiencies, e: store.skills.expertises, ch: userChoices.value,
-                sm: selectedScoreMethod.value, rp: rolledPool.value
-            };
-            try { return btoa(unescape(encodeURIComponent(JSON.stringify(exportData)))); } catch (e) { return ""; }
+                n: store.meta.name, 
+                r: store.race.selected?.name, 
+                sr: store.race.subrace?.name, 
+                ac: store.race.abilityChoices,
+                c: store.class.selected?.name, 
+                sc: store.class.subclass?.name, 
+                l: targetLevel.value,
+                b: store.abilities.base, 
+                asi: store.abilities.asi, 
+                bg: store.background.selected?.name,
+                p: store.skills.proficiencies, 
+                e: store.skills.expertises, 
+                ch: userChoices.value,
+                sm: selectedScoreMethod.value, 
+                rp: rolledPool.value
+            };      
+
+            try {
+                // 2. Veriyi kopyala ve temizle (Boşlukları at)
+                const cleanData = cleanObject(JSON.parse(JSON.stringify(exportData)));
+                
+                // 3. LZString ile sıkıştır ve URL uyumlu hale getir
+                // window.LZString kütüphaneden geliyor
+                return window.LZString.compressToEncodedURIComponent(JSON.stringify(cleanData));
+            } catch (e) { 
+                console.error(e);
+                return ""; 
+            }
         });
+
 
         const loadFromSeed = () => {
             try {
-                if (!seedText.value) return;
-                const data = JSON.parse(decodeURIComponent(escape(atob(seedText.value))));
+                if (!seedText.value) return;                 
+
+                // 1. LZString ile çözmeyi dene
+                let jsonStr = window.LZString.decompressFromEncodedURIComponent(seedText.value);
+                
+                // Eğer boş dönerse (belki eski formatta bir koddur?), hata verip çıkalım veya eski yöntemi deneyelim.
+                // Şimdilik sadece yeni sistemi destekleyelim:
+                if (!jsonStr) {
+                    alert("Geçersiz veya bozuk kod!");
+                    return;
+                }                
+
+                const data = JSON.parse(jsonStr);                
+
+                // ... BURADAN SONRASI ESKİ KODUN AYNISI (Verileri Store'a atama) ...
                 store.meta.name = data.n || "";
                 targetLevel.value = data.l || 1; 
+                
+                // Irk Yükleme
                 if (data.r) {
                     const foundRace = flatRaceList.value.find(x => x.label.includes(data.r));
                     if (foundRace) {
                         selectedFlatOption.value = foundRace;
+                        // Timeout, Vue'nun watcher'ının tetiklenmesini beklemek için
                         setTimeout(() => { store.race.abilityChoices = { ...data.ac }; }, 50);
                     }
-                }
+                }                
+
+                // Sınıf Yükleme
                 if (data.c) {
                     const foundClass = classList.value.find(x => x.name === data.c);
                     if (foundClass) {
                         selectedClass.value = foundClass;
                         setTimeout(() => { if (data.sc) selectedSubclass.value = foundClass.subclasses?.find(s => s.name === data.sc); }, 100);
                     }
-                }
+                }                
+
                 selectedScoreMethod.value = data.sm || 'manual';
                 if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
+                
                 store.abilities.base = { ...data.b };
                 store.abilities.asi = { ...data.asi };
+                
                 if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
+                
                 store.skills.proficiencies = [...(data.p || [])];
                 store.skills.expertises = [...(data.e || [])];
-                userChoices.value = { ...data.ch };
-                alert("Başarıyla yüklendi!");
-                seedText.value = ''; 
-            } catch (e) { alert("Geçersiz Seed!"); }
+                userChoices.value = { ...data.ch };              
+
+                alert("Karakter Başarıyla Yüklendi!");
+                seedText.value = ''; // Input'u temizle              
+
+            } catch (e) { 
+                console.error(e);
+                alert("Seed yüklenirken hata oluştu!"); 
+            }
         };
 
         const copySeed = () => {
             navigator.clipboard.writeText(characterSeed.value);
             alert("Seed kopyalandı!");
+        };
+        const copyLink = () => {
+            // Mevcut sayfa adresi + ?seed= + Sıkıştırılmış Kod
+            const url = `${window.location.origin}${window.location.pathname}?seed=${characterSeed.value}`;
+
+            navigator.clipboard.writeText(url).then(() => {
+                alert("Karakter linki kopyalandı! Arkadaşına gönderebilirsin.");
+            });
         };
 
         // ============================================================
@@ -516,7 +610,7 @@ const app = createApp({
             skillBudget, expertiseBudget, raceSkillInfo, currentProfCount: computed(() => store.skills.proficiencies.length + store.skills.expertises.length), 
             currentExpertCount: computed(() => store.skills.expertises.length), currentUsedSkills: computed(() => store.skills.proficiencies.length + store.skills.expertises.length),
             classSkillInfo, scoreMethods, selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, standardArrayValues, rollStats, rolledPool, hasRolled, isCapped20,
-            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS ,isMobileMenuOpen, toggleMobileMenu,
+            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS ,isMobileMenuOpen, toggleMobileMenu, copyLink, 
         };
     }
 });
