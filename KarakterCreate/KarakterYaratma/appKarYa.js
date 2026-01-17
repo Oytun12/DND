@@ -45,24 +45,33 @@ const app = createApp({
         // Verileri Yükle
         onMounted(async () => {
             try {
+                // Dosyaların varlığını kontrol etmek için basit bir try-catch
                 const [classRes, raceRes, bgRes] = await Promise.all([
-                    fetch('../../Data/classes.json'),
-                    fetch('../../Data/races.json'),
-                    fetch('../../Data/backgrounds.json')
+                    fetch('../../Data/classes.json').catch(e => null),
+                    fetch('../../Data/races.json').catch(e => null),
+                    fetch('../../Data/backgrounds.json').catch(e => null)
                 ]);
+            
+                if (!classRes || !classRes.ok) throw new Error("Sınıf verisi yüklenemedi.");
                 const classData = await classRes.json();
-                
-                const rawRaceData = await raceRes.json();
-                raceList.value = Array.isArray(rawRaceData) ? rawRaceData : (rawRaceData.race || []);
-
-                const bgData = await bgRes.json();
                 classList.value = classData.class || [];
-                backgroundList.value = bgData.background || [];
-                
+            
+                if (raceRes && raceRes.ok) {
+                    const rawRaceData = await raceRes.json();
+                    // Bazı veri setlerinde "race" array içinde, bazılarında direkt array olabilir
+                    raceList.value = Array.isArray(rawRaceData) ? rawRaceData : (rawRaceData.race || []);
+                }
+            
+                if (bgRes && bgRes.ok) {
+                    const bgData = await bgRes.json();
+                    backgroundList.value = bgData.background || [];
+                }
+            
                 loading.value = false;
             } catch (err) {
-                error.value = "Veri yüklenemedi: " + err.message;
+                error.value = "Veri yükleme hatası: " + err.message + ". (Lütfen Live Server kullanın veya JSON yollarını kontrol edin.)";
                 console.error(err);
+                loading.value = false;
             }
         });
 
@@ -438,6 +447,8 @@ const app = createApp({
         // ============================================================
         //  8. MOBIL UI & SEED SYSTEM
         // ============================================================
+        const isMobileMenuOpen = ref(false);
+        const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value; };
         const isMobileSheetOpen = ref(false);
         const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
         const featList = ref([ "Alert", "Actor", "Athlete", "Lucky", "Tough", "War Caster" ]);
@@ -505,7 +516,7 @@ const app = createApp({
             skillBudget, expertiseBudget, raceSkillInfo, currentProfCount: computed(() => store.skills.proficiencies.length + store.skills.expertises.length), 
             currentExpertCount: computed(() => store.skills.expertises.length), currentUsedSkills: computed(() => store.skills.proficiencies.length + store.skills.expertises.length),
             classSkillInfo, scoreMethods, selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, standardArrayValues, rollStats, rolledPool, hasRolled, isCapped20,
-            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS
+            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS ,isMobileMenuOpen, toggleMobileMenu,
         };
     }
 });

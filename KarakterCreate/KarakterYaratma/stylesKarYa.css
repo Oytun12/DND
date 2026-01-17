@@ -335,22 +335,19 @@ a.dnd-link.spell-link:hover {
 @media (max-width: 800px) {
 
     /* --- LAYOUT SIFIRLAMA (YENİ EKLENEN KISIM) --- */
-    .wizard-layout { 
-        grid-template-columns: 1fr;
-        /* Dış boşlukları tamamen sıfırla */
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        gap: 0;
-    }
 
+    .wizard-layout {
+        display: flex; /* Grid yerine Flex column daha güvenli olabilir */
+        flex-direction: column;
+        gap: 20px;
+        margin: 0;
+        padding-right: 5px;
+        width: 100%;
+    }
+    
     .wizard-container {
-        /* Kart görünümünden tam ekran görünüme geç */
-        border-radius: 0; 
-        box-shadow: none;
-        /* İçerik kenara yapışmasın diye çok az iç boşluk bırakıyoruz */
-        padding: 15px 10px; 
-        min-height: 100vh; /* Ekranı dikeyde doldur */
+        width: 100%;
+        min-height: auto; /* Mobilde zorunlu min-height scroll'u bozabilir */
     }
     
     /* Adım göstergesini mobilde biraz sıkılaştır */
