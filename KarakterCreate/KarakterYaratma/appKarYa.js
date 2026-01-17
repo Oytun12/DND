@@ -264,20 +264,77 @@ const app = createApp({
         watch(targetLevel, (newVal) => { store.class.level = newVal; });
 
         const getHitDie = (cls) => cls?.hd?.faces || '?';
-        const extractOptions = (feat) => { if(!feat) return null; if(feat.type==='options'&&feat.entries) return feat.entries; if(feat.entries&&Array.isArray(feat.entries)) { for(const e of feat.entries) if(e.type==='options'&&e.entries) return e.entries; } return null; };
-        const optionSourceMap = { "Ek Manevralar": "Savaş Üstadı: Manevralar", "Ek Metabüyü": "Metabüyü" };
-        const manualCounts = { "Savaş Üstadı: Manevralar": 3, "Ek Manevralar": 2, "Savaş Üstadı: Ek Manevralar_1": 2, "Metabüyü": 2, "Büyüde Uzmanlaşmış Şövalye: Büyüler": 2 };
+        const extractOptions = (feat) => { 
+            if (!feat) return null; 
+
+            // 1. Direkt seçenek mi?
+            if (feat.type === 'options' && feat.entries) return feat.entries; 
+
+            // 2. İçinde seçenek var mı? (Derinlemesine Ara)
+            if (feat.entries && Array.isArray(feat.entries)) { 
+                for (const e of feat.entries) {
+                    // Eğer direkt seçenekse
+                    if (e.type === 'options' && e.entries) return e.entries;
+
+                    // Eğer bir alt başlık altındaysa (Örn: "Seçenekler" başlığı altında)
+                    if (e.entries && Array.isArray(e.entries)) {
+                        for (const sub of e.entries) {
+                            if (sub.type === 'options' && sub.entries) return sub.entries;
+                        }
+                    }
+                } 
+            } 
+            return null; 
+        };
+const optionSourceMap = { 
+    // Savaşçı: Savaş Üstadı
+    // "Dövüş Üstünlüğü" başlığının içindeki seçenekleri bulamazsa, gidip "Savaş Üstadı: Manevralar"dan çalsın.
+    "Dövüş Üstünlüğü": "Savaş Üstadı: Manevralar",
+    "Ek Manevralar": "Savaş Üstadı: Manevralar", // Yedek
+
+    // Savaşçı: Arcane Okçu
+    "Arcane Atış": "Arcane Atış Seçenekleri",
+    "Fazladan Arcane Atış Seçeneği": "Arcane Atış Seçenekleri",
+
+    // Büyücü (Sorcerer)
+    "Ek Metabüyü": "Metabüyü"
+};
+const manualCounts = { 
+    "Dövüş Stili": 1, 
+    "Fighting Style": 1,
+    "Büyüde Uzmanlaşmış Şövalye: Büyüler": 2,
+    "Uzmanlık": 2
+};
         
         const findOptionsByName = (targetName) => { if(!selectedSubclass.value?.subclassFeatures) return null; for(const grp of selectedSubclass.value.subclassFeatures) for(const f of grp) if(f.name===targetName) return extractOptions(f); return null; };
         const normalizeOption = (opt) => opt ? (opt.name ? opt : (opt.entries?.[0]?.name ? {...opt.entries[0], entries: opt.entries[0].entries||[]} : {name: "Seçenek", entries:[]})) : {name:"Hata", entries:[]};
-        const detectSelectionCount = (name, entries) => { if(manualCounts[name]) return manualCounts[name]; const txt = JSON.stringify(entries).toLowerCase(); return txt.includes("3") ? 3 : txt.includes("2") || txt.includes("iki") ? 2 : 0; };
-        
+
+const detectSelectionCount = (feature, extractedOpts) => {
+    // 1. JSON İÇİNDE "selectionCount" VAR MI? (Senin eklediklerin)
+    if (feature.selectionCount) return feature.selectionCount;
+
+    // 2. SEÇENEKLERİN İÇİNDE VAR MI?
+    if (feature.entries) {
+        for (const entry of feature.entries) {
+            if (entry.selectionCount) return entry.selectionCount;
+            if (entry.type === 'options' && entry.selectionCount) return entry.selectionCount;
+        }
+    }
+    
+    // 3. MANUEL LİSTE (Sadece çok inatçı durumlar için yedek, istersen boş bırakabilirsin)
+    // const name = feature.name ? feature.name.trim() : "";
+    // if (manualCounts[name]) return manualCounts[name];
+
+    // 4. HİÇBİR ŞEY YOKSA
+    // 0 Döndür. (Aşağıdaki processFeature fonksiyonu 0 gelirse otomatik 1 yapacak)
+    return 0;
+};
         const processFeature = (feat, isSub) => {
             try {
                 let opts = extractOptions(feat);
                 if(!opts && optionSourceMap[feat.name]) opts = findOptionsByName(optionSourceMap[feat.name]);
                 let cleanOpts = opts ? opts.map(normalizeOption) : [];
-                let count = detectSelectionCount(feat.name, feat.entries);
+                let count = detectSelectionCount(feat, cleanOpts);
                 if(cleanOpts.length > 0 && count === 0) count = 1;
                 return { name: feat.name, entries: feat.entries ? feat.entries.map(formatEntry).filter(t=>t) : ["Detay yok"], isSubclass: isSub, hasOptions: !!cleanOpts.length, options: cleanOpts, selectionCount: count };
             } catch(e) { return {name: feat.name, entries:[], isSubclass:false}; }
@@ -286,18 +343,53 @@ const app = createApp({
         const subclassUnlockLevel = computed(() => selectedClass.value?.classFeatures?.findIndex(grp => grp.some(f => f.gainSubclassFeature)) + 1 || -1);
         const subclassOptions = computed(() => selectedClass.value?.subclasses || []);
         
+        // appKarYa.js > activeFeatures computed'ını bununla güncelle:
+
         const activeFeatures = computed(() => {
             if (!selectedClass.value) return [];
             const timeline = [];
+
+            // Seçenek listelerini (Menüleri) hatırlamak için hafıza
+            const optionCache = {}; 
+        
             for (let i = 0; i < targetLevel.value; i++) {
                 const feats = [];
+                // ASI (Stat Artışı) objesi oluşturma
                 if (!store.abilities.asi[i + 1]) store.abilities.asi[i + 1] = { feat: null, stat1: null, stat2: null };
+
                 selectedClass.value.classFeatures[i]?.forEach(f => {
-                    feats.push(processFeature(f, false));
+                    // 1. Özelliği işle (Metni analiz et, kaç tane seçileceğini bul)
+                    let processed = processFeature(f, false);
+                
+                    // processed.selectionCount şu anki metne ("Bir tane seç" vb.) göre hesaplandı.
+                    // Bu sayıya dokunmayacağız, sadece seçenek listesi boşsa onu dolduracağız.
+                
+                    // A. EĞER BU ÖZELLİĞİN ORİJİNAL SEÇENEKLERİ VARSA HAFIZAYA AT
+                    if (processed.hasOptions) {
+                        optionCache[processed.name] = processed.options;
+                    }
+                    // B. EĞER SEÇENEĞİ YOK (BOŞ GELMİŞ) AMA HAFIZADA VARSA -> KOPYALA
+                    else if (optionCache[processed.name] && !processed.hasOptions) {
+                        processed.hasOptions = true;
+                        processed.options = optionCache[processed.name];
+
+                        // KRİTİK NOKTA:
+                        // Eğer metinde sayı bulamadıysa (count=0) ve seçenekleri hafızadan çektiysek,
+                        // varsayılan olarak 1 hak verelim. 
+                        // (Eğer metinde "2 tane" yazıyorsa processed.selectionCount zaten 2'dir, buna dokunmayız.)
+                        if (processed.selectionCount === 0) {
+                            processed.selectionCount = 1;
+                        }
+                    }
+                
+                    feats.push(processed);
+                
+                    // Alt sınıf özellikleri
                     if(f.gainSubclassFeature) {
                         if(selectedSubclass.value) selectedSubclass.value.subclassFeatures?.[timeline.filter(t => t.features.some(ft => ft.isSubclass)).length]?.forEach(sf => feats.push(processFeature(sf, true)));
                     }
                 });
+
                 if(feats.length || i+1 === subclassUnlockLevel.value) timeline.push({level: i+1, features: feats});
             }
             return timeline;

@@ -7055,6 +7055,7 @@
 									},
 									{
 										"type": "options",
+										"selectionCount": 3,
 										"name": "Savaş Üstadı: Manevralar",
 										"entries": [
 											{
@@ -7267,6 +7268,7 @@
 									},
 									{
 										"type": "options",
+										"selectionCount": 2,
 										"name": "Savaş Üstadı: Ek Manevralar_1",
 										"entries": [
 											{
@@ -7505,6 +7507,7 @@
 									},
 									{
 										"type": "options",
+										"selectionCount": 2,
 										"name": "Savaş Üstadı: Ek Manevralar_2",
 										"entries": [
 											{
@@ -7724,6 +7727,7 @@
 									},
 									{
 										"type": "options",
+										"selectionCount": 2,
 										"name": "Savaş Üstadı: Ek Manevralar_3",
 										"entries": [
 											{
@@ -8226,18 +8230,14 @@
 									{
 										"type": "entries",
 										"name": "Arcane Atış Seçenekleri",
+										"selectionCount": 2,
+										"count": 2,
 										"entries": [
 											"Arcane Atış özelliği belirli seviyelerde seçeneklerden seçmeni sağlar. Seçenekler alfabetik sıralamayla verilmiştir. Hepsi büyülü etkilerdir, ve her biri büyü okullarından biri ile bağlantılıdır.",
 											"Eğer bir seçenek kurtulma zarı gerektirirse, Arcane Atış kurtulma DC'si şu şekilde hesaplanır:",
 											{
-												"type": "abilityDc",
-												"name": "Arcane Atış",
-												"attributes": [
-													"zek"
-												]
-											},
-											{
 												"type": "options",
+												"selectionCount": 2,
 												"entries": [
 													{
 														"type": "entries",
@@ -8344,6 +8344,13 @@
 														]
 													}
 												]
+											},
+											{
+												"type": "abilityDc",
+												"name": "Arcane Atış",
+												"attributes": [
+													"zek"
+												]
 											}
 										]
 									}
@@ -8375,7 +8382,134 @@
 										]
 									}
 								]
-							}
+							},
+							{
+										"type": "entries",
+										"name": "Arcane Atış Seçenekleri",
+										"selectionCount": 1,
+										"count": 2,
+										"entries": [
+											"Arcane Atış özelliği belirli seviyelerde seçeneklerden seçmeni sağlar. Seçenekler alfabetik sıralamayla verilmiştir. Hepsi büyülü etkilerdir, ve her biri büyü okullarından biri ile bağlantılıdır.",
+											"Eğer bir seçenek kurtulma zarı gerektirirse, Arcane Atış kurtulma DC'si şu şekilde hesaplanır:",
+											{
+												"type": "options",
+												"selectionCount": 1,
+												"entries": [
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kovan Ok",
+																"entries": [
+																	"Abjuration büyüsünü kullanıp hedefini Feywild'da zararsız bir yere geçici olarak kovmaya çalışırsın. Okla vurulan bir varlık Karizma kurtulma zarı atar ya da kovulur. Bu şekilde kovulduğunda, hedefin hızı 0 olur ve {@condition etkisiz hal}dedir. Bir sonraki sırasının sonunda, terkettiği alana ya da o alan doluysa en yakın boş alana döner.",
+																	"Bu sınıfta 18. seviyeye ulaştıktan sonra, bir ok ona vurduğunda hedef ayrıca 2d6 güç hasarı da alır."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Cezbeden Ok",
+																"entries": [
+																	"Enchantment büyün bu okun hedefini geçici bir şekilde cezbetmesini sağlar. Okla vurulan varlık fazladan 2d6 psişik hasar alır, ve hedefin 30 fit yakınında bir dostunu seçersin. Hedef Akıl kurtulma zarı atar ya da bir sonraki sıranın başına kadar seçilen dostun tarafından {@condition cezbedilme} durumundadır. Bu etki eğer seçilen dost cezbedilmiş hedefe saldırırsa, hasar verirse veya kurtulma zarı attırırsa erken biter.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Patlayan Ok",
+																"entries": [
+																	"Evocation okulundan çektiğin enerji ile okuna patlayıcı güç yüklersin. Bu enerji saldırından sonra patlar. Ok varlığa vurduktan hemen sonra, varlık ve onun 10 fit yanındaki her varlık 2d6 güç hasarı alır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Zayıflatan Ok",
+																"entries": [
+																	"Okuna necromantic büyü yüklersin. Okla vurulan varlık fazladan 2d6 nekrotik hasar alır. Hedef ayrıca Dayanıklılık kurtulma zarı atar, ya da bir sonraki sıranın başına kadar silahlı saldırılarının hasarı yarılanır.",
+																	"Bu sınıfta 18.seviyeye ulaştığında nekrotik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kavrayan Ok",
+																"entries": [
+																	"Bu ok hedefine vurduğunda, conjuration büyüsü hedefin etrafına dolanan, kavrayan zehirli dallar yaratır. Okla vurulan varlık fazladan 2d6 zehir hasarı alır, hızı 10 fit azalır, ve her sırasında ışınlanmadan 1 fit ya da fazla ilk hareket edişinde 2d6 kesme hasarı alır. Hedef ya da ona erişebilen başka bir varlık eylemini kullanıp Arcane Atış DC'ne karşı atacağı Kuvvet (Atletizm) zarı ile dalları ayırmayı deneyebilir. Aksi takdirde, dallar 1 dakikalığına ya da sen bu özelliği yeniden kullanana kadar kalır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında hem zehir hem de kesme hasarı 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Delen Ok",
+																"entries": [
+																	"Transmutation büyüsünü kullanıp okunu cisimsiz yapabilirsin. Bu özelliği kullandığında saldırı için zar atmazsın. Bunun yerine, ok ileri doğru 1 fit genişlikte 30 fit uzunlukta bir hat yaratır ve ortadan kaybolur. Ok nesnelerden zararsızca geçer, siperi yok sayar. Hattaki her varlık Çeviklik kurtulma zarı atar. Başarısız olursa, bir varlık sanki okla vurulmuşçasına hasar alır, ve üzerine fazladan 1d6 delme hasarı alır. Başarılı olursa, bir hedef bu hasarın yarısını alır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında delme hasarı 2d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Güdümlü Ok",
+																"entries": [
+																	"Divination büyüsü kullanarak, bir oka hedefini izleme gücünü verirsin. Bu özelliği kullandığında, saldırı için zar atmazsın. Bunun yerine, son bir dakika içinde gördüğün bir varlığı seçersin. Ok o varlığa doğru uçar, gerekirse köşeleri döner ve yarım ya da 3 çeyrek siperi yok sayar. Eğer hedef silahın menzilinde ise ve okun hedefe ulaşmasına yetecek büyüklükte bir yol varsa, hedef Çeviklik kurtulma zarı atar. Aksi takdirde, ok gidebildiği yere kadar gider ve ortadan kaybolur. Başarısız olursa, hedef sanki okla vurulmuşçasına hasar alır ve bunun üzerine fazladan 1d6 güç hasarı alır, ayrıca hedefin o anki yerini öğrenirsin. Başarılı olursa, hedef yarı hasar alır ve onun yerini öğrenmezsin.",
+																	"Bu sınıfta 18. seviyeye ulaştığında güç hasarı 2d6'ya çıkar."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Gölge Oku",
+																"entries": [
+																	"Okuna illusion büyüsünü dokursun, düşmanın görüşünü gölgelerle kaplar. Okla vurulan varlık fazladan 2d6 psişik hasar alır, ve Akıl kurtulma zarı atar ya da bir sonraki sıranın başına kadar 5 fitten sonrasını göremez.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya çıkar."
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "abilityDc",
+												"name": "Arcane Atış",
+												"attributes": [
+													"zek"
+												]
+											}
+										]
+									}
 						],
 						[
 							{
@@ -8388,7 +8522,134 @@
 										]
 									}
 								]
-							}
+							},
+							{
+										"type": "entries",
+										"name": "Arcane Atış Seçenekleri",
+										"selectionCount": 1,
+										"count": 2,
+										"entries": [
+											"Arcane Atış özelliği belirli seviyelerde seçeneklerden seçmeni sağlar. Seçenekler alfabetik sıralamayla verilmiştir. Hepsi büyülü etkilerdir, ve her biri büyü okullarından biri ile bağlantılıdır.",
+											"Eğer bir seçenek kurtulma zarı gerektirirse, Arcane Atış kurtulma DC'si şu şekilde hesaplanır:",
+											{
+												"type": "options",
+												"selectionCount": 1,
+												"entries": [
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kovan Ok",
+																"entries": [
+																	"Abjuration büyüsünü kullanıp hedefini Feywild'da zararsız bir yere geçici olarak kovmaya çalışırsın. Okla vurulan bir varlık Karizma kurtulma zarı atar ya da kovulur. Bu şekilde kovulduğunda, hedefin hızı 0 olur ve {@condition etkisiz hal}dedir. Bir sonraki sırasının sonunda, terkettiği alana ya da o alan doluysa en yakın boş alana döner.",
+																	"Bu sınıfta 18. seviyeye ulaştıktan sonra, bir ok ona vurduğunda hedef ayrıca 2d6 güç hasarı da alır."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Cezbeden Ok",
+																"entries": [
+																	"Enchantment büyün bu okun hedefini geçici bir şekilde cezbetmesini sağlar. Okla vurulan varlık fazladan 2d6 psişik hasar alır, ve hedefin 30 fit yakınında bir dostunu seçersin. Hedef Akıl kurtulma zarı atar ya da bir sonraki sıranın başına kadar seçilen dostun tarafından {@condition cezbedilme} durumundadır. Bu etki eğer seçilen dost cezbedilmiş hedefe saldırırsa, hasar verirse veya kurtulma zarı attırırsa erken biter.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Patlayan Ok",
+																"entries": [
+																	"Evocation okulundan çektiğin enerji ile okuna patlayıcı güç yüklersin. Bu enerji saldırından sonra patlar. Ok varlığa vurduktan hemen sonra, varlık ve onun 10 fit yanındaki her varlık 2d6 güç hasarı alır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Zayıflatan Ok",
+																"entries": [
+																	"Okuna necromantic büyü yüklersin. Okla vurulan varlık fazladan 2d6 nekrotik hasar alır. Hedef ayrıca Dayanıklılık kurtulma zarı atar, ya da bir sonraki sıranın başına kadar silahlı saldırılarının hasarı yarılanır.",
+																	"Bu sınıfta 18.seviyeye ulaştığında nekrotik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kavrayan Ok",
+																"entries": [
+																	"Bu ok hedefine vurduğunda, conjuration büyüsü hedefin etrafına dolanan, kavrayan zehirli dallar yaratır. Okla vurulan varlık fazladan 2d6 zehir hasarı alır, hızı 10 fit azalır, ve her sırasında ışınlanmadan 1 fit ya da fazla ilk hareket edişinde 2d6 kesme hasarı alır. Hedef ya da ona erişebilen başka bir varlık eylemini kullanıp Arcane Atış DC'ne karşı atacağı Kuvvet (Atletizm) zarı ile dalları ayırmayı deneyebilir. Aksi takdirde, dallar 1 dakikalığına ya da sen bu özelliği yeniden kullanana kadar kalır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında hem zehir hem de kesme hasarı 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Delen Ok",
+																"entries": [
+																	"Transmutation büyüsünü kullanıp okunu cisimsiz yapabilirsin. Bu özelliği kullandığında saldırı için zar atmazsın. Bunun yerine, ok ileri doğru 1 fit genişlikte 30 fit uzunlukta bir hat yaratır ve ortadan kaybolur. Ok nesnelerden zararsızca geçer, siperi yok sayar. Hattaki her varlık Çeviklik kurtulma zarı atar. Başarısız olursa, bir varlık sanki okla vurulmuşçasına hasar alır, ve üzerine fazladan 1d6 delme hasarı alır. Başarılı olursa, bir hedef bu hasarın yarısını alır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında delme hasarı 2d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Güdümlü Ok",
+																"entries": [
+																	"Divination büyüsü kullanarak, bir oka hedefini izleme gücünü verirsin. Bu özelliği kullandığında, saldırı için zar atmazsın. Bunun yerine, son bir dakika içinde gördüğün bir varlığı seçersin. Ok o varlığa doğru uçar, gerekirse köşeleri döner ve yarım ya da 3 çeyrek siperi yok sayar. Eğer hedef silahın menzilinde ise ve okun hedefe ulaşmasına yetecek büyüklükte bir yol varsa, hedef Çeviklik kurtulma zarı atar. Aksi takdirde, ok gidebildiği yere kadar gider ve ortadan kaybolur. Başarısız olursa, hedef sanki okla vurulmuşçasına hasar alır ve bunun üzerine fazladan 1d6 güç hasarı alır, ayrıca hedefin o anki yerini öğrenirsin. Başarılı olursa, hedef yarı hasar alır ve onun yerini öğrenmezsin.",
+																	"Bu sınıfta 18. seviyeye ulaştığında güç hasarı 2d6'ya çıkar."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Gölge Oku",
+																"entries": [
+																	"Okuna illusion büyüsünü dokursun, düşmanın görüşünü gölgelerle kaplar. Okla vurulan varlık fazladan 2d6 psişik hasar alır, ve Akıl kurtulma zarı atar ya da bir sonraki sıranın başına kadar 5 fitten sonrasını göremez.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya çıkar."
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "abilityDc",
+												"name": "Arcane Atış",
+												"attributes": [
+													"zek"
+												]
+											}
+										]
+									}
 						],
 						[
 							{
@@ -8408,7 +8669,134 @@
 										]
 									}
 								]
-							}
+							},
+							{
+										"type": "entries",
+										"name": "Arcane Atış Seçenekleri",
+										"selectionCount": 1,
+										"count": 2,
+										"entries": [
+											"Arcane Atış özelliği belirli seviyelerde seçeneklerden seçmeni sağlar. Seçenekler alfabetik sıralamayla verilmiştir. Hepsi büyülü etkilerdir, ve her biri büyü okullarından biri ile bağlantılıdır.",
+											"Eğer bir seçenek kurtulma zarı gerektirirse, Arcane Atış kurtulma DC'si şu şekilde hesaplanır:",
+											{
+												"type": "options",
+												"selectionCount": 1,
+												"entries": [
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kovan Ok",
+																"entries": [
+																	"Abjuration büyüsünü kullanıp hedefini Feywild'da zararsız bir yere geçici olarak kovmaya çalışırsın. Okla vurulan bir varlık Karizma kurtulma zarı atar ya da kovulur. Bu şekilde kovulduğunda, hedefin hızı 0 olur ve {@condition etkisiz hal}dedir. Bir sonraki sırasının sonunda, terkettiği alana ya da o alan doluysa en yakın boş alana döner.",
+																	"Bu sınıfta 18. seviyeye ulaştıktan sonra, bir ok ona vurduğunda hedef ayrıca 2d6 güç hasarı da alır."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Cezbeden Ok",
+																"entries": [
+																	"Enchantment büyün bu okun hedefini geçici bir şekilde cezbetmesini sağlar. Okla vurulan varlık fazladan 2d6 psişik hasar alır, ve hedefin 30 fit yakınında bir dostunu seçersin. Hedef Akıl kurtulma zarı atar ya da bir sonraki sıranın başına kadar seçilen dostun tarafından {@condition cezbedilme} durumundadır. Bu etki eğer seçilen dost cezbedilmiş hedefe saldırırsa, hasar verirse veya kurtulma zarı attırırsa erken biter.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Patlayan Ok",
+																"entries": [
+																	"Evocation okulundan çektiğin enerji ile okuna patlayıcı güç yüklersin. Bu enerji saldırından sonra patlar. Ok varlığa vurduktan hemen sonra, varlık ve onun 10 fit yanındaki her varlık 2d6 güç hasarı alır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Zayıflatan Ok",
+																"entries": [
+																	"Okuna necromantic büyü yüklersin. Okla vurulan varlık fazladan 2d6 nekrotik hasar alır. Hedef ayrıca Dayanıklılık kurtulma zarı atar, ya da bir sonraki sıranın başına kadar silahlı saldırılarının hasarı yarılanır.",
+																	"Bu sınıfta 18.seviyeye ulaştığında nekrotik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kavrayan Ok",
+																"entries": [
+																	"Bu ok hedefine vurduğunda, conjuration büyüsü hedefin etrafına dolanan, kavrayan zehirli dallar yaratır. Okla vurulan varlık fazladan 2d6 zehir hasarı alır, hızı 10 fit azalır, ve her sırasında ışınlanmadan 1 fit ya da fazla ilk hareket edişinde 2d6 kesme hasarı alır. Hedef ya da ona erişebilen başka bir varlık eylemini kullanıp Arcane Atış DC'ne karşı atacağı Kuvvet (Atletizm) zarı ile dalları ayırmayı deneyebilir. Aksi takdirde, dallar 1 dakikalığına ya da sen bu özelliği yeniden kullanana kadar kalır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında hem zehir hem de kesme hasarı 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Delen Ok",
+																"entries": [
+																	"Transmutation büyüsünü kullanıp okunu cisimsiz yapabilirsin. Bu özelliği kullandığında saldırı için zar atmazsın. Bunun yerine, ok ileri doğru 1 fit genişlikte 30 fit uzunlukta bir hat yaratır ve ortadan kaybolur. Ok nesnelerden zararsızca geçer, siperi yok sayar. Hattaki her varlık Çeviklik kurtulma zarı atar. Başarısız olursa, bir varlık sanki okla vurulmuşçasına hasar alır, ve üzerine fazladan 1d6 delme hasarı alır. Başarılı olursa, bir hedef bu hasarın yarısını alır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında delme hasarı 2d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Güdümlü Ok",
+																"entries": [
+																	"Divination büyüsü kullanarak, bir oka hedefini izleme gücünü verirsin. Bu özelliği kullandığında, saldırı için zar atmazsın. Bunun yerine, son bir dakika içinde gördüğün bir varlığı seçersin. Ok o varlığa doğru uçar, gerekirse köşeleri döner ve yarım ya da 3 çeyrek siperi yok sayar. Eğer hedef silahın menzilinde ise ve okun hedefe ulaşmasına yetecek büyüklükte bir yol varsa, hedef Çeviklik kurtulma zarı atar. Aksi takdirde, ok gidebildiği yere kadar gider ve ortadan kaybolur. Başarısız olursa, hedef sanki okla vurulmuşçasına hasar alır ve bunun üzerine fazladan 1d6 güç hasarı alır, ayrıca hedefin o anki yerini öğrenirsin. Başarılı olursa, hedef yarı hasar alır ve onun yerini öğrenmezsin.",
+																	"Bu sınıfta 18. seviyeye ulaştığında güç hasarı 2d6'ya çıkar."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Gölge Oku",
+																"entries": [
+																	"Okuna illusion büyüsünü dokursun, düşmanın görüşünü gölgelerle kaplar. Okla vurulan varlık fazladan 2d6 psişik hasar alır, ve Akıl kurtulma zarı atar ya da bir sonraki sıranın başına kadar 5 fitten sonrasını göremez.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya çıkar."
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "abilityDc",
+												"name": "Arcane Atış",
+												"attributes": [
+													"zek"
+												]
+											}
+										]
+									}
 						],
 						[
 							{
@@ -8421,7 +8809,133 @@
 										]
 									}
 								]
-							}
+							},{
+										"type": "entries",
+										"name": "Arcane Atış Seçenekleri",
+										"selectionCount": 1,
+										"count": 2,
+										"entries": [
+											"Arcane Atış özelliği belirli seviyelerde seçeneklerden seçmeni sağlar. Seçenekler alfabetik sıralamayla verilmiştir. Hepsi büyülü etkilerdir, ve her biri büyü okullarından biri ile bağlantılıdır.",
+											"Eğer bir seçenek kurtulma zarı gerektirirse, Arcane Atış kurtulma DC'si şu şekilde hesaplanır:",
+											{
+												"type": "options",
+												"selectionCount": 1,
+												"entries": [
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kovan Ok",
+																"entries": [
+																	"Abjuration büyüsünü kullanıp hedefini Feywild'da zararsız bir yere geçici olarak kovmaya çalışırsın. Okla vurulan bir varlık Karizma kurtulma zarı atar ya da kovulur. Bu şekilde kovulduğunda, hedefin hızı 0 olur ve {@condition etkisiz hal}dedir. Bir sonraki sırasının sonunda, terkettiği alana ya da o alan doluysa en yakın boş alana döner.",
+																	"Bu sınıfta 18. seviyeye ulaştıktan sonra, bir ok ona vurduğunda hedef ayrıca 2d6 güç hasarı da alır."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Cezbeden Ok",
+																"entries": [
+																	"Enchantment büyün bu okun hedefini geçici bir şekilde cezbetmesini sağlar. Okla vurulan varlık fazladan 2d6 psişik hasar alır, ve hedefin 30 fit yakınında bir dostunu seçersin. Hedef Akıl kurtulma zarı atar ya da bir sonraki sıranın başına kadar seçilen dostun tarafından {@condition cezbedilme} durumundadır. Bu etki eğer seçilen dost cezbedilmiş hedefe saldırırsa, hasar verirse veya kurtulma zarı attırırsa erken biter.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Patlayan Ok",
+																"entries": [
+																	"Evocation okulundan çektiğin enerji ile okuna patlayıcı güç yüklersin. Bu enerji saldırından sonra patlar. Ok varlığa vurduktan hemen sonra, varlık ve onun 10 fit yanındaki her varlık 2d6 güç hasarı alır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Zayıflatan Ok",
+																"entries": [
+																	"Okuna necromantic büyü yüklersin. Okla vurulan varlık fazladan 2d6 nekrotik hasar alır. Hedef ayrıca Dayanıklılık kurtulma zarı atar, ya da bir sonraki sıranın başına kadar silahlı saldırılarının hasarı yarılanır.",
+																	"Bu sınıfta 18.seviyeye ulaştığında nekrotik hasar 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kavrayan Ok",
+																"entries": [
+																	"Bu ok hedefine vurduğunda, conjuration büyüsü hedefin etrafına dolanan, kavrayan zehirli dallar yaratır. Okla vurulan varlık fazladan 2d6 zehir hasarı alır, hızı 10 fit azalır, ve her sırasında ışınlanmadan 1 fit ya da fazla ilk hareket edişinde 2d6 kesme hasarı alır. Hedef ya da ona erişebilen başka bir varlık eylemini kullanıp Arcane Atış DC'ne karşı atacağı Kuvvet (Atletizm) zarı ile dalları ayırmayı deneyebilir. Aksi takdirde, dallar 1 dakikalığına ya da sen bu özelliği yeniden kullanana kadar kalır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında hem zehir hem de kesme hasarı 4d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Delen Ok",
+																"entries": [
+																	"Transmutation büyüsünü kullanıp okunu cisimsiz yapabilirsin. Bu özelliği kullandığında saldırı için zar atmazsın. Bunun yerine, ok ileri doğru 1 fit genişlikte 30 fit uzunlukta bir hat yaratır ve ortadan kaybolur. Ok nesnelerden zararsızca geçer, siperi yok sayar. Hattaki her varlık Çeviklik kurtulma zarı atar. Başarısız olursa, bir varlık sanki okla vurulmuşçasına hasar alır, ve üzerine fazladan 1d6 delme hasarı alır. Başarılı olursa, bir hedef bu hasarın yarısını alır.",
+																	"Bu sınıfta 18. seviyeye ulaştığında delme hasarı 2d6'ya yükselir."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Güdümlü Ok",
+																"entries": [
+																	"Divination büyüsü kullanarak, bir oka hedefini izleme gücünü verirsin. Bu özelliği kullandığında, saldırı için zar atmazsın. Bunun yerine, son bir dakika içinde gördüğün bir varlığı seçersin. Ok o varlığa doğru uçar, gerekirse köşeleri döner ve yarım ya da 3 çeyrek siperi yok sayar. Eğer hedef silahın menzilinde ise ve okun hedefe ulaşmasına yetecek büyüklükte bir yol varsa, hedef Çeviklik kurtulma zarı atar. Aksi takdirde, ok gidebildiği yere kadar gider ve ortadan kaybolur. Başarısız olursa, hedef sanki okla vurulmuşçasına hasar alır ve bunun üzerine fazladan 1d6 güç hasarı alır, ayrıca hedefin o anki yerini öğrenirsin. Başarılı olursa, hedef yarı hasar alır ve onun yerini öğrenmezsin.",
+																	"Bu sınıfta 18. seviyeye ulaştığında güç hasarı 2d6'ya çıkar."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Gölge Oku",
+																"entries": [
+																	"Okuna illusion büyüsünü dokursun, düşmanın görüşünü gölgelerle kaplar. Okla vurulan varlık fazladan 2d6 psişik hasar alır, ve Akıl kurtulma zarı atar ya da bir sonraki sıranın başına kadar 5 fitten sonrasını göremez.",
+																	"Bu sınıfta 18. seviyeye ulaştığında psişik hasar 4d6'ya çıkar."
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "abilityDc",
+												"name": "Arcane Atış",
+												"attributes": [
+													"zek"
+												]
+											}
+										]
+									}
 						]
 					],
 					"source": "XGE",
@@ -15780,11 +16294,13 @@
 				[
 					{
 						"name": "Metabüyü",
+						"count": 2,
 						"entries": [
 							"3. seviyede ihtiyaçlarına göre büyülerini bükmeyi öğrenirsin. Metabüyü seçeneklerinden ikisini seçersin. 10 ve 17. seviyelerde birer tane daha seçebilirsin.",
 							"Aksi belirtilmediği sürece bir büyü üzerinde tek bir Metabüyü seçeneğini kullanabilirsin.",
 							{
 								"type": "options",
+								"selectionCount": 2,
 								"entries": [
 									{
 										"type": "entries",
@@ -15919,7 +16435,7 @@
 				],
 				[
 					{
-						"name": "Metamagic",
+						"name": "Metabüyü",
 						"entries": [
 							"17. seviyede ek bir Metabüyü seçeneği öğrenirsin."
 						]
@@ -17258,6 +17774,7 @@
 				[
 					{
 						"name": "Eldritch Yakarışları",
+						"count": 2, 
 						"entries": [
 							"Doğaüstü bilgileri araştırmalarında eldritch yakarışlarını keşfettin. Bunlar sana büyülü yetenekler veren yasaklı bilgilerin parçacıklarıdır.",
 							"2. seviyede seçeceğin 2 eldritch yakarışı öğrenirsin. Yakarış seçeneklerin sınıf tanımının altında detaylı bir şekilde verilmiştir. Belirli warlock seviyelerine ulaştığında ek yakarışlar seçersin.",
@@ -17265,6 +17782,7 @@
 							"Bir yakarıştaki seviye gereksinimi warlock seviyesini kasteder, karakter seviyesini değil.",
 							{
 								"type": "options",
+								"selectionCount": 2,
 								"entries": [
 									{
 										"type": "invocation",
@@ -17697,7 +18215,402 @@
 						]
 					}
 				],
-				[],
+				[
+					{
+						"name": "Eldritch Yakarışları",
+						"count": 2, 
+						"entries": [
+							"5. seviyede seçeceğin yeni 1 eldritch yakarışı daha öğrenirsin. Yakarış seçeneklerin sınıf tanımının altında detaylı bir şekilde verilmiştir. Belirli warlock seviyelerine ulaştığında ek yakarışlar seçersin.",
+							"Ek olarak, bu sınıfta bir seviye atladığında bildiğin bir yakarışı o seviyede seçebileceğin başka bir yakarış ile değiştirebilirsin.",
+							"Bir yakarıştaki seviye gereksinimi warlock seviyesini kasteder, karakter seviyesini değil.",
+							{
+								"type": "options",
+								"selectionCount": 1,
+								"entries": [
+									{
+										"type": "invocation",
+										"name": "Istıraplı Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch patlaması)} büyüsünü kullandığında, hasarına Karizma bonusunu ekleyebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerin Zırhı",
+										"entries": [
+											"{@spell Mage armor (Büyücü Zırhı)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Yükselen Adım",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Levitate (Havaya Yükselme)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Hayvan Lisanı",
+										"entries": [
+											"{@spell Speak with animals (Hayvanlarla Konuş)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Aldatıcı Etki",
+										"entries": [
+											"Aldatma ve İkna becerilerinde uzmanlık kazanırsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Büyülü Fısıltılar",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Compulsion (Zorlama)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kadim Sırlar Kitabı",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık Gölgeler Kitabına büyülü ritüeller yazabilirsin. İstediğin sınıfın listesinden 2 tane 1. seviye ve ritüel etiketine sahip büyü seç. Büyüler aynı listeden olmak zorunda değil. Büyüler kitabında belirir ve bildiğin büyüler sayısına dahil olmaz. Gölgeler Kitabın elindeyken seçilen büyüleri ritüel olarak kullanabilirsin. Başka yollarla öğrenmediğin sürece büyüleri ritüel harici kullanamazsın. Ayrıca bildiğin warlock büyülerini ritüel etiketine sahipse bu şekilde kullanabilirsin.",
+											"Maceralarında diğer ritüel büyüleri de Gölgeler Kitabına ekleyebilirsin. Bu tip bir büyü bulduğunda eğer büyünün seviyesi senin warlock seviyenin yarısına eşitse (yukarı yuvarlanır) ya da daha düşükse ve sen bunu kopyalayacak zamana sahipsen kitabına ekleyebilirsin. Büyünün her seviyesi için kopyalama süreci onu yazmak için gereken nadir mürekkepler için 50gp ve 2 saat alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Carceri'nin Zincirleri",
+										"prerequisite": "15. seviye, Zincirin Ahdi özelliği",
+										"entries": [
+											"{@spell Hold monster (Yaratık Zapt Et)} büyüsünü bir kutsal, zebani ya da elementali hedef alarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin. Bu yakarışı aynı varlığın üzerinde yeniden kullanabilmek için uzun dinlenme bitirmen gerekir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytanın Görüşü",
+										"entries": [
+											"Büyülü ve büyüsüz karanlıkta 120 fit'e kadar normal olarak görebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dehşet Verici Söz",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Confusion (Şaşkınlık)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Görüşü",
+										"entries": [
+											"{@spell Detect magic (Büyüyü Hisset)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Mızrağı",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell eldritch blast (eldritch patlaması)} cantripini kullandığında menzili 300 fit olur."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Rün Bekçisinin Gözleri",
+										"entries": [
+											"Tüm yazıları okuyabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytani Dinçlik",
+										"entries": [
+											"{@spell False life (Sahte Yaşam)} büyüsünü kendi üzerinde 1. seviye olarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İki Zihnin Bakışı",
+										"entries": [
+											"Eylemini kullanarak gönüllü bir insansıya dokunup bir sonraki sıranın sonuna kadar onun duyularını kullanabilirsin. Bu varlık senle aynı boyutta olduğu sürece sonraki sıralarında eylemini kullanarak bu bağlantıyı sürdürebilirsin. Diğer varlığın duyuları ile algılarken, o varlığın sahip olduğu özel duyulardan faydalanabilirsin ve sen kendi çevrene karşı kör ve sağır olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Can İçen",
+										"prerequisite": "12. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Bir varlığa senin ahit silahınla vurunca, varlık fazladan Karizma bonusun kadar (en az 1) nekrotik hasar alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Çok Yüzün Maskesi",
+										"entries": [
+											"{@spell Disguise self (Kılık Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sayısız Şeklin Üstadı",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Alter self (Kendini Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kaosun Köleleri",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Conjure elemental (Elemental Yarat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zihin Batağı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Slow (Yavaşlat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sisli Görüler",
+										"entries": [
+											"{@spell Silent image (Sessiz Görüntü)} büyüsünü büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerle Bir",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Loş ışıkta ya da karanlıktayken eylemini kullanıp, eylem ya da reaksiyon kullanana ya da hareket edene kadar görünmez olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dünyadışı Sıçrayış",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Jump (Zıpla)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İtici Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch Patlaması)} ile bir varlığa vurduğunda, varlığı düz bir hizada senden 10 fit'e kadar uzağa itebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Et ve Kemik Sanatçısı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Polymorph (Polimorf)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kötü Alamet Sembolleri",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Bestow curse (Lanetle)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Beş Kaderin Hırsızı",
+										"entries": [
+											"{@spell Bane (Felaket)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Susayan Kılıç",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Sıranda Saldırı eylemini kullandığında ahit silahınla bir yerine iki kere saldırabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Uzak Diyarların Görüleri",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Arcane eye (Arcane Göz)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zincir Üstadının Sesi",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Aynı boyutta olduğun sürece her zaman hizmetkarın ile telepatik iletişime geçebilir ve onun duyuları üzerinden algılayabilirsin. Ek olarak, hizmetkarının duyuları ile algılarken onun üzerinden kendi sesinle konuşabilirsin. Hizmetkarın normalde konuşma yetisine sahip değilse bile senin sesini aktarabilir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Mezarın Fısıltıları",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Speak with dead (Ölüyle Konuş)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Cadı Görüşü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"30 fit yakınında ve görüşünde olan tüm şekil değiştirenler ve illüzyon ya da transmutation büyüleri ile gizlenmiş varlıkların gerçek şekillerini görmeni sağlar."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Ayın Sureti",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık uyku ihtiyacı duymazsın ve hiçbir şekilde uykuya zorlanamazsın. Uzun dinlenmeden faydalanmak için 8 saat boyunca nöbet tutma ya da Gölgeler Kitabını okuma gibi hafif aktivite yapman yeterli olur."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Sinekler Pelerini",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Bonus eylem olarak kendini uçuşan sinekler gibi görünen bir büyülü aura ile sarabilirsin. Aura her yöne doğru senden 5 fit uzaklığı kapsar ama tam siperin arkasına geçmez. Sen bilinçsiz hale gelene kadar ya da bonus eylem olarak onu savana kadar sürer.",
+											"Aura sana Karizma (Gözdağı) zarlarında avantaj verir ama diğer tüm Karizma zarlarında dezavantajın olur. Sırasına bu aura içinde başlayan diğer tüm varlıklar senin Karizma bonusun kadar (en az 0) zehir hasarı alır.",
+											"Bu yakarışı kullandığında bir daha kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Çarpması",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa ahit silahınla vurduğunda bir warlock büyü yuvası harcayıp hedefe 1d8 + büyü yuvasının her seviyesi için 1d8 fazladan güç hasarı verip, Huge ya da daha küçükse yere düşürebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hayalet Bakışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"Eylem olarak, 30 fit yakınındaki katı maddelerin ardını görebilme yeteneğin olur. Eğer gece görüşün yoksa menzil içinde var sayılır. Bu özel görüş 1 dakika ya da konsantrasyonun (bir büyüye konsantre olur gibi) bitene kadar sürer. Bu süre içinde nesneleri hayaletimsi, transparan bir şekilde görürsün.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Derinlerin Armağanı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Su altında nefes alabilirsin ve yürüme hızına eşit yüzme hızın olur.",
+											"Aynı zamanda {@spell water breathing (su soluma)} büyüsünü bir kere büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme sonrası bu özellik yenilenir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Daimi Varolanların Armağanı",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Hizmetkarın 100 fit yakınındayken her HP yenileyişinde bu zarların senin için maksimum değerlerini atmış olduğunu varsay."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hadar'ın Kavraması",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyün ile vurduğunda kendine düz bir şekilde 10 fit çekebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gelişmiş Ahit Silahı",
+										"prerequisite": "Kılıcın Ahdi özelliği",
+										"entries": [
+											"Kılıcın Ahdi özelliği ile yarattığın tüm silahları warlock büyülerin için büyü yapma odağı olarak kullanabilirsin.",
+											"Ek olarak, bu silah zaten saldırı ve hasar zarlarına bonusu olan bir büyülü silah değilse bunlara +1 ekler.",
+											"Son olarak, yarattığın silah kısa yay, uzun yay, hafif arbalet ya da ağır arbalet olabilir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Bezdiren Mızrak",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyüsü ile vurduğunda bir sonraki sıranın sonuna kadar o varlığın hızını 10 fit düşürürsün."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Çıldırtan Hex",
+										"prerequisite": "5. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak hedefin çevresinde psişik kargaşa yaratabilirsin. Bunu yaptığında lanetli hedefe ve onun 5 fit yakınındaki seçeceğin tüm varlıklara psişik hasar verebilirsin. Psişik hasar senin Karizma bonusun (en az 1 hasar) kadardır. Bu yakarışı kullanabilmek için lanetli hedefi görebilmeli ve onun 30 fit yakınında olmalısın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Amansız Hex",
+										"prerequisite": "7. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Lanetin hedef ve senin aranda geçici bir bağ oluşturur. Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak 30 fit'e kadar lanetli hedefin 5 fit yakınındaki görebildiğin boş bir alana ışınlanabilirsin. Bu şekilde ışınlanabilmek için lanetli hedefi görebilmen gerekir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gölge Örtüsü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Invisibility (Görünmezlik)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Levistus'un Mezarı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Hasar aldığında reaksiyon olarak kendini bir sonraki sıranın sonunda eriyecek bir buz kütlesi ile kaplayabilirsin. Warlock seviyesi başına 10 geçici HP kazanırsın ve bu HP tetiklenen hasarın mümkün olan kısmını alır. Hasarı aldıktan hemen sonra ateş hasarına zayıflığın olur, hızın 0'a düşer ve etkisiz hale gelirsin. Bu etkiler, kalan geçici HP dahil olmak üzere buz eridiğinde biter.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hilekarın Kaçışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Freedom of movement (Hareket Özgürlüğü)} büyüsünü bir kere kendi üzerinde büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme bitirince bu özellik yenilenir."
+										],
+										"source": "XGE"
+									}
+								]
+							}
+						]
+					}
+				],
 				[
 					{
 						"name": "Dünyadışı Efendi Özelliği",
@@ -17707,7 +18620,402 @@
 						"gainSubclassFeature": true
 					}
 				],
-				[],
+				[
+					{
+						"name": "Eldritch Yakarışları",
+						"count": 2, 
+						"entries": [
+							"7. seviyede seçeceğin yeni 1 eldritch yakarışı daha öğrenirsin. Yakarış seçeneklerin sınıf tanımının altında detaylı bir şekilde verilmiştir. Belirli warlock seviyelerine ulaştığında ek yakarışlar seçersin.",
+							"Ek olarak, bu sınıfta bir seviye atladığında bildiğin bir yakarışı o seviyede seçebileceğin başka bir yakarış ile değiştirebilirsin.",
+							"Bir yakarıştaki seviye gereksinimi warlock seviyesini kasteder, karakter seviyesini değil.",
+							{
+								"type": "options",
+								"selectionCount": 1,
+								"entries": [
+									{
+										"type": "invocation",
+										"name": "Istıraplı Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch patlaması)} büyüsünü kullandığında, hasarına Karizma bonusunu ekleyebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerin Zırhı",
+										"entries": [
+											"{@spell Mage armor (Büyücü Zırhı)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Yükselen Adım",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Levitate (Havaya Yükselme)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Hayvan Lisanı",
+										"entries": [
+											"{@spell Speak with animals (Hayvanlarla Konuş)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Aldatıcı Etki",
+										"entries": [
+											"Aldatma ve İkna becerilerinde uzmanlık kazanırsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Büyülü Fısıltılar",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Compulsion (Zorlama)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kadim Sırlar Kitabı",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık Gölgeler Kitabına büyülü ritüeller yazabilirsin. İstediğin sınıfın listesinden 2 tane 1. seviye ve ritüel etiketine sahip büyü seç. Büyüler aynı listeden olmak zorunda değil. Büyüler kitabında belirir ve bildiğin büyüler sayısına dahil olmaz. Gölgeler Kitabın elindeyken seçilen büyüleri ritüel olarak kullanabilirsin. Başka yollarla öğrenmediğin sürece büyüleri ritüel harici kullanamazsın. Ayrıca bildiğin warlock büyülerini ritüel etiketine sahipse bu şekilde kullanabilirsin.",
+											"Maceralarında diğer ritüel büyüleri de Gölgeler Kitabına ekleyebilirsin. Bu tip bir büyü bulduğunda eğer büyünün seviyesi senin warlock seviyenin yarısına eşitse (yukarı yuvarlanır) ya da daha düşükse ve sen bunu kopyalayacak zamana sahipsen kitabına ekleyebilirsin. Büyünün her seviyesi için kopyalama süreci onu yazmak için gereken nadir mürekkepler için 50gp ve 2 saat alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Carceri'nin Zincirleri",
+										"prerequisite": "15. seviye, Zincirin Ahdi özelliği",
+										"entries": [
+											"{@spell Hold monster (Yaratık Zapt Et)} büyüsünü bir kutsal, zebani ya da elementali hedef alarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin. Bu yakarışı aynı varlığın üzerinde yeniden kullanabilmek için uzun dinlenme bitirmen gerekir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytanın Görüşü",
+										"entries": [
+											"Büyülü ve büyüsüz karanlıkta 120 fit'e kadar normal olarak görebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dehşet Verici Söz",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Confusion (Şaşkınlık)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Görüşü",
+										"entries": [
+											"{@spell Detect magic (Büyüyü Hisset)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Mızrağı",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell eldritch blast (eldritch patlaması)} cantripini kullandığında menzili 300 fit olur."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Rün Bekçisinin Gözleri",
+										"entries": [
+											"Tüm yazıları okuyabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytani Dinçlik",
+										"entries": [
+											"{@spell False life (Sahte Yaşam)} büyüsünü kendi üzerinde 1. seviye olarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İki Zihnin Bakışı",
+										"entries": [
+											"Eylemini kullanarak gönüllü bir insansıya dokunup bir sonraki sıranın sonuna kadar onun duyularını kullanabilirsin. Bu varlık senle aynı boyutta olduğu sürece sonraki sıralarında eylemini kullanarak bu bağlantıyı sürdürebilirsin. Diğer varlığın duyuları ile algılarken, o varlığın sahip olduğu özel duyulardan faydalanabilirsin ve sen kendi çevrene karşı kör ve sağır olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Can İçen",
+										"prerequisite": "12. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Bir varlığa senin ahit silahınla vurunca, varlık fazladan Karizma bonusun kadar (en az 1) nekrotik hasar alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Çok Yüzün Maskesi",
+										"entries": [
+											"{@spell Disguise self (Kılık Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sayısız Şeklin Üstadı",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Alter self (Kendini Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kaosun Köleleri",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Conjure elemental (Elemental Yarat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zihin Batağı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Slow (Yavaşlat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sisli Görüler",
+										"entries": [
+											"{@spell Silent image (Sessiz Görüntü)} büyüsünü büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerle Bir",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Loş ışıkta ya da karanlıktayken eylemini kullanıp, eylem ya da reaksiyon kullanana ya da hareket edene kadar görünmez olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dünyadışı Sıçrayış",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Jump (Zıpla)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İtici Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch Patlaması)} ile bir varlığa vurduğunda, varlığı düz bir hizada senden 10 fit'e kadar uzağa itebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Et ve Kemik Sanatçısı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Polymorph (Polimorf)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kötü Alamet Sembolleri",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Bestow curse (Lanetle)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Beş Kaderin Hırsızı",
+										"entries": [
+											"{@spell Bane (Felaket)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Susayan Kılıç",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Sıranda Saldırı eylemini kullandığında ahit silahınla bir yerine iki kere saldırabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Uzak Diyarların Görüleri",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Arcane eye (Arcane Göz)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zincir Üstadının Sesi",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Aynı boyutta olduğun sürece her zaman hizmetkarın ile telepatik iletişime geçebilir ve onun duyuları üzerinden algılayabilirsin. Ek olarak, hizmetkarının duyuları ile algılarken onun üzerinden kendi sesinle konuşabilirsin. Hizmetkarın normalde konuşma yetisine sahip değilse bile senin sesini aktarabilir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Mezarın Fısıltıları",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Speak with dead (Ölüyle Konuş)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Cadı Görüşü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"30 fit yakınında ve görüşünde olan tüm şekil değiştirenler ve illüzyon ya da transmutation büyüleri ile gizlenmiş varlıkların gerçek şekillerini görmeni sağlar."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Ayın Sureti",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık uyku ihtiyacı duymazsın ve hiçbir şekilde uykuya zorlanamazsın. Uzun dinlenmeden faydalanmak için 8 saat boyunca nöbet tutma ya da Gölgeler Kitabını okuma gibi hafif aktivite yapman yeterli olur."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Sinekler Pelerini",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Bonus eylem olarak kendini uçuşan sinekler gibi görünen bir büyülü aura ile sarabilirsin. Aura her yöne doğru senden 5 fit uzaklığı kapsar ama tam siperin arkasına geçmez. Sen bilinçsiz hale gelene kadar ya da bonus eylem olarak onu savana kadar sürer.",
+											"Aura sana Karizma (Gözdağı) zarlarında avantaj verir ama diğer tüm Karizma zarlarında dezavantajın olur. Sırasına bu aura içinde başlayan diğer tüm varlıklar senin Karizma bonusun kadar (en az 0) zehir hasarı alır.",
+											"Bu yakarışı kullandığında bir daha kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Çarpması",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa ahit silahınla vurduğunda bir warlock büyü yuvası harcayıp hedefe 1d8 + büyü yuvasının her seviyesi için 1d8 fazladan güç hasarı verip, Huge ya da daha küçükse yere düşürebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hayalet Bakışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"Eylem olarak, 30 fit yakınındaki katı maddelerin ardını görebilme yeteneğin olur. Eğer gece görüşün yoksa menzil içinde var sayılır. Bu özel görüş 1 dakika ya da konsantrasyonun (bir büyüye konsantre olur gibi) bitene kadar sürer. Bu süre içinde nesneleri hayaletimsi, transparan bir şekilde görürsün.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Derinlerin Armağanı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Su altında nefes alabilirsin ve yürüme hızına eşit yüzme hızın olur.",
+											"Aynı zamanda {@spell water breathing (su soluma)} büyüsünü bir kere büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme sonrası bu özellik yenilenir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Daimi Varolanların Armağanı",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Hizmetkarın 100 fit yakınındayken her HP yenileyişinde bu zarların senin için maksimum değerlerini atmış olduğunu varsay."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hadar'ın Kavraması",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyün ile vurduğunda kendine düz bir şekilde 10 fit çekebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gelişmiş Ahit Silahı",
+										"prerequisite": "Kılıcın Ahdi özelliği",
+										"entries": [
+											"Kılıcın Ahdi özelliği ile yarattığın tüm silahları warlock büyülerin için büyü yapma odağı olarak kullanabilirsin.",
+											"Ek olarak, bu silah zaten saldırı ve hasar zarlarına bonusu olan bir büyülü silah değilse bunlara +1 ekler.",
+											"Son olarak, yarattığın silah kısa yay, uzun yay, hafif arbalet ya da ağır arbalet olabilir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Bezdiren Mızrak",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyüsü ile vurduğunda bir sonraki sıranın sonuna kadar o varlığın hızını 10 fit düşürürsün."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Çıldırtan Hex",
+										"prerequisite": "5. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak hedefin çevresinde psişik kargaşa yaratabilirsin. Bunu yaptığında lanetli hedefe ve onun 5 fit yakınındaki seçeceğin tüm varlıklara psişik hasar verebilirsin. Psişik hasar senin Karizma bonusun (en az 1 hasar) kadardır. Bu yakarışı kullanabilmek için lanetli hedefi görebilmeli ve onun 30 fit yakınında olmalısın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Amansız Hex",
+										"prerequisite": "7. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Lanetin hedef ve senin aranda geçici bir bağ oluşturur. Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak 30 fit'e kadar lanetli hedefin 5 fit yakınındaki görebildiğin boş bir alana ışınlanabilirsin. Bu şekilde ışınlanabilmek için lanetli hedefi görebilmen gerekir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gölge Örtüsü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Invisibility (Görünmezlik)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Levistus'un Mezarı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Hasar aldığında reaksiyon olarak kendini bir sonraki sıranın sonunda eriyecek bir buz kütlesi ile kaplayabilirsin. Warlock seviyesi başına 10 geçici HP kazanırsın ve bu HP tetiklenen hasarın mümkün olan kısmını alır. Hasarı aldıktan hemen sonra ateş hasarına zayıflığın olur, hızın 0'a düşer ve etkisiz hale gelirsin. Bu etkiler, kalan geçici HP dahil olmak üzere buz eridiğinde biter.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hilekarın Kaçışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Freedom of movement (Hareket Özgürlüğü)} büyüsünü bir kere kendi üzerinde büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme bitirince bu özellik yenilenir."
+										],
+										"source": "XGE"
+									}
+								]
+							}
+						]
+					}
+				],
 				[
 					{
 						"name": "Yetenek Skoru Gelişimi",
@@ -17717,7 +19025,402 @@
 						]
 					}
 				],
-				[],
+				[
+					{
+						"name": "Eldritch Yakarışları",
+						"count": 2, 
+						"entries": [
+							"9. seviyede seçeceğin yeni 1 eldritch yakarışı daha öğrenirsin. Yakarış seçeneklerin sınıf tanımının altında detaylı bir şekilde verilmiştir. Belirli warlock seviyelerine ulaştığında ek yakarışlar seçersin.",
+							"Ek olarak, bu sınıfta bir seviye atladığında bildiğin bir yakarışı o seviyede seçebileceğin başka bir yakarış ile değiştirebilirsin.",
+							"Bir yakarıştaki seviye gereksinimi warlock seviyesini kasteder, karakter seviyesini değil.",
+							{
+								"type": "options",
+								"selectionCount": 1,
+								"entries": [
+									{
+										"type": "invocation",
+										"name": "Istıraplı Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch patlaması)} büyüsünü kullandığında, hasarına Karizma bonusunu ekleyebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerin Zırhı",
+										"entries": [
+											"{@spell Mage armor (Büyücü Zırhı)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Yükselen Adım",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Levitate (Havaya Yükselme)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Hayvan Lisanı",
+										"entries": [
+											"{@spell Speak with animals (Hayvanlarla Konuş)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Aldatıcı Etki",
+										"entries": [
+											"Aldatma ve İkna becerilerinde uzmanlık kazanırsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Büyülü Fısıltılar",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Compulsion (Zorlama)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kadim Sırlar Kitabı",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık Gölgeler Kitabına büyülü ritüeller yazabilirsin. İstediğin sınıfın listesinden 2 tane 1. seviye ve ritüel etiketine sahip büyü seç. Büyüler aynı listeden olmak zorunda değil. Büyüler kitabında belirir ve bildiğin büyüler sayısına dahil olmaz. Gölgeler Kitabın elindeyken seçilen büyüleri ritüel olarak kullanabilirsin. Başka yollarla öğrenmediğin sürece büyüleri ritüel harici kullanamazsın. Ayrıca bildiğin warlock büyülerini ritüel etiketine sahipse bu şekilde kullanabilirsin.",
+											"Maceralarında diğer ritüel büyüleri de Gölgeler Kitabına ekleyebilirsin. Bu tip bir büyü bulduğunda eğer büyünün seviyesi senin warlock seviyenin yarısına eşitse (yukarı yuvarlanır) ya da daha düşükse ve sen bunu kopyalayacak zamana sahipsen kitabına ekleyebilirsin. Büyünün her seviyesi için kopyalama süreci onu yazmak için gereken nadir mürekkepler için 50gp ve 2 saat alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Carceri'nin Zincirleri",
+										"prerequisite": "15. seviye, Zincirin Ahdi özelliği",
+										"entries": [
+											"{@spell Hold monster (Yaratık Zapt Et)} büyüsünü bir kutsal, zebani ya da elementali hedef alarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin. Bu yakarışı aynı varlığın üzerinde yeniden kullanabilmek için uzun dinlenme bitirmen gerekir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytanın Görüşü",
+										"entries": [
+											"Büyülü ve büyüsüz karanlıkta 120 fit'e kadar normal olarak görebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dehşet Verici Söz",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Confusion (Şaşkınlık)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Görüşü",
+										"entries": [
+											"{@spell Detect magic (Büyüyü Hisset)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Mızrağı",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell eldritch blast (eldritch patlaması)} cantripini kullandığında menzili 300 fit olur."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Rün Bekçisinin Gözleri",
+										"entries": [
+											"Tüm yazıları okuyabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytani Dinçlik",
+										"entries": [
+											"{@spell False life (Sahte Yaşam)} büyüsünü kendi üzerinde 1. seviye olarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İki Zihnin Bakışı",
+										"entries": [
+											"Eylemini kullanarak gönüllü bir insansıya dokunup bir sonraki sıranın sonuna kadar onun duyularını kullanabilirsin. Bu varlık senle aynı boyutta olduğu sürece sonraki sıralarında eylemini kullanarak bu bağlantıyı sürdürebilirsin. Diğer varlığın duyuları ile algılarken, o varlığın sahip olduğu özel duyulardan faydalanabilirsin ve sen kendi çevrene karşı kör ve sağır olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Can İçen",
+										"prerequisite": "12. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Bir varlığa senin ahit silahınla vurunca, varlık fazladan Karizma bonusun kadar (en az 1) nekrotik hasar alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Çok Yüzün Maskesi",
+										"entries": [
+											"{@spell Disguise self (Kılık Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sayısız Şeklin Üstadı",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Alter self (Kendini Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kaosun Köleleri",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Conjure elemental (Elemental Yarat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zihin Batağı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Slow (Yavaşlat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sisli Görüler",
+										"entries": [
+											"{@spell Silent image (Sessiz Görüntü)} büyüsünü büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerle Bir",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Loş ışıkta ya da karanlıktayken eylemini kullanıp, eylem ya da reaksiyon kullanana ya da hareket edene kadar görünmez olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dünyadışı Sıçrayış",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Jump (Zıpla)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İtici Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch Patlaması)} ile bir varlığa vurduğunda, varlığı düz bir hizada senden 10 fit'e kadar uzağa itebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Et ve Kemik Sanatçısı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Polymorph (Polimorf)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kötü Alamet Sembolleri",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Bestow curse (Lanetle)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Beş Kaderin Hırsızı",
+										"entries": [
+											"{@spell Bane (Felaket)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Susayan Kılıç",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Sıranda Saldırı eylemini kullandığında ahit silahınla bir yerine iki kere saldırabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Uzak Diyarların Görüleri",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Arcane eye (Arcane Göz)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zincir Üstadının Sesi",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Aynı boyutta olduğun sürece her zaman hizmetkarın ile telepatik iletişime geçebilir ve onun duyuları üzerinden algılayabilirsin. Ek olarak, hizmetkarının duyuları ile algılarken onun üzerinden kendi sesinle konuşabilirsin. Hizmetkarın normalde konuşma yetisine sahip değilse bile senin sesini aktarabilir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Mezarın Fısıltıları",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Speak with dead (Ölüyle Konuş)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Cadı Görüşü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"30 fit yakınında ve görüşünde olan tüm şekil değiştirenler ve illüzyon ya da transmutation büyüleri ile gizlenmiş varlıkların gerçek şekillerini görmeni sağlar."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Ayın Sureti",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık uyku ihtiyacı duymazsın ve hiçbir şekilde uykuya zorlanamazsın. Uzun dinlenmeden faydalanmak için 8 saat boyunca nöbet tutma ya da Gölgeler Kitabını okuma gibi hafif aktivite yapman yeterli olur."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Sinekler Pelerini",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Bonus eylem olarak kendini uçuşan sinekler gibi görünen bir büyülü aura ile sarabilirsin. Aura her yöne doğru senden 5 fit uzaklığı kapsar ama tam siperin arkasına geçmez. Sen bilinçsiz hale gelene kadar ya da bonus eylem olarak onu savana kadar sürer.",
+											"Aura sana Karizma (Gözdağı) zarlarında avantaj verir ama diğer tüm Karizma zarlarında dezavantajın olur. Sırasına bu aura içinde başlayan diğer tüm varlıklar senin Karizma bonusun kadar (en az 0) zehir hasarı alır.",
+											"Bu yakarışı kullandığında bir daha kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Çarpması",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa ahit silahınla vurduğunda bir warlock büyü yuvası harcayıp hedefe 1d8 + büyü yuvasının her seviyesi için 1d8 fazladan güç hasarı verip, Huge ya da daha küçükse yere düşürebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hayalet Bakışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"Eylem olarak, 30 fit yakınındaki katı maddelerin ardını görebilme yeteneğin olur. Eğer gece görüşün yoksa menzil içinde var sayılır. Bu özel görüş 1 dakika ya da konsantrasyonun (bir büyüye konsantre olur gibi) bitene kadar sürer. Bu süre içinde nesneleri hayaletimsi, transparan bir şekilde görürsün.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Derinlerin Armağanı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Su altında nefes alabilirsin ve yürüme hızına eşit yüzme hızın olur.",
+											"Aynı zamanda {@spell water breathing (su soluma)} büyüsünü bir kere büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme sonrası bu özellik yenilenir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Daimi Varolanların Armağanı",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Hizmetkarın 100 fit yakınındayken her HP yenileyişinde bu zarların senin için maksimum değerlerini atmış olduğunu varsay."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hadar'ın Kavraması",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyün ile vurduğunda kendine düz bir şekilde 10 fit çekebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gelişmiş Ahit Silahı",
+										"prerequisite": "Kılıcın Ahdi özelliği",
+										"entries": [
+											"Kılıcın Ahdi özelliği ile yarattığın tüm silahları warlock büyülerin için büyü yapma odağı olarak kullanabilirsin.",
+											"Ek olarak, bu silah zaten saldırı ve hasar zarlarına bonusu olan bir büyülü silah değilse bunlara +1 ekler.",
+											"Son olarak, yarattığın silah kısa yay, uzun yay, hafif arbalet ya da ağır arbalet olabilir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Bezdiren Mızrak",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyüsü ile vurduğunda bir sonraki sıranın sonuna kadar o varlığın hızını 10 fit düşürürsün."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Çıldırtan Hex",
+										"prerequisite": "5. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak hedefin çevresinde psişik kargaşa yaratabilirsin. Bunu yaptığında lanetli hedefe ve onun 5 fit yakınındaki seçeceğin tüm varlıklara psişik hasar verebilirsin. Psişik hasar senin Karizma bonusun (en az 1 hasar) kadardır. Bu yakarışı kullanabilmek için lanetli hedefi görebilmeli ve onun 30 fit yakınında olmalısın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Amansız Hex",
+										"prerequisite": "7. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Lanetin hedef ve senin aranda geçici bir bağ oluşturur. Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak 30 fit'e kadar lanetli hedefin 5 fit yakınındaki görebildiğin boş bir alana ışınlanabilirsin. Bu şekilde ışınlanabilmek için lanetli hedefi görebilmen gerekir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gölge Örtüsü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Invisibility (Görünmezlik)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Levistus'un Mezarı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Hasar aldığında reaksiyon olarak kendini bir sonraki sıranın sonunda eriyecek bir buz kütlesi ile kaplayabilirsin. Warlock seviyesi başına 10 geçici HP kazanırsın ve bu HP tetiklenen hasarın mümkün olan kısmını alır. Hasarı aldıktan hemen sonra ateş hasarına zayıflığın olur, hızın 0'a düşer ve etkisiz hale gelirsin. Bu etkiler, kalan geçici HP dahil olmak üzere buz eridiğinde biter.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hilekarın Kaçışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Freedom of movement (Hareket Özgürlüğü)} büyüsünü bir kere kendi üzerinde büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme bitirince bu özellik yenilenir."
+										],
+										"source": "XGE"
+									}
+								]
+							}
+						]
+					}
+				],
 				[
 					{
 						"name": "Dünyadışı Efendi Özelliği",
@@ -17743,8 +19446,402 @@
 						"entries": [
 							"4. seviyeye eriştiğinde bir yetenek skorunu 2 ya da 2 ayrı yetenek skorunu birer yükseltebilirsin. Bu özellik ile bir yetenek skorunu 20'nin üzerine çıkaramazsın.",
 							"Eğer DM'in izin veriyorsa, yetenek skoru yerine bir hüner seçebilirsin."
+
 						]
-					}
+					},
+					{
+    			   	 "name": "Eldritch Yakarışları",
+    			   	 "entries": [
+    			   	     	"12. seviyede seçeceğin yeni 1 eldritch yakarışı daha öğrenirsin. Yakarış seçeneklerin sınıf tanımının altında detaylı bir şekilde verilmiştir. Belirli warlock seviyelerine ulaştığında ek yakarışlar seçersin.",
+							"Ek olarak, bu sınıfta bir seviye atladığında bildiğin bir yakarışı o seviyede seçebileceğin başka bir yakarış ile değiştirebilirsin.",
+							"Bir yakarıştaki seviye gereksinimi warlock seviyesini kasteder, karakter seviyesini değil.",
+						 {
+								"type": "options",
+								"selectionCount": 1,
+								"entries": [
+									{
+										"type": "invocation",
+										"name": "Istıraplı Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch patlaması)} büyüsünü kullandığında, hasarına Karizma bonusunu ekleyebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerin Zırhı",
+										"entries": [
+											"{@spell Mage armor (Büyücü Zırhı)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Yükselen Adım",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Levitate (Havaya Yükselme)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Hayvan Lisanı",
+										"entries": [
+											"{@spell Speak with animals (Hayvanlarla Konuş)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Aldatıcı Etki",
+										"entries": [
+											"Aldatma ve İkna becerilerinde uzmanlık kazanırsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Büyülü Fısıltılar",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Compulsion (Zorlama)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kadim Sırlar Kitabı",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık Gölgeler Kitabına büyülü ritüeller yazabilirsin. İstediğin sınıfın listesinden 2 tane 1. seviye ve ritüel etiketine sahip büyü seç. Büyüler aynı listeden olmak zorunda değil. Büyüler kitabında belirir ve bildiğin büyüler sayısına dahil olmaz. Gölgeler Kitabın elindeyken seçilen büyüleri ritüel olarak kullanabilirsin. Başka yollarla öğrenmediğin sürece büyüleri ritüel harici kullanamazsın. Ayrıca bildiğin warlock büyülerini ritüel etiketine sahipse bu şekilde kullanabilirsin.",
+											"Maceralarında diğer ritüel büyüleri de Gölgeler Kitabına ekleyebilirsin. Bu tip bir büyü bulduğunda eğer büyünün seviyesi senin warlock seviyenin yarısına eşitse (yukarı yuvarlanır) ya da daha düşükse ve sen bunu kopyalayacak zamana sahipsen kitabına ekleyebilirsin. Büyünün her seviyesi için kopyalama süreci onu yazmak için gereken nadir mürekkepler için 50gp ve 2 saat alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Carceri'nin Zincirleri",
+										"prerequisite": "15. seviye, Zincirin Ahdi özelliği",
+										"entries": [
+											"{@spell Hold monster (Yaratık Zapt Et)} büyüsünü bir kutsal, zebani ya da elementali hedef alarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin. Bu yakarışı aynı varlığın üzerinde yeniden kullanabilmek için uzun dinlenme bitirmen gerekir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytanın Görüşü",
+										"entries": [
+											"Büyülü ve büyüsüz karanlıkta 120 fit'e kadar normal olarak görebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dehşet Verici Söz",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Confusion (Şaşkınlık)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Görüşü",
+										"entries": [
+											"{@spell Detect magic (Büyüyü Hisset)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Mızrağı",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell eldritch blast (eldritch patlaması)} cantripini kullandığında menzili 300 fit olur."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Rün Bekçisinin Gözleri",
+										"entries": [
+											"Tüm yazıları okuyabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytani Dinçlik",
+										"entries": [
+											"{@spell False life (Sahte Yaşam)} büyüsünü kendi üzerinde 1. seviye olarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İki Zihnin Bakışı",
+										"entries": [
+											"Eylemini kullanarak gönüllü bir insansıya dokunup bir sonraki sıranın sonuna kadar onun duyularını kullanabilirsin. Bu varlık senle aynı boyutta olduğu sürece sonraki sıralarında eylemini kullanarak bu bağlantıyı sürdürebilirsin. Diğer varlığın duyuları ile algılarken, o varlığın sahip olduğu özel duyulardan faydalanabilirsin ve sen kendi çevrene karşı kör ve sağır olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Can İçen",
+										"prerequisite": "12. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Bir varlığa senin ahit silahınla vurunca, varlık fazladan Karizma bonusun kadar (en az 1) nekrotik hasar alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Çok Yüzün Maskesi",
+										"entries": [
+											"{@spell Disguise self (Kılık Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sayısız Şeklin Üstadı",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Alter self (Kendini Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kaosun Köleleri",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Conjure elemental (Elemental Yarat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zihin Batağı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Slow (Yavaşlat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sisli Görüler",
+										"entries": [
+											"{@spell Silent image (Sessiz Görüntü)} büyüsünü büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerle Bir",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Loş ışıkta ya da karanlıktayken eylemini kullanıp, eylem ya da reaksiyon kullanana ya da hareket edene kadar görünmez olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dünyadışı Sıçrayış",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Jump (Zıpla)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İtici Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch Patlaması)} ile bir varlığa vurduğunda, varlığı düz bir hizada senden 10 fit'e kadar uzağa itebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Et ve Kemik Sanatçısı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Polymorph (Polimorf)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kötü Alamet Sembolleri",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Bestow curse (Lanetle)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Beş Kaderin Hırsızı",
+										"entries": [
+											"{@spell Bane (Felaket)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Susayan Kılıç",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Sıranda Saldırı eylemini kullandığında ahit silahınla bir yerine iki kere saldırabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Uzak Diyarların Görüleri",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Arcane eye (Arcane Göz)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zincir Üstadının Sesi",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Aynı boyutta olduğun sürece her zaman hizmetkarın ile telepatik iletişime geçebilir ve onun duyuları üzerinden algılayabilirsin. Ek olarak, hizmetkarının duyuları ile algılarken onun üzerinden kendi sesinle konuşabilirsin. Hizmetkarın normalde konuşma yetisine sahip değilse bile senin sesini aktarabilir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Mezarın Fısıltıları",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Speak with dead (Ölüyle Konuş)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Cadı Görüşü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"30 fit yakınında ve görüşünde olan tüm şekil değiştirenler ve illüzyon ya da transmutation büyüleri ile gizlenmiş varlıkların gerçek şekillerini görmeni sağlar."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Ayın Sureti",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık uyku ihtiyacı duymazsın ve hiçbir şekilde uykuya zorlanamazsın. Uzun dinlenmeden faydalanmak için 8 saat boyunca nöbet tutma ya da Gölgeler Kitabını okuma gibi hafif aktivite yapman yeterli olur."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Sinekler Pelerini",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Bonus eylem olarak kendini uçuşan sinekler gibi görünen bir büyülü aura ile sarabilirsin. Aura her yöne doğru senden 5 fit uzaklığı kapsar ama tam siperin arkasına geçmez. Sen bilinçsiz hale gelene kadar ya da bonus eylem olarak onu savana kadar sürer.",
+											"Aura sana Karizma (Gözdağı) zarlarında avantaj verir ama diğer tüm Karizma zarlarında dezavantajın olur. Sırasına bu aura içinde başlayan diğer tüm varlıklar senin Karizma bonusun kadar (en az 0) zehir hasarı alır.",
+											"Bu yakarışı kullandığında bir daha kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Çarpması",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa ahit silahınla vurduğunda bir warlock büyü yuvası harcayıp hedefe 1d8 + büyü yuvasının her seviyesi için 1d8 fazladan güç hasarı verip, Huge ya da daha küçükse yere düşürebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hayalet Bakışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"Eylem olarak, 30 fit yakınındaki katı maddelerin ardını görebilme yeteneğin olur. Eğer gece görüşün yoksa menzil içinde var sayılır. Bu özel görüş 1 dakika ya da konsantrasyonun (bir büyüye konsantre olur gibi) bitene kadar sürer. Bu süre içinde nesneleri hayaletimsi, transparan bir şekilde görürsün.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Derinlerin Armağanı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Su altında nefes alabilirsin ve yürüme hızına eşit yüzme hızın olur.",
+											"Aynı zamanda {@spell water breathing (su soluma)} büyüsünü bir kere büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme sonrası bu özellik yenilenir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Daimi Varolanların Armağanı",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Hizmetkarın 100 fit yakınındayken her HP yenileyişinde bu zarların senin için maksimum değerlerini atmış olduğunu varsay."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hadar'ın Kavraması",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyün ile vurduğunda kendine düz bir şekilde 10 fit çekebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gelişmiş Ahit Silahı",
+										"prerequisite": "Kılıcın Ahdi özelliği",
+										"entries": [
+											"Kılıcın Ahdi özelliği ile yarattığın tüm silahları warlock büyülerin için büyü yapma odağı olarak kullanabilirsin.",
+											"Ek olarak, bu silah zaten saldırı ve hasar zarlarına bonusu olan bir büyülü silah değilse bunlara +1 ekler.",
+											"Son olarak, yarattığın silah kısa yay, uzun yay, hafif arbalet ya da ağır arbalet olabilir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Bezdiren Mızrak",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyüsü ile vurduğunda bir sonraki sıranın sonuna kadar o varlığın hızını 10 fit düşürürsün."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Çıldırtan Hex",
+										"prerequisite": "5. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak hedefin çevresinde psişik kargaşa yaratabilirsin. Bunu yaptığında lanetli hedefe ve onun 5 fit yakınındaki seçeceğin tüm varlıklara psişik hasar verebilirsin. Psişik hasar senin Karizma bonusun (en az 1 hasar) kadardır. Bu yakarışı kullanabilmek için lanetli hedefi görebilmeli ve onun 30 fit yakınında olmalısın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Amansız Hex",
+										"prerequisite": "7. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Lanetin hedef ve senin aranda geçici bir bağ oluşturur. Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak 30 fit'e kadar lanetli hedefin 5 fit yakınındaki görebildiğin boş bir alana ışınlanabilirsin. Bu şekilde ışınlanabilmek için lanetli hedefi görebilmen gerekir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gölge Örtüsü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Invisibility (Görünmezlik)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Levistus'un Mezarı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Hasar aldığında reaksiyon olarak kendini bir sonraki sıranın sonunda eriyecek bir buz kütlesi ile kaplayabilirsin. Warlock seviyesi başına 10 geçici HP kazanırsın ve bu HP tetiklenen hasarın mümkün olan kısmını alır. Hasarı aldıktan hemen sonra ateş hasarına zayıflığın olur, hızın 0'a düşer ve etkisiz hale gelirsin. Bu etkiler, kalan geçici HP dahil olmak üzere buz eridiğinde biter.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hilekarın Kaçışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Freedom of movement (Hareket Özgürlüğü)} büyüsünü bir kere kendi üzerinde büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme bitirince bu özellik yenilenir."
+										],
+										"source": "XGE"
+									}
+								]
+							}
+    					]
+    				}
 				],
 				[
 					{
@@ -17771,7 +19868,400 @@
 							"15. seviyede efendin sana bir büyülü sır bahşeder. Warlock büyü listesinden bir {@filter 8. seviye büyü|spells|level=8|class=Warlock} seç, bu senin mistik sırrın olur.",
 							"Sır büyünü bir kere büyü yuvası harcamadan kullanabilirsin. Yeniden kullanabilmek için uzun dinlenme bitirmen gerekir."
 						]
-					}
+					},
+					{
+    			   	 "name": "Eldritch Yakarışları",
+    			   	 "entries": [
+    			   	     	"15. seviyede seçeceğin yeni 1 eldritch yakarışı daha öğrenirsin. Yakarış seçeneklerin sınıf tanımının altında detaylı bir şekilde verilmiştir. Belirli warlock seviyelerine ulaştığında ek yakarışlar seçersin.",
+							"Ek olarak, bu sınıfta bir seviye atladığında bildiğin bir yakarışı o seviyede seçebileceğin başka bir yakarış ile değiştirebilirsin.",
+							"Bir yakarıştaki seviye gereksinimi warlock seviyesini kasteder, karakter seviyesini değil.",
+						 {
+								"type": "options",
+								"selectionCount": 1,
+								"entries": [
+									{
+										"type": "invocation",
+										"name": "Istıraplı Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch patlaması)} büyüsünü kullandığında, hasarına Karizma bonusunu ekleyebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerin Zırhı",
+										"entries": [
+											"{@spell Mage armor (Büyücü Zırhı)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Yükselen Adım",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Levitate (Havaya Yükselme)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Hayvan Lisanı",
+										"entries": [
+											"{@spell Speak with animals (Hayvanlarla Konuş)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Aldatıcı Etki",
+										"entries": [
+											"Aldatma ve İkna becerilerinde uzmanlık kazanırsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Büyülü Fısıltılar",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Compulsion (Zorlama)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kadim Sırlar Kitabı",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık Gölgeler Kitabına büyülü ritüeller yazabilirsin. İstediğin sınıfın listesinden 2 tane 1. seviye ve ritüel etiketine sahip büyü seç. Büyüler aynı listeden olmak zorunda değil. Büyüler kitabında belirir ve bildiğin büyüler sayısına dahil olmaz. Gölgeler Kitabın elindeyken seçilen büyüleri ritüel olarak kullanabilirsin. Başka yollarla öğrenmediğin sürece büyüleri ritüel harici kullanamazsın. Ayrıca bildiğin warlock büyülerini ritüel etiketine sahipse bu şekilde kullanabilirsin.",
+											"Maceralarında diğer ritüel büyüleri de Gölgeler Kitabına ekleyebilirsin. Bu tip bir büyü bulduğunda eğer büyünün seviyesi senin warlock seviyenin yarısına eşitse (yukarı yuvarlanır) ya da daha düşükse ve sen bunu kopyalayacak zamana sahipsen kitabına ekleyebilirsin. Büyünün her seviyesi için kopyalama süreci onu yazmak için gereken nadir mürekkepler için 50gp ve 2 saat alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Carceri'nin Zincirleri",
+										"prerequisite": "15. seviye, Zincirin Ahdi özelliği",
+										"entries": [
+											"{@spell Hold monster (Yaratık Zapt Et)} büyüsünü bir kutsal, zebani ya da elementali hedef alarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin. Bu yakarışı aynı varlığın üzerinde yeniden kullanabilmek için uzun dinlenme bitirmen gerekir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytanın Görüşü",
+										"entries": [
+											"Büyülü ve büyüsüz karanlıkta 120 fit'e kadar normal olarak görebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dehşet Verici Söz",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Confusion (Şaşkınlık)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Görüşü",
+										"entries": [
+											"{@spell Detect magic (Büyüyü Hisset)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Mızrağı",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell eldritch blast (eldritch patlaması)} cantripini kullandığında menzili 300 fit olur."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Rün Bekçisinin Gözleri",
+										"entries": [
+											"Tüm yazıları okuyabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytani Dinçlik",
+										"entries": [
+											"{@spell False life (Sahte Yaşam)} büyüsünü kendi üzerinde 1. seviye olarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İki Zihnin Bakışı",
+										"entries": [
+											"Eylemini kullanarak gönüllü bir insansıya dokunup bir sonraki sıranın sonuna kadar onun duyularını kullanabilirsin. Bu varlık senle aynı boyutta olduğu sürece sonraki sıralarında eylemini kullanarak bu bağlantıyı sürdürebilirsin. Diğer varlığın duyuları ile algılarken, o varlığın sahip olduğu özel duyulardan faydalanabilirsin ve sen kendi çevrene karşı kör ve sağır olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Can İçen",
+										"prerequisite": "12. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Bir varlığa senin ahit silahınla vurunca, varlık fazladan Karizma bonusun kadar (en az 1) nekrotik hasar alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Çok Yüzün Maskesi",
+										"entries": [
+											"{@spell Disguise self (Kılık Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sayısız Şeklin Üstadı",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Alter self (Kendini Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kaosun Köleleri",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Conjure elemental (Elemental Yarat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zihin Batağı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Slow (Yavaşlat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sisli Görüler",
+										"entries": [
+											"{@spell Silent image (Sessiz Görüntü)} büyüsünü büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerle Bir",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Loş ışıkta ya da karanlıktayken eylemini kullanıp, eylem ya da reaksiyon kullanana ya da hareket edene kadar görünmez olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dünyadışı Sıçrayış",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Jump (Zıpla)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İtici Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch Patlaması)} ile bir varlığa vurduğunda, varlığı düz bir hizada senden 10 fit'e kadar uzağa itebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Et ve Kemik Sanatçısı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Polymorph (Polimorf)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kötü Alamet Sembolleri",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Bestow curse (Lanetle)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Beş Kaderin Hırsızı",
+										"entries": [
+											"{@spell Bane (Felaket)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Susayan Kılıç",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Sıranda Saldırı eylemini kullandığında ahit silahınla bir yerine iki kere saldırabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Uzak Diyarların Görüleri",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Arcane eye (Arcane Göz)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zincir Üstadının Sesi",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Aynı boyutta olduğun sürece her zaman hizmetkarın ile telepatik iletişime geçebilir ve onun duyuları üzerinden algılayabilirsin. Ek olarak, hizmetkarının duyuları ile algılarken onun üzerinden kendi sesinle konuşabilirsin. Hizmetkarın normalde konuşma yetisine sahip değilse bile senin sesini aktarabilir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Mezarın Fısıltıları",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Speak with dead (Ölüyle Konuş)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Cadı Görüşü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"30 fit yakınında ve görüşünde olan tüm şekil değiştirenler ve illüzyon ya da transmutation büyüleri ile gizlenmiş varlıkların gerçek şekillerini görmeni sağlar."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Ayın Sureti",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık uyku ihtiyacı duymazsın ve hiçbir şekilde uykuya zorlanamazsın. Uzun dinlenmeden faydalanmak için 8 saat boyunca nöbet tutma ya da Gölgeler Kitabını okuma gibi hafif aktivite yapman yeterli olur."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Sinekler Pelerini",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Bonus eylem olarak kendini uçuşan sinekler gibi görünen bir büyülü aura ile sarabilirsin. Aura her yöne doğru senden 5 fit uzaklığı kapsar ama tam siperin arkasına geçmez. Sen bilinçsiz hale gelene kadar ya da bonus eylem olarak onu savana kadar sürer.",
+											"Aura sana Karizma (Gözdağı) zarlarında avantaj verir ama diğer tüm Karizma zarlarında dezavantajın olur. Sırasına bu aura içinde başlayan diğer tüm varlıklar senin Karizma bonusun kadar (en az 0) zehir hasarı alır.",
+											"Bu yakarışı kullandığında bir daha kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Çarpması",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa ahit silahınla vurduğunda bir warlock büyü yuvası harcayıp hedefe 1d8 + büyü yuvasının her seviyesi için 1d8 fazladan güç hasarı verip, Huge ya da daha küçükse yere düşürebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hayalet Bakışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"Eylem olarak, 30 fit yakınındaki katı maddelerin ardını görebilme yeteneğin olur. Eğer gece görüşün yoksa menzil içinde var sayılır. Bu özel görüş 1 dakika ya da konsantrasyonun (bir büyüye konsantre olur gibi) bitene kadar sürer. Bu süre içinde nesneleri hayaletimsi, transparan bir şekilde görürsün.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Derinlerin Armağanı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Su altında nefes alabilirsin ve yürüme hızına eşit yüzme hızın olur.",
+											"Aynı zamanda {@spell water breathing (su soluma)} büyüsünü bir kere büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme sonrası bu özellik yenilenir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Daimi Varolanların Armağanı",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Hizmetkarın 100 fit yakınındayken her HP yenileyişinde bu zarların senin için maksimum değerlerini atmış olduğunu varsay."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hadar'ın Kavraması",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyün ile vurduğunda kendine düz bir şekilde 10 fit çekebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gelişmiş Ahit Silahı",
+										"prerequisite": "Kılıcın Ahdi özelliği",
+										"entries": [
+											"Kılıcın Ahdi özelliği ile yarattığın tüm silahları warlock büyülerin için büyü yapma odağı olarak kullanabilirsin.",
+											"Ek olarak, bu silah zaten saldırı ve hasar zarlarına bonusu olan bir büyülü silah değilse bunlara +1 ekler.",
+											"Son olarak, yarattığın silah kısa yay, uzun yay, hafif arbalet ya da ağır arbalet olabilir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Bezdiren Mızrak",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyüsü ile vurduğunda bir sonraki sıranın sonuna kadar o varlığın hızını 10 fit düşürürsün."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Çıldırtan Hex",
+										"prerequisite": "5. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak hedefin çevresinde psişik kargaşa yaratabilirsin. Bunu yaptığında lanetli hedefe ve onun 5 fit yakınındaki seçeceğin tüm varlıklara psişik hasar verebilirsin. Psişik hasar senin Karizma bonusun (en az 1 hasar) kadardır. Bu yakarışı kullanabilmek için lanetli hedefi görebilmeli ve onun 30 fit yakınında olmalısın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Amansız Hex",
+										"prerequisite": "7. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Lanetin hedef ve senin aranda geçici bir bağ oluşturur. Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak 30 fit'e kadar lanetli hedefin 5 fit yakınındaki görebildiğin boş bir alana ışınlanabilirsin. Bu şekilde ışınlanabilmek için lanetli hedefi görebilmen gerekir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gölge Örtüsü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Invisibility (Görünmezlik)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Levistus'un Mezarı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Hasar aldığında reaksiyon olarak kendini bir sonraki sıranın sonunda eriyecek bir buz kütlesi ile kaplayabilirsin. Warlock seviyesi başına 10 geçici HP kazanırsın ve bu HP tetiklenen hasarın mümkün olan kısmını alır. Hasarı aldıktan hemen sonra ateş hasarına zayıflığın olur, hızın 0'a düşer ve etkisiz hale gelirsin. Bu etkiler, kalan geçici HP dahil olmak üzere buz eridiğinde biter.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hilekarın Kaçışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Freedom of movement (Hareket Özgürlüğü)} büyüsünü bir kere kendi üzerinde büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme bitirince bu özellik yenilenir."
+										],
+										"source": "XGE"
+									}
+								]
+							}
+    					]
+    				}
 				],
 				[
 					{
@@ -17791,7 +20281,402 @@
 						]
 					}
 				],
-				[],
+				[
+					{
+						"name": "Eldritch Yakarışları",
+						"count": 2, 
+						"entries": [
+							"18. seviyede seçeceğin yeni 1 eldritch yakarışı daha öğrenirsin. Yakarış seçeneklerin sınıf tanımının altında detaylı bir şekilde verilmiştir. Belirli warlock seviyelerine ulaştığında ek yakarışlar seçersin.",
+							"Ek olarak, bu sınıfta bir seviye atladığında bildiğin bir yakarışı o seviyede seçebileceğin başka bir yakarış ile değiştirebilirsin.",
+							"Bir yakarıştaki seviye gereksinimi warlock seviyesini kasteder, karakter seviyesini değil.",
+							{
+								"type": "options",
+								"selectionCount": 1,
+								"entries": [
+									{
+										"type": "invocation",
+										"name": "Istıraplı Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch patlaması)} büyüsünü kullandığında, hasarına Karizma bonusunu ekleyebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerin Zırhı",
+										"entries": [
+											"{@spell Mage armor (Büyücü Zırhı)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Yükselen Adım",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Levitate (Havaya Yükselme)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Hayvan Lisanı",
+										"entries": [
+											"{@spell Speak with animals (Hayvanlarla Konuş)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Aldatıcı Etki",
+										"entries": [
+											"Aldatma ve İkna becerilerinde uzmanlık kazanırsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Büyülü Fısıltılar",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Compulsion (Zorlama)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kadim Sırlar Kitabı",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık Gölgeler Kitabına büyülü ritüeller yazabilirsin. İstediğin sınıfın listesinden 2 tane 1. seviye ve ritüel etiketine sahip büyü seç. Büyüler aynı listeden olmak zorunda değil. Büyüler kitabında belirir ve bildiğin büyüler sayısına dahil olmaz. Gölgeler Kitabın elindeyken seçilen büyüleri ritüel olarak kullanabilirsin. Başka yollarla öğrenmediğin sürece büyüleri ritüel harici kullanamazsın. Ayrıca bildiğin warlock büyülerini ritüel etiketine sahipse bu şekilde kullanabilirsin.",
+											"Maceralarında diğer ritüel büyüleri de Gölgeler Kitabına ekleyebilirsin. Bu tip bir büyü bulduğunda eğer büyünün seviyesi senin warlock seviyenin yarısına eşitse (yukarı yuvarlanır) ya da daha düşükse ve sen bunu kopyalayacak zamana sahipsen kitabına ekleyebilirsin. Büyünün her seviyesi için kopyalama süreci onu yazmak için gereken nadir mürekkepler için 50gp ve 2 saat alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Carceri'nin Zincirleri",
+										"prerequisite": "15. seviye, Zincirin Ahdi özelliği",
+										"entries": [
+											"{@spell Hold monster (Yaratık Zapt Et)} büyüsünü bir kutsal, zebani ya da elementali hedef alarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin. Bu yakarışı aynı varlığın üzerinde yeniden kullanabilmek için uzun dinlenme bitirmen gerekir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytanın Görüşü",
+										"entries": [
+											"Büyülü ve büyüsüz karanlıkta 120 fit'e kadar normal olarak görebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dehşet Verici Söz",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Confusion (Şaşkınlık)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Görüşü",
+										"entries": [
+											"{@spell Detect magic (Büyüyü Hisset)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Mızrağı",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell eldritch blast (eldritch patlaması)} cantripini kullandığında menzili 300 fit olur."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Rün Bekçisinin Gözleri",
+										"entries": [
+											"Tüm yazıları okuyabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Şeytani Dinçlik",
+										"entries": [
+											"{@spell False life (Sahte Yaşam)} büyüsünü kendi üzerinde 1. seviye olarak büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İki Zihnin Bakışı",
+										"entries": [
+											"Eylemini kullanarak gönüllü bir insansıya dokunup bir sonraki sıranın sonuna kadar onun duyularını kullanabilirsin. Bu varlık senle aynı boyutta olduğu sürece sonraki sıralarında eylemini kullanarak bu bağlantıyı sürdürebilirsin. Diğer varlığın duyuları ile algılarken, o varlığın sahip olduğu özel duyulardan faydalanabilirsin ve sen kendi çevrene karşı kör ve sağır olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Can İçen",
+										"prerequisite": "12. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Bir varlığa senin ahit silahınla vurunca, varlık fazladan Karizma bonusun kadar (en az 1) nekrotik hasar alır."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Çok Yüzün Maskesi",
+										"entries": [
+											"{@spell Disguise self (Kılık Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sayısız Şeklin Üstadı",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Alter self (Kendini Değiştir)} büyüsünü kendi üzerinde büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kaosun Köleleri",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Conjure elemental (Elemental Yarat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zihin Batağı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Slow (Yavaşlat)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Sisli Görüler",
+										"entries": [
+											"{@spell Silent image (Sessiz Görüntü)} büyüsünü büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Gölgelerle Bir",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Loş ışıkta ya da karanlıktayken eylemini kullanıp, eylem ya da reaksiyon kullanana ya da hareket edene kadar görünmez olursun."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Dünyadışı Sıçrayış",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Jump (Zıpla)} büyüsünü kendi üzerinde büyü yuvası ya da materyal bileşen harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "İtici Patlama",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"{@spell Eldritch blast (Eldritch Patlaması)} ile bir varlığa vurduğunda, varlığı düz bir hizada senden 10 fit'e kadar uzağa itebilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Et ve Kemik Sanatçısı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Polymorph (Polimorf)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Kötü Alamet Sembolleri",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"{@spell Bestow curse (Lanetle)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Beş Kaderin Hırsızı",
+										"entries": [
+											"{@spell Bane (Felaket)} büyüsünü bir kere warlock büyü yuvası harcayarak kullanabilirsin. Uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Susayan Kılıç",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Sıranda Saldırı eylemini kullandığında ahit silahınla bir yerine iki kere saldırabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Uzak Diyarların Görüleri",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Arcane eye (Arcane Göz)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Zincir Üstadının Sesi",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Aynı boyutta olduğun sürece her zaman hizmetkarın ile telepatik iletişime geçebilir ve onun duyuları üzerinden algılayabilirsin. Ek olarak, hizmetkarının duyuları ile algılarken onun üzerinden kendi sesinle konuşabilirsin. Hizmetkarın normalde konuşma yetisine sahip değilse bile senin sesini aktarabilir."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Mezarın Fısıltıları",
+										"prerequisite": "9. seviye",
+										"entries": [
+											"{@spell Speak with dead (Ölüyle Konuş)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Cadı Görüşü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"30 fit yakınında ve görüşünde olan tüm şekil değiştirenler ve illüzyon ya da transmutation büyüleri ile gizlenmiş varlıkların gerçek şekillerini görmeni sağlar."
+										]
+									},
+									{
+										"type": "invocation",
+										"name": "Ayın Sureti",
+										"prerequisite": "Yazıtın Ahdi özelliği",
+										"entries": [
+											"Artık uyku ihtiyacı duymazsın ve hiçbir şekilde uykuya zorlanamazsın. Uzun dinlenmeden faydalanmak için 8 saat boyunca nöbet tutma ya da Gölgeler Kitabını okuma gibi hafif aktivite yapman yeterli olur."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Sinekler Pelerini",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Bonus eylem olarak kendini uçuşan sinekler gibi görünen bir büyülü aura ile sarabilirsin. Aura her yöne doğru senden 5 fit uzaklığı kapsar ama tam siperin arkasına geçmez. Sen bilinçsiz hale gelene kadar ya da bonus eylem olarak onu savana kadar sürer.",
+											"Aura sana Karizma (Gözdağı) zarlarında avantaj verir ama diğer tüm Karizma zarlarında dezavantajın olur. Sırasına bu aura içinde başlayan diğer tüm varlıklar senin Karizma bonusun kadar (en az 0) zehir hasarı alır.",
+											"Bu yakarışı kullandığında bir daha kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Eldritch Çarpması",
+										"prerequisite": "5. seviye, Kılıcın Ahdi özelliği",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa ahit silahınla vurduğunda bir warlock büyü yuvası harcayıp hedefe 1d8 + büyü yuvasının her seviyesi için 1d8 fazladan güç hasarı verip, Huge ya da daha küçükse yere düşürebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hayalet Bakışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"Eylem olarak, 30 fit yakınındaki katı maddelerin ardını görebilme yeteneğin olur. Eğer gece görüşün yoksa menzil içinde var sayılır. Bu özel görüş 1 dakika ya da konsantrasyonun (bir büyüye konsantre olur gibi) bitene kadar sürer. Bu süre içinde nesneleri hayaletimsi, transparan bir şekilde görürsün.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Derinlerin Armağanı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Su altında nefes alabilirsin ve yürüme hızına eşit yüzme hızın olur.",
+											"Aynı zamanda {@spell water breathing (su soluma)} büyüsünü bir kere büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme sonrası bu özellik yenilenir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Daimi Varolanların Armağanı",
+										"prerequisite": "Zincirin Ahdi özelliği",
+										"entries": [
+											"Hizmetkarın 100 fit yakınındayken her HP yenileyişinde bu zarların senin için maksimum değerlerini atmış olduğunu varsay."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hadar'ın Kavraması",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyün ile vurduğunda kendine düz bir şekilde 10 fit çekebilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gelişmiş Ahit Silahı",
+										"prerequisite": "Kılıcın Ahdi özelliği",
+										"entries": [
+											"Kılıcın Ahdi özelliği ile yarattığın tüm silahları warlock büyülerin için büyü yapma odağı olarak kullanabilirsin.",
+											"Ek olarak, bu silah zaten saldırı ve hasar zarlarına bonusu olan bir büyülü silah değilse bunlara +1 ekler.",
+											"Son olarak, yarattığın silah kısa yay, uzun yay, hafif arbalet ya da ağır arbalet olabilir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Bezdiren Mızrak",
+										"prerequisite": "{@spell eldritch blast (eldritch patlaması)} cantripi",
+										"entries": [
+											"Her sıranda bir kereliğine, bir varlığa {@spell eldritch blast (eldritch patlaması)} büyüsü ile vurduğunda bir sonraki sıranın sonuna kadar o varlığın hızını 10 fit düşürürsün."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Çıldırtan Hex",
+										"prerequisite": "5. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak hedefin çevresinde psişik kargaşa yaratabilirsin. Bunu yaptığında lanetli hedefe ve onun 5 fit yakınındaki seçeceğin tüm varlıklara psişik hasar verebilirsin. Psişik hasar senin Karizma bonusun (en az 1 hasar) kadardır. Bu yakarışı kullanabilmek için lanetli hedefi görebilmeli ve onun 30 fit yakınında olmalısın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Amansız Hex",
+										"prerequisite": "7. seviye, hex büyüsü ya da lanetleyen bir warlock özelliği",
+										"entries": [
+											"Lanetin hedef ve senin aranda geçici bir bağ oluşturur. Hex büyün, Hex Kılıcının Laneti ya da Kötü Alamet Sembolleri gibi lanetleyen bir warlock özelliği kullandığında, bonus eylem olarak 30 fit'e kadar lanetli hedefin 5 fit yakınındaki görebildiğin boş bir alana ışınlanabilirsin. Bu şekilde ışınlanabilmek için lanetli hedefi görebilmen gerekir."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Gölge Örtüsü",
+										"prerequisite": "15. seviye",
+										"entries": [
+											"{@spell Invisibility (Görünmezlik)} büyüsünü büyü yuvası harcamadan istediğin zaman kullanabilirsin."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Levistus'un Mezarı",
+										"prerequisite": "5. seviye",
+										"entries": [
+											"Hasar aldığında reaksiyon olarak kendini bir sonraki sıranın sonunda eriyecek bir buz kütlesi ile kaplayabilirsin. Warlock seviyesi başına 10 geçici HP kazanırsın ve bu HP tetiklenen hasarın mümkün olan kısmını alır. Hasarı aldıktan hemen sonra ateş hasarına zayıflığın olur, hızın 0'a düşer ve etkisiz hale gelirsin. Bu etkiler, kalan geçici HP dahil olmak üzere buz eridiğinde biter.",
+											"Bu yakarışı kullandığında kısa ya da uzun dinlenme bitirene kadar bir daha kullanamazsın."
+										],
+										"source": "XGE"
+									},
+									{
+										"type": "invocation",
+										"name": "Hilekarın Kaçışı",
+										"prerequisite": "7. seviye",
+										"entries": [
+											"{@spell Freedom of movement (Hareket Özgürlüğü)} büyüsünü bir kere kendi üzerinde büyü yuvası harcamadan kullanabilirsin. Uzun dinlenme bitirince bu özellik yenilenir."
+										],
+										"source": "XGE"
+									}
+								]
+							}
+						]
+					}
+				],
 				[
 					{
 						"name": "Yetenek Skoru Gelişimi",
