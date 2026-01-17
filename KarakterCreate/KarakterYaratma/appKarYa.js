@@ -142,17 +142,28 @@ const app = createApp({
         // ============================================================
         //  4. IRK MANTIĞI (RACE LOGIC)
         // ============================================================
-        const selectedFlatOption = ref(null);
         const selectedRace = ref(null);
         const selectedSubrace = ref(null);
-
+        const selectedFlatOption = ref(null);
         const flatRaceList = computed(() => {
             const list = [];
             if (!raceList.value) return [];
+                
             raceList.value.forEach(r => {
                 if (r.subraces && r.subraces.length > 0) {
-                    r.subraces.forEach(sub => list.push({ label: `${r.name} (${sub.name})`, race: r, subrace: sub }));
+                    r.subraces.forEach(sub => {
+                        // EĞER subrace'in ismi yoksa (Standart İnsan), ona "Standart" diyelim.
+                        // EĞER ismi varsa (Alternatif), kendi ismini kullanalım.
+                        const subName = sub.name || "Standart"; 
+                        
+                        list.push({ 
+                            label: `${r.name} (${subName})`, 
+                            race: r, 
+                            subrace: sub 
+                        });
+                    });
                 } else {
+                    // Alt ırkı olmayan düz ırklar
                     list.push({ label: r.name, race: r, subrace: null });
                 }
             });
@@ -545,14 +556,39 @@ const app = createApp({
                 targetLevel.value = data.l || 1; 
                 
                 // Irk Yükleme
+                // --- DÜZELTİLMİŞ IRK YÜKLEME MANTIĞI ---
                 if (data.r) {
-                    const foundRace = flatRaceList.value.find(x => x.label.includes(data.r));
-                    if (foundRace) {
-                        selectedFlatOption.value = foundRace;
-                        // Timeout, Vue'nun watcher'ının tetiklenmesini beklemek için
-                        setTimeout(() => { store.race.abilityChoices = { ...data.ac }; }, 50);
+                    // Seed'deki alt ırk adı (yoksa 'Standart' varsayalım, yukarıdaki mantıkla uyuşsun)
+                    const targetSubraceName = data.sr || "Standart";
+                
+                    const foundFlatOption = flatRaceList.value.find(option => {
+                        // 1. Ana ırk ismi tutuyor mu? (Örn: "İnsan")
+                        const raceMatch = option.race.name === data.r;
+
+                        // 2. Alt ırk ismi tutuyor mu? (Örn: "Alternatif" veya "Standart")
+                        // Option içindeki subrace adı yoksa "Standart" kabul et.
+                        const optSubName = option.subrace ? (option.subrace.name || "Standart") : null;
+
+                        // Eğer seed'de alt ırk varsa onu kontrol et, yoksa subrace'i olmayan bir ırk mı (Tiefling vb.) ona bak.
+                        if (option.subrace) {
+                            return raceMatch && (optSubName === targetSubraceName);
+                        } else {
+                            return raceMatch; // Alt ırkı olmayan düz ırk (örn: Dragonborn)
+                        }
+                    });
+                
+                    if (foundFlatOption) {
+                        selectedFlatOption.value = foundFlatOption;
+
+                        // Stat seçimlerini yükle (Variant Human için kritik)
+                        // Timeout süresini 100ms'e çıkarıp Vue'nun DOM'u render etmesine izin veriyoruz.
+                        if (data.ac) {
+                            setTimeout(() => { 
+                                store.race.abilityChoices = { ...data.ac }; 
+                            }, 100);
+                        }
                     }
-                }                
+                }            
 
                 // Sınıf Yükleme
                 if (data.c) {
@@ -610,7 +646,7 @@ const app = createApp({
             skillBudget, expertiseBudget, raceSkillInfo, currentProfCount: computed(() => store.skills.proficiencies.length + store.skills.expertises.length), 
             currentExpertCount: computed(() => store.skills.expertises.length), currentUsedSkills: computed(() => store.skills.proficiencies.length + store.skills.expertises.length),
             classSkillInfo, scoreMethods, selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, standardArrayValues, rollStats, rolledPool, hasRolled, isCapped20,
-            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS ,isMobileMenuOpen, toggleMobileMenu, copyLink, 
+            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS ,isMobileMenuOpen, toggleMobileMenu, copyLink,
         };
     }
 });
