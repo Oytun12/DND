@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Karakter Yaratıcısı - 5eTürkçe</title>
     <!-- eski stiller STYLES 
     <link rel="stylesheet" href="stylesKarYa.css">
@@ -107,13 +107,15 @@
 
                         <p>Karakterinizin adını belirleyerek başlayın.</p>
                         <input v-model="store.meta.name" type="text" placeholder="Karakter Adı" class="big-input" style="padding: 10px; width: 100%; font-size: 1.1em; border-radius: 4px; border:1px solid #444; background:#222; color:white;">
+                        
                         <div class="form-group" style="margin-top: 20px;">
                             <label>Karakter Görünümü Seç:</label>
                             
                             <div class="selected-avatar-preview">
-                                <img :src="store.meta.avatar" 
+                                <img :src="store.meta.avatar || '../../img/avatars/default-avatar.png'" 
                                      alt="Seçili Avatar" 
-                                     @error="$event.target.src='../../img/avatars/default.jpg'">
+                                     @error="$event.target.src='../../img/avatars/default-avatar.png'"
+                                     style="object-fit: cover;">
                             </div>
 
                             <button @click="isGalleryExpanded = !isGalleryExpanded" class="btn btn-secondary" style="width: 100%; margin-bottom: 15px;">
@@ -125,7 +127,7 @@
                                     <div v-for="(img, index) in avatarList" 
                                          :key="index" 
                                          class="avatar-option"
-                                         :class="{ 'selected': store.meta.avatar.includes(img) }"
+                                         :class="{ 'selected': store.meta.avatar === '../../img/avatars/' + img }"
                                          @click="store.meta.avatar = '../../img/avatars/' + img">
                                         
                                         <img :src="'../../img/avatars/' + img" loading="lazy" alt="Avatar">
@@ -141,7 +143,7 @@
                                 <input v-if="showCustomAvatarInput" 
                                        v-model="store.meta.avatar" 
                                        type="text" 
-                                       placeholder="https://..." 
+                                       placeholder="Link yapıştırın (Silerseniz varsayılan gelir)" 
                                        class="big-input" 
                                        style="margin-top: 5px; width: 100%; font-size: 0.9em;">
                             </div>
@@ -852,9 +854,9 @@
             </div>
         </div>
         
-        <div class="mobile-sheet-toggle" @click="toggleMobileSheet">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20ZM8 12V14H16V12H8ZM8 16V18H13V16H8Z"/>
+        <div v-if="!isSheetMode" class="mobile-sheet-toggle" @click="toggleMobileSheet">
+            <svg viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
             </svg>
         </div>
 
