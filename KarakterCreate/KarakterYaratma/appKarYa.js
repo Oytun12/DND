@@ -13,8 +13,7 @@ import { useSkillLogic } from './src/logicSkills.js';
 const app = createApp({
     setup() {
         
-        // 1. KARAKTER KAĞIDI MANTIĞI
-        const { isSheetMode, activeSheetTab, finishCreation } = useCharacterSheet();
+        const { isSheetMode, activeSheetTab, finishCreation, hasCreatedSheet, activeFeatureSubTab } = useCharacterSheet();
         
         // 2. IRK MANTIĞI
         const { 
@@ -270,7 +269,7 @@ const app = createApp({
 
             // Yetenek Verileri (logicSkills)
             SKILL_DEFINITIONS, calculatedSkills, toggleSkill, skillBudget, expertiseBudget, 
-            raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount
+            raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount, hasCreatedSheet, activeFeatureSubTab
         };
     }
 });

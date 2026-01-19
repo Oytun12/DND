@@ -1,0 +1,269 @@
+/* ============================================================
+   COMPONENTS.CSS - Butonlar, Formlar, Bildirimler
+   ============================================================ */
+
+/* --- LOADER --- */
+#initial-loader {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background-color: #1a1a1a; display: flex; justify-content: center; align-items: center;
+    z-index: 9999; transition: opacity 0.5s ease-out;
+}
+#initial-loader.fade-out { opacity: 0; pointer-events: none; }
+.loader-content { text-align: center; color: #b52b2b; }
+.pulsing-logo { width: 80px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+
+/* --- FORMLAR --- */
+.controls-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+    margin-bottom: 20px; background: #1e1e1e; padding: 15px;
+    border-radius: 6px; border: 1px solid #333;
+}
+.full-width { grid-column: 1 / -1; }
+.form-group label { display: block; margin-bottom: 5px; color: #aaa; font-size: 0.9em; }
+select, input[type="text"] {
+    width: 100%; padding: 10px; background-color: #2b2b2b;
+    border: 1px solid #444; color: #fff; border-radius: 4px; font-size: 1em;
+}
+select:focus, input:focus { outline: none; border-color: #b52b2b; }
+.mini-select { padding: 6px; font-size: 0.9em; }
+.embedded-select { 
+    background: #1a1a1a; border: 1px solid #b52b2b; color: #fff; 
+    padding: 5px; border-radius: 4px; width: 100%; 
+    margin-top: 5px; margin-bottom: 10px;
+}
+.level-slider { width: 100%; cursor: pointer; margin-top: 5px; }
+
+/* --- BUTONLAR --- */
+.control-panel {
+    margin-top: auto; padding-top: 20px; border-top: 1px solid #333;
+    display: flex; justify-content: space-between;
+}
+.btn { 
+    padding: 10px 25px; border: none; border-radius: 4px; cursor: pointer; 
+    font-size: 1em; transition: background 0.2s; color: #fff; 
+}
+.btn-primary { background-color: #b52b2b; }
+.btn-primary:hover:not(:disabled) { background-color: #d63d3d; }
+.btn-secondary { background-color: #444; }
+.btn-secondary:hover:not(:disabled) { background-color: #555; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* --- TOAST BİLDİRİM --- */
+.toast-notification {
+    position: fixed; bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(30, 30, 30, 0.95); color: #fff;
+    padding: 12px 30px; border-radius: 50px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.6); border: 1px solid #b52b2b;
+    z-index: 9999; font-size: 0.95em; opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    display: flex; align-items: center; gap: 10px;
+}
+.toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* --- MOBİL FAB BUTTON --- */
+.mobile-sheet-toggle {
+    display: none; /* Mobilde görünür olur */
+}
+/* ============================================================
+   WIZARD TIMELINE (Sınıf İlerleme Ekranı)
+   ============================================================ */
+
+.timeline-area {
+    position: relative;
+    margin-top: 20px;
+}
+
+.level-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Seviye Kartı (Konteyner) */
+.level-card {
+    display: flex;
+    gap: 15px;
+    background-color: #2b2b2b;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 5px solid #b52b2b; /* Sol taraftaki kızıl çizgi */
+    transition: transform 0.2s;
+}
+
+.level-card:hover {
+    background-color: #303030;
+    transform: translateX(5px);
+}
+
+/* Seviye Numarası Rozeti */
+.level-badge {
+    background-color: #222;
+    color: #b52b2b;
+    font-size: 1.5em;
+    font-weight: bold;
+    min-width: 60px; /* Sabit genişlik */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+    height: auto;
+    align-self: stretch; /* Kart boyunca uzasın */
+}
+
+/* Özellikler Listesi */
+.features-list {
+    flex: 1;
+}
+
+.feature-item {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #383838;
+}
+
+.feature-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.feature-item h4 {
+    margin: 0 0 5px 0;
+    color: #ddd;
+    font-size: 1.1em;
+}
+
+.feature-text {
+    color: #aaa;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* Alt Sınıf (Subclass) Vurgusu */
+.subclass-item {
+    background: rgba(181, 43, 43, 0.05);
+    padding: 10px;
+    border-radius: 4px;
+    border-left: 2px solid #b52b2b;
+}
+
+.subclass-tag {
+    font-size: 0.7em;
+    background: #b52b2b;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Seçim Kutuları (Choice Wrapper) */
+.choice-wrapper {
+    background: #1a1a1a;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 4px;
+    border: 1px dashed #444;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.choice-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.choice-result {
+    margin-top: 8px;
+    font-size: 0.9em;
+    color: #ccc;
+    padding-top: 8px;
+    border-top: 1px solid #333;
+    line-height: 1.4;
+}
+
+/* Büyü Linkleri */
+.dnd-link {
+    color: #8ab4f8;
+    cursor: pointer;
+    border-bottom: 1px dotted #8ab4f8;
+}
+
+a.dnd-link.spell-link {
+    color: #a855f7;
+    text-decoration: none;
+    border-bottom: 1px dotted #a855f7;
+    transition: all 0.2s;
+}
+
+a.dnd-link.spell-link:hover {
+    color: #d8b4fe;
+    border-bottom: 1px solid #d8b4fe;
+    background-color: rgba(168, 85, 247, 0.1);
+    border-radius: 4px;
+}
+
+/* Alt Sınıf (Subclass) Seçim Kutusu */
+.subclass-selection-box {
+    background: linear-gradient(135deg, rgba(181, 43, 43, 0.1), rgba(0, 0, 0, 0));
+    border: 1px solid #b52b2b;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(181, 43, 43, 0.2);
+}
+
+.selection-label {
+    display: block;
+    color: #e67e22;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+@media (max-width: 800px) {
+    .mobile-sheet-toggle {
+        display: flex; align-items: center; justify-content: center;
+        position: fixed; bottom: 25px; left: 50%;
+        transform: translateX(-50%); width: 60px; height: 60px;
+        background-color: #b52b2b; color: white; border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.6); cursor: pointer; z-index: 2000;
+        transition: transform 0.2s, background-color 0.2s;
+    }
+    .mobile-sheet-toggle:active { transform: translateX(-50%) scale(0.95); background-color: #d63d3d; }
+    .mobile-sheet-toggle svg { width: 28px; height: 28px; fill: #fff; }
+
+       .level-card {
+        flex-direction: column;
+    }
+
+    .level-badge {
+        width: 100%;
+        min-width: auto;
+        min-height: auto;
+        background-color: transparent;
+        box-shadow: none;
+        border-bottom: 1px solid #444;
+        border-radius: 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0 0 5px 0;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+        color: #b52b2b;
+    }
+
+    .level-badge::before {
+        content: "SEVİYE ";
+        color: #888;
+        font-size: 0.8em;
+        margin-right: 6px;
+        font-weight: normal;
+        letter-spacing: 1px;
+    }
+}

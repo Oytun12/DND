@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karakter Yaratıcısı - 5eTürkçe</title>
-    
+    <!-- eski stiller STYLES 
     <link rel="stylesheet" href="stylesKarYa.css">
-    <link rel="stylesheet" href="stylesScores.css">
-    <link rel="stylesheet" href="stylesScores.css">
+    <link rel="stylesheet" href="stylesScores.css">  -->
+
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/sheet.css">
+    <link rel="stylesheet" href="styles/scores.css">
     
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
         
@@ -57,7 +62,7 @@
             </nav>
         </header>
 
-        <div class="wizard-layout">
+        <div class="wizard-layout" v-if="!isSheetMode">
             
             <main class="wizard-container">
                 
@@ -93,8 +98,16 @@
                     <div v-show="currentStep === 0" class="step-pane">
                         <h2>Karakter Konsepti</h2>
 
+                        <div v-if="hasCreatedSheet" class="form-group" style="margin-bottom: 20px; padding: 15px; border: 1px solid #4caf50; background: rgba(76, 175, 80, 0.1); border-radius: 4px; text-align: center;">
+                            <label style="color:#4caf50; display:block; margin-bottom:10px;">✨ Karakter kağıdınız hazır!</label>
+                            <button @click="isSheetMode = true" class="btn btn-primary" style="width:100%; background-color: #4caf50; border:none;">
+                                📜 Karakter Kağıdını Aç
+                            </button>
+                        </div>
+
                         <p>Karakterinizin adını belirleyerek başlayın.</p>
                         <input v-model="store.meta.name" type="text" placeholder="Karakter Adı" class="big-input" style="padding: 10px; width: 100%; font-size: 1.1em; border-radius: 4px; border:1px solid #444; background:#222; color:white;">
+                        
                         <div class="form-group" style="margin-top: 20px; border: 1px dashed #444; padding: 15px; background: rgba(255,255,255,0.02);">
                             <label>Daha Önce Oluşturulmuş Bir Seed Yükle:</label>
                             <div style="display: flex; gap: 10px;">
@@ -492,11 +505,18 @@
                 </div>
 
                 <div class="control-panel">
-                    <button @click="prevStep" :disabled="currentStep === 0" class="btn btn-secondary">← Geri</button>
-                    <button @click="nextStep" :disabled="currentStep === steps.length - 1" class="btn btn-primary">İleri →</button>
+                    <button @click="prevStep" 
+                            :disabled="currentStep === 0" 
+                            class="btn btn-secondary">
+                        ← Geri
+                    </button>
+
+                    <button @click="currentStep === steps.length - 1 ? finishCreation() : nextStep()" 
+                            class="btn btn-primary">
+                        {{ currentStep === steps.length - 1 ? 'Karakter Kağıdını Aç 📜' : 'İleri →' }}
+                    </button>
                 </div>
             </main>
-
             <aside class="live-sheet" :class="{ 'mobile-open': isMobileSheetOpen }">
                 <div class="mobile-close-btn" @click="toggleMobileSheet">✖</div>
                 <div class="sheet-header">
@@ -561,7 +581,237 @@
                         </div>
                     </div>
                 </div>
-            </aside>
+            </aside>       
+        </div>
+
+        <div v-if="isSheetMode" class="character-sheet-layout" v-cloak>
+            
+            <header class="sheet-header-main">
+                <button class="edit-mode-btn" @click="isSheetMode = false" title="Sihirbaza Geri Dön">
+                    ✎ Düzenle
+                </button>
+
+                <div class="sheet-avatar">
+                    <img src="https://www.dndbeyond.com/content/skins/waterdeep/images/characters/default-avatar.png" alt="Avatar">
+                </div>
+                <div class="sheet-identity">
+                    <h1>{{ store.meta.name || 'İsimsiz Kahraman' }}</h1>
+                    <div class="sheet-subtitle">
+                        {{ store.race.selected?.name }} 
+                        <span v-if="store.race.subrace">({{ store.race.subrace.name }})</span> 
+                        | 
+                        {{ selectedClass?.name }} {{ targetLevel }}
+                    </div>
+                </div>
+                <div class="sheet-rest-buttons">
+                    <button class="rest-btn short" @click="showToast('Kısa dinlenme yapıldı (HP yenilenmedi).', '☕')">Kısa Dinlenme</button>
+                    <button class="rest-btn long" @click="showToast('Uzun dinlenme: HP ve Büyüler yenilendi!', '💤')">Uzun Dinlenme</button>
+                </div>
+            </header>
+        
+            <div class="sheet-grid">
+                
+                <aside class="sheet-sidebar">
+                    
+                    <div class="ability-scores-container">
+                        <div v-for="(val, key) in finalAbilityScores" :key="key" class="ability-score-card">
+                            <div class="score-header">{{ key.toUpperCase() }}</div>
+                            <div class="score-modifier">
+                                {{ Math.floor((val - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((val - 10) / 2) }}
+                            </div>
+                            <div class="score-value">{{ val }}</div>
+                        </div>
+                    </div>
+
+                    <div class="pb-box">
+                        <span class="pb-label">Uzmanlık Puanı</span>
+                        <span class="pb-val">+{{ proficiencyBonus }}</span>
+                    </div>
+
+                    <div class="sheet-skills-panel">
+                        <h3>Yetenekler (Skills)</h3>
+                        <div class="skills-container">
+                            <div v-for="skill in calculatedSkills" :key="skill.id" class="sheet-skill-row">
+                                
+                                <div class="skill-left">
+                                    <div class="skill-status-icon">
+                                        <span v-if="skill.profLevel === 2" title="Ustalık (Expertise)" style="color: #e67e22; font-size: 1.3em; line-height: 1;">★</span>
+                                        <span v-else-if="skill.profLevel === 1" title="Uzmanlık" style="color: #b52b2b; font-size: 1.3em; line-height: 1;">●</span>
+                                        <span v-else style="color: #333; font-size: 1.3em; line-height: 1;">•</span>
+                                    </div>
+                                    
+                                    <div>
+                                        <span class="skill-name">{{ skill.name }}</span>
+                                        <span class="skill-attr" style="color:#666; font-size:0.8em; margin-left:4px;">({{ skill.attrLabel }})</span>
+                                    </div>
+                                </div>
+
+                                <div class="skill-val" :style="skill.profLevel > 0 ? 'color:#fff' : 'color:#666'">
+                                    {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="senses-box" style="margin-top: 20px;">
+                        <div class="sense-row">
+                            <span class="sense-val">{{ 10 + Math.floor((finalAbilityScores.wis - 10) / 2) }}</span>
+                            <span class="sense-label">Pasif Algı</span>
+                        </div>
+                        <div class="sense-row">
+                            <span class="sense-val">{{ 10 + Math.floor((finalAbilityScores.int - 10) / 2) }}</span>
+                            <span class="sense-label">Pasif İnceleme</span>
+                        </div>
+                        <div class="sense-row">
+                            <span class="sense-val">{{ 10 + Math.floor((finalAbilityScores.wis - 10) / 2) }}</span>
+                            <span class="sense-label">Pasif Sezgi</span>
+                        </div>
+                    </div>
+
+                    <div class="sheet-section" style="border-top: 2px solid #333; margin-top: 20px; padding-top: 15px;">
+                        <h4 style="color: #888; font-size: 0.8em; text-transform: uppercase; margin-bottom: 10px;">Karakter Paylaşımı</h4>
+
+                        <div style="background: #111; padding: 10px; border-radius: 4px; border: 1px solid #222; margin-bottom: 10px;">
+                            <code style="display: block; font-size: 0.7em; color: #4caf50; word-break: break-all; max-height: 40px; overflow-y: auto;">
+                                {{ characterSeed }}
+                            </code>
+                        </div>                  
+
+                        <div style="display: flex; gap: 10px;">
+                            <button @click="copySeed" class="btn btn-secondary" style="flex: 1; font-size: 0.8em; padding: 8px;">
+                                📋 Kodu Kopyala
+                            </button>
+                            <button @click="copyLink" class="btn btn-primary" style="flex: 1; font-size: 0.8em; padding: 8px;">
+                                🔗 Linki Kopyala
+                            </button>
+                        </div>
+                    </div>
+        
+                </aside>
+        
+                <main class="sheet-main-content">
+                    
+                    <div class="combat-stats-row">
+                        <div class="c-stat-box">
+                            <span class="label">Zırh Sınıfı</span>
+                            <span class="value shield-shape">
+                                {{ 10 + Math.floor((finalAbilityScores.dex - 10) / 2) }}
+                            </span>
+                        </div>
+                        <div class="c-stat-box">
+                            <span class="label">İnisiyatif</span>
+                            <span class="value">{{ Math.floor((finalAbilityScores.dex - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((finalAbilityScores.dex - 10) / 2) }}</span>
+                        </div>
+                        <div class="c-stat-box">
+                            <span class="label">Hız</span>
+                            <span class="value">{{ store.race.selected?.speed || 30 }} ft.</span>
+                        </div>
+                        <div class="c-stat-box hp-box">
+                            <span class="label">Can Puanı (HP)</span>
+                            <span class="value">
+                                {{ (parseInt(getHitDie(selectedClass)) + Math.floor((finalAbilityScores.con - 10) / 2)) + ((parseInt(getHitDie(selectedClass))/2 + 1 + Math.floor((finalAbilityScores.con - 10) / 2)) * (targetLevel - 1)) }}
+                            </span>
+                            <span class="sub-label">Maksimum</span>
+                        </div>
+                    </div>
+        
+                    <div class="sheet-tabs">
+                        <button @click="activeSheetTab = 'actions'" :class="{ active: activeSheetTab === 'actions' }">
+                            <svg :viewBox="dndIcons.actions.viewBox" class="tab-icon" v-html="dndIcons.actions.content"></svg>
+                            Aksiyonlar
+                        </button>
+                        <button @click="activeSheetTab = 'spells'" :class="{ active: activeSheetTab === 'spells' }">
+                            <svg :viewBox="dndIcons.spells.viewBox" class="tab-icon" v-html="dndIcons.spells.content"></svg>
+                            Büyüler
+                        </button>
+                        <button @click="activeSheetTab = 'features'" :class="{ active: activeSheetTab === 'features' }">
+                            <svg :viewBox="dndIcons.features.viewBox" class="tab-icon" v-html="dndIcons.features.content"></svg>
+                            Özellikler
+                        </button>
+                        <button @click="activeSheetTab = 'description'" :class="{ active: activeSheetTab === 'description' }">
+                            <svg :viewBox="dndIcons.description.viewBox" class="tab-icon" v-html="dndIcons.description.content"></svg>
+                            Açıklama
+                        </button>
+                    </div>
+        
+                    <div class="sheet-tab-content">
+                        
+                        <div v-if="activeSheetTab === 'actions'">
+                            <h3>Saldırılar</h3>
+                            <div class="attack-row">
+                                <div class="atk-name">Yumruk</div>
+                                <div class="atk-bonus">+{{ Math.floor((finalAbilityScores.str - 10) / 2) + proficiencyBonus }}</div>
+                                <div class="atk-dmg">1 + {{ Math.floor((finalAbilityScores.str - 10) / 2) }} Bludgeoning</div>
+                            </div>
+                            <p style="color:#666; font-style:italic; margin-top:10px;">(Silah ve eşya sistemi henüz eklenmedi)</p>
+                        </div>
+        
+                        <div v-if="activeSheetTab === 'features'">
+                             
+                            <div class="feature-sub-tabs">
+                                <button @click="activeFeatureSubTab = 'race'" :class="{ active: activeFeatureSubTab === 'race' }">Irk</button>
+                                <button @click="activeFeatureSubTab = 'class'" :class="{ active: activeFeatureSubTab === 'class' }">Sınıf</button>
+                                <button @click="activeFeatureSubTab = 'background'" :class="{ active: activeFeatureSubTab === 'background' }">Geçmiş</button>
+                            </div>
+
+                            <div v-if="activeFeatureSubTab === 'race'">
+                                <div v-for="trait in activeRaceTraits" :key="trait.name" class="sheet-feature-item">
+                                    <h4>{{ trait.name }}</h4>
+                                    <div v-html="trait.text" class="feat-text"></div>
+                                </div>
+                                <p v-if="activeRaceTraits.length === 0" style="color:#666; font-style:italic;">Bu ırk için özel bir yetenek bulunamadı.</p>
+                            </div>
+                            
+                            <div v-if="activeFeatureSubTab === 'class'">
+                                <div v-for="step in activeFeatures" :key="step.level">
+                                    <template v-for="feat in step.features" :key="feat.name">
+                                        <div v-if="feat && feat.name && !feat.name.includes('Yetenek Skoru')" class="sheet-feature-item">
+                                            <h4>
+                                                {{ feat.name }} 
+                                                <span class="source-tag">Lv.{{step.level}}</span>
+                                            </h4>
+                                            <div class="feat-text">
+                                                <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt"></p>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div v-if="activeFeatureSubTab === 'background'">
+                                <div class="sheet-feature-item">
+                                    <h4>{{ store.background.selected?.name || 'Bilinmiyor' }}</h4>
+                                    <div class="feat-text">
+                                        <p v-if="store.background.selected?.feature">
+                                            <strong>{{ store.background.selected.feature.name }}:</strong><br><br>
+                                            {{ store.background.selected.feature.entries?.[0] }}
+                                        </p>
+                                        <p v-else style="color:#666;">Seçilen geçmişin özel bir yeteneği yok.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+        
+                        <div v-if="activeSheetTab === 'spells'">
+                            <p style="text-align: center; color: #aaa; margin-top: 20px;">
+                                Henüz büyü kitabı oluşturulmadı. <br>
+                                <span style="font-size: 0.8em;">(Yakında eklenecek...)</span>
+                            </p>
+                        </div>
+
+                        <div v-if="activeSheetTab === 'description'">
+                            <p><strong>Arkaplan:</strong> {{ store.background.selected?.name || 'Seçilmedi' }}</p>
+                            <p v-if="store.background.selected?.feature">
+                                <strong>Özellik: {{ store.background.selected.feature.name }}</strong><br>
+                                {{ store.background.selected.feature.entries?.[0] }}
+                            </p>
+                        </div>
+        
+                    </div>
+                </main>
+            </div>
         </div>
         
         <div class="mobile-sheet-toggle" @click="toggleMobileSheet">

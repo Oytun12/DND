@@ -1,0 +1,88 @@
+/* ============================================================
+   LAYOUT.CSS - Sayfa Düzeni ve İskelet
+   ============================================================ */
+
+/* --- HEADER --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; height: 70px;
+    display: flex; align-items: center; position: relative; z-index: 100;
+}
+.header-container {
+    width: 100%; max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; letter-spacing: 1px; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+
+.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
+
+/* Mobil Menü */
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 99;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+}
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; }
+
+/* --- WIZARD LAYOUT --- */
+.wizard-layout {
+    display: grid; grid-template-columns: 1fr 320px;
+    gap: 20px; max-width: 1200px; margin: 20px auto;
+    padding: 0 20px; align-items: start;
+}
+.wizard-container {
+    background-color: #222; border-radius: 8px; padding: 20px;
+    min-height: 80vh; display: flex; flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* --- STEP INDICATOR (Adımlar) --- */
+.step-indicator {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px;
+}
+.step-badge {
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0.5; transition: opacity 0.3s, transform 0.2s; user-select: none;
+}
+.step-badge.active, .step-badge.completed { opacity: 1; }
+.step-number {
+    width: 30px; height: 30px; border-radius: 50%; background-color: #333;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; margin-bottom: 5px; border: 2px solid #333;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+.active .step-number { background-color: #b52b2b; border-color: #b52b2b; box-shadow: 0 0 10px #b52b2b; }
+.completed .step-number { background-color: #4caf50; border-color: #4caf50; color: #fff; }
+.step-name { font-size: 0.8em; text-transform: uppercase; }
+
+/* Step Nav Butonları (Oklar) */
+.step-nav-btn { opacity: 1; cursor: pointer; }
+.step-nav-btn:hover:not(.disabled) .step-number { border-color: #eee; background-color: #444; color: #fff; }
+.step-nav-btn:hover:not(.disabled) { transform: translateY(-2px); }
+.step-nav-btn.disabled { opacity: 0.2; cursor: not-allowed; pointer-events: none; }
+.step-nav-btn .step-number { font-size: 1.2em; padding-bottom: 2px; }
+
+/* --- RESPONSIVE LAYOUT --- */
+@media (max-width: 800px) {
+    .wizard-layout {
+        display: flex; flex-direction: column;
+        gap: 20px; margin: 0; padding: 0; width: 100%;
+        border-radius: 0;
+    }
+    .wizard-container { width: 100%; min-height: auto; }
+    .step-indicator { margin-bottom: 20px; padding-bottom: 10px; }
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+}
