@@ -1,59 +1,54 @@
-import { createApp, ref, reactive, computed, onMounted, watch } from 'vue';
+import { createApp, ref, computed, onMounted, watch } from 'vue';
+
+// --- MODÜLLER ---
+import { store, cleanObject } from './src/store.js';
+import { parseTags, formatEntry } from './src/utils.js';
+import { dndIcons } from './src/icons.js';
+import { useCharacterSheet } from './src/logicSheet.js';
+import { useRaceLogic } from './src/logicRace.js';
+import { useClassLogic } from './src/logicClass.js';
+import { useScoreLogic } from './src/logicScores.js';
+import { useSkillLogic } from './src/logicSkills.js';
 
 const app = createApp({
     setup() {
-        // ============================================================
-        //  1. GLOBAL STATE (STORE)
-        // ============================================================
-        const store = reactive({
-            meta: { name: "", xp: 0 },
-            race: { 
-                selected: null, 
-                subrace: null, 
-                features: [],
-                abilityChoices: {} 
-            },
-            class: { selected: null, subclass: null, level: 1 },
-            abilities: { 
-                method: "point-buy",
-                base: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
-                asi: {} 
-            },
-            background: { selected: null },
-            skills: { 
-                proficiencies: [], // Uzmanlık (Proficiency)
-                expertises: []     // Ustalık (Expertise)
-            },
-            choices: {} 
-        });
+        
+        // 1. KARAKTER KAĞIDI MANTIĞI
+        const { isSheetMode, activeSheetTab, finishCreation } = useCharacterSheet();
+        
+        // 2. IRK MANTIĞI
+        const { 
+            raceList, flatRaceList, selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig 
+        } = useRaceLogic();
 
-        // appKarYa.js > setup() içine:
+        // 3. SINIF MANTIĞI
+        const { 
+            classList, selectedClass, selectedSubclass, targetLevel, userChoices, 
+            subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, 
+            getAvailableOptions, getChoiceDetail 
+        } = useClassLogic();
 
-        // --- YARDIMCI: Boş Verileri Temizle ---
-        const cleanObject = (obj) => {
-            if (typeof obj !== 'object' || obj === null) return obj;
+        // 4. PUANLAR (Race Bonus'a ihtiyaç duyar)
+        const {
+            statLabels, selectableStats, scoreMethods, selectedScoreMethod, standardArrayValues,
+            rolledPool, hasRolled, isCapped20, isRolling,
+            pointBuyBudget, currentPbCost,
+            getFlexCost, changePointBuy, rollStats, isOptionDisabled,
+            statBonuses, finalAbilityScores, proficiencyBonus
+        } = useScoreLogic(raceBonuses);
 
-            if (Array.isArray(obj)) {
-                const cleanedArray = obj.map(cleanObject).filter(item => 
-                    item !== null && item !== undefined && item !== "" && 
-                    (typeof item !== 'object' || Object.keys(item).length > 0)
-                );
-                return cleanedArray.length > 0 ? cleanedArray : undefined;
-            }       
+        // 5. YETENEKLER (Statlar ve PB'ye ihtiyaç duyar)
+        const {
+            SKILL_DEFINITIONS,
+            raceSkillInfo, classSkillInfo,
+            skillBudget, expertiseBudget,
+            toggleSkill, calculatedSkills,
+            currentProfCount, currentExpertCount
+        } = useSkillLogic(finalAbilityScores, proficiencyBonus);
 
-            const cleanedObj = {};
-            Object.keys(obj).forEach(key => {
-                const value = cleanObject(obj[key]);
-                if (value !== null && value !== undefined && value !== "" && 
-                   (typeof value !== 'object' || Object.keys(value).length > 0)) {
-                    cleanedObj[key] = value;
-                }
-            });
-            return Object.keys(cleanedObj).length > 0 ? cleanedObj : undefined;
-        };
 
         // ============================================================
-        //  2. NAVIGATION & DATA LOADING
+        //  UI & SİSTEM DEĞİŞKENLERİ
         // ============================================================
         const currentStep = ref(0);
         const steps = [{ title: "Konsept" }, { title: "Irk" }, { title: "Sınıf" }, { title: "Puanlar" }, { title: "Geçmiş" }];
@@ -63,599 +58,43 @@ const app = createApp({
 
         const loading = ref(true);
         const error = ref(null);
-        const classList = ref([]);
-        const raceList = ref([]);
         const backgroundList = ref([]);
-        // Zarın sallanıp sallanmadığını kontrol eden değişken
-        const isRolling = ref(false);
-        
-        // Verileri Yükle
-        // ... (önceki kodlar)
+        const featList = ref([ "Alert", "Actor", "Athlete", "Lucky", "Tough", "War Caster" ]);
+        const seedText = ref('');
 
-onMounted(async () => {
-    try {
-        const [classRes, raceRes, bgRes] = await Promise.all([
-            fetch('../../Data/classes.json').catch(e => null),
-            fetch('../../Data/races.json').catch(e => null),
-            fetch('../../Data/backgrounds.json').catch(e => null)
-        ]);
-    
-        if (!classRes || !classRes.ok) throw new Error("Sınıf verisi yüklenemedi.");
-        const classData = await classRes.json();
-        classList.value = classData.class || [];
-    
-        if (raceRes && raceRes.ok) {
-            const rawRaceData = await raceRes.json();
-            raceList.value = Array.isArray(rawRaceData) ? rawRaceData : (rawRaceData.race || []);
-        }
-    
-        if (bgRes && bgRes.ok) {
-            const bgData = await bgRes.json();
-            backgroundList.value = bgData.background || [];
-        }
-        
-        // --- BURASI EKSİKTİ: Vue hazır olunca Loader'ı Kaldır ---
-        loading.value = false;
-        
-        // HTML'deki yükleme ekranını bul ve yok et
-        const loader = document.getElementById('initial-loader');
-        if(loader) {
-            loader.classList.add('fade-out'); // CSS ile şeffaflaştır
-            setTimeout(() => loader.remove(), 500); // 0.5sn sonra DOM'dan sil
-        }
-        // -------------------------------------------------------
+        // --- MOBİL MENÜ DEĞİŞKENLERİ (Hatayı çözen kısım) ---
+        const isMobileMenuOpen = ref(false);
+        const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value; };
+        const isMobileSheetOpen = ref(false);
+        const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlSeed = urlParams.get('seed');
-        if (urlSeed) {
-            seedText.value = urlSeed;
-            setTimeout(() => {
-                loadFromSeed();
-            }, 500);
-        }
-    } catch (err) {
-        error.value = "Veri yükleme hatası: " + err.message;
-        console.error(err);
-        loading.value = false;
-        
-        // Hata olsa bile loader'ı kaldır ki hatayı görebilsinler
-        const loader = document.getElementById('initial-loader');
-        if(loader) loader.remove();
-    }
-});
-
-// ... (kodun geri kalanı)
-
-        // ============================================================
-        //  3. HELPER FUNCTIONS (Parsing & Formatting)
-        // ============================================================
-        const parseTags = (text) => {
-            if (!text) return "";
-            return text.replace(/\{@(\w+)\s+([^}]+)\}/g, (match, tag, content) => {
-                let [name, source] = content.split('|');
-                let displayText = name;
-                if (tag === 'spell') {
-                    let urlName = encodeURIComponent(name.toLowerCase());
-                    let urlSource = source ? `_${source.toLowerCase()}` : '_phb';
-                    const targetUrl = `https://kanguen.github.io/spells.html#${urlName}${urlSource}`;
-                    return `<a href="${targetUrl}" target="_blank" class="dnd-link spell-link" title="Büyü detayını gör">✨ ${displayText}</a>`;
-                }
-                return `<span class="dnd-link">${displayText}</span>`;
-            });
-        };
-
-        const formatEntry = (entry) => { 
-            if(!entry) return ""; 
-            if(typeof entry==='string') return parseTags(entry); 
-            if(entry.type==='options') return ""; 
-            if(entry.entries) return entry.entries.map(e=>formatEntry(e)).join("<br>"); 
-            if(entry.type==='list'&&entry.items) return "<ul>"+entry.items.map(i=>"<li>"+formatEntry(i)+"</li>").join("")+"</ul>"; 
-            if(entry.type==='table') return "[Tablo Görüntülenemiyor]"; 
-            return entry.name||""; 
-        };
-
-        // ============================================================
-        //  4. IRK MANTIĞI (RACE LOGIC)
-        // ============================================================
-        const selectedRace = ref(null);
-        const selectedSubrace = ref(null);
-        const selectedFlatOption = ref(null);
-        const flatRaceList = computed(() => {
-            const list = [];
-            if (!raceList.value) return [];
-                
-            raceList.value.forEach(r => {
-                if (r.subraces && r.subraces.length > 0) {
-                    r.subraces.forEach(sub => {
-                        // EĞER subrace'in ismi yoksa (Standart İnsan), ona "Standart" diyelim.
-                        // EĞER ismi varsa (Alternatif), kendi ismini kullanalım.
-                        const subName = sub.name || "Standart"; 
-                        
-                        list.push({ 
-                            label: `${r.name} (${subName})`, 
-                            race: r, 
-                            subrace: sub 
-                        });
-                    });
-                } else {
-                    // Alt ırkı olmayan düz ırklar
-                    list.push({ label: r.name, race: r, subrace: null });
-                }
-            });
-            return list;
-        });
-
-        watch(selectedFlatOption, (newVal) => {
-            if (newVal) {
-                store.race.selected = newVal.race;
-                store.race.subrace = newVal.subrace;
-                selectedRace.value = newVal.race;
-                selectedSubrace.value = newVal.subrace;
-                store.race.abilityChoices = {}; 
-            } else {
-                store.race.selected = null;
-                store.race.subrace = null;
-                selectedRace.value = null;
-                selectedSubrace.value = null;
-                store.race.abilityChoices = {};
-            }
-        });
-
-        const raceChoiceConfig = computed(() => {
-            if (!selectedRace.value) return null;
-            const source = selectedSubrace.value?.ability ? selectedSubrace.value : selectedRace.value;
-            if (source && source.ability && source.ability.choose) {
-                const chooseData = source.ability.choose[0] || source.ability.choose; 
-                return {
-                    count: chooseData.count || 1, amount: chooseData.amount || 1,
-                    from: chooseData.from || ['str', 'dex', 'con', 'int', 'wis', 'cha']
-                };
-            }
-            return null;
-        });
-
-        const abilityKeyMap = { 'kuv': 'str', 'str': 'str', 'çev': 'dex', 'dex': 'dex', 'day': 'con', 'con': 'con', 'zek': 'int', 'int': 'int', 'akı': 'wis', 'wis': 'wis', 'kar': 'cha', 'cha': 'cha' };
-        
-        const raceBonuses = computed(() => {
-            const bonuses = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
-            if (!selectedRace.value) return bonuses;
-            const getKey = (k) => abilityKeyMap[k.toLowerCase()] || k.toLowerCase();
-            
-            const addBonus = (abilityObj) => {
-                if (!abilityObj) return;
-                for (const [key, val] of Object.entries(abilityObj)) {
-                    if (key === 'choose') continue; 
-                    const mappedKey = getKey(key);
-                    if (bonuses[mappedKey] !== undefined) bonuses[mappedKey] += val;
-                }
-            };
-            if (selectedRace.value.ability) addBonus(selectedRace.value.ability);
-            if (selectedSubrace.value && selectedSubrace.value.ability) addBonus(selectedSubrace.value.ability);
-            
-            const choiceConfig = raceChoiceConfig.value;
-            if (choiceConfig) {
-                Object.values(store.race.abilityChoices).forEach(statKey => {
-                    if (statKey) {
-                        const mappedKey = getKey(statKey);
-                        if (bonuses[mappedKey] !== undefined) bonuses[mappedKey] += choiceConfig.amount;
-                    }
-                });
-            }
-            return bonuses;
-        });
-
-        const activeRaceTraits = computed(() => {
-            if (!selectedRace.value) return [];
-            let traits = [];
-            if (selectedRace.value.entries) traits = selectedRace.value.entries.map(t => ({...t}));
-            if (selectedSubrace.value && selectedSubrace.value.entries) {
-                selectedSubrace.value.entries.forEach(subTrait => {
-                    if (subTrait.data && subTrait.data.overwrite) traits = traits.filter(t => t.name !== subTrait.data.overwrite);
-                    traits.push(subTrait);
-                });
-            }
-            const formattedTraits = traits.map(trait => {
-                if (typeof trait === 'string') return { name: "Özellik", text: parseTags(trait) };
-                let processedText = "";
-                if (trait.entries) processedText = trait.entries.map(e => formatEntry(e)).join("<br><br>");
-                return { name: trait.name, text: processedText };
-            });
-            const bonusText = Object.entries(raceBonuses.value).filter(([_, val]) => val !== 0).map(([key, val]) => `<strong style="color:#4caf50">${key.toUpperCase()} +${val}</strong>`).join(', ');
-            let headerText = bonusText ? `<p>Irkınızdan gelen doğal yetenekleriniz: ${bonusText}</p>` : `<p style="color:#e67e22">Lütfen yukarıdan yetenek puanı artışlarını seçiniz.</p>`;
-            formattedTraits.unshift({ name: "Yetenek Puanı Artışı", text: headerText });
-            return formattedTraits;
-        });
-
-        // ============================================================
-        //  5. SINIF MANTIĞI (CLASS LOGIC)
-        // ============================================================
-        const selectedClass = ref(null);
-        const selectedSubclass = ref(null);
-        const targetLevel = ref(1);
-        const userChoices = ref({}); 
-
-        watch(selectedClass, (newVal) => { store.class.selected = newVal; selectedSubclass.value = null; });
-        watch(selectedSubclass, (newVal) => { store.class.subclass = newVal; });
-        watch(targetLevel, (newVal) => { store.class.level = newVal; });
-
-        const getHitDie = (cls) => cls?.hd?.faces || '?';
-        const extractOptions = (feat) => { 
-            if (!feat) return null; 
-
-            // 1. Direkt seçenek mi?
-            if (feat.type === 'options' && feat.entries) return feat.entries; 
-
-            // 2. İçinde seçenek var mı? (Derinlemesine Ara)
-            if (feat.entries && Array.isArray(feat.entries)) { 
-                for (const e of feat.entries) {
-                    // Eğer direkt seçenekse
-                    if (e.type === 'options' && e.entries) return e.entries;
-
-                    // Eğer bir alt başlık altındaysa (Örn: "Seçenekler" başlığı altında)
-                    if (e.entries && Array.isArray(e.entries)) {
-                        for (const sub of e.entries) {
-                            if (sub.type === 'options' && sub.entries) return sub.entries;
-                        }
-                    }
-                } 
-            } 
-            return null; 
-        };
-const optionSourceMap = { 
-    // Savaşçı: Savaş Üstadı
-    // "Dövüş Üstünlüğü" başlığının içindeki seçenekleri bulamazsa, gidip "Savaş Üstadı: Manevralar"dan çalsın.
-    "Dövüş Üstünlüğü": "Savaş Üstadı: Manevralar",
-    "Ek Manevralar": "Savaş Üstadı: Manevralar", // Yedek
-
-    // Savaşçı: Arcane Okçu
-    "Arcane Atış": "Arcane Atış Seçenekleri",
-    "Fazladan Arcane Atış Seçeneği": "Arcane Atış Seçenekleri",
-
-    // Büyücü (Sorcerer)
-    "Ek Metabüyü": "Metabüyü"
-};
-const manualCounts = { 
-    "Dövüş Stili": 1, 
-    "Fighting Style": 1,
-    "Büyüde Uzmanlaşmış Şövalye: Büyüler": 2,
-    "Uzmanlık": 2
-};
-        
-        const findOptionsByName = (targetName) => { if(!selectedSubclass.value?.subclassFeatures) return null; for(const grp of selectedSubclass.value.subclassFeatures) for(const f of grp) if(f.name===targetName) return extractOptions(f); return null; };
-        const normalizeOption = (opt) => opt ? (opt.name ? opt : (opt.entries?.[0]?.name ? {...opt.entries[0], entries: opt.entries[0].entries||[]} : {name: "Seçenek", entries:[]})) : {name:"Hata", entries:[]};
-
-const detectSelectionCount = (feature, extractedOpts) => {
-    // 1. JSON İÇİNDE "selectionCount" VAR MI? (Senin eklediklerin)
-    if (feature.selectionCount) return feature.selectionCount;
-
-    // 2. SEÇENEKLERİN İÇİNDE VAR MI?
-    if (feature.entries) {
-        for (const entry of feature.entries) {
-            if (entry.selectionCount) return entry.selectionCount;
-            if (entry.type === 'options' && entry.selectionCount) return entry.selectionCount;
-        }
-    }
-    
-    // 3. MANUEL LİSTE (Sadece çok inatçı durumlar için yedek, istersen boş bırakabilirsin)
-    // const name = feature.name ? feature.name.trim() : "";
-    // if (manualCounts[name]) return manualCounts[name];
-
-    // 4. HİÇBİR ŞEY YOKSA
-    // 0 Döndür. (Aşağıdaki processFeature fonksiyonu 0 gelirse otomatik 1 yapacak)
-    return 0;
-};
-        const processFeature = (feat, isSub) => {
-            try {
-                let opts = extractOptions(feat);
-                if(!opts && optionSourceMap[feat.name]) opts = findOptionsByName(optionSourceMap[feat.name]);
-                let cleanOpts = opts ? opts.map(normalizeOption) : [];
-                let count = detectSelectionCount(feat, cleanOpts);
-                if(cleanOpts.length > 0 && count === 0) count = 1;
-                return { name: feat.name, entries: feat.entries ? feat.entries.map(formatEntry).filter(t=>t) : ["Detay yok"], isSubclass: isSub, hasOptions: !!cleanOpts.length, options: cleanOpts, selectionCount: count };
-            } catch(e) { return {name: feat.name, entries:[], isSubclass:false}; }
-        };
-
-        const subclassUnlockLevel = computed(() => selectedClass.value?.classFeatures?.findIndex(grp => grp.some(f => f.gainSubclassFeature)) + 1 || -1);
-        const subclassOptions = computed(() => selectedClass.value?.subclasses || []);
-        
-        // appKarYa.js > activeFeatures computed'ını bununla güncelle:
-
-        const activeFeatures = computed(() => {
-            if (!selectedClass.value) return [];
-            const timeline = [];
-
-            // Seçenek listelerini (Menüleri) hatırlamak için hafıza
-            const optionCache = {}; 
-        
-            for (let i = 0; i < targetLevel.value; i++) {
-                const feats = [];
-                // ASI (Stat Artışı) objesi oluşturma
-                if (!store.abilities.asi[i + 1]) store.abilities.asi[i + 1] = { feat: null, stat1: null, stat2: null };
-
-                selectedClass.value.classFeatures[i]?.forEach(f => {
-                    // 1. Özelliği işle (Metni analiz et, kaç tane seçileceğini bul)
-                    let processed = processFeature(f, false);
-                
-                    // processed.selectionCount şu anki metne ("Bir tane seç" vb.) göre hesaplandı.
-                    // Bu sayıya dokunmayacağız, sadece seçenek listesi boşsa onu dolduracağız.
-                
-                    // A. EĞER BU ÖZELLİĞİN ORİJİNAL SEÇENEKLERİ VARSA HAFIZAYA AT
-                    if (processed.hasOptions) {
-                        optionCache[processed.name] = processed.options;
-                    }
-                    // B. EĞER SEÇENEĞİ YOK (BOŞ GELMİŞ) AMA HAFIZADA VARSA -> KOPYALA
-                    else if (optionCache[processed.name] && !processed.hasOptions) {
-                        processed.hasOptions = true;
-                        processed.options = optionCache[processed.name];
-
-                        // KRİTİK NOKTA:
-                        // Eğer metinde sayı bulamadıysa (count=0) ve seçenekleri hafızadan çektiysek,
-                        // varsayılan olarak 1 hak verelim. 
-                        // (Eğer metinde "2 tane" yazıyorsa processed.selectionCount zaten 2'dir, buna dokunmayız.)
-                        if (processed.selectionCount === 0) {
-                            processed.selectionCount = 1;
-                        }
-                    }
-                
-                    feats.push(processed);
-                
-                    // Alt sınıf özellikleri
-                    if(f.gainSubclassFeature) {
-                        if(selectedSubclass.value) selectedSubclass.value.subclassFeatures?.[timeline.filter(t => t.features.some(ft => ft.isSubclass)).length]?.forEach(sf => feats.push(processFeature(sf, true)));
-                    }
-                });
-
-                if(feats.length || i+1 === subclassUnlockLevel.value) timeline.push({level: i+1, features: feats});
-            }
-            return timeline;
-        });
-
-        const getAvailableOptions = (all, key) => { if(!all) return []; const used = new Set(Object.entries(userChoices.value).filter(([k,v]) => k!==key && v?.name).map(([_,v]) => v.name)); return all.filter(o => !used.has(o.name)); };
-        const getChoiceDetail = (n, l, i) => formatEntry(userChoices.value[`${n}-${l}_${i}`]);
-
-        // ============================================================
-        //  6. PUANLAR VE STATLAR (SCORES & STATS)
-        // ============================================================
-        const statLabels = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
-        const selectableStats = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
-
-        const scoreMethods = [
-            { id: 'manual', name: 'Manuel Giriş' },
-            { id: 'standard_array', name: 'Standart Dizilim (15,14...)' },
-            { id: 'point_buy', name: 'Point Buy (Standart)' },
-            { id: 'point_buy_flex', name: 'Point Buy (Esnek)' },
-            { id: 'roll_4d6', name: 'Zar At (4d6)' },
-            { id: 'roll_5d6', name: 'Zar At (5d6)' }
-        ];
-        const selectedScoreMethod = ref('point_buy_flex');
-        const standardArrayValues = [15, 14, 13, 12, 10, 8];
-        const rolledPool = ref([]);
-        const hasRolled = ref(false);
-        const isCapped20 = ref(false);
-
-        const getFlexCost = (score) => {
-            if (score <= 8) return 0;
-            if (score === 9) return 1; if (score === 10) return 2; if (score === 11) return 3;
-            if (score === 12) return 4; if (score === 13) return 5; if (score === 14) return 7;
-            if (score === 15) return 9; if (score === 16) return 12; if (score === 17) return 15;
-            if (score === 18) return 19; if (score === 19) return 23; if (score >= 20) return 28;
-            return 0;
-        };
-        const pointBuyBudget = computed(() => 27);
-        const currentPbCost = computed(() => {
-            let total = 0;
-            Object.values(store.abilities.base).forEach(val => total += getFlexCost(val));
-            return total;
-        });
-        
-        const changePointBuy = (stat, delta) => {
-            let next = store.abilities.base[stat] + delta;
-            if (selectedScoreMethod.value === 'point_buy') { if (next < 8) next = 8; if (next > 15) next = 15; }
-            else { if (next < 8) next = 8; if (next > 20) next = 20; }
-            store.abilities.base[stat] = next;
-        };
-        // --- TOAST YARDIMCISI ---
+        // --- TOAST BİLDİRİMİ ---
         const showToast = (message, icon = '✅') => {
-            // Varsa eski bildirimi temizle
             const existing = document.querySelector('.toast-notification');
             if(existing) existing.remove();     
-
-            // Yeni bildirimi oluştur
             const toast = document.createElement('div');
             toast.className = 'toast-notification';
             toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
             document.body.appendChild(toast);       
-
-            // Animasyonla göster
             setTimeout(() => toast.classList.add('show'), 10);      
-
-            // 3 saniye sonra kaldır
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => toast.remove(), 400);
             }, 3000);
         };
-        const rollStats = () => {
-        // 1. Animasyonu Başlat
-        isRolling.value = true;
-        // Eğer daha önce zar atıldıysa, animasyon hissi için önce listeyi boşaltabiliriz veya tutabiliriz.
-        // Tutmak daha iyidir, sadece sallansınlar. 
 
-        // 2. 600 milisaniye bekle (Animasyon süresi kadar)
-        setTimeout(() => {
-            const diceCount = selectedScoreMethod.value === 'roll_5d6' ? 5 : 4;
-            const results = [];
-            
-            for (let i = 0; i < 6; i++) {
-                let rolls = [];
-                for (let d = 0; d < diceCount; d++) rolls.push(Math.ceil(Math.random() * 6));
-                
-                // Küçükten büyüğe sırala ve en düşüğü at (ilk eleman)
-                rolls.sort((a, b) => a - b); 
-                rolls.shift(); 
-                
-                let sum = rolls.reduce((a, b) => a + b, 0);
-                
-                // Eğer 5d6 seçildiyse ve limit açıksa 20'ye sabitle
-                if (selectedScoreMethod.value === 'roll_5d6' && isCapped20.value && sum > 20) sum = 20;
-                
-                results.push(sum);
-            }
-            
-            // Sonuçları büyükten küçüğe sırala
-            results.sort((a, b) => b - a);
-            rolledPool.value = results; 
-            
-            hasRolled.value = true;
-            
-            // Animasyonu Durdur
-            isRolling.value = false;
-            
-            // Kullanıcıya bilgi ver
-            showToast("Zarlar atıldı! Şansın bol olsun.", "🎲");    
-
-        }, 600); // 0.6 Saniye gecikme
-    };
-
-        const isOptionDisabled = (val, currentKey, pool) => {
-            const totalInPool = pool.filter(n => n === val).length;
-            let usedByOthers = 0;
-            Object.entries(store.abilities.base).forEach(([k, v]) => { if (k !== currentKey && v === val) usedByOthers++; });
-            return usedByOthers >= totalInPool;
+        // Finish fonksiyonunu sarmala
+        const handleFinish = () => {
+            finishCreation(showToast);
         };
 
-        watch(selectedScoreMethod, (newMethod) => {
-            if (newMethod.includes('point_buy')) Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 8);
-            else if (newMethod === 'manual') Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 10);
-            else Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
-            if (!newMethod.includes('roll')) { hasRolled.value = false; rolledPool.value = []; }
-        });
-
-        const statBonuses = computed(() => {
-            const totals = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
-            for (const [key, val] of Object.entries(raceBonuses.value)) if (totals[key] !== undefined) totals[key] += val;
-            Object.values(store.abilities.asi).forEach(asi => {
-                if (asi.stat1) totals[asi.stat1] += 1;
-                if (asi.stat2) totals[asi.stat2] += 1;
-            });
-            return totals;
-        });
-
-        const finalAbilityScores = computed(() => {
-            const finals = {};
-            ['str','dex','con','int','wis','cha'].forEach(k => {
-                finals[k] = (store.abilities.base[k] || 10) + (statBonuses.value[k] || 0);
-            });
-            return finals;
-        });
-
-        const proficiencyBonus = computed(() => Math.ceil(targetLevel.value / 4) + 1);
-
-        // ============================================================
-        //  7. SKILL LOGIC & BUDGETS
-        // ============================================================
-        const getRaceSkillRules = () => {
-            const race = store.race.selected?.name || "";
-            const subrace = store.race.subrace?.name || "";
-            const fullName = `${race} ${subrace}`.toLowerCase();
-            let rules = { fixed: [], bonusBudget: 0, text: null };
-            if (fullName.includes("insan") && (fullName.includes("alternatif") || fullName.includes("varyant"))) { rules.bonusBudget = 1; rules.text = "Alternatif İnsan: 1 beceri."; }
-            if (fullName.includes("elf") && !fullName.includes("yarı")) { rules.fixed.push("perception"); rules.text = "Keskin Duyular: Algı."; }
-            if (fullName.includes("yarı-elf")) { rules.bonusBudget = 2; rules.text = "Beceri Çokluğu: 2 beceri."; }
-            if (fullName.includes("orc")) { rules.fixed.push("intimidation"); rules.text = "Korkutucu: Gözdağı."; }
-            if (fullName.includes("goliath")) { rules.fixed.push("athletics"); rules.text = "Doğal Atlet: Atletizm."; }
-            return rules;
+        // Zar atma sarmalayıcısı
+        const handleRoll = () => {
+            rollStats(showToast);
         };
 
-        const raceSkillInfo = computed(() => getRaceSkillRules().text);
-
-        const getClassSkillRules = () => {
-            if (!store.class.selected) return null;
-            const cName = store.class.selected.name;
-            const defs = {
-                "Barbar": { count: 2, list: "Hayvan İdaresi, Atletizm, Gözdağı, Doğa, Algı, Hayatta Kalma" },
-                "Büyücü": { count: 2, list: "Arkana, Tarih, Sezgi, İnceleme, Tıp, Din" },
-                "Düzenbaz": { count: 4, list: "Akrobasi, Atletizm, Kandırma, Sezgi, Gözdağı, İnceleme, Algı, Performans, İkna, El Çabukluğu, Gizlenme" },
-                "Ozan": { count: 3, list: "İstediğin herhangi 3 yetenek" }
-            };
-            return defs[cName] || { count: 2, list: "Sınıf yetenekleri" };
-        };
-
-        const classSkillInfo = computed(() => {
-            const info = getClassSkillRules();
-            return info ? `Kural kitabına göre bu yeteneklerden ${info.count} tane seçin: ${info.list}.` : null;
-        });
-
-        const skillBudget = computed(() => {
-            let budget = 0;
-            if (store.class.selected) {
-                const cName = store.class.selected.name;
-                if (cName === "Düzenbaz") budget += 4;
-                else if (["Ozan", "Kolcu"].includes(cName)) budget += 3;
-                else budget += 2;
-            }
-            if (store.background.selected) budget += 2;
-            const raceRules = getRaceSkillRules();
-            budget += raceRules.fixed.length + raceRules.bonusBudget;
-            return budget;
-        });
-
-        const expertiseBudget = computed(() => {
-            let budget = 0;
-            if (!store.class.selected) return 0;
-            const cName = store.class.selected.name;
-            if (cName === "Düzenbaz") { budget += (targetLevel.value >= 6 ? 4 : 2); }
-            else if (cName === "Ozan") { budget += (targetLevel.value >= 10 ? 4 : (targetLevel.value >= 3 ? 2 : 0)); }
-            return budget;
-        });
-
-        const SKILL_DEFINITIONS = [
-            { id: 'acrobatics', name: 'Akrobasi', attr: 'dex' }, { id: 'animal_handling', name: 'Hayvan Terbiyesi', attr: 'wis' },
-            { id: 'arcana', name: 'Arkana', attr: 'int' }, { id: 'athletics', name: 'Atletizm', attr: 'str' },
-            { id: 'deception', name: 'Kandırma', attr: 'cha' }, { id: 'history', name: 'Tarih', attr: 'int' },
-            { id: 'insight', name: 'Sezgi', attr: 'wis' }, { id: 'intimidation', name: 'Gözdağı', attr: 'cha' },
-            { id: 'investigation', name: 'Araştırma', attr: 'int' }, { id: 'medicine', name: 'Tıp', attr: 'wis' },
-            { id: 'nature', name: 'Doğa', attr: 'int' }, { id: 'perception', name: 'Algı', attr: 'wis' },
-            { id: 'performance', name: 'Performans', attr: 'cha' }, { id: 'persuasion', name: 'İkna', attr: 'cha' },
-            { id: 'religion', name: 'Din', attr: 'int' }, { id: 'sleight_of_hand', name: 'El Çabukluğu', attr: 'dex' },
-            { id: 'stealth', name: 'Gizlilik', attr: 'dex' }, { id: 'survival', name: 'Hayatta Kalma', attr: 'wis' }
-        ];
-
-        const toggleSkill = (skillId) => {
-            const isProf = store.skills.proficiencies.includes(skillId);
-            const isExpert = store.skills.expertises.includes(skillId);
-            if (!isProf && !isExpert) store.skills.proficiencies.push(skillId);
-            else if (isProf) {
-                store.skills.proficiencies = store.skills.proficiencies.filter(id => id !== skillId);
-                store.skills.expertises.push(skillId);
-            } else store.skills.expertises = store.skills.expertises.filter(id => id !== skillId);
-        };
-
-        const calculatedSkills = computed(() => {
-            const stats = finalAbilityScores.value;
-            const pb = proficiencyBonus.value;
-            return SKILL_DEFINITIONS.map(skill => {
-                const score = stats[skill.attr] || 10;
-                const mod = Math.floor((score - 10) / 2);
-                let level = 0;
-                if (store.skills.proficiencies.includes(skill.id)) level = 1;
-                if (store.skills.expertises.includes(skill.id)) level = 2;
-                return { ...skill, totalBonus: mod + (pb * level), profLevel: level, attrLabel: statLabels[skill.attr].substring(0, 3) };
-            });
-        });
-
-        // ============================================================
-        //  8. MOBIL UI & SEED SYSTEM
-        // ============================================================
-        const isMobileMenuOpen = ref(false);
-        const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value; };
-        const isMobileSheetOpen = ref(false);
-        const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
-        const featList = ref([ "Alert", "Actor", "Athlete", "Lucky", "Tough", "War Caster" ]);
-        const seedText = ref('');
-
+        // --- SEED SİSTEMİ ---
         const characterSeed = computed(() => {
-            // 1. Ham veriyi hazırla
             const exportData = {
                 n: store.meta.name, 
                 r: store.race.selected?.name, 
@@ -673,116 +112,165 @@ const detectSelectionCount = (feature, extractedOpts) => {
                 sm: selectedScoreMethod.value, 
                 rp: rolledPool.value
             };      
-
             try {
-                // 2. Veriyi kopyala ve temizle (Boşlukları at)
                 const cleanData = cleanObject(JSON.parse(JSON.stringify(exportData)));
-                
-                // 3. LZString ile sıkıştır ve URL uyumlu hale getir
-                // window.LZString kütüphaneden geliyor
                 return window.LZString.compressToEncodedURIComponent(JSON.stringify(cleanData));
+            } catch (e) { return ""; }
+        });
+
+        const copySeed = () => {
+            navigator.clipboard.writeText(characterSeed.value);
+            showToast("Karakter kodu kopyalandı!");
+        };
+
+        const copyLink = () => {
+            const url = `${window.location.origin}${window.location.pathname}?seed=${characterSeed.value}`;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast("Link kopyalandı! Arkadaşına gönderebilirsin.", "🔗");
+            });
+        };
+
+        const loadFromSeed = () => {
+            try {
+                if (!seedText.value) {
+                    showToast("Lütfen bir kod yapıştırın.", "⚠️");
+                    return;
+                }
+                let jsonStr = window.LZString.decompressFromEncodedURIComponent(seedText.value);
+                if (!jsonStr) {
+                    showToast("Geçersiz veya bozuk kod!", "❌");
+                    return;
+                }                
+                const data = JSON.parse(jsonStr);                
+
+                store.meta.name = data.n || "";
+                targetLevel.value = data.l || 1; 
+                
+                // Irkı Bul
+                if (data.r) {
+                    const targetSubraceName = data.sr || "Standart";
+                    const foundFlatOption = flatRaceList.value.find(option => {
+                        const raceMatch = option.race.name === data.r;
+                        const optSubName = option.subrace ? (option.subrace.name || "Standart") : null;
+                        if (option.subrace) return raceMatch && (optSubName === targetSubraceName);
+                        return raceMatch;
+                    });
+                    if (foundFlatOption) {
+                        selectedFlatOption.value = foundFlatOption;
+                        if (data.ac) setTimeout(() => { store.race.abilityChoices = { ...data.ac }; }, 100);
+                    }
+                }            
+
+                // Sınıfı Bul
+                if (data.c) {
+                    const foundClass = classList.value.find(x => x.name === data.c);
+                    if (foundClass) {
+                        selectedClass.value = foundClass;
+                        setTimeout(() => { if (data.sc) selectedSubclass.value = foundClass.subclasses?.find(s => s.name === data.sc); }, 100);
+                    }
+                }                
+
+                selectedScoreMethod.value = data.sm || 'manual';
+                if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
+                
+                store.abilities.base = { ...data.b };
+                store.abilities.asi = { ...data.asi };
+                if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
+                store.skills.proficiencies = [...(data.p || [])];
+                store.skills.expertises = [...(data.e || [])];
+                userChoices.value = { ...data.ch };              
+
+                showToast("Karakter Başarıyla Yüklendi!", "🚀");
+                finishCreation(); 
+                seedText.value = ''; 
+
             } catch (e) { 
                 console.error(e);
-                return ""; 
+                showToast("Yükleme sırasında hata oluştu!", "❌");
+            }
+        };
+
+        // Veri Çekme (Fetch)
+        onMounted(async () => {
+            try {
+                const [classRes, raceRes, bgRes] = await Promise.all([
+                    fetch('../../Data/classes.json').catch(e => null),
+                    fetch('../../Data/races.json').catch(e => null),
+                    fetch('../../Data/backgrounds.json').catch(e => null)
+                ]);
+            
+                if (!classRes || !classRes.ok) throw new Error("Sınıf verisi yüklenemedi.");
+                const classData = await classRes.json();
+                classList.value = classData.class || [];
+            
+                if (raceRes && raceRes.ok) {
+                    const rawRaceData = await raceRes.json();
+                    raceList.value = Array.isArray(rawRaceData) ? rawRaceData : (rawRaceData.race || []);
+                }
+            
+                if (bgRes && bgRes.ok) {
+                    const bgData = await bgRes.json();
+                    backgroundList.value = bgData.background || [];
+                }
+                
+                loading.value = false;
+                const loader = document.getElementById('initial-loader');
+                if(loader) {
+                    loader.classList.add('fade-out');
+                    setTimeout(() => loader.remove(), 500);
+                }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlSeed = urlParams.get('seed');
+                if (urlSeed) {
+                    seedText.value = urlSeed;
+                    setTimeout(() => loadFromSeed(), 500);
+                }
+            } catch (err) {
+                error.value = "Veri yükleme hatası: " + err.message;
+                console.error(err);
+                loading.value = false;
+                const loader = document.getElementById('initial-loader');
+                if(loader) loader.remove();
             }
         });
 
-
-        const copySeed = () => {
-    navigator.clipboard.writeText(characterSeed.value);
-    showToast("Karakter kodu kopyalandı!");
-};
-
-const copyLink = () => {
-    const url = `${window.location.origin}${window.location.pathname}?seed=${characterSeed.value}`;
-    navigator.clipboard.writeText(url).then(() => {
-        showToast("Link kopyalandı! Arkadaşına gönderebilirsin.", "🔗");
-    });
-};
-
-const loadFromSeed = () => {
-    try {
-        if (!seedText.value) {
-            showToast("Lütfen bir kod yapıştırın.", "⚠️");
-            return;
-        }
-
-        let jsonStr = window.LZString.decompressFromEncodedURIComponent(seedText.value);
-        
-        if (!jsonStr) {
-            showToast("Geçersiz veya bozuk kod!", "❌");
-            return;
-        }                
-
-        const data = JSON.parse(jsonStr);                
-
-        // Verileri Store'a atama
-        store.meta.name = data.n || "";
-        targetLevel.value = data.l || 1; 
-        
-        // Irk Yükleme
-        if (data.r) {
-            const targetSubraceName = data.sr || "Standart";
-            const foundFlatOption = flatRaceList.value.find(option => {
-                const raceMatch = option.race.name === data.r;
-                const optSubName = option.subrace ? (option.subrace.name || "Standart") : null;
-                if (option.subrace) {
-                    return raceMatch && (optSubName === targetSubraceName);
-                } else {
-                    return raceMatch;
-                }
-            });
-            if (foundFlatOption) {
-                selectedFlatOption.value = foundFlatOption;
-                if (data.ac) {
-                    setTimeout(() => { store.race.abilityChoices = { ...data.ac }; }, 100);
-                }
-            }
-        }            
-
-        // Sınıf Yükleme
-        if (data.c) {
-            const foundClass = classList.value.find(x => x.name === data.c);
-            if (foundClass) {
-                selectedClass.value = foundClass;
-                setTimeout(() => { if (data.sc) selectedSubclass.value = foundClass.subclasses?.find(s => s.name === data.sc); }, 100);
-            }
-        }                
-
-        selectedScoreMethod.value = data.sm || 'manual';
-        if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
-        
-        store.abilities.base = { ...data.b };
-        store.abilities.asi = { ...data.asi };
-        if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
-        store.skills.proficiencies = [...(data.p || [])];
-        store.skills.expertises = [...(data.e || [])];
-        userChoices.value = { ...data.ch };              
-
-        showToast("Karakter Başarıyla Yüklendi!", "🚀");
-        seedText.value = ''; 
-
-    } catch (e) { 
-        console.error(e);
-        showToast("Yükleme sırasında hata oluştu!", "❌");
-    }
-};
-
-
         // ============================================================
-        //  9. RETURNED PROPERTIES
+        //  RETURN (TEMPLATE İÇİN GEREKLİ HER ŞEY)
         // ============================================================
         return {
+            // Store & Navigasyon
             store, currentStep, steps, nextStep, prevStep, loading, error,
-            raceList, flatRaceList, selectedFlatOption, activeRaceTraits, raceBonuses, raceChoiceConfig,
-            statLabels, selectableStats, classList, selectedClass, selectedSubclass, targetLevel, activeFeatures, subclassOptions, subclassUnlockLevel,
-            getHitDie, userChoices, getChoiceDetail, getAvailableOptions,
-            finalAbilityScores, statBonuses, selectedRace, selectedSubrace, featList,
-            isMobileSheetOpen, toggleMobileSheet, proficiencyBonus, calculatedSkills, toggleSkill, backgroundList,
-            skillBudget, expertiseBudget, raceSkillInfo, currentProfCount: computed(() => store.skills.proficiencies.length + store.skills.expertises.length), 
-            currentExpertCount: computed(() => store.skills.expertises.length), currentUsedSkills: computed(() => store.skills.proficiencies.length + store.skills.expertises.length),
-            classSkillInfo, scoreMethods, selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, standardArrayValues, rollStats, rolledPool, hasRolled, isCapped20,
-            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS ,isMobileMenuOpen, toggleMobileMenu, copyLink,isRolling, showToast
+            
+            // UI Yardımcıları (Menüler, Toast, vb.)
+            isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
+            copyLink, showToast, isRolling,
+            backgroundList, featList, seedText, characterSeed, loadFromSeed, copySeed,
+            
+            // Format Araçları
+            formatEntry, parseTags, 
+            // DİKKAT: extractOptions ve processFeature buradan silindi çünkü logicClass içinde gizli kalmalı.
+            
+            // Modüllerden Gelenler
+            dndIcons, isSheetMode, activeSheetTab, finishCreation: handleFinish,
+            
+            // Irk Verileri (logicRace)
+            raceList, flatRaceList, selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig,
+            
+            // Sınıf Verileri (logicClass)
+            classList, selectedClass, selectedSubclass, targetLevel, userChoices, 
+            subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, 
+            getAvailableOptions, getChoiceDetail,
+
+            // Puan Verileri (logicScores)
+            statLabels, selectableStats, scoreMethods, selectedScoreMethod, 
+            isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, 
+            standardArrayValues, rolledPool, hasRolled, isCapped20, 
+            rollStats: handleRoll, statBonuses, finalAbilityScores, proficiencyBonus,
+
+            // Yetenek Verileri (logicSkills)
+            SKILL_DEFINITIONS, calculatedSkills, toggleSkill, skillBudget, expertiseBudget, 
+            raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount
         };
     }
 });
