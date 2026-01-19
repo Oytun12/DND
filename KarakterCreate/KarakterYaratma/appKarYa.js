@@ -4,15 +4,19 @@ import { createApp, ref, computed, onMounted, watch } from 'vue';
 import { store, cleanObject } from './src/store.js';
 import { parseTags, formatEntry } from './src/utils.js';
 import { dndIcons } from './src/icons.js';
-import { useCharacterSheet } from './src/logicSheet.js';
+// DÜZELTME: Senin belirttiğin gibi logicSheet.js kullanıyoruz
+import { useCharacterSheet } from './src/logicSheet.js'; 
 import { useRaceLogic } from './src/logicRace.js';
 import { useClassLogic } from './src/logicClass.js';
 import { useScoreLogic } from './src/logicScores.js';
 import { useSkillLogic } from './src/logicSkills.js';
+// Veri Dosyası (Büyük Liste)
+import { avatarList } from './src/data/avatarList.js';
 
 const app = createApp({
     setup() {
         
+        // 1. GENEL SAYFA MANTIĞI
         const { isSheetMode, activeSheetTab, finishCreation, hasCreatedSheet, activeFeatureSubTab } = useCharacterSheet();
         
         // 2. IRK MANTIĞI
@@ -61,7 +65,30 @@ const app = createApp({
         const featList = ref([ "Alert", "Actor", "Athlete", "Lucky", "Tough", "War Caster" ]);
         const seedText = ref('');
 
-        // --- MOBİL MENÜ DEĞİŞKENLERİ (Hatayı çözen kısım) ---
+        // --- HIZLI AVATAR GALERİSİ (Sihirbazın ilk ekranı) ---
+        // DOSYA YOLU DÜZELTMESİ: ../../img/avatars/
+        // NOT: Senin klasöründe 'default-avatar.png' var, kodda onu kullanmalıyız.
+        const avatarGallery = [
+            "../../img/avatars/default-avatar.png", // <--- İsim düzeltildi
+            "../../img/avatars/barbarian.jpg",
+            "../../img/avatars/bard.jpg",
+            "../../img/avatars/cleric.jpg",
+            "../../img/avatars/druid.jpg",
+            "../../img/avatars/fighter.jpg",
+            "../../img/avatars/monk.jpg",
+            "../../img/avatars/paladin.jpg",
+            "../../img/avatars/ranger.jpg",
+            "../../img/avatars/rogue.jpg",
+            "../../img/avatars/sorcerer.jpg",
+            "../../img/avatars/warlock.jpg",
+            "../../img/avatars/wizard.jpg"
+        ];
+
+        // UI Kontrolleri
+        const showCustomAvatarInput = ref(false);
+        const isGalleryExpanded = ref(false); 
+        
+        // --- MOBİL MENÜ DEĞİŞKENLERİ ---
         const isMobileMenuOpen = ref(false);
         const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value; };
         const isMobileSheetOpen = ref(false);
@@ -82,17 +109,16 @@ const app = createApp({
             }, 3000);
         };
 
-        // Finish fonksiyonunu sarmala
+        // Modül sarmalayıcıları
         const handleFinish = () => {
             finishCreation(showToast);
         };
 
-        // Zar atma sarmalayıcısı
         const handleRoll = () => {
             rollStats(showToast);
         };
 
-        // --- SEED SİSTEMİ ---
+        // --- SEED (KAYIT) SİSTEMİ ---
         const characterSeed = computed(() => {
             const exportData = {
                 n: store.meta.name, 
@@ -109,7 +135,8 @@ const app = createApp({
                 e: store.skills.expertises, 
                 ch: userChoices.value,
                 sm: selectedScoreMethod.value, 
-                rp: rolledPool.value
+                rp: rolledPool.value,
+                av: store.meta.avatar // Avatarı kaydet
             };      
             try {
                 const cleanData = cleanObject(JSON.parse(JSON.stringify(exportData)));
@@ -143,6 +170,15 @@ const app = createApp({
                 const data = JSON.parse(jsonStr);                
 
                 store.meta.name = data.n || "";
+                
+                // Avatar Yükleme Kontrolü
+                if(data.av) {
+                    store.meta.avatar = data.av;
+                } else {
+                    // Seed'de avatar yoksa varsayılanı ata
+                    store.meta.avatar = "../../img/avatars/default-avatar.png";
+                }
+
                 targetLevel.value = data.l || 1; 
                 
                 // Irkı Bul
@@ -191,7 +227,14 @@ const app = createApp({
 
         // Veri Çekme (Fetch)
         onMounted(async () => {
+            // BAŞLANGIÇ GÜVENLİK KONTROLÜ: Avatar boşsa veya hatalıysa varsayılanı ata
+            // Bu, 'undefined is not an object' hatasını önler.
+            if (!store.meta.avatar || typeof store.meta.avatar !== 'string') {
+                store.meta.avatar = "../../img/avatars/default-avatar.png";
+            }
+
             try {
+                // Not: JSON dosyaların da iki üst klasörde (Data/)
                 const [classRes, raceRes, bgRes] = await Promise.all([
                     fetch('../../Data/classes.json').catch(e => null),
                     fetch('../../Data/races.json').catch(e => null),
@@ -241,35 +284,38 @@ const app = createApp({
             // Store & Navigasyon
             store, currentStep, steps, nextStep, prevStep, loading, error,
             
-            // UI Yardımcıları (Menüler, Toast, vb.)
+            // UI Yardımcıları
             isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
             copyLink, showToast, isRolling,
             backgroundList, featList, seedText, characterSeed, loadFromSeed, copySeed,
             
             // Format Araçları
             formatEntry, parseTags, 
-            // DİKKAT: extractOptions ve processFeature buradan silindi çünkü logicClass içinde gizli kalmalı.
             
             // Modüllerden Gelenler
             dndIcons, isSheetMode, activeSheetTab, finishCreation: handleFinish,
             
-            // Irk Verileri (logicRace)
+            // Irk
             raceList, flatRaceList, selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig,
             
-            // Sınıf Verileri (logicClass)
+            // Sınıf
             classList, selectedClass, selectedSubclass, targetLevel, userChoices, 
             subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, 
             getAvailableOptions, getChoiceDetail,
 
-            // Puan Verileri (logicScores)
+            // Puanlar
             statLabels, selectableStats, scoreMethods, selectedScoreMethod, 
             isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, 
             standardArrayValues, rolledPool, hasRolled, isCapped20, 
             rollStats: handleRoll, statBonuses, finalAbilityScores, proficiencyBonus,
 
-            // Yetenek Verileri (logicSkills)
+            // Yetenekler
             SKILL_DEFINITIONS, calculatedSkills, toggleSkill, skillBudget, expertiseBudget, 
-            raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount, hasCreatedSheet, activeFeatureSubTab
+            raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount, 
+            
+            // Yeni Eklenenler (Sheet & Avatar)
+            hasCreatedSheet, activeFeatureSubTab, 
+            avatarGallery, avatarList, showCustomAvatarInput, isGalleryExpanded
         };
     }
 });

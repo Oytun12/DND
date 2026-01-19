@@ -107,7 +107,45 @@
 
                         <p>Karakterinizin adını belirleyerek başlayın.</p>
                         <input v-model="store.meta.name" type="text" placeholder="Karakter Adı" class="big-input" style="padding: 10px; width: 100%; font-size: 1.1em; border-radius: 4px; border:1px solid #444; background:#222; color:white;">
-                        
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label>Karakter Görünümü Seç:</label>
+                            
+                            <div class="selected-avatar-preview">
+                                <img :src="store.meta.avatar" 
+                                     alt="Seçili Avatar" 
+                                     @error="$event.target.src='../../img/avatars/default.jpg'">
+                            </div>
+
+                            <button @click="isGalleryExpanded = !isGalleryExpanded" class="btn btn-secondary" style="width: 100%; margin-bottom: 15px;">
+                                {{ isGalleryExpanded ? '📚 Kütüphaneyi Gizle' : '📚 Avatar Kütüphanesini Aç (' + avatarList.length + ' Görsel)' }}
+                            </button>
+
+                            <div v-if="isGalleryExpanded" class="avatar-gallery-container">
+                                <div class="avatar-grid-large">
+                                    <div v-for="(img, index) in avatarList" 
+                                         :key="index" 
+                                         class="avatar-option"
+                                         :class="{ 'selected': store.meta.avatar.includes(img) }"
+                                         @click="store.meta.avatar = '../../img/avatars/' + img">
+                                        
+                                        <img :src="'../../img/avatars/' + img" loading="lazy" alt="Avatar">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 15px; text-align: center; border-top: 1px solid #333; padding-top: 10px;">
+                                <span @click="showCustomAvatarInput = !showCustomAvatarInput" 
+                                      style="font-size: 0.8em; color: #b52b2b; cursor: pointer; text-decoration: underline;">
+                                    veya internetten link yapıştır...
+                                </span>
+                                <input v-if="showCustomAvatarInput" 
+                                       v-model="store.meta.avatar" 
+                                       type="text" 
+                                       placeholder="https://..." 
+                                       class="big-input" 
+                                       style="margin-top: 5px; width: 100%; font-size: 0.9em;">
+                            </div>
+                        </div>
                         <div class="form-group" style="margin-top: 20px; border: 1px dashed #444; padding: 15px; background: rgba(255,255,255,0.02);">
                             <label>Daha Önce Oluşturulmuş Bir Seed Yükle:</label>
                             <div style="display: flex; gap: 10px;">
@@ -592,7 +630,7 @@
                 </button>
 
                 <div class="sheet-avatar">
-                    <img src="https://www.dndbeyond.com/content/skins/waterdeep/images/characters/default-avatar.png" alt="Avatar">
+                    <img :src="store.meta.avatar" alt="Avatar">
                 </div>
                 <div class="sheet-identity">
                     <h1>{{ store.meta.name || 'İsimsiz Kahraman' }}</h1>

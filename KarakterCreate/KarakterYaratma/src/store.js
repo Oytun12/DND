@@ -5,6 +5,14 @@ import { reactive } from 'vue';
 //  Tüm uygulamanın verisi burada tutulur.
 // ============================================================
 export const store = reactive({
+
+    meta: {
+        name: "",
+        playerName: "",
+        // Varsayılan avatar linki
+        avatar: "../../img/avatars/default-avatar.png"
+        // avatar: "https://www.dndbeyond.com/content/skins/waterdeep/images/characters/default-avatar.png" 
+    },
     meta: { name: "", xp: 0 },
     race: { 
         selected: null, 
