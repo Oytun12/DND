@@ -66,50 +66,65 @@ const app = createApp({
         const classList = ref([]);
         const raceList = ref([]);
         const backgroundList = ref([]);
+        // Zarın sallanıp sallanmadığını kontrol eden değişken
+        const isRolling = ref(false);
         
         // Verileri Yükle
-        onMounted(async () => {
-            try {
-                // Dosyaların varlığını kontrol etmek için basit bir try-catch
-                const [classRes, raceRes, bgRes] = await Promise.all([
-                    fetch('../../Data/classes.json').catch(e => null),
-                    fetch('../../Data/races.json').catch(e => null),
-                    fetch('../../Data/backgrounds.json').catch(e => null)
-                ]);
-            
-                if (!classRes || !classRes.ok) throw new Error("Sınıf verisi yüklenemedi.");
-                const classData = await classRes.json();
-                classList.value = classData.class || [];
-            
-                if (raceRes && raceRes.ok) {
-                    const rawRaceData = await raceRes.json();
-                    // Bazı veri setlerinde "race" array içinde, bazılarında direkt array olabilir
-                    raceList.value = Array.isArray(rawRaceData) ? rawRaceData : (rawRaceData.race || []);
-                }
-            
-                if (bgRes && bgRes.ok) {
-                    const bgData = await bgRes.json();
-                    backgroundList.value = bgData.background || [];
-                }
-                
-            
-                loading.value = false;
-                const urlParams = new URLSearchParams(window.location.search);
-                const urlSeed = urlParams.get('seed');
-                if (urlSeed) {
-                    seedText.value = urlSeed;
-                    // Veriler (JSON) yüklendikten hemen sonra seed'i işlememiz lazım.
-                    // DOM ve listeler tam hazır olsun diye minik bir gecikme iyidir.
-                    setTimeout(() => {
-                        loadFromSeed();
-                    }, 500);
-                }
-            } catch (err) {
-                error.value = "Veri yükleme hatası: " + err.message + ". (Lütfen Live Server kullanın veya JSON yollarını kontrol edin.)";
-                console.error(err);
-                loading.value = false;
-            }
-        });
+        // ... (önceki kodlar)
+
+onMounted(async () => {
+    try {
+        const [classRes, raceRes, bgRes] = await Promise.all([
+            fetch('../../Data/classes.json').catch(e => null),
+            fetch('../../Data/races.json').catch(e => null),
+            fetch('../../Data/backgrounds.json').catch(e => null)
+        ]);
+    
+        if (!classRes || !classRes.ok) throw new Error("Sınıf verisi yüklenemedi.");
+        const classData = await classRes.json();
+        classList.value = classData.class || [];
+    
+        if (raceRes && raceRes.ok) {
+            const rawRaceData = await raceRes.json();
+            raceList.value = Array.isArray(rawRaceData) ? rawRaceData : (rawRaceData.race || []);
+        }
+    
+        if (bgRes && bgRes.ok) {
+            const bgData = await bgRes.json();
+            backgroundList.value = bgData.background || [];
+        }
+        
+        // --- BURASI EKSİKTİ: Vue hazır olunca Loader'ı Kaldır ---
+        loading.value = false;
+        
+        // HTML'deki yükleme ekranını bul ve yok et
+        const loader = document.getElementById('initial-loader');
+        if(loader) {
+            loader.classList.add('fade-out'); // CSS ile şeffaflaştır
+            setTimeout(() => loader.remove(), 500); // 0.5sn sonra DOM'dan sil
+        }
+        // -------------------------------------------------------
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlSeed = urlParams.get('seed');
+        if (urlSeed) {
+            seedText.value = urlSeed;
+            setTimeout(() => {
+                loadFromSeed();
+            }, 500);
+        }
+    } catch (err) {
+        error.value = "Veri yükleme hatası: " + err.message;
+        console.error(err);
+        loading.value = false;
+        
+        // Hata olsa bile loader'ı kaldır ki hatayı görebilsinler
+        const loader = document.getElementById('initial-loader');
+        if(loader) loader.remove();
+    }
+});
+
+// ... (kodun geri kalanı)
 
         // ============================================================
         //  3. HELPER FUNCTIONS (Parsing & Formatting)
@@ -439,22 +454,68 @@ const detectSelectionCount = (feature, extractedOpts) => {
             else { if (next < 8) next = 8; if (next > 20) next = 20; }
             store.abilities.base[stat] = next;
         };
+        // --- TOAST YARDIMCISI ---
+        const showToast = (message, icon = '✅') => {
+            // Varsa eski bildirimi temizle
+            const existing = document.querySelector('.toast-notification');
+            if(existing) existing.remove();     
 
+            // Yeni bildirimi oluştur
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+            document.body.appendChild(toast);       
+
+            // Animasyonla göster
+            setTimeout(() => toast.classList.add('show'), 10);      
+
+            // 3 saniye sonra kaldır
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        };
         const rollStats = () => {
+        // 1. Animasyonu Başlat
+        isRolling.value = true;
+        // Eğer daha önce zar atıldıysa, animasyon hissi için önce listeyi boşaltabiliriz veya tutabiliriz.
+        // Tutmak daha iyidir, sadece sallansınlar. 
+
+        // 2. 600 milisaniye bekle (Animasyon süresi kadar)
+        setTimeout(() => {
             const diceCount = selectedScoreMethod.value === 'roll_5d6' ? 5 : 4;
             const results = [];
+            
             for (let i = 0; i < 6; i++) {
                 let rolls = [];
                 for (let d = 0; d < diceCount; d++) rolls.push(Math.ceil(Math.random() * 6));
-                rolls.sort((a, b) => a - b); rolls.shift(); 
+                
+                // Küçükten büyüğe sırala ve en düşüğü at (ilk eleman)
+                rolls.sort((a, b) => a - b); 
+                rolls.shift(); 
+                
                 let sum = rolls.reduce((a, b) => a + b, 0);
+                
+                // Eğer 5d6 seçildiyse ve limit açıksa 20'ye sabitle
                 if (selectedScoreMethod.value === 'roll_5d6' && isCapped20.value && sum > 20) sum = 20;
+                
                 results.push(sum);
             }
+            
+            // Sonuçları büyükten küçüğe sırala
             results.sort((a, b) => b - a);
-            rolledPool.value = results; hasRolled.value = true;
-            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
-        };
+            rolledPool.value = results; 
+            
+            hasRolled.value = true;
+            
+            // Animasyonu Durdur
+            isRolling.value = false;
+            
+            // Kullanıcıya bilgi ver
+            showToast("Zarlar atıldı! Şansın bol olsun.", "🎲");    
+
+        }, 600); // 0.6 Saniye gecikme
+    };
 
         const isOptionDisabled = (val, currentKey, pool) => {
             const totalInPool = pool.filter(n => n === val).length;
@@ -627,103 +688,86 @@ const detectSelectionCount = (feature, extractedOpts) => {
         });
 
 
-        const loadFromSeed = () => {
-            try {
-                if (!seedText.value) return;                 
-
-                // 1. LZString ile çözmeyi dene
-                let jsonStr = window.LZString.decompressFromEncodedURIComponent(seedText.value);
-                
-                // Eğer boş dönerse (belki eski formatta bir koddur?), hata verip çıkalım veya eski yöntemi deneyelim.
-                // Şimdilik sadece yeni sistemi destekleyelim:
-                if (!jsonStr) {
-                    alert("Geçersiz veya bozuk kod!");
-                    return;
-                }                
-
-                const data = JSON.parse(jsonStr);                
-
-                // ... BURADAN SONRASI ESKİ KODUN AYNISI (Verileri Store'a atama) ...
-                store.meta.name = data.n || "";
-                targetLevel.value = data.l || 1; 
-                
-                // Irk Yükleme
-                // --- DÜZELTİLMİŞ IRK YÜKLEME MANTIĞI ---
-                if (data.r) {
-                    // Seed'deki alt ırk adı (yoksa 'Standart' varsayalım, yukarıdaki mantıkla uyuşsun)
-                    const targetSubraceName = data.sr || "Standart";
-                
-                    const foundFlatOption = flatRaceList.value.find(option => {
-                        // 1. Ana ırk ismi tutuyor mu? (Örn: "İnsan")
-                        const raceMatch = option.race.name === data.r;
-
-                        // 2. Alt ırk ismi tutuyor mu? (Örn: "Alternatif" veya "Standart")
-                        // Option içindeki subrace adı yoksa "Standart" kabul et.
-                        const optSubName = option.subrace ? (option.subrace.name || "Standart") : null;
-
-                        // Eğer seed'de alt ırk varsa onu kontrol et, yoksa subrace'i olmayan bir ırk mı (Tiefling vb.) ona bak.
-                        if (option.subrace) {
-                            return raceMatch && (optSubName === targetSubraceName);
-                        } else {
-                            return raceMatch; // Alt ırkı olmayan düz ırk (örn: Dragonborn)
-                        }
-                    });
-                
-                    if (foundFlatOption) {
-                        selectedFlatOption.value = foundFlatOption;
-
-                        // Stat seçimlerini yükle (Variant Human için kritik)
-                        // Timeout süresini 100ms'e çıkarıp Vue'nun DOM'u render etmesine izin veriyoruz.
-                        if (data.ac) {
-                            setTimeout(() => { 
-                                store.race.abilityChoices = { ...data.ac }; 
-                            }, 100);
-                        }
-                    }
-                }            
-
-                // Sınıf Yükleme
-                if (data.c) {
-                    const foundClass = classList.value.find(x => x.name === data.c);
-                    if (foundClass) {
-                        selectedClass.value = foundClass;
-                        setTimeout(() => { if (data.sc) selectedSubclass.value = foundClass.subclasses?.find(s => s.name === data.sc); }, 100);
-                    }
-                }                
-
-                selectedScoreMethod.value = data.sm || 'manual';
-                if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
-                
-                store.abilities.base = { ...data.b };
-                store.abilities.asi = { ...data.asi };
-                
-                if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
-                
-                store.skills.proficiencies = [...(data.p || [])];
-                store.skills.expertises = [...(data.e || [])];
-                userChoices.value = { ...data.ch };              
-
-                alert("Karakter Başarıyla Yüklendi!");
-                seedText.value = ''; // Input'u temizle              
-
-            } catch (e) { 
-                console.error(e);
-                alert("Seed yüklenirken hata oluştu!"); 
-            }
-        };
-
         const copySeed = () => {
-            navigator.clipboard.writeText(characterSeed.value);
-            alert("Seed kopyalandı!");
-        };
-        const copyLink = () => {
-            // Mevcut sayfa adresi + ?seed= + Sıkıştırılmış Kod
-            const url = `${window.location.origin}${window.location.pathname}?seed=${characterSeed.value}`;
+    navigator.clipboard.writeText(characterSeed.value);
+    showToast("Karakter kodu kopyalandı!");
+};
 
-            navigator.clipboard.writeText(url).then(() => {
-                alert("Karakter linki kopyalandı! Arkadaşına gönderebilirsin.");
+const copyLink = () => {
+    const url = `${window.location.origin}${window.location.pathname}?seed=${characterSeed.value}`;
+    navigator.clipboard.writeText(url).then(() => {
+        showToast("Link kopyalandı! Arkadaşına gönderebilirsin.", "🔗");
+    });
+};
+
+const loadFromSeed = () => {
+    try {
+        if (!seedText.value) {
+            showToast("Lütfen bir kod yapıştırın.", "⚠️");
+            return;
+        }
+
+        let jsonStr = window.LZString.decompressFromEncodedURIComponent(seedText.value);
+        
+        if (!jsonStr) {
+            showToast("Geçersiz veya bozuk kod!", "❌");
+            return;
+        }                
+
+        const data = JSON.parse(jsonStr);                
+
+        // Verileri Store'a atama
+        store.meta.name = data.n || "";
+        targetLevel.value = data.l || 1; 
+        
+        // Irk Yükleme
+        if (data.r) {
+            const targetSubraceName = data.sr || "Standart";
+            const foundFlatOption = flatRaceList.value.find(option => {
+                const raceMatch = option.race.name === data.r;
+                const optSubName = option.subrace ? (option.subrace.name || "Standart") : null;
+                if (option.subrace) {
+                    return raceMatch && (optSubName === targetSubraceName);
+                } else {
+                    return raceMatch;
+                }
             });
-        };
+            if (foundFlatOption) {
+                selectedFlatOption.value = foundFlatOption;
+                if (data.ac) {
+                    setTimeout(() => { store.race.abilityChoices = { ...data.ac }; }, 100);
+                }
+            }
+        }            
+
+        // Sınıf Yükleme
+        if (data.c) {
+            const foundClass = classList.value.find(x => x.name === data.c);
+            if (foundClass) {
+                selectedClass.value = foundClass;
+                setTimeout(() => { if (data.sc) selectedSubclass.value = foundClass.subclasses?.find(s => s.name === data.sc); }, 100);
+            }
+        }                
+
+        selectedScoreMethod.value = data.sm || 'manual';
+        if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
+        
+        store.abilities.base = { ...data.b };
+        store.abilities.asi = { ...data.asi };
+        if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
+        store.skills.proficiencies = [...(data.p || [])];
+        store.skills.expertises = [...(data.e || [])];
+        userChoices.value = { ...data.ch };              
+
+        showToast("Karakter Başarıyla Yüklendi!", "🚀");
+        seedText.value = ''; 
+
+    } catch (e) { 
+        console.error(e);
+        showToast("Yükleme sırasında hata oluştu!", "❌");
+    }
+};
+
 
         // ============================================================
         //  9. RETURNED PROPERTIES
@@ -738,7 +782,7 @@ const detectSelectionCount = (feature, extractedOpts) => {
             skillBudget, expertiseBudget, raceSkillInfo, currentProfCount: computed(() => store.skills.proficiencies.length + store.skills.expertises.length), 
             currentExpertCount: computed(() => store.skills.expertises.length), currentUsedSkills: computed(() => store.skills.proficiencies.length + store.skills.expertises.length),
             classSkillInfo, scoreMethods, selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, standardArrayValues, rollStats, rolledPool, hasRolled, isCapped20,
-            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS ,isMobileMenuOpen, toggleMobileMenu, copyLink,
+            characterSeed, loadFromSeed, copySeed, seedText, formatEntry, parseTags, extractOptions, processFeature, SKILL_DEFINITIONS ,isMobileMenuOpen, toggleMobileMenu, copyLink,isRolling, showToast
         };
     }
 });

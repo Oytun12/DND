@@ -20,8 +20,14 @@
     </script>
 </head>
 <body>
+    <div id="initial-loader">
+        <div class="loader-content">
+            <img src="../../img/SariZar.svg" alt="Yükleniyor..." class="pulsing-logo">
+            <p>Zarlar Hazırlanıyor...</p>
+        </div>
+    </div>
 
-    <div id="app">
+    <div id="app" v-cloak>
         
         <header class="main-header">
             <div class="header-container">
@@ -367,7 +373,7 @@
                             </button>
 
                             <div v-if="hasRolled">
-                                <div class="dice-pool">
+                                <div class="dice-pool" :class="{ 'shaking-dice': isRolling }">
                                     <div v-for="(val, idx) in rolledPool" :key="idx" class="rolled-stat">
                                         {{ val }}
                                     </div>
