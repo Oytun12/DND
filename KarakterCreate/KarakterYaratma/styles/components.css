@@ -325,6 +325,307 @@ a.dnd-link.spell-link:hover {
     background: #000;
 }
 
+/* --- BOŞ DURUM (EMPTY STATE) TASARIMI --- */
+.empty-selection-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 20px;
+    border: 2px dashed #333; /* Kesikli zarif bir çizgi */
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    color: #666;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.empty-icon {
+    font-size: 4em;
+    margin-bottom: 15px;
+    opacity: 0.3;
+    color: #b52b2b; /* Tema rengimiz */
+    animation: float 3s ease-in-out infinite; /* Hafifçe süzülme efekti */
+}
+
+.empty-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.empty-desc {
+    font-size: 0.9em;
+    color: #555;
+    max-width: 300px;
+}
+
+/* Süzülme Animasyonu */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Konsept Sayfası Makyajı */
+.concept-hero {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.hero-avatar-frame {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+    padding: 5px;
+    border: 2px solid #b52b2b; /* Kızıl Çerçeve */
+    box-shadow: 0 0 20px rgba(181, 43, 43, 0.3); /* Arkadan vuran kızıl ışık */
+    background: #111;
+    position: relative;
+}
+
+.hero-avatar-frame img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.hero-input-group input {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-bottom: 2px solid #333;
+    background: transparent;
+    color: #fff;
+    border-radius: 0;
+    padding: 10px;
+    width: 80%;
+    transition: border-color 0.3s;
+}
+
+.hero-input-group input:focus {
+    outline: none;
+    border-bottom-color: #b52b2b;
+}
+
+.hero-input-group input::placeholder {
+    color: #444;
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* --- YENİ EKLENEN STİLLER (ANIMASYON & MAKYAJ) --- */
+
+/* 1. Kızıl "Görünüm Değiştir" Butonu */
+.btn-crimson-outline {
+    background: transparent;
+    border: 1px solid #b52b2b; /* Kızıl çerçeve */
+    color: #e2b3b3; /* Hafif soluk kızıl yazı */
+    padding: 10px 20px;
+    border-radius: 25px; /* Daha yuvarlak */
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px rgba(181, 43, 43, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.btn-crimson-outline:hover {
+    background: rgba(181, 43, 43, 0.1); /* Üzerine gelince hafif dolgu */
+    color: #fff;
+    box-shadow: 0 0 15px rgba(181, 43, 43, 0.4); /* Parlama efekti */
+    transform: translateY(-2px);
+}
+
+/* 2. Çekmece Animasyonu (Accordion Effect) */
+.gallery-drawer {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out;
+    border-top: none; 
+}
+
+.gallery-drawer.open {
+    max-height: 500px; /* Yeterince büyük bir değer */
+    opacity: 1;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+}
+
+/* 3. Büyük & Kızıl İsim Girişi */
+.hero-input-group input {
+    text-align: center;
+    font-size: 1.6em !important; /* DAHA BÜYÜK */
+    font-weight: bold;
+    border: none;
+    border-bottom: 2px solid #444;
+    background: transparent;
+    color: #b52b2b !important; /* KIZIL RENK */
+    border-radius: 0;
+    padding: 10px;
+    width: 90%;
+    transition: all 0.3s;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hero-input-group input:focus {
+    outline: none;
+    border-bottom-color: #b52b2b;
+    color: #ff4d4d !important; /* Odaklanınca daha parlak */
+}
+
+.hero-input-group input::placeholder {
+    color: #444;
+    font-size: 0.7em; /* Placeholder daha küçük dursun */
+    font-weight: normal;
+    font-style: italic;
+    vertical-align: middle;
+}
+
+/* 4. Seed (Kayıt) Yükleme Alanı */
+.seed-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #666;
+    cursor: pointer;
+    padding: 10px;
+    transition: color 0.3s;
+    user-select: none;
+}
+
+.seed-trigger:hover {
+    color: #b52b2b;
+}
+
+.seed-trigger span {
+    font-size: 1em; /* Yazı büyütüldü */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.seed-icon-svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    opacity: 0.7;
+}
+/* --- SÜRÜKLE BIRAK PUAN SİSTEMİ --- */
+
+.pool-container {
+    background: #1a1a1a;
+    border: 2px dashed #444;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    min-height: 80px;
+    transition: background 0.3s;
+}
+
+.pool-container:hover { border-color: #666; }
+
+.pool-label {
+    text-align: center; color: #666; font-size: 0.8em; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+
+.pool-slots {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+
+/* Puan Topu (Orb) */
+.score-orb {
+    width: 50px; height: 50px;
+    background: radial-gradient(circle at 30% 30%, #b52b2b, #7a1d1d);
+    color: white;
+    font-weight: bold; font-size: 1.3em;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid #d45d5d;
+}
+
+.score-orb:active { cursor: grabbing; transform: scale(1.1); }
+.score-orb.selected { 
+    box-shadow: 0 0 15px #ff4d4d; border-color: #fff; transform: scale(1.1); z-index: 10;
+}
+
+.score-orb.placed {
+    width: 100%; height: 100%;
+    border-radius: 8px; /* Yuvaya oturunca kareleşsin */
+    background: #2b2b2b;
+    border: 2px solid #b52b2b;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Stat Yuvaları Grid */
+.stat-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Mobilde alt alta, masaüstünde yan yana */
+    gap: 15px;
+}
+
+.stat-slot-card {
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+.stat-name {
+    color: #aaa; font-weight: bold; margin-bottom: 8px; font-size: 1.1em;
+}
+
+.drop-zone {
+    width: 60px; height: 60px;
+    background: #0f0f0f;
+    border: 2px solid #333;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.drop-zone.target-active { border-color: #666; border-style: dashed; }
+.drop-zone.target-active:hover { border-color: #b52b2b; background: rgba(181, 43, 43, 0.1); }
+
+.empty-socket {
+    width: 10px; height: 10px; background: #222; border-radius: 50%;
+}
+
+.stat-calc {
+    font-size: 0.8em; color: #666; margin-bottom: 5px;
+}
+.bonus-pill { color: #4caf50; }
+.total-score { color: #eee; font-weight: bold; }
+
+.mod-display {
+    background: #222; border: 1px solid #444; color: #fff;
+    padding: 2px 10px; border-radius: 10px; font-weight: bold; font-size: 1.1em;
+}
+
 @media (max-width: 800px) {
     .mobile-sheet-toggle {
         display: flex; align-items: center; justify-content: center;

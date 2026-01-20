@@ -4,13 +4,11 @@ import { createApp, ref, computed, onMounted, watch } from 'vue';
 import { store, cleanObject } from './src/store.js';
 import { parseTags, formatEntry } from './src/utils.js';
 import { dndIcons } from './src/icons.js';
-// DÜZELTME: Senin belirttiğin gibi logicSheet.js kullanıyoruz
 import { useCharacterSheet } from './src/logicSheet.js'; 
 import { useRaceLogic } from './src/logicRace.js';
 import { useClassLogic } from './src/logicClass.js';
 import { useScoreLogic } from './src/logicScores.js';
 import { useSkillLogic } from './src/logicSkills.js';
-// Veri Dosyası (Büyük Liste)
 import { avatarList } from './src/data/avatarList.js';
 
 const app = createApp({
@@ -19,7 +17,7 @@ const app = createApp({
         // 1. GENEL SAYFA MANTIĞI
         const { isSheetMode, activeSheetTab, finishCreation, hasCreatedSheet, activeFeatureSubTab } = useCharacterSheet();
         
-        // 2. IRK MANTIĞI
+        // 2. IRK MANTIĞI (DÜZELTİLDİ: Score değişkenleri buradan kaldırıldı)
         const { 
             raceList, flatRaceList, selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig 
         } = useRaceLogic();
@@ -31,16 +29,18 @@ const app = createApp({
             getAvailableOptions, getChoiceDetail 
         } = useClassLogic();
 
-        // 4. PUANLAR (Race Bonus'a ihtiyaç duyar)
+        // 4. PUANLAR (DÜZELTİLDİ: Yeni değişkenler BURAYA eklendi)
         const {
             statLabels, selectableStats, scoreMethods, selectedScoreMethod, standardArrayValues,
             rolledPool, hasRolled, isCapped20, isRolling,
             pointBuyBudget, currentPbCost,
             getFlexCost, changePointBuy, rollStats, isOptionDisabled,
-            statBonuses, finalAbilityScores, proficiencyBonus
+            statBonuses, finalAbilityScores, proficiencyBonus,
+            // --- YENİ EKLENENLER BURADA OLMALI ---
+            scoreAllocations, draggedItem, assignScore, unassignScore, syncAllocationsFromStore
         } = useScoreLogic(raceBonuses);
 
-        // 5. YETENEKLER (Statlar ve PB'ye ihtiyaç duyar)
+        // 5. YETENEKLER
         const {
             SKILL_DEFINITIONS,
             raceSkillInfo, classSkillInfo,
@@ -65,11 +65,9 @@ const app = createApp({
         const featList = ref([ "Alert", "Actor", "Athlete", "Lucky", "Tough", "War Caster" ]);
         const seedText = ref('');
 
-        // --- HIZLI AVATAR GALERİSİ (Sihirbazın ilk ekranı) ---
-        // DOSYA YOLU DÜZELTMESİ: ../../img/avatars/
-        // NOT: Senin klasöründe 'default-avatar.png' var, kodda onu kullanmalıyız.
+        // --- HIZLI AVATAR GALERİSİ ---
         const avatarGallery = [
-            "../../img/avatars/default-avatar.png", // <--- İsim düzeltildi
+            "../../img/avatars/default-avatar.png",
             "../../img/avatars/barbarian.jpg",
             "../../img/avatars/bard.jpg",
             "../../img/avatars/cleric.jpg",
@@ -84,17 +82,14 @@ const app = createApp({
             "../../img/avatars/wizard.jpg"
         ];
 
-        // UI Kontrolleri
         const showCustomAvatarInput = ref(false);
         const isGalleryExpanded = ref(false); 
-        
-        // --- MOBİL MENÜ DEĞİŞKENLERİ ---
         const isMobileMenuOpen = ref(false);
         const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value; };
         const isMobileSheetOpen = ref(false);
         const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
 
-        // --- TOAST BİLDİRİMİ ---
+        // Toast
         const showToast = (message, icon = '✅') => {
             const existing = document.querySelector('.toast-notification');
             if(existing) existing.remove();     
@@ -109,16 +104,10 @@ const app = createApp({
             }, 3000);
         };
 
-        // Modül sarmalayıcıları
-        const handleFinish = () => {
-            finishCreation(showToast);
-        };
+        const handleFinish = () => { finishCreation(showToast); };
+        const handleRoll = () => { rollStats(showToast); };
 
-        const handleRoll = () => {
-            rollStats(showToast);
-        };
-
-        // --- SEED (KAYIT) SİSTEMİ ---
+        // Seed Sistemi
         const characterSeed = computed(() => {
             const exportData = {
                 n: store.meta.name, 
@@ -136,7 +125,7 @@ const app = createApp({
                 ch: userChoices.value,
                 sm: selectedScoreMethod.value, 
                 rp: rolledPool.value,
-                av: store.meta.avatar // Avatarı kaydet
+                av: store.meta.avatar 
             };      
             try {
                 const cleanData = cleanObject(JSON.parse(JSON.stringify(exportData)));
@@ -158,30 +147,18 @@ const app = createApp({
 
         const loadFromSeed = () => {
             try {
-                if (!seedText.value) {
-                    showToast("Lütfen bir kod yapıştırın.", "⚠️");
-                    return;
-                }
+                if (!seedText.value) { showToast("Lütfen bir kod yapıştırın.", "⚠️"); return; }
                 let jsonStr = window.LZString.decompressFromEncodedURIComponent(seedText.value);
-                if (!jsonStr) {
-                    showToast("Geçersiz veya bozuk kod!", "❌");
-                    return;
-                }                
+                if (!jsonStr) { showToast("Geçersiz veya bozuk kod!", "❌"); return; }                
                 const data = JSON.parse(jsonStr);                
 
                 store.meta.name = data.n || "";
-                
-                // Avatar Yükleme Kontrolü
-                if(data.av) {
-                    store.meta.avatar = data.av;
-                } else {
-                    // Seed'de avatar yoksa varsayılanı ata
-                    store.meta.avatar = "../../img/avatars/default-avatar.png";
-                }
+                if(data.av) { store.meta.avatar = data.av; } 
+                else { store.meta.avatar = "../../img/avatars/default-avatar.png"; }
 
                 targetLevel.value = data.l || 1; 
                 
-                // Irkı Bul
+                // Irk
                 if (data.r) {
                     const targetSubraceName = data.sr || "Standart";
                     const foundFlatOption = flatRaceList.value.find(option => {
@@ -196,7 +173,7 @@ const app = createApp({
                     }
                 }            
 
-                // Sınıfı Bul
+                // Sınıf
                 if (data.c) {
                     const foundClass = classList.value.find(x => x.name === data.c);
                     if (foundClass) {
@@ -215,6 +192,9 @@ const app = createApp({
                 store.skills.expertises = [...(data.e || [])];
                 userChoices.value = { ...data.ch };              
 
+                // Havuzu güncelle (Re-hydration)
+                setTimeout(() => { syncAllocationsFromStore(); }, 200); 
+
                 showToast("Karakter Başarıyla Yüklendi!", "🚀");
                 finishCreation(); 
                 seedText.value = ''; 
@@ -225,16 +205,12 @@ const app = createApp({
             }
         };
 
-        // Veri Çekme (Fetch)
         onMounted(async () => {
-            // BAŞLANGIÇ GÜVENLİK KONTROLÜ: Avatar boşsa veya hatalıysa varsayılanı ata
-            // Bu, 'undefined is not an object' hatasını önler.
             if (!store.meta.avatar || typeof store.meta.avatar !== 'string') {
                 store.meta.avatar = "../../img/avatars/default-avatar.png";
             }
 
             try {
-                // Not: JSON dosyaların da iki üst klasörde (Data/)
                 const [classRes, raceRes, bgRes] = await Promise.all([
                     fetch('../../Data/classes.json').catch(e => null),
                     fetch('../../Data/races.json').catch(e => null),
@@ -270,52 +246,32 @@ const app = createApp({
                 }
             } catch (err) {
                 error.value = "Veri yükleme hatası: " + err.message;
-                console.error(err);
                 loading.value = false;
                 const loader = document.getElementById('initial-loader');
                 if(loader) loader.remove();
             }
         });
 
-        // ============================================================
-        //  RETURN (TEMPLATE İÇİN GEREKLİ HER ŞEY)
-        // ============================================================
         return {
-            // Store & Navigasyon
             store, currentStep, steps, nextStep, prevStep, loading, error,
-            
-            // UI Yardımcıları
             isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
             copyLink, showToast, isRolling,
             backgroundList, featList, seedText, characterSeed, loadFromSeed, copySeed,
-            
-            // Format Araçları
-            formatEntry, parseTags, 
-            
-            // Modüllerden Gelenler
-            dndIcons, isSheetMode, activeSheetTab, finishCreation: handleFinish,
-            
-            // Irk
+            formatEntry, parseTags, dndIcons, isSheetMode, activeSheetTab, finishCreation: handleFinish,
             raceList, flatRaceList, selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig,
-            
-            // Sınıf
             classList, selectedClass, selectedSubclass, targetLevel, userChoices, 
             subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, 
             getAvailableOptions, getChoiceDetail,
-
-            // Puanlar
             statLabels, selectableStats, scoreMethods, selectedScoreMethod, 
             isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, 
             standardArrayValues, rolledPool, hasRolled, isCapped20, 
             rollStats: handleRoll, statBonuses, finalAbilityScores, proficiencyBonus,
-
-            // Yetenekler
             SKILL_DEFINITIONS, calculatedSkills, toggleSkill, skillBudget, expertiseBudget, 
             raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount, 
-            
-            // Yeni Eklenenler (Sheet & Avatar)
             hasCreatedSheet, activeFeatureSubTab, 
-            avatarGallery, avatarList, showCustomAvatarInput, isGalleryExpanded
+            avatarGallery, avatarList, showCustomAvatarInput, isGalleryExpanded, 
+            // YENİLER (Artık düzgün dönecek):
+            scoreAllocations, draggedItem, assignScore, unassignScore
         };
     }
 });

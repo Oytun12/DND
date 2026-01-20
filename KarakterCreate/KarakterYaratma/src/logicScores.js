@@ -2,13 +2,14 @@ import { ref, computed, watch } from 'vue';
 import { store } from './store.js';
 
 export function useScoreLogic(raceBonuses) {
-    // --- SABİTLER VE AYARLAR ---
-    const statLabels = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
+    // --- SABİTLER (Eskisiyle uyumlu) ---
+    // HTML'de 'selectableStats' kullanıyorsun, onu koruyoruz.
     const selectableStats = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
     
+    // Yöntemler
     const scoreMethods = [
         { id: 'manual', name: 'Manuel Giriş' },
-        { id: 'standard_array', name: 'Standart Dizilim (15,14...)' },
+        { id: 'standard_array', name: 'Standart Dizilim' }, // İsim sadeleşti
         { id: 'point_buy', name: 'Point Buy (Standart)' },
         { id: 'point_buy_flex', name: 'Point Buy (Esnek)' },
         { id: 'roll_4d6', name: 'Zar At (4d6)' },
@@ -17,36 +18,26 @@ export function useScoreLogic(raceBonuses) {
     
     const selectedScoreMethod = ref('point_buy_flex');
     const standardArrayValues = [15, 14, 13, 12, 10, 8];
-    const rolledPool = ref([]);
-    const hasRolled = ref(false);
-    const isCapped20 = ref(false);
-    const isRolling = ref(false); // Animasyon için
-
-    // --- POINT BUY MANTIĞI ---
-    const getFlexCost = (score) => {
-        if (score <= 8) return 0;
-        if (score === 9) return 1; if (score === 10) return 2; if (score === 11) return 3;
-        if (score === 12) return 4; if (score === 13) return 5; if (score === 14) return 7;
-        if (score === 15) return 9; if (score === 16) return 12; if (score === 17) return 15;
-        if (score === 18) return 19; if (score === 19) return 23; if (score >= 20) return 28;
-        return 0;
-    };
-    const pointBuyBudget = computed(() => 27);
-    const currentPbCost = computed(() => {
-        let total = 0;
-        Object.values(store.abilities.base).forEach(val => total += getFlexCost(val));
-        return total;
-    });
+    const isRolling = ref(false);
+    const isCapped20 = ref(false); // Eski HTML'de vardı, koruyoruz.
     
-    const changePointBuy = (stat, delta) => {
-        let next = store.abilities.base[stat] + delta;
-        if (selectedScoreMethod.value === 'point_buy') { if (next < 8) next = 8; if (next > 15) next = 15; }
-        else { if (next < 8) next = 8; if (next > 20) next = 20; }
-        store.abilities.base[stat] = next;
+    // --- YENİ SÜRÜKLE BIRAK SİSTEMİ STATE'LERİ ---
+    const scoreAllocations = ref([]); 
+    const draggedItem = ref(null);
+    const rolledPool = ref([]); // Hata almamak için bunu da tutuyoruz
+
+    // 1. Havuzu Başlat
+    const initAllocations = (values) => {
+        scoreAllocations.value = values.map((val, index) => ({
+            id: Date.now() + index,
+            val: val,
+            assignedTo: null
+        }));
+        // Store'u temizle
+        Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
     };
 
-    // --- ZAR ATMA MANTIĞI ---
-    // Not: Toast mesajını göstermek için callback kullanacağız
+    // 2. Zar Atma (Hem Pool'u hem Allocations'ı doldurur)
     const rollStats = (toastCallback) => {
         isRolling.value = true;
         setTimeout(() => {
@@ -62,39 +53,110 @@ export function useScoreLogic(raceBonuses) {
                 results.push(sum);
             }
             results.sort((a, b) => b - a);
-            rolledPool.value = results; 
+            
+            rolledPool.value = results; // Eski sistem uyumluluğu için
+            initAllocations(results);   // Yeni sistem için
+            
             hasRolled.value = true;
             isRolling.value = false;
-            
-            if(toastCallback) toastCallback("Zarlar atıldı! Şansın bol olsun.", "🎲");    
+            if(typeof toastCallback === 'function') toastCallback("Zarlar atıldı! Puanları yerlerine sürükle.", "🎲");    
         }, 600); 
     };
 
-    const isOptionDisabled = (val, currentKey, pool) => {
-        const totalInPool = pool.filter(n => n === val).length;
-        let usedByOthers = 0;
-        Object.entries(store.abilities.base).forEach(([k, v]) => { if (k !== currentKey && v === val) usedByOthers++; });
-        return usedByOthers >= totalInPool;
+    // 3. Puan Atama
+    const assignScore = (scoreId, targetStat) => {
+        const scoreItem = scoreAllocations.value.find(x => x.id === scoreId);
+        if (!scoreItem) return;
+        
+        // Hedef doluysa takas (swap) mantığı
+        const existingItem = scoreAllocations.value.find(x => x.assignedTo === targetStat);
+        if (existingItem && existingItem.id === scoreItem.id) return;
+
+        if (existingItem) {
+            existingItem.assignedTo = scoreItem.assignedTo; 
+        }
+        scoreItem.assignedTo = targetStat;
+        syncStore();
     };
 
-    // Yöntem değişince puanları sıfırla
-    watch(selectedScoreMethod, (newMethod) => {
-        if (newMethod.includes('point_buy')) Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 8);
-        else if (newMethod === 'manual') Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 10);
-        else Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
-        if (!newMethod.includes('roll')) { hasRolled.value = false; rolledPool.value = []; }
-    });
+    // 4. Havuza Geri Atma
+    const unassignScore = (scoreId) => {
+        const item = scoreAllocations.value.find(x => x.id === scoreId);
+        if (item) {
+            item.assignedTo = null;
+            syncStore();
+        }
+    };
 
-    // --- FİNAL HESAPLAMALAR ---
-    const statBonuses = computed(() => {
-        const totals = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
-        // Irk bonuslarını ekle (Dışarıdan gelen veri)
-        if (raceBonuses && raceBonuses.value) {
-            for (const [key, val] of Object.entries(raceBonuses.value)) {
-                if (totals[key] !== undefined) totals[key] += val;
+    const syncStore = () => {
+        const resetVal = selectedScoreMethod.value === 'manual' ? 10 : 0;
+        Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = resetVal);
+        scoreAllocations.value.forEach(item => {
+            if (item.assignedTo) store.abilities.base[item.assignedTo] = item.val;
+        });
+    };
+
+    const syncAllocationsFromStore = () => {
+        if (!['standard_array', 'roll_4d6', 'roll_5d6'].includes(selectedScoreMethod.value)) return;
+        const currentStats = { ...store.abilities.base };
+        
+        if (scoreAllocations.value.length === 0) {
+            if (selectedScoreMethod.value === 'standard_array') {
+                initAllocations([...standardArrayValues]);
+            } else {
+                // Rolled ise ve veri varsa
+                const values = Object.values(currentStats).filter(v => v > 0);
+                if(values.length > 0) initAllocations(values);
             }
         }
-        // ASI (Seviye atlama bonuslarını) ekle
+        Object.entries(currentStats).forEach(([stat, val]) => {
+            const match = scoreAllocations.value.find(x => x.val === val && x.assignedTo === null);
+            if (match) match.assignedTo = stat;
+        });
+    };
+
+    // Point Buy Helperları (Eskisiyle Aynı)
+    const getFlexCost = (score) => {
+        if (score <= 8) return 0;
+        const table = {9:1, 10:2, 11:3, 12:4, 13:5, 14:7, 15:9, 16:12, 17:15, 18:19, 19:23, 20:28};
+        return table[score] || 28;
+    };
+    const pointBuyBudget = computed(() => 27);
+    const currentPbCost = computed(() => {
+        let total = 0;
+        Object.values(store.abilities.base).forEach(val => total += getFlexCost(val));
+        return total;
+    });
+    const changePointBuy = (stat, delta) => {
+        let next = store.abilities.base[stat] + delta;
+        let min = 8, max = selectedScoreMethod.value === 'point_buy' ? 15 : 20;
+        if (next >= min && next <= max) store.abilities.base[stat] = next;
+    };
+
+    const hasRolled = ref(false); // Bunu da ref olarak tanımladık
+
+    // Method değişince temizlik
+    watch(selectedScoreMethod, (newVal) => {
+        if (newVal === 'standard_array') {
+            initAllocations([...standardArrayValues]);
+        } else if (newVal.includes('point_buy')) {
+            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 8);
+        } else if (newVal === 'manual') {
+            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 10);
+        } else {
+            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
+            hasRolled.value = false;
+            rolledPool.value = [];
+            scoreAllocations.value = [];
+        }
+    });
+
+    // Final Hesaplamalar
+    const statBonuses = computed(() => {
+        const totals = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
+        if (raceBonuses && raceBonuses.value) {
+            for (const [key, val] of Object.entries(raceBonuses.value)) totals[key] += val;
+        }
         Object.values(store.abilities.asi).forEach(asi => {
             if (asi.stat1) totals[asi.stat1] += 1;
             if (asi.stat2) totals[asi.stat2] += 1;
@@ -105,18 +167,24 @@ export function useScoreLogic(raceBonuses) {
     const finalAbilityScores = computed(() => {
         const finals = {};
         ['str','dex','con','int','wis','cha'].forEach(k => {
-            finals[k] = (store.abilities.base[k] || 10) + (statBonuses.value[k] || 0);
+            finals[k] = (store.abilities.base[k] || 0) + (statBonuses.value[k] || 0);
         });
         return finals;
     });
 
     const proficiencyBonus = computed(() => Math.ceil(store.class.level / 4) + 1);
 
+    // Geriye dönmesi gereken HER ŞEY (Eskiler + Yeniler)
     return {
-        statLabels, selectableStats, scoreMethods, selectedScoreMethod, standardArrayValues,
-        rolledPool, hasRolled, isCapped20, isRolling,
-        pointBuyBudget, currentPbCost,
-        getFlexCost, changePointBuy, rollStats, isOptionDisabled,
-        statBonuses, finalAbilityScores, proficiencyBonus
+        selectableStats, // <-- 'statLabels' yerine bunu kullandık HTML ile uyuşsun diye
+        scoreMethods, selectedScoreMethod, isRolling, isCapped20, standardArrayValues,
+        pointBuyBudget, currentPbCost, changePointBuy, getFlexCost,
+        rollStats, statBonuses, finalAbilityScores, proficiencyBonus,
+        hasRolled, rolledPool, // <-- Hata veren değişken buydu, ekledik
+        
+        // Yeni Sistem Değişkenleri
+        scoreAllocations, draggedItem, assignScore, unassignScore, syncAllocationsFromStore,
+        // Eski dropdown disabled fonksiyonu (hata vermesin diye boş da olsa tutuyoruz)
+        isOptionDisabled: () => false 
     };
 }
