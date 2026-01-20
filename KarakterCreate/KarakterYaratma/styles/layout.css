@@ -74,6 +74,15 @@
 .step-nav-btn.disabled { opacity: 0.2; cursor: not-allowed; pointer-events: none; }
 .step-nav-btn .step-number { font-size: 1.2em; padding-bottom: 2px; }
 
+/* --- ADIM GÖSTERGESİ TIKLANABİLİRLİK (Genel) --- */
+.step-badge {
+    cursor: pointer; /* Tıklanabilir olduğunu göster */
+}
+.step-badge:hover .step-number {
+    border-color: #b52b2b; /* Üzerine gelince hafif efekt */
+    color: #fff;
+}
+
 /* --- RESPONSIVE LAYOUT --- */
 @media (max-width: 800px) {
     .wizard-layout {
@@ -85,4 +94,14 @@
     .step-indicator { margin-bottom: 20px; padding-bottom: 10px; }
     .desktop-nav { display: none; }
     .menu-icon { display: block; }
+    /* YENİ: Mobilde yanlardaki Geri/İleri oklarını gizle */
+    .step-nav-btn {
+        display: none !important;
+    }
+    
+    /* Adımları biraz daha sıkılaştır ki sığsın */
+    .step-indicator {
+        justify-content: center; /* Ortala */
+        gap: 15px; /* Araları aç */
+    }
 }

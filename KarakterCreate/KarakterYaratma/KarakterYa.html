@@ -77,8 +77,8 @@
 
                     <div v-for="(step, index) in steps" :key="index" 
                          class="step-badge" 
-                         :class="{ 'active': currentStep === index, 'completed': currentStep > index }">
-                        <div class="step-number">{{ index + 1 }}</div>
+                         :class="{ 'active': currentStep === index, 'completed': currentStep > index }"
+                         @click="currentStep = index"> <div class="step-number">{{ index + 1 }}</div>
                         <span class="step-name">{{ step.title }}</span>
                     </div>
 
@@ -122,7 +122,7 @@
                             {{ isGalleryExpanded ? 'Kütüphaneyi Gizle' : 'Resmi Değiştir (' + avatarList.length + ' Görsel)' }}
                         </button>
 
-                        <div :class="['avatar-gallery-container', 'gallery-drawer', { 'open': isGalleryExpanded }]">
+                        <div ref="galleryContainer" :class="['avatar-gallery-container', 'gallery-drawer', { 'open': isGalleryExpanded }]">
                             <div class="avatar-grid-large">
                                 <div v-for="(img, index) in avatarList" 
                                      :key="index" 

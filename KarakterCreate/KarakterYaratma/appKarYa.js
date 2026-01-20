@@ -1,4 +1,4 @@
-import { createApp, ref, computed, onMounted, watch } from 'vue';
+import { createApp, ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
 // --- MODÜLLER ---
 import { store, cleanObject } from './src/store.js';
@@ -142,6 +142,20 @@ const app = createApp({
         const isMobileSheetOpen = ref(false);
         const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
 
+        // --- DIŞARI TIKLAMA İLE GALERİYİ KAPATMA ---
+        const galleryContainer = ref(null); // HTML'deki ref ile eşleşir
+        const galleryButton = ref(null);    // HTML'deki ref ile eşleşir
+
+        const handleClickOutside = (event) => {
+            // Eğer galeri açıksa VE tıklanan yer galeri değilse VE tıklanan yer buton değilse
+            if (isGalleryExpanded.value && 
+                galleryContainer.value && !galleryContainer.value.contains(event.target) &&
+                galleryButton.value && !galleryButton.value.contains(event.target)) {
+                
+                isGalleryExpanded.value = false;
+            }
+        };
+
         // --- TOAST BİLDİRİMİ ---
         const showToast = (message, icon = '✅') => {
             const existing = document.querySelector('.toast-notification');
@@ -266,6 +280,7 @@ const app = createApp({
         // LIFE CYCLE (ON MOUNTED)
         // ============================================================
         onMounted(async () => {
+            document.addEventListener('click', handleClickOutside); // Dinleyiciyi başlat
             // Varsayılan Avatar Kontrolü
             if (!store.meta.avatar || typeof store.meta.avatar !== 'string') {
                 store.meta.avatar = "../../img/avatars/default-avatar.png";
@@ -312,6 +327,10 @@ const app = createApp({
                 const loader = document.getElementById('initial-loader');
                 if(loader) loader.remove();
             }
+        });
+         // Sayfa kapanırken dinleyiciyi kaldır (Performans için)
+        onUnmounted(() => {
+            document.removeEventListener('click', handleClickOutside);
         });
 
         // ============================================================
@@ -416,7 +435,9 @@ const app = createApp({
             avatarGallery, 
             avatarList, 
             showCustomAvatarInput, 
-            isGalleryExpanded
+            isGalleryExpanded,
+            galleryContainer,
+            galleryButton
         };
     }
 });
