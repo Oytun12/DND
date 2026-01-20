@@ -4,11 +4,24 @@ import { parseTags, formatEntry } from './utils.js';
 
 export function useRaceLogic() {
     
-    // Veriler (API'den doldurulacak)
+    // Veriler
     const raceList = ref([]);
     const selectedFlatOption = ref(null);
 
-    // Düzleştirilmiş Irk Listesi (Alt ırkları ana listeye yayar)
+    // --- YARDIMCI: Dil Çevirici Haritası ---
+    // JSON'dan "kuv" gelirse "str", "çev" gelirse "dex" olarak sisteme tanıtmalıyız.
+    const abilityKeyMap = { 
+        'kuv': 'str', 'str': 'str', 
+        'çev': 'dex', 'dex': 'dex', 
+        'day': 'con', 'con': 'con', 
+        'zek': 'int', 'int': 'int', 
+        'akı': 'wis', 'wis': 'wis', 
+        'kar': 'cha', 'cha': 'cha' 
+    };
+
+    const getKey = (k) => abilityKeyMap[k.toLowerCase()] || k.toLowerCase();
+
+    // Düzleştirilmiş Irk Listesi
     const flatRaceList = computed(() => {
         const list = [];
         if (!raceList.value) return [];
@@ -30,12 +43,12 @@ export function useRaceLogic() {
         return list;
     });
 
-    // Seçim İzleyici (Dropdown değişince Store'u güncelle)
+    // Seçim İzleyici
     watch(selectedFlatOption, (newVal) => {
         if (newVal) {
             store.race.selected = newVal.race;
             store.race.subrace = newVal.subrace;
-            store.race.abilityChoices = {}; // Seçim değişince manuel statları sıfırla
+            store.race.abilityChoices = {}; 
         } else {
             store.race.selected = null;
             store.race.subrace = null;
@@ -43,36 +56,66 @@ export function useRaceLogic() {
         }
     });
 
-    // Seçmeli Statlar (Variant Human vb. için)
+    // Seçmeli Statlar (Variant Human, Half-Elf vb. için)
     const raceChoiceConfig = computed(() => {
         if (!store.race.selected) return null;
+        
+        // Veri kaynağını belirle (Alt ırk mı, Ana ırk mı?)
         const source = store.race.subrace?.ability ? store.race.subrace : store.race.selected;
-        if (source && source.ability && source.ability.choose) {
-            const chooseData = source.ability.choose[0] || source.ability.choose; 
-            return {
-                count: chooseData.count || 1, amount: chooseData.amount || 1,
-                from: chooseData.from || ['str', 'dex', 'con', 'int', 'wis', 'cha']
-            };
+        
+        if (source && source.ability) {
+            // ability verisi JSON'da bazen direkt Obje, bazen Dizi olabilir.
+            // Örn: İnsan (Alternatif) JSON'ında Obje içinde Dizi var.
+            // Örn: Standart veri setlerinde direkt Dizi olabilir.
+            
+            // Güvenli erişim için önce diziye çevirip ilkini alalım, değilse kendisini alalım.
+            const abilityData = Array.isArray(source.ability) ? source.ability[0] : source.ability;
+            
+            // "choose" verisi var mı?
+            if (abilityData && abilityData.choose) {
+                // choose da bir dizi olabilir: [{from:..., count:...}]
+                const chooseItem = Array.isArray(abilityData.choose) ? abilityData.choose[0] : abilityData.choose;
+                
+                // KRİTİK DÜZELTME:
+                // JSON'daki "from": ["kuv", "çev"] listesini sistem diline ("str", "dex") çevirmeliyiz.
+                // Aksi takdirde dropdown'lar boş çıkar.
+                let mappedFrom = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+                
+                if (chooseItem.from) {
+                    mappedFrom = chooseItem.from.map(k => getKey(k));
+                }
+
+                return {
+                    count: chooseItem.count || 1,
+                    amount: chooseItem.amount || 1,
+                    from: mappedFrom
+                };
+            }
         }
         return null;
     });
 
-    const abilityKeyMap = { 'kuv': 'str', 'str': 'str', 'çev': 'dex', 'dex': 'dex', 'day': 'con', 'con': 'con', 'zek': 'int', 'int': 'int', 'akı': 'wis', 'wis': 'wis', 'kar': 'cha', 'cha': 'cha' };
-    
     // Toplam Irk Bonuslarını Hesapla
     const raceBonuses = computed(() => {
         const bonuses = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
         if (!store.race.selected) return bonuses;
-        const getKey = (k) => abilityKeyMap[k.toLowerCase()] || k.toLowerCase();
         
-        const addBonus = (abilityObj) => {
-            if (!abilityObj) return;
-            for (const [key, val] of Object.entries(abilityObj)) {
-                if (key === 'choose') continue; 
-                const mappedKey = getKey(key);
-                if (bonuses[mappedKey] !== undefined) bonuses[mappedKey] += val;
-            }
+        const addBonus = (rawAbility) => {
+            if (!rawAbility) return;
+            
+            // Veri dizi değilse diziye çevirip işle (Standardizasyon)
+            const abilityList = Array.isArray(rawAbility) ? rawAbility : [rawAbility];
+
+            abilityList.forEach(abilityObj => {
+                for (const [key, val] of Object.entries(abilityObj)) {
+                    if (key === 'choose') continue; // Seçim verisini toplama dahil etme
+                    
+                    const mappedKey = getKey(key);
+                    if (bonuses[mappedKey] !== undefined) bonuses[mappedKey] += val;
+                }
+            });
         };
+
         if (store.race.selected.ability) addBonus(store.race.selected.ability);
         if (store.race.subrace && store.race.subrace.ability) addBonus(store.race.subrace.ability);
         

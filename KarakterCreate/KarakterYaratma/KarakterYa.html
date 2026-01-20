@@ -398,14 +398,14 @@
                                     </label>
                                 </div>
                                 <button @click="rollStats(showToast)" class="roll-btn" :disabled="isRolling">
-                                    {{ isRolling ? 'Zarlar Dönüyor...' : '🎲 Zarları At' }}
+                                    {{ isRolling ? 'Zarlar Dönüyor...' : (hasRolled ? '🔄 Tekrar At' : '🎲 Zarları At') }}
                                 </button>
                             </div>
 
                             <div class="pool-container" 
                                  @dragover.prevent 
                                  @drop="draggedItem && unassignScore(draggedItem.id)">
-                                <div class="pool-label">PUAN HAVUZU (Buradan Sürükle)</div>
+                                <div class="pool-label">PUAN HAVUZU (Tıkla Seç veya Sürükle)</div>
                                 <div class="pool-slots">
                                     <div v-for="item in scoreAllocations.filter(x => x.assignedTo === null).sort((a,b) => b.val - a.val)" 
                                          :key="item.id"
@@ -413,17 +413,21 @@
                                          draggable="true"
                                          @dragstart="draggedItem = item"
                                          @dragend="draggedItem = null"
-                                         @click="draggedItem = (draggedItem === item ? null : item)" 
-                                         :class="{ 'selected': draggedItem === item }">
+                                         @click.stop="handleOrbClick(item)" 
+                                         :class="{ 'selected': draggedItem && draggedItem.id === item.id }">
                                         {{ item.val }}
                                     </div>
                                     <div v-if="scoreAllocations.length === 0 && !selectedScoreMethod.includes('roll')" style="color:#666; font-style:italic;">Puanlar yükleniyor...</div>
+                                    <div v-if="scoreAllocations.length === 0 && selectedScoreMethod.includes('roll') && !hasRolled" style="color:#666;">
+                                        Lütfen önce zar atın.
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="stat-slots-grid">
                                 <div v-for="(label, key) in selectableStats" :key="key" class="stat-slot-card">
                                     <div class="stat-name">{{ label }}</div>
+                                    
                                     <div class="drop-zone" 
                                          @dragover.prevent 
                                          @drop="draggedItem && assignScore(draggedItem.id, key)"
@@ -434,14 +438,18 @@
                                              class="score-orb placed"
                                              draggable="true"
                                              @dragstart.stop="draggedItem = scoreAllocations.find(x => x.assignedTo === key)"
-                                             @click.stop="draggedItem = scoreAllocations.find(x => x.assignedTo === key)">
+                                             @click.stop="handleOrbClick(scoreAllocations.find(x => x.assignedTo === key), key)"
+                                             :class="{ 'selected': draggedItem && draggedItem.id === scoreAllocations.find(x => x.assignedTo === key).id }">
                                             {{ scoreAllocations.find(x => x.assignedTo === key).val }}
                                         </div>
                                         <div v-else class="empty-socket"></div>
                                     </div>
+
                                     <div class="stat-calc">
                                         <span class="bonus-pill" v-if="statBonuses[key] > 0">+{{ statBonuses[key] }}</span>
-                                        <span class="total-score" v-if="finalAbilityScores[key] > 0">= {{ finalAbilityScores[key] }}</span>
+                                        <span class="total-score" v-if="scoreAllocations.find(x => x.assignedTo === key)">
+                                            = {{ finalAbilityScores[key] }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>

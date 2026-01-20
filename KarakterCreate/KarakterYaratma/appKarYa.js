@@ -14,44 +14,97 @@ import { avatarList } from './src/data/avatarList.js';
 const app = createApp({
     setup() {
         
+        // ============================================================
         // 1. GENEL SAYFA MANTIĞI
-        const { isSheetMode, activeSheetTab, finishCreation, hasCreatedSheet, activeFeatureSubTab } = useCharacterSheet();
-        
-        // 2. IRK MANTIĞI (DÜZELTİLDİ: Score değişkenleri buradan kaldırıldı)
+        // ============================================================
         const { 
-            raceList, flatRaceList, selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig 
+            isSheetMode, 
+            activeSheetTab, 
+            finishCreation, 
+            hasCreatedSheet, 
+            activeFeatureSubTab 
+        } = useCharacterSheet();
+        
+        // ============================================================
+        // 2. IRK MANTIĞI
+        // ============================================================
+        // Not: Score ile ilgili değişkenler buradan kaldırıldı ve useScoreLogic'e taşındı.
+        const { 
+            raceList, 
+            flatRaceList, 
+            selectedFlatOption, 
+            raceBonuses, 
+            activeRaceTraits, 
+            raceChoiceConfig 
         } = useRaceLogic();
 
+        // ============================================================
         // 3. SINIF MANTIĞI
+        // ============================================================
         const { 
-            classList, selectedClass, selectedSubclass, targetLevel, userChoices, 
-            subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, 
-            getAvailableOptions, getChoiceDetail 
+            classList, 
+            selectedClass, 
+            selectedSubclass, 
+            targetLevel, 
+            userChoices, 
+            subclassOptions, 
+            subclassUnlockLevel, 
+            activeFeatures, 
+            getHitDie, 
+            getAvailableOptions, 
+            getChoiceDetail 
         } = useClassLogic();
 
-        // 4. PUANLAR (DÜZELTİLDİ: Yeni değişkenler BURAYA eklendi)
+        // ============================================================
+        // 4. PUANLAR (SCORE LOGIC)
+        // ============================================================
+        // Düzeltme: handleOrbClick ve diğer drag-drop fonksiyonları buradan çekildi.
         const {
-            statLabels, selectableStats, scoreMethods, selectedScoreMethod, standardArrayValues,
-            rolledPool, hasRolled, isCapped20, isRolling,
-            pointBuyBudget, currentPbCost,
-            getFlexCost, changePointBuy, rollStats, isOptionDisabled,
-            statBonuses, finalAbilityScores, proficiencyBonus,
-            // --- YENİ EKLENENLER BURADA OLMALI ---
-            scoreAllocations, draggedItem, assignScore, unassignScore, syncAllocationsFromStore
+            statLabels, 
+            selectableStats, 
+            scoreMethods, 
+            selectedScoreMethod, 
+            standardArrayValues,
+            rolledPool, 
+            hasRolled, 
+            isCapped20, 
+            isRolling,
+            pointBuyBudget, 
+            currentPbCost,
+            getFlexCost, 
+            changePointBuy, 
+            rollStats, 
+            isOptionDisabled,
+            statBonuses, 
+            finalAbilityScores, 
+            proficiencyBonus,
+            // --- YENİ EKLENEN SİSTEMLER ---
+            scoreAllocations, 
+            draggedItem, 
+            assignScore, 
+            unassignScore, 
+            syncAllocationsFromStore,
+            handleOrbClick // <--- BURASI EKLENDİ (Daha önce tanımlı değildi ama return ediliyordu)
         } = useScoreLogic(raceBonuses);
 
+        // ============================================================
         // 5. YETENEKLER
+        // ============================================================
         const {
             SKILL_DEFINITIONS,
-            raceSkillInfo, classSkillInfo,
-            skillBudget, expertiseBudget,
-            toggleSkill, calculatedSkills,
-            currentProfCount, currentExpertCount
+            raceSkillInfo, 
+            classSkillInfo,
+            skillBudget, 
+            expertiseBudget,
+            toggleSkill, 
+            calculatedSkills,
+            currentProfCount, 
+            currentExpertCount
         } = useSkillLogic(finalAbilityScores, proficiencyBonus);
 
 
         // ============================================================
-        //  UI & SİSTEM DEĞİŞKENLERİ
+        // UI & SİSTEM DEĞİŞKENLERİ
         // ============================================================
         const currentStep = ref(0);
         const steps = [{ title: "Konsept" }, { title: "Irk" }, { title: "Sınıf" }, { title: "Puanlar" }, { title: "Geçmiş" }];
@@ -89,7 +142,7 @@ const app = createApp({
         const isMobileSheetOpen = ref(false);
         const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
 
-        // Toast
+        // --- TOAST BİLDİRİMİ ---
         const showToast = (message, icon = '✅') => {
             const existing = document.querySelector('.toast-notification');
             if(existing) existing.remove();     
@@ -104,10 +157,13 @@ const app = createApp({
             }, 3000);
         };
 
+        // --- HANDLER WRAPPERS ---
         const handleFinish = () => { finishCreation(showToast); };
         const handleRoll = () => { rollStats(showToast); };
 
-        // Seed Sistemi
+        // ============================================================
+        // SEED (KAYIT/YÜKLEME) SİSTEMİ
+        // ============================================================
         const characterSeed = computed(() => {
             const exportData = {
                 n: store.meta.name, 
@@ -158,7 +214,7 @@ const app = createApp({
 
                 targetLevel.value = data.l || 1; 
                 
-                // Irk
+                // Irk Yükleme
                 if (data.r) {
                     const targetSubraceName = data.sr || "Standart";
                     const foundFlatOption = flatRaceList.value.find(option => {
@@ -173,7 +229,7 @@ const app = createApp({
                     }
                 }            
 
-                // Sınıf
+                // Sınıf Yükleme
                 if (data.c) {
                     const foundClass = classList.value.find(x => x.name === data.c);
                     if (foundClass) {
@@ -182,6 +238,7 @@ const app = createApp({
                     }
                 }                
 
+                // Puanlar ve Diğerleri
                 selectedScoreMethod.value = data.sm || 'manual';
                 if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
                 
@@ -205,7 +262,11 @@ const app = createApp({
             }
         };
 
+        // ============================================================
+        // LIFE CYCLE (ON MOUNTED)
+        // ============================================================
         onMounted(async () => {
+            // Varsayılan Avatar Kontrolü
             if (!store.meta.avatar || typeof store.meta.avatar !== 'string') {
                 store.meta.avatar = "../../img/avatars/default-avatar.png";
             }
@@ -238,6 +299,7 @@ const app = createApp({
                     setTimeout(() => loader.remove(), 500);
                 }
 
+                // URL'den Seed Okuma
                 const urlParams = new URLSearchParams(window.location.search);
                 const urlSeed = urlParams.get('seed');
                 if (urlSeed) {
@@ -252,26 +314,109 @@ const app = createApp({
             }
         });
 
+        // ============================================================
+        // RETURN OBJECT
+        // ============================================================
         return {
-            store, currentStep, steps, nextStep, prevStep, loading, error,
-            isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
-            copyLink, showToast, isRolling,
-            backgroundList, featList, seedText, characterSeed, loadFromSeed, copySeed,
-            formatEntry, parseTags, dndIcons, isSheetMode, activeSheetTab, finishCreation: handleFinish,
-            raceList, flatRaceList, selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig,
-            classList, selectedClass, selectedSubclass, targetLevel, userChoices, 
-            subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, 
-            getAvailableOptions, getChoiceDetail,
-            statLabels, selectableStats, scoreMethods, selectedScoreMethod, 
-            isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy, 
-            standardArrayValues, rolledPool, hasRolled, isCapped20, 
-            rollStats: handleRoll, statBonuses, finalAbilityScores, proficiencyBonus,
-            SKILL_DEFINITIONS, calculatedSkills, toggleSkill, skillBudget, expertiseBudget, 
-            raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount, 
-            hasCreatedSheet, activeFeatureSubTab, 
-            avatarGallery, avatarList, showCustomAvatarInput, isGalleryExpanded, 
-            // YENİLER (Artık düzgün dönecek):
-            scoreAllocations, draggedItem, assignScore, unassignScore
+            // Store ve Genel
+            store, 
+            currentStep, 
+            steps, 
+            nextStep, 
+            prevStep, 
+            loading, 
+            error,
+            isMobileMenuOpen, 
+            toggleMobileMenu, 
+            isMobileSheetOpen, 
+            toggleMobileSheet,
+            copyLink, 
+            showToast, 
+            
+            // Veri Listeleri ve Seed
+            backgroundList, 
+            featList, 
+            seedText, 
+            characterSeed, 
+            loadFromSeed, 
+            copySeed,
+            
+            // Utils ve Icons
+            formatEntry, 
+            parseTags, 
+            dndIcons, 
+            
+            // Logic 1: Karakter Sayfası
+            isSheetMode, 
+            activeSheetTab, 
+            finishCreation: handleFinish,
+            hasCreatedSheet, 
+            activeFeatureSubTab, 
+            
+            // Logic 2: Irk
+            raceList, 
+            flatRaceList, 
+            selectedFlatOption, 
+            raceBonuses, 
+            activeRaceTraits, 
+            raceChoiceConfig,
+            
+            // Logic 3: Sınıf
+            classList, 
+            selectedClass, 
+            selectedSubclass, 
+            targetLevel, 
+            userChoices, 
+            subclassOptions, 
+            subclassUnlockLevel, 
+            activeFeatures, 
+            getHitDie, 
+            getAvailableOptions, 
+            getChoiceDetail,
+            
+            // Logic 4: Puanlar (Score)
+            statLabels, 
+            selectableStats, 
+            scoreMethods, 
+            selectedScoreMethod, 
+            isOptionDisabled, 
+            getFlexCost, 
+            pointBuyBudget, 
+            currentPbCost, 
+            changePointBuy, 
+            standardArrayValues, 
+            rolledPool, 
+            hasRolled, 
+            isCapped20, 
+            isRolling,
+            rollStats: handleRoll, 
+            statBonuses, 
+            finalAbilityScores, 
+            proficiencyBonus,
+            // Score Yeni Eklenenler (Drag/Drop/Click)
+            handleOrbClick, // <--- ARTIK TANIMLI VE DÖNÜYOR
+            scoreAllocations, 
+            draggedItem, 
+            assignScore, 
+            unassignScore, 
+            syncAllocationsFromStore,
+            
+            // Logic 5: Yetenekler (Skills)
+            SKILL_DEFINITIONS, 
+            calculatedSkills, 
+            toggleSkill, 
+            skillBudget, 
+            expertiseBudget, 
+            raceSkillInfo, 
+            classSkillInfo, 
+            currentProfCount, 
+            currentExpertCount, 
+            
+            // Avatar Gallery
+            avatarGallery, 
+            avatarList, 
+            showCustomAvatarInput, 
+            isGalleryExpanded
         };
     }
 });

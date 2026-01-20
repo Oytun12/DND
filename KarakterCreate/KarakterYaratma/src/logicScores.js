@@ -2,14 +2,20 @@ import { ref, computed, watch } from 'vue';
 import { store } from './store.js';
 
 export function useScoreLogic(raceBonuses) {
-    // --- SABİTLER (Eskisiyle uyumlu) ---
-    // HTML'de 'selectableStats' kullanıyorsun, onu koruyoruz.
-    const selectableStats = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
+    // --- SABİTLER ---
+    // Stat isimlerinin Türkçe karşılıkları
+    const selectableStats = { 
+        'str': 'KUV', 
+        'dex': 'ÇEV', 
+        'con': 'DAY', 
+        'int': 'ZEK', 
+        'wis': 'AKI', 
+        'cha': 'KAR' 
+    };
     
-    // Yöntemler
     const scoreMethods = [
         { id: 'manual', name: 'Manuel Giriş' },
-        { id: 'standard_array', name: 'Standart Dizilim' }, // İsim sadeleşti
+        { id: 'standard_array', name: 'Standart Dizilim' },
         { id: 'point_buy', name: 'Point Buy (Standart)' },
         { id: 'point_buy_flex', name: 'Point Buy (Esnek)' },
         { id: 'roll_4d6', name: 'Zar At (4d6)' },
@@ -19,25 +25,24 @@ export function useScoreLogic(raceBonuses) {
     const selectedScoreMethod = ref('point_buy_flex');
     const standardArrayValues = [15, 14, 13, 12, 10, 8];
     const isRolling = ref(false);
-    const isCapped20 = ref(false); // Eski HTML'de vardı, koruyoruz.
+    const isCapped20 = ref(false);
     
-    // --- YENİ SÜRÜKLE BIRAK SİSTEMİ STATE'LERİ ---
+    // --- DRAG & DROP & TAP STATE ---
     const scoreAllocations = ref([]); 
     const draggedItem = ref(null);
-    const rolledPool = ref([]); // Hata almamak için bunu da tutuyoruz
+    const rolledPool = ref([]); 
+    const hasRolled = ref(false);
 
-    // 1. Havuzu Başlat
+    // 1. Havuzu Başlat (SADECE TOPLARI YARATIR, STORE'A DOKUNMAZ)
     const initAllocations = (values) => {
         scoreAllocations.value = values.map((val, index) => ({
             id: Date.now() + index,
             val: val,
             assignedTo: null
         }));
-        // Store'u temizle
-        Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
     };
 
-    // 2. Zar Atma (Hem Pool'u hem Allocations'ı doldurur)
+    // 2. Zar Atma
     const rollStats = (toastCallback) => {
         isRolling.value = true;
         setTimeout(() => {
@@ -54,8 +59,9 @@ export function useScoreLogic(raceBonuses) {
             }
             results.sort((a, b) => b - a);
             
-            rolledPool.value = results; // Eski sistem uyumluluğu için
-            initAllocations(results);   // Yeni sistem için
+            rolledPool.value = results; 
+            initAllocations(results);   
+            syncStore(); // Yeni zarlar atılınca store'u (0 olarak) eşle
             
             hasRolled.value = true;
             isRolling.value = false;
@@ -63,19 +69,24 @@ export function useScoreLogic(raceBonuses) {
         }, 600); 
     };
 
-    // 3. Puan Atama
+    // 3. Puan Atama / Değiştirme (SWAP MANTIĞI)
     const assignScore = (scoreId, targetStat) => {
         const scoreItem = scoreAllocations.value.find(x => x.id === scoreId);
         if (!scoreItem) return;
         
-        // Hedef doluysa takas (swap) mantığı
+        // Hedefte biri var mı? Varsa yer değiştir (Swap)
         const existingItem = scoreAllocations.value.find(x => x.assignedTo === targetStat);
+        
+        // Kendi kendine atama engeli
         if (existingItem && existingItem.id === scoreItem.id) return;
 
         if (existingItem) {
+            // Hedefteki top, gelen topun eski yerine gitsin
             existingItem.assignedTo = scoreItem.assignedTo; 
         }
+        
         scoreItem.assignedTo = targetStat;
+        draggedItem.value = null; // İşlem bitince seçimi kaldır
         syncStore();
     };
 
@@ -84,38 +95,106 @@ export function useScoreLogic(raceBonuses) {
         const item = scoreAllocations.value.find(x => x.id === scoreId);
         if (item) {
             item.assignedTo = null;
+            draggedItem.value = null;
             syncStore();
         }
     };
 
+    // 5. Akıllı Tıklama (Mobil/Masaüstü)
+    const handleOrbClick = (item, clickedItemLocation = null) => {
+        if (!draggedItem.value) {
+            draggedItem.value = item;
+            return;
+        }
+
+        if (draggedItem.value.id === item.id) {
+            draggedItem.value = null;
+            return;
+        }
+
+        const selectedItem = draggedItem.value;
+        const selectedItemLocation = selectedItem.assignedTo;
+
+        if (clickedItemLocation) {
+            assignScore(selectedItem.id, clickedItemLocation);
+        }
+        else if (selectedItemLocation && !clickedItemLocation) {
+            assignScore(item.id, selectedItemLocation);
+        }
+        else {
+            draggedItem.value = item;
+        }
+    };
+
+    // --- STORE SENKRONİZASYONU ---
     const syncStore = () => {
         const resetVal = selectedScoreMethod.value === 'manual' ? 10 : 0;
+        
         Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = resetVal);
+        
         scoreAllocations.value.forEach(item => {
             if (item.assignedTo) store.abilities.base[item.assignedTo] = item.val;
         });
     };
 
+    // --- SEED YÜKLEME ---
     const syncAllocationsFromStore = () => {
         if (!['standard_array', 'roll_4d6', 'roll_5d6'].includes(selectedScoreMethod.value)) return;
+        
         const currentStats = { ...store.abilities.base };
         
+        // 1. Havuz boşsa, önce havuzu yarat
         if (scoreAllocations.value.length === 0) {
-            if (selectedScoreMethod.value === 'standard_array') {
+            if (selectedScoreMethod.value.includes('roll') && rolledPool.value.length > 0) {
+                initAllocations(rolledPool.value);
+            } else if (selectedScoreMethod.value === 'standard_array') {
                 initAllocations([...standardArrayValues]);
-            } else {
-                // Rolled ise ve veri varsa
-                const values = Object.values(currentStats).filter(v => v > 0);
-                if(values.length > 0) initAllocations(values);
             }
         }
+
+        // 2. Havuzdaki topları Store'daki değerlerle eşleştir
         Object.entries(currentStats).forEach(([stat, val]) => {
-            const match = scoreAllocations.value.find(x => x.val === val && x.assignedTo === null);
+            if (val === 0) return;
+            
+            let match = scoreAllocations.value.find(x => x.val === val && x.assignedTo === null);
+            if (!match) {
+                match = scoreAllocations.value.find(x => x.val === val && x.assignedTo !== stat);
+            }
+
             if (match) match.assignedTo = stat;
         });
+        
+        hasRolled.value = true;
+        syncStore(); 
     };
 
-    // Point Buy Helperları (Eskisiyle Aynı)
+    // --- YÖNTEM DEĞİŞİKLİĞİ İZLEYİCİSİ (WATCHER) ---
+    watch(selectedScoreMethod, (newVal) => {
+        
+        // Eğer store'da veri varsa ve havuz boşsa, bu bir "Seed Yükleme" işlemidir.
+        // Bu durumda sıfırlama yapmadan çıkıyoruz.
+        const hasData = Object.values(store.abilities.base).some(v => v > 0);
+        if (hasData && scoreAllocations.value.length === 0) {
+            return; 
+        }
+
+        if (newVal === 'standard_array') {
+            initAllocations([...standardArrayValues]);
+            hasRolled.value = true; 
+            syncStore();
+        } else if (newVal.includes('point_buy')) {
+            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 8);
+        } else if (newVal === 'manual') {
+            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 10);
+        } else {
+            // Roll modları için sıfırla
+            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
+            hasRolled.value = false;
+            scoreAllocations.value = [];
+        }
+    });
+
+    // Helperlar
     const getFlexCost = (score) => {
         if (score <= 8) return 0;
         const table = {9:1, 10:2, 11:3, 12:4, 13:5, 14:7, 15:9, 16:12, 17:15, 18:19, 19:23, 20:28};
@@ -133,25 +212,6 @@ export function useScoreLogic(raceBonuses) {
         if (next >= min && next <= max) store.abilities.base[stat] = next;
     };
 
-    const hasRolled = ref(false); // Bunu da ref olarak tanımladık
-
-    // Method değişince temizlik
-    watch(selectedScoreMethod, (newVal) => {
-        if (newVal === 'standard_array') {
-            initAllocations([...standardArrayValues]);
-        } else if (newVal.includes('point_buy')) {
-            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 8);
-        } else if (newVal === 'manual') {
-            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 10);
-        } else {
-            Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = 0);
-            hasRolled.value = false;
-            rolledPool.value = [];
-            scoreAllocations.value = [];
-        }
-    });
-
-    // Final Hesaplamalar
     const statBonuses = computed(() => {
         const totals = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
         if (raceBonuses && raceBonuses.value) {
@@ -174,17 +234,17 @@ export function useScoreLogic(raceBonuses) {
 
     const proficiencyBonus = computed(() => Math.ceil(store.class.level / 4) + 1);
 
-    // Geriye dönmesi gereken HER ŞEY (Eskiler + Yeniler)
     return {
-        selectableStats, // <-- 'statLabels' yerine bunu kullandık HTML ile uyuşsun diye
+        // DÜZELTME: statLabels eklendi (selectableStats'a referans verir)
+        statLabels: selectableStats, 
+        selectableStats, 
+        
         scoreMethods, selectedScoreMethod, isRolling, isCapped20, standardArrayValues,
         pointBuyBudget, currentPbCost, changePointBuy, getFlexCost,
         rollStats, statBonuses, finalAbilityScores, proficiencyBonus,
-        hasRolled, rolledPool, // <-- Hata veren değişken buydu, ekledik
-        
-        // Yeni Sistem Değişkenleri
-        scoreAllocations, draggedItem, assignScore, unassignScore, syncAllocationsFromStore,
-        // Eski dropdown disabled fonksiyonu (hata vermesin diye boş da olsa tutuyoruz)
+        hasRolled, rolledPool,
+        scoreAllocations, draggedItem, assignScore, unassignScore, 
+        syncAllocationsFromStore, handleOrbClick, 
         isOptionDisabled: () => false 
     };
 }
