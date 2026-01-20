@@ -93,7 +93,7 @@ select:focus, input:focus { outline: none; border-color: #b52b2b; }
 }
 
 .level-card:hover {
-    background-color: #303030;
+
     transform: translateX(5px);
 }
 
@@ -287,13 +287,11 @@ a.dnd-link.spell-link:hover {
    BÜYÜK AVATAR GALERİSİ
    ============================================================ */
 
+/* Ana Konteyner: Sadece temel renk ve yapı, boyut/kenarlık yok */
 .avatar-gallery-container {
     background: #151515;
-    border: 1px solid #333;
     border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 15px;
-    animation: slideDown 0.3s ease-out;
+    /* Eski padding, border ve animation satırları BURADAN SİLİNDİ */
 }
 
 @keyframes slideDown {
@@ -301,13 +299,13 @@ a.dnd-link.spell-link:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* İçerik Izgarası */
 .avatar-grid-large {
     display: grid;
-    /* Mobilde 4'lü, Masaüstünde 6'lı grid */
     grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
     gap: 8px;
-    max-height: 400px; /* Maksimum yükseklik (Scroll oluşması için) */
-    overflow-y: auto;  /* Dikey kaydırma çubuğu */
+    max-height: 400px; 
+    overflow-y: auto;  
     padding-right: 5px;
 }
 
@@ -452,20 +450,29 @@ a.dnd-link.spell-link:hover {
     transform: translateY(-2px);
 }
 
-/* 2. Çekmece Animasyonu (Accordion Effect) */
+/* Çekmece Mantığı: Kapalıyken her şey 0 olmalı */
 .gallery-drawer {
     max-height: 0;
-    overflow: hidden;
     opacity: 0;
-    transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out;
-    border-top: none; 
+    overflow: hidden;
+    padding: 0;          /* Kapalıyken iç boşluk yok */
+    border: none;        /* Kapalıyken kenarlık yok */
+    margin-bottom: 0;    /* Kapalıyken dış boşluk yok */
+    
+    /* Tüm özellikler geçişli olsun */
+    transition: max-height 0.5s ease-in-out, 
+                opacity 0.4s ease-in-out, 
+                padding 0.4s ease, 
+                margin 0.4s ease;
 }
 
+/* Açık Durum: Her şeyi geri getiriyoruz */
 .gallery-drawer.open {
-    max-height: 500px; /* Yeterince büyük bir değer */
+    max-height: 500px;   /* Yeterince büyük bir alan */
     opacity: 1;
-    border-top: 1px solid #333;
-    padding-top: 15px;
+    padding: 10px;       /* İç boşluk geri geldi */
+    border: 1px solid #333; /* Kenarlık geri geldi */
+    margin-bottom: 15px;    /* Dış boşluk geri geldi */
 }
 
 /* 3. Büyük & Kızıl İsim Girişi */

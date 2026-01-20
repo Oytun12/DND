@@ -118,7 +118,7 @@
                             </div>
                         </div>
 
-                        <button @click="isGalleryExpanded = !isGalleryExpanded" class="btn-crimson-outline">
+                        <button ref="galleryButton" @click="isGalleryExpanded = !isGalleryExpanded" class="btn-crimson-outline">
                             {{ isGalleryExpanded ? 'Kütüphaneyi Gizle' : 'Resmi Değiştir (' + avatarList.length + ' Görsel)' }}
                         </button>
 
@@ -292,7 +292,7 @@
                                             </div>
 
                                             <div v-else-if="!feat.isSubclass" class="feature-item">
-                                                <h4>{{ feat.name }}</h4>
+                                                <h4 style="color: #b52b2b;">{{ feat.name }}</h4>
                                                 <div class="feature-text">
                                                     <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt" style="margin-bottom: 5px;"></p>
                                                 </div>
@@ -324,7 +324,7 @@
 
                                         <template v-for="feat in step.features" :key="'sub-'+feat.name">
                                             <div v-if="feat.isSubclass" class="feature-item subclass-item">
-                                                <h4>{{ feat.name }} <span class="subclass-tag">{{ selectedClass.subclassTitle || 'Alt Sınıf' }}</span></h4>
+                                                <h4 style="color: #b52b2b;"> {{ feat.name }} <span class="subclass-tag">{{ selectedClass.subclassTitle || 'Alt Sınıf' }}</span></h4>
                                                 <div class="feature-text">
                                                     <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt" style="margin-bottom: 5px;"></p>
                                                 </div>

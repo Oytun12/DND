@@ -3,7 +3,6 @@ import { store } from './store.js';
 
 export function useScoreLogic(raceBonuses) {
     // --- SABİTLER ---
-    // Stat isimlerinin Türkçe karşılıkları
     const selectableStats = { 
         'str': 'KUV', 
         'dex': 'ÇEV', 
@@ -77,16 +76,14 @@ export function useScoreLogic(raceBonuses) {
         // Hedefte biri var mı? Varsa yer değiştir (Swap)
         const existingItem = scoreAllocations.value.find(x => x.assignedTo === targetStat);
         
-        // Kendi kendine atama engeli
         if (existingItem && existingItem.id === scoreItem.id) return;
 
         if (existingItem) {
-            // Hedefteki top, gelen topun eski yerine gitsin
             existingItem.assignedTo = scoreItem.assignedTo; 
         }
         
         scoreItem.assignedTo = targetStat;
-        draggedItem.value = null; // İşlem bitince seçimi kaldır
+        draggedItem.value = null; 
         syncStore();
     };
 
@@ -129,9 +126,7 @@ export function useScoreLogic(raceBonuses) {
     // --- STORE SENKRONİZASYONU ---
     const syncStore = () => {
         const resetVal = selectedScoreMethod.value === 'manual' ? 10 : 0;
-        
         Object.keys(store.abilities.base).forEach(k => store.abilities.base[k] = resetVal);
-        
         scoreAllocations.value.forEach(item => {
             if (item.assignedTo) store.abilities.base[item.assignedTo] = item.val;
         });
@@ -139,11 +134,12 @@ export function useScoreLogic(raceBonuses) {
 
     // --- SEED YÜKLEME ---
     const syncAllocationsFromStore = () => {
+        // Sadece Drag & Drop metodlarında çalışsın
         if (!['standard_array', 'roll_4d6', 'roll_5d6'].includes(selectedScoreMethod.value)) return;
         
         const currentStats = { ...store.abilities.base };
         
-        // 1. Havuz boşsa, önce havuzu yarat
+        // 1. Havuz boşsa (Load durumunda), önce havuzu doldur
         if (scoreAllocations.value.length === 0) {
             if (selectedScoreMethod.value.includes('roll') && rolledPool.value.length > 0) {
                 initAllocations(rolledPool.value);
@@ -152,32 +148,43 @@ export function useScoreLogic(raceBonuses) {
             }
         }
 
-        // 2. Havuzdaki topları Store'daki değerlerle eşleştir
+        // 2. Havuzdaki topları Store'daki yerlerine gönder (Eşleştirme)
         Object.entries(currentStats).forEach(([stat, val]) => {
             if (val === 0) return;
             
+            // Değeri ve boşta durumu eşleşen bir top bul
             let match = scoreAllocations.value.find(x => x.val === val && x.assignedTo === null);
+            
+            // Eğer bulamazsan (belki atanmıştır?), herhangi bir eşleşeni çal
             if (!match) {
                 match = scoreAllocations.value.find(x => x.val === val && x.assignedTo !== stat);
             }
 
-            if (match) match.assignedTo = stat;
+            if (match) {
+                match.assignedTo = stat;
+            }
         });
         
         hasRolled.value = true;
-        syncStore(); 
+        // Not: syncStore çağırmıyoruz, çünkü veri zaten Store'dan geldi.
     };
 
     // --- YÖNTEM DEĞİŞİKLİĞİ İZLEYİCİSİ (WATCHER) ---
     watch(selectedScoreMethod, (newVal) => {
         
-        // Eğer store'da veri varsa ve havuz boşsa, bu bir "Seed Yükleme" işlemidir.
-        // Bu durumda sıfırlama yapmadan çıkıyoruz.
-        const hasData = Object.values(store.abilities.base).some(v => v > 0);
-        if (hasData && scoreAllocations.value.length === 0) {
-            return; 
+        // Seed Yükleme Kontrolü:
+        // Eğer Store'da veri varsa (örn: Seed yüklenmişse) ve havuzumuz henüz boşsa,
+        // bu bir "Yükleme" işlemidir. Sıfırlama yapmayıp sadece eşitleme (Sync) yapmalıyız.
+        const hasData = Object.values(store.abilities.base).some(v => v > 0 && v !== 8 && v !== 10);
+        const isPoolEmpty = scoreAllocations.value.length === 0;
+
+        if (hasData && isPoolEmpty && ['standard_array', 'roll_4d6', 'roll_5d6'].includes(newVal)) {
+            // Seed'den gelen veriyi koru ve topları yerleştir
+            syncAllocationsFromStore();
+            return;
         }
 
+        // Normal Yöntem Değişikliği (Sıfırlama)
         if (newVal === 'standard_array') {
             initAllocations([...standardArrayValues]);
             hasRolled.value = true; 
@@ -235,7 +242,6 @@ export function useScoreLogic(raceBonuses) {
     const proficiencyBonus = computed(() => Math.ceil(store.class.level / 4) + 1);
 
     return {
-        // DÜZELTME: statLabels eklendi (selectableStats'a referans verir)
         statLabels: selectableStats, 
         selectableStats, 
         
