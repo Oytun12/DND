@@ -621,111 +621,93 @@
         <div v-if="isSheetMode" class="character-sheet-layout" v-cloak>
             
             <header class="sheet-header-main">
-                <button class="edit-mode-btn" @click="isSheetMode = false" title="Sihirbaza Geri Dön">
-                    ✎ Düzenle
-                </button>
-
-                <div class="sheet-avatar">
-                    <img :src="store.meta.avatar" alt="Avatar">
-                </div>
-                <div class="sheet-identity">
-                    <h1>{{ store.meta.name || 'İsimsiz Kahraman' }}</h1>
-                    <div class="sheet-subtitle">
-                        {{ store.race.selected?.name }} 
-                        <span v-if="store.race.subrace">({{ store.race.subrace.name }})</span> 
-                        | 
-                        {{ selectedClass?.name }} {{ targetLevel }}
+    
+                <div class="header-section left-tools">
+                    <button class="edit-mode-btn" @click="isSheetMode = false" title="Sihirbaza Geri Dön">
+                        ✎ Düzenle
+                    </button>
+                    
+                    <div class="share-group">
+                        <button @click="copySeed" class="btn btn-secondary btn-icon-text" title="Kodu Kopyala">
+                            📋 <span class="hide-on-mobile">Kod</span>
+                        </button>
+                        <button @click="copyLink" class="btn btn-primary btn-icon-text" title="Linki Kopyala">
+                            🔗 <span class="hide-on-mobile">Link</span>
+                        </button>
                     </div>
                 </div>
-                <div class="sheet-rest-buttons">
-                    <button class="rest-btn short" @click="handleRest('short')" @click="showToast('Kısa dinlenme yapıldı (HP yenilenmedi).', '☕')">Kısa Dinlenme</button>
-                    <button class="rest-btn long" @click="handleRest('long')" @click="showToast('Uzun dinlenme: HP ve Büyüler yenilendi!', '💤')">Uzun Dinlenme</button>
+            
+                <div class="header-section center-identity">
+                    <div class="sheet-avatar">
+                        <img :src="store.meta.avatar" alt="Avatar">
+                    </div>
+                    <div class="identity-text">
+                        <h1>{{ store.meta.name || 'İsimsiz Kahraman' }}</h1>
+                        <div class="sheet-subtitle">
+                            {{ store.race.selected?.name }} 
+                            <span v-if="store.race.subrace">({{ store.race.subrace.name }})</span> 
+                            | 
+                            {{ selectedClass?.name }} {{ targetLevel }}
+                        </div>
+                    </div>
                 </div>
+                
+                <div class="header-section right-rest">
+                    <button class="rest-btn short" @click="handleRest('short')">Kısa Dinlenme</button>
+                    <button class="rest-btn long" @click="handleRest('long')">Uzun Dinlenme</button>
+                </div>
+            
             </header>
         
             <div class="sheet-grid">
                 
                 <aside class="sheet-sidebar">
-                    
-                    <div class="ability-scores-container">
-                        <div v-for="(val, key) in finalAbilityScores" :key="key" class="ability-score-card">
-                            <div class="score-header">{{ key.toUpperCase() }}</div>
+    
+                <div class="ability-scores-container">
+                    <div v-for="(val, key) in finalAbilityScores" :key="key" class="ability-score-card">
+                        <div class="score-header">{{ key.toUpperCase() }}</div>
+                        
+                        <div class="score-modifier">
+                            {{ val }}
+                        </div>
+                     
+                        <div class="score-value">
+                            {{ Math.floor((val - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((val - 10) / 2) }}
+                        </div>
+                    </div>
+                </div>
+             
+                <div class="pb-box">
+                    <span class="pb-label">Uzmanlık Puanı</span>
+                    <span class="pb-val">+{{ proficiencyBonus }}</span>
+                </div>
+             
+                <div class="sheet-skills-panel">
+                    <h3 style="font-size: 0.9em; text-align: center; border-bottom: 1px solid #333; padding-bottom: 5px;">Yetenekler</h3>
+                    <div class="skills-container">
+                        <div v-for="skill in calculatedSkills" :key="skill.id" class="sheet-skill-row">
                             
-                            <div class="score-modifier">
-                                {{ val }}
-                            </div>
-
-                            <div class="score-value">
-                                {{ Math.floor((val - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((val - 10) / 2) }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pb-box">
-                        <span class="pb-label">Uzmanlık Puanı</span>
-                        <span class="pb-val">+{{ proficiencyBonus }}</span>
-                    </div>
-
-                    <div class="sheet-skills-panel">
-                        <h3>Yetenekler (Skills)</h3>
-                        <div class="skills-container">
-                            <div v-for="skill in calculatedSkills" :key="skill.id" class="sheet-skill-row">
+                            <div class="skill-left">
+                                <div class="skill-status-icon">
+                                    <span v-if="skill.profLevel === 2" title="Ustalık (Expertise)" style="color: #e67e22; font-size: 1.3em; line-height: 1;">★</span>
+                                    <span v-else-if="skill.profLevel === 1" title="Uzmanlık" style="color: #b52b2b; font-size: 1.3em; line-height: 1;">●</span>
+                                    <span v-else style="color: #333; font-size: 1.3em; line-height: 1;">•</span>
+                                </div>
                                 
-                                <div class="skill-left">
-                                    <div class="skill-status-icon">
-                                        <span v-if="skill.profLevel === 2" title="Ustalık (Expertise)" style="color: #e67e22; font-size: 1.3em; line-height: 1;">★</span>
-                                        <span v-else-if="skill.profLevel === 1" title="Uzmanlık" style="color: #b52b2b; font-size: 1.3em; line-height: 1;">●</span>
-                                        <span v-else style="color: #333; font-size: 1.3em; line-height: 1;">•</span>
-                                    </div>
-                                    
-                                    <div>
-                                        <span class="skill-name">{{ skill.name }}</span>
-                                        <span class="skill-attr" style="color:#666; font-size:0.8em; margin-left:4px;">({{ skill.attrLabel }})</span>
-                                    </div>
+                                <div>
+                                    <span class="skill-name">{{ skill.name }}</span>
+                                    <span class="skill-attr" style="color:#666; font-size:0.8em; margin-left:4px;">({{ skill.attrLabel }})</span>
                                 </div>
-
-                                <div class="skill-val" :style="skill.profLevel > 0 ? 'color:#fff' : 'color:#666'">
-                                    {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
-                                </div>
-
                             </div>
+                         
+                            <div class="skill-val" :style="skill.profLevel > 0 ? 'color:#fff' : 'color:#666'">
+                                {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
+                            </div>
+                         
                         </div>
                     </div>
-
-                    <div class="senses-box" style="margin-top: 20px;">
-                        <div class="sense-row">
-                            <span class="sense-val">{{ 10 + Math.floor((finalAbilityScores.wis - 10) / 2) }}</span>
-                            <span class="sense-label">Pasif Algı</span>
-                        </div>
-                        <div class="sense-row">
-                            <span class="sense-val">{{ 10 + Math.floor((finalAbilityScores.int - 10) / 2) }}</span>
-                            <span class="sense-label">Pasif İnceleme</span>
-                        </div>
-                        <div class="sense-row">
-                            <span class="sense-val">{{ 10 + Math.floor((finalAbilityScores.wis - 10) / 2) }}</span>
-                            <span class="sense-label">Pasif Sezgi</span>
-                        </div>
-                    </div>
-
-                    <div class="sheet-section" style="border-top: 2px solid #333; margin-top: 20px; padding-top: 15px;">
-                        <h4 style="color: #888; font-size: 0.8em; text-transform: uppercase; margin-bottom: 10px;">Karakter Paylaşımı</h4>
-
-                        <div style="background: #111; padding: 10px; border-radius: 4px; border: 1px solid #222; margin-bottom: 10px;">
-                            <code style="display: block; font-size: 0.7em; color: #4caf50; word-break: break-all; max-height: 40px; overflow-y: auto;">
-                                {{ characterSeed }}
-                            </code>
-                        </div>                  
-
-                        <div style="display: flex; gap: 10px;">
-                            <button @click="copySeed" class="btn btn-secondary" style="flex: 1; font-size: 0.8em; padding: 8px;">
-                                📋 Kodu Kopyala
-                            </button>
-                            <button @click="copyLink" class="btn btn-primary" style="flex: 1; font-size: 0.8em; padding: 8px;">
-                                🔗 Linki Kopyala
-                            </button>
-                        </div>
-                    </div>
-        
+                </div>
+             
                 </aside>
         
                 <main class="sheet-main-content">

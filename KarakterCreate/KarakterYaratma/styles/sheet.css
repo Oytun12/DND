@@ -97,31 +97,96 @@
     color: #eee; box-sizing: border-box;
 }
 
-/* Header */
+/* ============================================================
+   MODERN HEADER YAPISI (GÜNCELLENMİŞ 3 BLOKLU YAPI)
+   ============================================================ */
+
 .sheet-header-main {
-    display: flex; align-items: center; gap: 20px;
-    background: #1e1e1e; padding: 20px; border-radius: 8px;
-    border-bottom: 3px solid #b52b2b; margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5); position: relative;
+    display: flex;
+    justify-content: space-between; /* Sol - Orta - Sağ yasla */
+    align-items: center;
+    background: #1e1e1e;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-bottom: 3px solid #b52b2b;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    flex-wrap: wrap; /* Gerekirse alt satıra geçsin */
+    gap: 15px;
 }
-.sheet-avatar img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #b52b2b; object-fit: cover; flex-shrink: 0; }
-.sheet-identity h1 { margin: 0; font-size: 2em; color: #fff; line-height: 1.2; }
-.sheet-subtitle { color: #aaa; font-size: 1.1em; }
-.sheet-rest-buttons { margin-left: auto; display: flex; gap: 10px; flex-shrink: 0; }
+
+/* --- ORTAK SEKSİYON AYARLARI --- */
+.header-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 1. SOL BLOK (Araçlar) */
+.left-tools {
+    flex: 1; /* Genişliği paylaş */
+    justify-content: flex-start;
+}
+
+.share-group {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-icon-text {
+    padding: 6px 12px;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* 2. ORTA BLOK (Kimlik) */
+.center-identity {
+    flex: 2; /* Ortaya daha fazla alan ver */
+    justify-content: center;
+    text-align: center;
+    flex-direction: row; /* Avatar ve İsim yan yana */
+    gap: 15px;
+}
+
+.sheet-avatar img {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    border: 2px solid #b52b2b;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.identity-text h1 { margin: 0; font-size: 1.6em; color: #fff; line-height: 1.1; }
+.identity-text .sheet-subtitle { color: #aaa; font-size: 0.9em; margin-top: 3px; }
+
+/* 3. SAĞ BLOK (Dinlenme) */
+.right-rest {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+/* BUTONLAR */
+.edit-mode-btn {
+    background: transparent; border: 1px solid #444; color: #888;
+    padding: 6px 12px; font-size: 0.85em; cursor: pointer; border-radius: 4px;
+    transition: all 0.2s; white-space: nowrap;
+}
+.edit-mode-btn:hover { border-color: #e67e22; color: #e67e22; }
 
 .rest-btn {
     background: #333; border: 1px solid #555; color: #ccc;
-    padding: 8px 15px; border-radius: 4px; cursor: pointer;
-    font-size: 0.85em; text-transform: uppercase; font-weight: bold;
+    padding: 8px 12px; border-radius: 4px; cursor: pointer;
+    font-size: 0.8em; text-transform: uppercase; font-weight: bold;
     transition: background 0.2s; white-space: nowrap;
 }
 .rest-btn:hover { background: #b52b2b; color: #fff; border-color: #b52b2b; }
-.edit-mode-btn {
-    background: transparent; border: 1px solid #444; color: #888;
-    padding: 5px 10px; font-size: 0.8em; cursor: pointer; border-radius: 4px;
-    transition: all 0.2s; display: flex; align-items: center; gap: 5px; white-space: nowrap;
-}
-.edit-mode-btn:hover { border-color: #e67e22; color: #e67e22; }
+
+
+/* ============================================================
+   SHEET IZGARASI VE İÇERİK
+   ============================================================ */
 
 /* Grid Layout */
 .sheet-grid {
@@ -177,18 +242,17 @@
 }
 .sense-label { color: #aaa; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; font-weight: bold; }
 
-/* SKILLS PANEL & ROW FIX (Düzeltilen Kısım) */
+/* SKILLS PANEL */
 .sheet-skills-panel { background: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; }
 .sheet-skills-panel h3 {
     margin: 0 0 15px 0; color: #b52b2b; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px;
     border-bottom: 1px solid #333; padding-bottom: 5px;
 }
 
-/* İşte düzeltme burada: justify-content: space-between eklendi */
 .sheet-skill-row {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* İki uca yasla */
+    justify-content: space-between;
     padding: 8px 0;
     border-bottom: 1px solid #2a2a2a;
     font-size: 0.95em;
@@ -197,7 +261,6 @@
 }
 .sheet-skill-row:hover { background: rgba(255,255,255,0.03); }
 
-/* Sol tarafı (İkon + İsim) gruplamak için gerekli sınıf */
 .skill-left {
     display: flex;
     align-items: center;
@@ -474,8 +537,44 @@
     .score-modifier { font-size: 1.5em; }
 }
 
-/* Mobil (800px altı) */
-@media (max-width: 800px) {
+/* MOBİL GÖRÜNÜM (Güncellendi) */
+@media (max-width: 850px) {
+    /* HEADER (YENİ YAPILANMA) */
+    .sheet-header-main {
+        flex-direction: column; /* Alt alta diz */
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .header-section {
+        width: 100%; /* Hepsi tam genişlik olsun */
+        justify-content: center !important; /* İçerikleri ortala */
+    }
+
+    /* SIRALAMA (Order): Mobilde en üstte ne görünsün? */
+    /* 1. ÜST: Butonlar */
+    .left-tools { order: 1; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 5px; }
+    /* 2. ORTA: Kimlik */
+    .center-identity { order: 2; flex-direction: column; /* Mobilde avatar ve isim alt alta olsun */ gap: 5px; }
+    /* 3. ALT: Dinlenme */
+    .right-rest { order: 3; margin-top: 5px; }
+
+    /* Butonları mobilde tam genişlik yap */
+    .left-tools button, .share-group button {
+        flex: 1; /* Eşit dağılsın */
+        justify-content: center;
+    }
+    
+    .right-rest button {
+        flex: 1;
+    }
+
+    /* Mobilde "Link" yazısını gizle, sadece ikon kalsın (Opsiyonel, şu an aktif ettim) */
+    .hide-on-mobile { display: inline; } 
+    
+    .sheet-avatar img { width: 90px; height: 90px; } /* Mobilde avatar biraz daha büyük vurgulu olsun */
+
+    /* GENEL LAYOUT */
     .sheet-grid { display: flex; flex-direction: column; gap: 20px; width: 100%; }
     .sheet-sidebar { width: 100%; display: flex; flex-direction: column; gap: 15px; }
     
@@ -492,12 +591,6 @@
     .c-stat-box { min-height: 90px; }
     .hp-box { grid-column: 1 / -1; order: -1; }
 
-    /* Header */
-    .sheet-header-main { flex-direction: column; text-align: center; padding: 15px; }
-    .sheet-rest-buttons { width: 100%; justify-content: space-between; gap: 10px; }
-    .rest-btn { flex: 1; }
-    .edit-mode-btn { width: 100%; margin-bottom: 10px; background: #2a2a2a; }
-
     /* Tab Menüsü */
     .sheet-tabs { width: 100%; display: flex; padding-bottom: 5px; border-bottom: 1px solid #444; }
     .sheet-tabs button { flex: 1; padding: 15px 10px; font-size: 0.95em; justify-content: center; }
@@ -511,19 +604,17 @@
 
     /* Kurtulma Zarları - Mobil Düzenleme */
     .st-grid {
-        /* Mobilde: 3 sütun x 2 satır (veya 2x3, duruma göre sığar) */
         grid-template-columns: repeat(3, 1fr); 
     }
     
     .st-row {
-        /* Mobilde yatay dizilim daha iyi okunabilir */
         flex-direction: row; 
         justify-content: space-between;
         padding: 8px 12px;
     }
     
     .st-info {
-        flex-direction: row; /* Yan yana */
+        flex-direction: row; 
         gap: 8px;
     }
     
