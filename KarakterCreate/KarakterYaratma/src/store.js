@@ -9,11 +9,9 @@ export const store = reactive({
     meta: {
         name: "",
         playerName: "",
-        // Varsayılan avatar linki
+        xp: 0,
         avatar: "../../img/avatars/default-avatar.png"
-        // avatar: "https://www.dndbeyond.com/content/skins/waterdeep/images/characters/default-avatar.png" 
     },
-    meta: { name: "", xp: 0 },
     race: { 
         selected: null, 
         subrace: null, 
