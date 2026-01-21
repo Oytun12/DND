@@ -265,6 +265,97 @@
 .feat-text p { color: #aaa; line-height: 1.6; font-size: 0.95em; margin-bottom: 10px; }
 
 
+/* ============================================================
+   KURTULMA ZARLARI (YATAY BAR STİLİ)
+   ============================================================ */
+.saving-throws-panel {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 8px 15px;
+    margin-bottom: 20px; /* Alttaki combat-stats ile mesafe */
+}
+
+.st-header {
+    text-align: center;
+    color: #888;
+    font-size: 0.75em; /* Daha küçük, zarif başlık */
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    padding-bottom: 4px;
+}
+
+/* IZGARA YAPISI */
+.st-grid {
+    display: grid;
+    /* Masaüstünde: 6 tane yan yana sığdır */
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 10px;
+}
+
+/* TEKİL KUTUCUK */
+.st-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #252525;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    gap: 8px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.st-row:hover {
+    border-color: #666;
+    transform: translateY(-2px);
+}
+
+/* İsim ve Değer Alanı */
+.st-info {
+    display: flex;
+    flex-direction: column; /* Alt alta diz (STR üstte, +5 altta) */
+    align-items: center;
+    line-height: 1;
+}
+
+/* Etiket (STR, DEX...) */
+.st-label {
+    font-weight: bold;
+    color: #aaa;
+    font-size: 0.7em;
+    margin-bottom: 2px;
+}
+
+/* Değer (+5) */
+.st-val {
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.1em;
+}
+
+/* Uzmanlık Göstergesi (Top) */
+.st-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #555;
+    background: transparent;
+    flex-shrink: 0; /* Ezilmesin */
+}
+
+/* Aktif Uzmanlık */
+.st-indicator.active {
+    background: #b52b2b;
+    border-color: #b52b2b;
+    box-shadow: 0 0 6px #b52b2b;
+}
+
+
+
 /* ------------------------------------------------------------
    3. RESPONSIVE (Mobil & Tablet)
    ------------------------------------------------------------ */
@@ -311,4 +402,31 @@
     
     .character-sheet-layout { margin: 0; padding: 0; overflow-x: hidden; }
     .sheet-tab-content { padding: 15px; border: none; }
+
+    /* Kurtulma Zarları - Mobil Düzenleme */
+    .st-grid {
+        /* Mobilde: 3 sütun x 2 satır (veya 2x3, duruma göre sığar) */
+        grid-template-columns: repeat(3, 1fr); 
+    }
+    
+    .st-row {
+        /* Mobilde yatay dizilim daha iyi okunabilir */
+        flex-direction: row; 
+        justify-content: space-between;
+        padding: 8px 12px;
+    }
+    
+    .st-info {
+        flex-direction: row; /* Yan yana */
+        gap: 8px;
+    }
+    
+    .st-label { font-size: 0.9em; margin-bottom: 0; }
+}
+
+@media (max-width: 500px) {
+    /* Çok küçük ekranlarda 2 sütuna düşsün */
+    .st-grid {
+        grid-template-columns: repeat(2, 1fr); 
+    }
 }

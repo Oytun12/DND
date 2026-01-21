@@ -650,10 +650,14 @@
                     <div class="ability-scores-container">
                         <div v-for="(val, key) in finalAbilityScores" :key="key" class="ability-score-card">
                             <div class="score-header">{{ key.toUpperCase() }}</div>
+                            
                             <div class="score-modifier">
+                                {{ val }}
+                            </div>
+
+                            <div class="score-value">
                                 {{ Math.floor((val - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((val - 10) / 2) }}
                             </div>
-                            <div class="score-value">{{ val }}</div>
                         </div>
                     </div>
 
@@ -725,6 +729,29 @@
                 </aside>
         
                 <main class="sheet-main-content">
+                    <div class="saving-throws-panel top-bar-style">
+                        <h4 class="st-header">KURTULMA ZARLARI</h4> 
+                        
+                        <div class="st-grid">
+                            <div v-for="(score, key) in finalAbilityScores" :key="key" class="st-row">
+                                <div style="display:none">
+                                    {{ 
+                                        /* DÜZELTME: toLowerCase() yerine toLocaleLowerCase('tr') kullanıldı */
+                                        isSaveProf = selectedClass?.proficiency?.some(p => p.toLocaleLowerCase('tr') === statLabels[key].toLocaleLowerCase('tr')) 
+                                    }}
+                                    {{
+                                        saveMod = Math.floor((score - 10) / 2) + (isSaveProf ? proficiencyBonus : 0)
+                                    }}
+                                </div>
+
+                                <div class="st-indicator" :class="{ 'active': isSaveProf }"></div>
+                                <div class="st-info">
+                                    <span class="st-label">{{ key.toUpperCase() }}</span>
+                                    <span class="st-val">{{ saveMod >= 0 ? '+' : '' }}{{ saveMod }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="combat-stats-row">
                         <div class="c-stat-box">
