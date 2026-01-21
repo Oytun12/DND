@@ -501,7 +501,7 @@
                         <div v-if="store.background.selected" class="choice-wrapper" style="border-color: #4caf50; background: rgba(76, 175, 80, 0.05); margin-bottom: 20px;">
                             <h5 style="margin:0; color:#4caf50;">💡 Geçmiş Yetenekleri ({{ store.background.selected.name }})</h5>
                             <p style="font-size: 0.85em; margin: 5px 0; color: #eee;">
-                                Kural kitabına göre bu 2 yetenek önerilir: <strong>{{ store.background.selected.skillProficiencies }}</strong>
+                                Kural kitabına göre bu <strong>2</strong> yetenek önerilir: <strong>{{ store.background.selected.skillProficiencies }}</strong>
                             </p>
                         </div>
                         <div v-if="classSkillInfo" class="choice-wrapper" style="border-color: #2196f3; background: rgba(33, 150, 243, 0.05); margin-bottom: 20px;">
@@ -509,11 +509,8 @@
                             <p style="font-size: 0.85em; margin: 5px 0; color: #eee;" v-html="classSkillInfo"></p>
                         </div>
                         <div v-if="raceSkillInfo" class="choice-wrapper" style="border-color: #e67e22; background: rgba(230, 126, 34, 0.05); margin-bottom: 20px;">
-                            <h5 style="margin:0; color:#e67e22;">🧬 Irk Yetenekleri ({{ store.race.selected.name }})</h5>
-                            <p style="font-size: 0.85em; margin: 5px 0; color: #eee;">
-                                {{ raceSkillInfo }}
-                                <br>
-                            </p>
+                            <h5 style="margin:0; color:#e67e22;">🧬 Irk Yetenekleri ({{ store.race.selected.name }})</h5>                          
+                            <p style="font-size: 0.85em; margin: 5px 0; color: #eee;" v-html="raceSkillInfo"></p>
                         </div>
                     
                         <div class="skill-picker-grid">
@@ -839,11 +836,50 @@
                         </div>
 
                         <div v-if="activeSheetTab === 'description'">
-                            <p><strong>Arkaplan:</strong> {{ store.background.selected?.name || 'Seçilmedi' }}</p>
-                            <p v-if="store.background.selected?.feature">
-                                <strong>Özellik: {{ store.background.selected.feature.name }}</strong><br>
-                                {{ store.background.selected.feature.entries?.[0] }}
-                            </p>
+                            
+                            <div v-if="selectedClass" class="sheet-section">
+                                <h4 style="color: #b52b2b; border-bottom: 1px solid rgba(181, 43, 43, 0.3); padding-bottom: 5px; margin-bottom: 10px;">
+                                    Sınıf Donanımı ({{ selectedClass.name }})
+                                </h4>
+
+                                <div v-if="selectedClass.startingProficiencies" style="margin-bottom: 20px;">
+                                    <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🛡️ Zırh ve Silah Yetkinlikleri</strong>
+                                    <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: disc;">
+                                        
+                                        <li v-if="selectedClass.startingProficiencies.armor && selectedClass.startingProficiencies.armor.length">
+                                            <strong style="color: #aaa;">Zırhlar:</strong> 
+                                            <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.armor.join(', ') }}</span>
+                                        </li>
+                                        
+                                        <li v-if="selectedClass.startingProficiencies.weapons && selectedClass.startingProficiencies.weapons.length" style="margin-top: 5px;">
+                                            <strong style="color: #aaa;">Silahlar:</strong> 
+                                            <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.weapons.join(', ') }}</span>
+                                        </li>
+
+                                        <li v-if="selectedClass.startingProficiencies.tools && selectedClass.startingProficiencies.tools.length" style="margin-top: 5px;">
+                                            <strong style="color: #aaa;">Aletler:</strong> 
+                                            <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.tools.join(', ') }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div v-if="selectedClass.startingEquipment">
+                                    <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🎒 Standart Başlangıç Ekipmanları</strong>
+                                    
+                                    <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: circle;">
+                                        <li v-for="(item, index) in selectedClass.startingEquipment.default" :key="index" style="margin-bottom: 5px;">
+                                            {{ item }}
+                                        </li>
+                                    </ul>
+
+                                    <div v-if="selectedClass.startingEquipment.goldAlternative" style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #333; font-size: 0.85em; color: #888;">
+                                        <span style="color: #e67e22;">💰 Alternatif Varlık:</span> 
+                                        Eğer ekipman almak yerine altın ile başlamayı seçerseniz: 
+                                        <strong>{{ selectedClass.startingEquipment.goldAlternative }} gp</strong>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
         
                     </div>

@@ -21,32 +21,70 @@ export function useSkillLogic(finalAbilityScores, proficiencyBonus) {
         const subrace = store.race.subrace?.name || "";
         const fullName = `${race} ${subrace}`.toLowerCase();
         let rules = { fixed: [], bonusBudget: 0, text: null };
-        if (fullName.includes("insan") && (fullName.includes("alternatif") || fullName.includes("varyant"))) { rules.bonusBudget = 1; rules.text = "Alternatif İnsan: 1 beceri."; }
-        if (fullName.includes("elf") && !fullName.includes("yarı")) { rules.fixed.push("perception"); rules.text = "Keskin Duyular: Algı."; }
-        if (fullName.includes("yarı-elf")) { rules.bonusBudget = 2; rules.text = "Beceri Çokluğu: 2 beceri."; }
-        if (fullName.includes("orc")) { rules.fixed.push("intimidation"); rules.text = "Korkutucu: Gözdağı."; }
-        if (fullName.includes("goliath")) { rules.fixed.push("athletics"); rules.text = "Doğal Atlet: Atletizm."; }
+        
+        // Buradaki <strong> etiketleri HTML tarafında v-html ile çalışacak
+        if (fullName.includes("insan") && (fullName.includes("alternatif") || fullName.includes("varyant"))) { 
+            rules.bonusBudget = 1; 
+            rules.text = "Alternatif İnsan: <strong>1</strong> beceri seçimi."; 
+        }
+        if (fullName.includes("elf") && !fullName.includes("yarı")) { 
+            rules.fixed.push("perception"); 
+            rules.text = "Keskin Duyular: <strong>Algı</strong> yeteneği."; 
+        }
+        if (fullName.includes("yarı-elf")) { 
+            rules.bonusBudget = 2; 
+            rules.text = "Beceri Çokluğu: İstediğin <strong>2</strong> beceriyi seçebilirsin."; 
+        }
+        if (fullName.includes("orc") || fullName.includes("ork")) { // 'ork' ihtimalini de ekledim
+            rules.fixed.push("intimidation"); 
+            rules.text = "Korkutucu: <strong>Gözdağı</strong> yeteneği."; 
+        }
+        if (fullName.includes("goliath")) { 
+            rules.fixed.push("athletics"); 
+            rules.text = "Doğal Atlet: <strong>Atletizm</strong> yeteneği."; 
+        }
         return rules;
     };
 
     const raceSkillInfo = computed(() => getRaceSkillRules().text);
 
-    // Sınıfın verdiği yetenek hakları
+    // Sınıfın verdiği yetenek hakları (DİNAMİK VERSİYON)
     const getClassSkillRules = () => {
         if (!store.class.selected) return null;
-        const cName = store.class.selected.name;
-        const defs = {
-            "Barbar": { count: 2, list: "Hayvan İdaresi, Atletizm, Gözdağı, Doğa, Algı, Hayatta Kalma" },
-            "Büyücü": { count: 2, list: "Arkana, Tarih, Sezgi, İnceleme, Tıp, Din" },
-            "Düzenbaz": { count: 4, list: "Akrobasi, Atletizm, Kandırma, Sezgi, Gözdağı, İnceleme, Algı, Performans, İkna, El Çabukluğu, Gizlenme" },
-            "Ozan": { count: 3, list: "İstediğin herhangi 3 yetenek" }
-        };
-        return defs[cName] || { count: 2, list: "Sınıf yetenekleri" };
+
+        // 1. JSON verisinden yetenek bilgilerini çekiyoruz
+        // Veri yolu: selectedClass -> startingProficiencies -> skills
+        const startProfs = store.class.selected.startingProficiencies;
+
+        if (startProfs && startProfs.skills) {
+            const skillData = startProfs.skills;
+
+            // DURUM A: Belirli bir listeden seçim (Örn: Barbar, Kolcu, Büyücü)
+            // JSON Yapısı: { "choose": 2, "from": ["Atletizm", "Doğa"...] }
+            if (skillData.from && skillData.choose) {
+                return {
+                    count: skillData.choose, // Seçim sayısı (Örn: 2)
+                    list: Array.isArray(skillData.from) ? skillData.from.join(', ') : skillData.from
+                };
+            }
+
+            // DURUM B: Herhangi bir yetenek (Örn: Ozan - Bard)
+            // JSON Yapısı bazen { "any": 3 } şeklinde olabilir
+            if (skillData.any) {
+                return {
+                    count: skillData.any,
+                    list: "İstediğin herhangi bir yetenek"
+                };
+            }
+        }
+
+        // Eğer JSON'da veri yoksa (Fallback)
+        return { count: 2, list: "Sınıf yetenekleri" };
     };
 
     const classSkillInfo = computed(() => {
         const info = getClassSkillRules();
-        return info ? `Kural kitabına göre bu yeteneklerden ${info.count} tane seçin: ${info.list}.` : null;
+        return info ? `Kural kitabına göre bu yeteneklerden <strong>${info.count}</strong> tane seçin: <strong>${info.list}</strong>.` : null;
     });
 
     // Toplam Bütçeler
