@@ -128,7 +128,7 @@ export function useClassLogic() {
         }
         return timeline;
     });
-
+    
     const getAvailableOptions = (all, key) => { 
         if(!all) return []; 
         // Daha önce seçilmişleri filtrele
@@ -138,16 +138,50 @@ export function useClassLogic() {
     
     const getChoiceDetail = (n, l, i) => formatEntry(userChoices.value[`${n}-${l}_${i}`]);
 
-    // --- SINIF KAYNAKLARI MANTIĞI (Resource Tracker) ---
+    // --- SINIF KAYNAKLARI MANTIĞI (SAYAÇLAR) ---
     const classResources = computed(() => {
         const cls = selectedClass.value;
+        const sub = selectedSubclass.value;
         const lvl = targetLevel.value;
         const resources = [];
 
         if (!cls) return resources;
         const cName = cls.name;
+        const sName = sub ? sub.name : "";
 
-        // 1. BARBAR (Öfke / Rage)
+        // --- 1. SAVAŞÇI (FIGHTER) ---
+        if (cName === 'Dövüşçü' || cName === 'Savaşçı') { // İsim kontrolü (Json'da ne geçiyorsa)
+            // İkinci Soluk (Second Wind) - Lv 1
+            resources.push({ id: 'second_wind', name: 'İkinci Soluk', max: 1, reset: 'short' });
+            
+            // Eylem Coşkusu (Action Surge) - Lv 2
+            if (lvl >= 2) {
+                let maxAS = 1;
+                if (lvl >= 17) maxAS = 2;
+                resources.push({ id: 'action_surge', name: 'Eylem Coşkusu', max: maxAS, reset: 'short' });
+            }
+
+            // ALT SINIF: Savaş Üstadı (Battle Master) - Üstünlük Zarları
+            if (sName.includes('Savaş Üstadı') && lvl >= 3) {
+                let dice = 4;
+                if (lvl >= 15) dice = 6;
+                else if (lvl >= 7) dice = 5;
+                resources.push({ id: 'sup_dice', name: 'Üstünlük Zarı', max: dice, reset: 'short' });
+            }
+            
+            // ALT SINIF: Samuray (Fighting Spirit)
+            if (sName.includes('Samuray') && lvl >= 3) {
+                resources.push({ id: 'fighting_spirit', name: 'Dövüş Ruhu', max: 3, reset: 'long' });
+            }
+            
+            // ALT SINIF: Psi Warrior
+            if (sName.includes('Psi') && lvl >= 3) {
+                 const prof = Math.ceil(lvl / 4) + 1; // Basit proficiency hesabı
+                 resources.push({ id: 'psi_dice', name: 'Psionik Enerji', max: 2 * prof, reset: 'long' });
+            }
+        }
+
+        // --- 2. BARBAR ---
         if (cName === 'Barbar') {
             let maxRage = 2;
             if (lvl >= 17) maxRage = 6;
@@ -157,59 +191,52 @@ export function useClassLogic() {
             resources.push({ id: 'rage', name: 'Öfke (Rage)', max: maxRage, reset: 'long' });
         }
 
-        // 2. OZAN (Ozan İlhamı / Bardic Inspiration)
-        if (cName === 'Ozan') {
-            // Karizma bonusu kadar (minimum 1)
-            const chaMod = Math.floor(((store.abilities.base.cha || 10) - 10) / 2); // Basit hesap, ırk bonusunu logicScores'dan çekmek daha doğru ama şimdilik store.base yeterli
-            const maxBardic = Math.max(1, chaMod); 
-            // 5. seviyeden sonra Kısa Dinlenmede de dolar (Font of Inspiration)
-            const resetType = lvl >= 5 ? 'short' : 'long';
-            resources.push({ id: 'bardic', name: 'Ozan İlhamı', max: maxBardic, reset: resetType });
-        }
-
-        // 3. RAHİP (Kutsal Kanal / Channel Divinity)
-        if (cName === 'Rahip' && lvl >= 2) {
-            let maxCD = 1;
-            if (lvl >= 18) maxCD = 3;
-            else if (lvl >= 6) maxCD = 2;
-            resources.push({ id: 'channel_divinity', name: 'Kutsal Kanal', max: maxCD, reset: 'short' });
-        }
-
-        // 4. DRUID (Vahşi Şekil / Wild Shape)
-        if (cName === 'Druid' && lvl >= 2) {
-            resources.push({ id: 'wild_shape', name: 'Vahşi Şekil', max: 2, reset: 'short' }); // Genelde 2'dir
-        }
-
-        // 5. DÖVÜŞÇÜ (Second Wind & Action Surge)
-        if (cName === 'Dövüşçü') {
-            resources.push({ id: 'second_wind', name: 'İkinci Soluk', max: 1, reset: 'short' });
-            if (lvl >= 2) {
-                let maxAS = 1;
-                if (lvl >= 17) maxAS = 2;
-                resources.push({ id: 'action_surge', name: 'Eylem Coşkusu', max: maxAS, reset: 'short' });
-            }
-        }
-
-        // 6. KEŞİŞ (Ki Puanları)
+        // --- 3. KEŞİŞ (MONK) ---
         if (cName === 'Keşiş' && lvl >= 2) {
             resources.push({ id: 'ki', name: 'Ki Puanı', max: lvl, reset: 'short' });
         }
 
-        // 7. PALADIN (Lay on Hands / Şifa Elleri)
-        if (cName === 'Paladin') {
-            resources.push({ id: 'lay_on_hands', name: 'Şifa Elleri (HP)', max: lvl * 5, reset: 'long' });
+        // --- 4. WARLOCK ---
+        if (cName === 'Warlock' || cName === 'Cadı') {
+            let slots = 1;
+            if (lvl >= 17) slots = 4;
+            else if (lvl >= 11) slots = 3;
+            else if (lvl >= 2) slots = 2;
+            resources.push({ id: 'pact_slots', name: 'Pact Slotları', max: slots, reset: 'short' });
         }
-
-        // 8. BÜYÜCÜ (Sorcery Points)
+        
+        // --- 5. BÜYÜCÜ (SORCERER) ---
         if (cName === 'Büyücü' && lvl >= 2) {
             resources.push({ id: 'sorcery_points', name: 'Büyücülük Puanı', max: lvl, reset: 'long' });
         }
-        
-        // 9. SİHİRBAZ (Arcane Recovery - Takibi zordur ama slot hesabı için bir checkbox konabilir, şimdilik geçiyoruz)
 
-        // Veri tutarlılığı: Eğer store'da bu kaynağın kaydı yoksa veya max değer değiştiyse güncelle
-        // Not: Bunu watcher ile yapmak daha sağlıklı olabilir ama UI tarafında halledeceğiz.
+        // --- 6. RAHİP & PALADIN (Channel Divinity) ---
+        if ((cName === 'Rahip' && lvl >= 2) || (cName === 'Paladin' && lvl >= 3)) {
+             let maxCD = 1;
+             if (cName === 'Rahip') {
+                 if (lvl >= 18) maxCD = 3;
+                 else if (lvl >= 6) maxCD = 2;
+             }
+             resources.push({ id: 'channel_divinity', name: 'Kutsal Kanal', max: maxCD, reset: 'short' });
+        }
         
+        // Paladin Lay on Hands
+        if (cName === 'Paladin') {
+             resources.push({ id: 'lay_on_hands', name: 'Şifa Elleri (HP)', max: lvl * 5, reset: 'long' });
+        }
+
+        // --- 7. OZAN (BARD) ---
+        if (cName === 'Ozan') {
+             const chaMod = Math.max(1, Math.floor(((store.abilities.base.cha || 10) - 10) / 2));
+             const resetType = lvl >= 5 ? 'short' : 'long';
+             resources.push({ id: 'bardic', name: 'Ozan İlhamı', max: chaMod, reset: resetType });
+        }
+        
+        // --- 8. DRUID ---
+        if (cName === 'Druid' && lvl >= 2) {
+             resources.push({ id: 'wild_shape', name: 'Vahşi Şekil', max: 2, reset: 'short' });
+        }
+
         return resources;
     });
 
