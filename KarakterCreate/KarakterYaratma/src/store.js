@@ -31,6 +31,7 @@ export const store = reactive({
         proficiencies: [], // Uzmanlık (Proficiency)
         expertises: []     // Ustalık (Expertise)
     },
+    resources: {},
     choices: {} 
 });
 

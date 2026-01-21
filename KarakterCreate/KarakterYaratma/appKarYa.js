@@ -52,7 +52,8 @@ const app = createApp({
             activeFeatures, 
             getHitDie, 
             getAvailableOptions, 
-            getChoiceDetail 
+            getChoiceDetail,
+            classResources, 
         } = useClassLogic();
 
         // ============================================================
@@ -275,7 +276,41 @@ const app = createApp({
                 showToast("Yükleme sırasında hata oluştu!", "❌");
             }
         };
+        // YENİ: Kaynak Yönetimi Fonksiyonları
+        const updateResource = (id, delta, max) => {
+            // Mevcut değeri al veya yoksa max değerden başlat
+            const current = store.resources[id] !== undefined ? store.resources[id] : max;
+            let newVal = current + delta;
 
+            // Sınırları koru (0 ile Max arası)
+            if (newVal > max) newVal = max;
+            if (newVal < 0) newVal = 0;
+
+            store.resources[id] = newVal;
+        };
+
+        // YENİ: Dinlenme Fonksiyonu (Short veya Long)
+        const handleRest = (type) => {
+            let msg = "";
+
+            // 1. Can (HP) Mantığı
+            if (type === 'long') {
+                msg = "Uzun dinlenme: HP, Büyüler ve Yetenekler yenilendi! 💤";
+                // (HP fulleme kodun varsa buraya eklersin)
+            } else {
+                msg = "Kısa dinlenme yapıldı. (Warlock büyüleri ve bazı yetenekler yenilendi) ☕";
+            }
+        
+            // 2. Kaynakları Yenileme (Rage, Ki, vb.)
+            classResources.value.forEach(res => {
+                // Long rest her şeyi doldurur. Short rest sadece 'short' tipleri doldurur.
+                if (type === 'long' || res.reset === 'short') {
+                    store.resources[res.id] = res.max;
+                }
+            });
+        
+            showToast(msg);
+        };
         // ============================================================
         // LIFE CYCLE (ON MOUNTED)
         // ============================================================
@@ -437,7 +472,11 @@ const app = createApp({
             showCustomAvatarInput, 
             isGalleryExpanded,
             galleryContainer,
-            galleryButton
+            galleryButton,
+
+            classResources,   // HTML'de v-for döngüsü için gerekli
+            updateResource,   // + ve - butonları için gerekli
+            handleRest
         };
     }
 });

@@ -638,8 +638,8 @@
                     </div>
                 </div>
                 <div class="sheet-rest-buttons">
-                    <button class="rest-btn short" @click="showToast('Kısa dinlenme yapıldı (HP yenilenmedi).', '☕')">Kısa Dinlenme</button>
-                    <button class="rest-btn long" @click="showToast('Uzun dinlenme: HP ve Büyüler yenilendi!', '💤')">Uzun Dinlenme</button>
+                    <button class="rest-btn short" @click="handleRest('short')" @click="showToast('Kısa dinlenme yapıldı (HP yenilenmedi).', '☕')">Kısa Dinlenme</button>
+                    <button class="rest-btn long" @click="handleRest('long')" @click="showToast('Uzun dinlenme: HP ve Büyüler yenilendi!', '💤')">Uzun Dinlenme</button>
                 </div>
             </header>
         
@@ -775,6 +775,8 @@
                             </span>
                             <span class="sub-label">Maksimum</span>
                         </div>
+
+                        
                     </div>
         
                     <div class="sheet-tabs">
@@ -799,13 +801,43 @@
                     <div class="sheet-tab-content">
                         
                         <div v-if="activeSheetTab === 'actions'">
-                            <h3>Saldırılar</h3>
-                            <div class="attack-row">
-                                <div class="atk-name">Yumruk</div>
-                                <div class="atk-bonus">+{{ Math.floor((finalAbilityScores.str - 10) / 2) + proficiencyBonus }}</div>
-                                <div class="atk-dmg">1 + {{ Math.floor((finalAbilityScores.str - 10) / 2) }} Bludgeoning</div>
+    
+                            <div v-if="classResources.length > 0" class="resources-dashboard">
+                                <h4 style="margin: 0 0 15px 0; color: #b52b2b; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                    Sınıf Kaynakları
+                                </h4>
+
+                                <div class="res-grid">
+                                    <div v-for="res in classResources" :key="res.id" 
+                                         class="res-card"
+                                         :class="{ 'empty': (store.resources[res.id] !== undefined ? store.resources[res.id] : res.max) === 0 }">
+
+                                        <div class="res-info">
+                                            <h5>{{ res.name }}</h5>
+                                            <div class="res-meta">
+                                                <span v-if="res.reset === 'short'">⚡ Kısa Dinlenme</span>
+                                                <span v-else>💤 Uzun Dinlenme</span>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="res-controls">
+                                            <button @click="updateResource(res.id, -1, res.max)" class="res-btn minus">–</button>
+
+                                            <div class="res-value">
+                                                {{ store.resources[res.id] !== undefined ? store.resources[res.id] : res.max }}
+                                                <span class="max">/{{ res.max }}</span>
+                                            </div>
+
+                                            <button @click="updateResource(res.id, 1, res.max)" class="res-btn plus">+</button>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
                             </div>
-                            <p style="color:#666; font-style:italic; margin-top:10px;">(Silah ve eşya sistemi henüz eklenmedi)</p>
+                            <h3>Saldırılar & Aksiyonlar</h3>
+                            <div class="attack-row">
+                               </div>
+                           
                         </div>
         
                         <div v-if="activeSheetTab === 'features'">
