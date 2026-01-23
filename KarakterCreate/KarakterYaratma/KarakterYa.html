@@ -576,7 +576,9 @@
                 <div class="sheet-section">
                     <h4 style="border-bottom: 1px solid #b52b2b; padding-bottom: 5px; margin-bottom: 10px; color: #b52b2b;">Yetenekler (Skills)</h4>
                     <div class="skills-container">
-                        <div v-for="skill in calculatedSkills" :key="skill.id" class="skill-row">
+                        <div v-for="skill in calculatedSkills" :key="skill.id" 
+                             class="sheet-skill-row clickable-stat"
+                             @click="rollD20(skill.name, skill.totalBonus)">
                             <div class="skill-left">
 
                                 <div class="skill-status-icon">
@@ -664,7 +666,11 @@
                 <aside class="sheet-sidebar">
     
                 <div class="ability-scores-container">
-                    <div v-for="(val, key) in finalAbilityScores" :key="key" class="ability-score-card">
+
+                    <div v-for="(val, key) in finalAbilityScores" :key="key" 
+                        class="ability-score-card clickable-stat"
+                        @click="rollD20(key.toUpperCase(), Math.floor((val - 10) / 2))" 
+                        title="Zar Atmak İçin Tıkla">
                         <div class="score-header">{{ key.toUpperCase() }}</div>
                         
                         <div class="score-modifier">
@@ -685,25 +691,27 @@
                 <div class="sheet-skills-panel">
                     <h3 style="font-size: 0.9em; text-align: center; border-bottom: 1px solid #333; padding-bottom: 5px;">Yetenekler</h3>
                     <div class="skills-container">
-                        <div v-for="skill in calculatedSkills" :key="skill.id" class="sheet-skill-row">
-                            
+                        <div v-for="skill in calculatedSkills" :key="skill.id" 
+                             class="sheet-skill-row clickable-stat"
+                             @click="rollD20(skill.name, skill.totalBonus)">
+
                             <div class="skill-left">
                                 <div class="skill-status-icon">
                                     <span v-if="skill.profLevel === 2" title="Ustalık (Expertise)" style="color: #e67e22; font-size: 1.3em; line-height: 1;">★</span>
                                     <span v-else-if="skill.profLevel === 1" title="Uzmanlık" style="color: #b52b2b; font-size: 1.3em; line-height: 1;">●</span>
                                     <span v-else style="color: #333; font-size: 1.3em; line-height: 1;">•</span>
                                 </div>
-                                
+
                                 <div>
                                     <span class="skill-name">{{ skill.name }}</span>
                                     <span class="skill-attr" style="color:#666; font-size:0.8em; margin-left:4px;">({{ skill.attrLabel }})</span>
                                 </div>
                             </div>
-                         
+
                             <div class="skill-val" :style="skill.profLevel > 0 ? 'color:#fff' : 'color:#666'">
                                 {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
                             </div>
-                         
+
                         </div>
                     </div>
                 </div>
@@ -715,21 +723,18 @@
                         <h4 class="st-header">KURTULMA ZARLARI</h4> 
                         
                         <div class="st-grid">
-                            <div v-for="(score, key) in finalAbilityScores" :key="key" class="st-row">
-                                <div style="display:none">
-                                    {{ 
-                                        /* DÜZELTME: toLowerCase() yerine toLocaleLowerCase('tr') kullanıldı */
-                                        isSaveProf = selectedClass?.proficiency?.some(p => p.toLocaleLowerCase('tr') === statLabels[key].toLocaleLowerCase('tr')) 
-                                    }}
-                                    {{
-                                        saveMod = Math.floor((score - 10) / 2) + (isSaveProf ? proficiencyBonus : 0)
-                                    }}
-                                </div>
-
-                                <div class="st-indicator" :class="{ 'active': isSaveProf }"></div>
+                            <div v-for="(score, key) in finalAbilityScores" :key="key" 
+                                 class="st-row clickable-stat"
+                                 @click="rollD20(statLabels[key] + ' Kurtulma', Math.floor((score - 10) / 2) + (isSaveProficient(key) ? proficiencyBonus : 0))">
+                                                
+                                <div class="st-indicator" :class="{ 'active': isSaveProficient(key) }"></div>
+                                                
                                 <div class="st-info">
                                     <span class="st-label">{{ key.toUpperCase() }}</span>
-                                    <span class="st-val">{{ saveMod >= 0 ? '+' : '' }}{{ saveMod }}</span>
+                                    <span class="st-val">
+                                        {{ (Math.floor((score - 10) / 2) + (isSaveProficient(key) ? proficiencyBonus : 0)) >= 0 ? '+' : '' }}
+                                        {{ Math.floor((score - 10) / 2) + (isSaveProficient(key) ? proficiencyBonus : 0) }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -742,7 +747,8 @@
                                 {{ 10 + Math.floor((finalAbilityScores.dex - 10) / 2) }}
                             </span>
                         </div>
-                        <div class="c-stat-box">
+                        <div class="c-stat-box clickable-stat" 
+                             @click="rollD20('İnisiyatif', Math.floor((finalAbilityScores.dex - 10) / 2))">
                             <span class="label">İnisiyatif</span>
                             <span class="value">{{ Math.floor((finalAbilityScores.dex - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((finalAbilityScores.dex - 10) / 2) }}</span>
                         </div>
@@ -933,9 +939,71 @@
                 <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
             </svg>
         </div>
+    
+        <div class="dice-overlay" v-if="isSheetMode">
+            <div class="dice-result-card" :class="{ 'active': diceResult.visible }">
+                <div class="dice-close" @click="closeDiceResult">✖</div>
+
+                <div class="dice-source">{{ diceResult.source }}</div>
+
+                <div class="dice-breakdown">
+                    <span class="d20-icon" :class="{ 'nat-20': diceResult.isCrit, 'nat-1': diceResult.isFail }">
+                        {{ diceResult.baseRoll }}
+                    </span>
+                    <span>(d20)</span>
+                    <span>{{ diceResult.modifier >= 0 ? '+' : '' }}{{ diceResult.modifier }}</span>
+                </div>
+
+                <div class="dice-total" :class="{ 'crit-success': diceResult.isCrit, 'crit-fail': diceResult.isFail }">
+                    {{ diceResult.total }}
+                </div>
+
+                <div style="font-size:0.8em; color:#666; margin-top:5px;" v-if="diceResult.isCrit">KRİTİK BAŞARI!</div>
+                <div style="font-size:0.8em; color:#666; margin-top:5px;" v-if="diceResult.isFail">KRİTİK HATA!</div>
+            </div>
+        </div>
+        <div class="history-toggle-btn" 
+             v-if="isSheetMode" 
+             @click="toggleHistory"
+             title="Zar Geçmişi">
+            🕒
+        </div>
+
+        <div class="history-panel" :class="{ 'open': isHistoryOpen }" v-if="isSheetMode">
+            <div class="history-header">
+                <span>Zar Kayıtları</span>
+                <span class="close-history" @click="isHistoryOpen = false">✖</span>
+            </div>
+        
+            <div class="history-list">
+                <div v-if="diceHistory.length === 0" style="text-align:center; padding:20px; color:#666; font-size:0.9em;">
+                    Henüz zar atılmadı.
+                </div>
+            
+                <div v-for="roll in diceHistory" :key="roll.id" class="history-item">
+                    <div class="h-row-top">
+                        <span class="h-source">{{ roll.source }}</span>
+                        <span class="h-time">{{ roll.time }}</span>
+                    </div>
+                    <div class="h-row-result">
+                        <span class="h-calc">
+                            <span :class="{'nat-20': roll.isCrit, 'nat-1': roll.isFail}">{{ roll.baseRoll }}</span> 
+                            {{ roll.modifier >= 0 ? '+' : '' }}{{ roll.modifier }}
+                        </span>
+                        <span class="h-total" :class="{'crit-success': roll.isCrit, 'crit-fail': roll.isFail}">
+                            = {{ roll.total }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="history-footer">
+                <button @click="clearHistory" class="btn-clear-history">🗑️ Temizle</button>
+                <button @click="isHistoryOpen = false" class="btn-close-bottom">✖ Kapat</button>
+            </div>
+        </div>
 
     </div>
-
     <script type="module" src="./appKarYa.js"></script>
     <script>
         function toggleMenu() {

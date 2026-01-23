@@ -10,6 +10,7 @@ import { useClassLogic } from './src/logicClass.js';
 import { useScoreLogic } from './src/logicScores.js';
 import { useSkillLogic } from './src/logicSkills.js';
 import { avatarList } from './src/data/avatarList.js';
+import { useDiceLogic } from './src/logicDice.js';
 
 const app = createApp({
     setup() {
@@ -311,6 +312,67 @@ const app = createApp({
         
             showToast(msg);
         };
+        // YENİ: Kaydetme Yetkinliği Kontrolü
+        const { 
+                diceResult, 
+                rollD20, 
+                closeDiceResult, 
+                // Yeni eklenenleri buraya alıyoruz:
+                diceHistory,
+                isHistoryOpen,
+                clearHistory,
+                toggleHistory
+            } = useDiceLogic();
+        const isSaveProficient = (key) => {
+        const cls = selectedClass.value;
+            if (!cls || !cls.proficiency) return false;
+            // ============================================================
+            // Veri tabanındaki tüm prof.ları küçük harfe ve temiz hale getir
+            // Örn: ["Wisdom", "Charisma"] -> ["wisdom", "charisma"]
+            // Örn: ["Akıl", "Karizma"] -> ["akıl", "karizma"]
+            const profs = cls.proficiency.map(p => p.toLowerCase());
+
+            // Anahtar Kelime Haritası (Hem İngilizce hem Türkçe olasılıkları)
+            const map = {
+                str: ['str', 'strength', 'güç', 'kuv', 'kuvvet'],
+                dex: ['dex', 'dexterity', 'çev', 'çeviklik'],
+                con: ['con', 'constitution', 'day', 'dayanıklılık'],
+                int: ['int', 'intelligence', 'zek', 'zeka'],
+                wis: ['wis', 'wisdom', 'aki', 'akı', 'akıl', 'bilgelik'], // AKI sorununu çözer
+                cha: ['cha', 'charisma', 'kar', 'karizma']
+            };
+
+            // Eğer haritadaki kelimelerden biri, sınıfın prof listesinde geçiyorsa TRUE döner
+            return map[key].some(term => profs.some(p => p.includes(term)));
+        };
+        // ============================================================
+        //  TARİHÇE PANELİ İÇİN AKILLI TIKLAMA MANTIĞI
+        // ============================================================
+        
+        // Vue mount edildikten sonra çalışması için setTimeout içine alıyoruz
+        setTimeout(() => {
+            window.addEventListener('click', (e) => {
+                const panel = document.querySelector('.history-panel');
+                const btn = document.querySelector('.history-toggle-btn');
+                
+                // Eğer panel zaten kapalıysa işlem yapma
+                if (!isHistoryOpen.value) return;
+
+                // Tıklanan yerin analizi:
+                const isClickInsidePanel = panel && panel.contains(e.target);
+                const isClickOnToggleBtn = btn && btn.contains(e.target);
+                
+                // KRİTİK KISIM: Tıklanan element (veya ebeveyni) 'clickable-stat' sınıfına sahip mi?
+                // Yani kullanıcı bir stat, skill veya save'e mi tıkladı?
+                const isClickOnDiceRoller = e.target.closest('.clickable-stat');
+
+                // EĞER: Panel içinde değilse VE Butonda değilse VE Zar atılan bir yer değilse -> KAPAT
+                if (!isClickInsidePanel && !isClickOnToggleBtn && !isClickOnDiceRoller) {
+                    isHistoryOpen.value = false;
+                }
+            });
+        }, 1000);
+
         // ============================================================
         // LIFE CYCLE (ON MOUNTED)
         // ============================================================
@@ -476,7 +538,19 @@ const app = createApp({
 
             classResources,   // HTML'de v-for döngüsü için gerekli
             updateResource,   // + ve - butonları için gerekli
-            handleRest
+            handleRest,
+
+            // Zar Mantığı
+            diceResult, 
+            rollD20, 
+            closeDiceResult, 
+            isSaveProficient,
+            diceHistory, 
+            isHistoryOpen, 
+            clearHistory, 
+            toggleHistory
+
+        
         };
     }
 });

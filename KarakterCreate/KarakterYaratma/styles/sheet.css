@@ -524,6 +524,267 @@
     color: #b52b2b; /* Bitince sayı kırmızı olsun */
 }
 
+/* ============================================================
+   DICE RESULT TRAY (Zar Sonuç Ekranı)
+   ============================================================ */
+
+.dice-overlay {
+    position: fixed;
+    bottom: 30px;
+    right: 30px; /* Sağ alt köşe (D&D Beyond tarzı) */
+    z-index: 10000;
+    pointer-events: none; /* Arkaya tıklamayı engellemesin */
+}
+
+.dice-result-card {
+    background: rgba(20, 20, 20, 0.95);
+    border: 2px solid #444;
+    border-radius: 12px;
+    padding: 20px;
+    width: 280px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: auto;
+    position: relative;
+    overflow: hidden;
+    
+    /* Animasyon: Aşağıdan yukarı kayarak gelme */
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dice-result-card.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Kapatma Butonu */
+.dice-close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    color: #666;
+    font-size: 1.2em;
+}
+.dice-close:hover { color: #fff; }
+
+/* Başlık (Örn: Atletizm) */
+.dice-source {
+    color: #aaa;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Sonuç Satırı (Zar + Mod = Toplam) */
+.dice-breakdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+
+.d20-icon {
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Nat 20 / Nat 1 Renklendirmeleri */
+.nat-20 { color: #4caf50; text-shadow: 0 0 10px rgba(76, 175, 80, 0.6); }
+.nat-1  { color: #d32f2f; text-shadow: 0 0 10px rgba(211, 47, 47, 0.6); }
+
+/* BÜYÜK TOPLAM SONUÇ */
+.dice-total {
+    font-size: 3.5em;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    margin: 5px 0;
+    
+    /* Sonuç Parlaması */
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.dice-total.crit-success {
+    color: #4caf50;
+    text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+    animation: pulse-green 1s infinite;
+}
+
+.dice-total.crit-fail {
+    color: #d32f2f;
+    text-shadow: 0 0 30px rgba(211, 47, 47, 0.5);
+    animation: shake 0.5s;
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Tıklanabilir Alanlar İçin Hover Efekti */
+.clickable-stat {
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s, color 0.2s;
+}
+.clickable-stat:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #b52b2b;
+    border-radius: 4px;
+}
+.clickable-stat:active {
+    transform: scale(0.98);
+}
+
+/* ============================================================
+   DICE HISTORY PANEL (GÜNCELLENMİŞ VERSİYON)
+   ============================================================ */
+
+/* 1. Yuvarlak Açma Butonu (Sağ Alt) */
+.history-toggle-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: #222;
+    border: 2px solid #444;
+    border-radius: 50%;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5em; cursor: pointer;
+    z-index: 10001; /* Zar sonucunun üstünde */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: all 0.2s;
+}
+.history-toggle-btn:hover {
+    background: #333; border-color: #b52b2b; transform: scale(1.1);
+}
+
+/* 2. Panel Gövdesi (Daraltılmış) */
+.history-panel {
+    position: fixed;
+    top: 0;
+    /* Genişlik 220px yapıldı (Eskisi 300px idi) */
+    width: 220px;
+    /* Negatif değer genişlikten biraz fazla olmalı ki gölge bile gözükmesin */
+    right: -240px; 
+    height: 100vh;
+    background: #1a1a1a;
+    border-left: 2px solid #b52b2b;
+    z-index: 10002;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.8);
+    display: flex; flex-direction: column;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.history-panel.open {
+    right: 0; /* Açılınca ekrana sıfırla */
+}
+
+/* Header */
+.history-header {
+    padding: 12px;
+    background: #222;
+    border-bottom: 1px solid #333;
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: bold; color: #eee; font-size: 0.9em; letter-spacing: 1px;
+}
+.close-history { cursor: pointer; color: #666; font-size: 1.2em; }
+.close-history:hover { color: #fff; }
+
+/* Liste (Scroll Alanı) */
+.history-list {
+    flex: 1; overflow-y: auto; padding: 10px;
+    display: flex; flex-direction: column; gap: 8px;
+}
+/* Scrollbar İnceltme */
+.history-list::-webkit-scrollbar { width: 4px; }
+.history-list::-webkit-scrollbar-track { background: #111; }
+.history-list::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+
+/* Liste Elemanı */
+.history-item {
+    background: #252525; border: 1px solid #333; border-radius: 4px;
+    padding: 8px; animation: slideInRight 0.3s ease;
+}
+@keyframes slideInRight { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.h-row-top {
+    display: flex; justify-content: space-between; font-size: 0.75em;
+    margin-bottom: 4px; border-bottom: 1px dashed #333; padding-bottom: 2px;
+}
+.h-source { 
+    color: #aaa; font-weight: bold; 
+    max-width: 130px; /* Dar alana sığsın diye kısalttık */
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+}
+.h-time { color: #555; font-family: monospace; }
+
+.h-row-result { display: flex; justify-content: space-between; align-items: center; }
+.h-calc { color: #888; font-size: 0.85em; }
+.h-total { color: #fff; font-weight: bold; font-size: 1.1em; }
+
+/* Footer (Butonlar Yan Yana) */
+.history-footer {
+    padding: 10px; background: #151515; border-top: 1px solid #333;
+    display: flex; gap: 8px;
+}
+
+.btn-clear-history, .btn-close-bottom {
+    flex: 1; /* Eşit genişlik */
+    background: #252525; border: 1px solid #444; color: #888;
+    padding: 6px 0; border-radius: 4px; cursor: pointer;
+    font-size: 0.75em; transition: all 0.2s;
+    display: flex; justify-content: center; align-items: center; gap: 4px;
+}
+
+.btn-clear-history:hover { border-color: #d32f2f; color: #d32f2f; background: rgba(211, 47, 47, 0.1); }
+.btn-close-bottom:hover { border-color: #eee; color: #fff; background: rgba(255, 255, 255, 0.1); }
+
+/* Renkler (Nat 20/1) */
+.nat-20 { color: #4caf50; }
+.nat-1 { color: #d32f2f; }
+.crit-success { color: #4caf50; text-shadow: 0 0 5px rgba(76, 175, 80, 0.4); }
+.crit-fail { color: #d32f2f; text-shadow: 0 0 5px rgba(211, 47, 47, 0.4); }
+
+/* Zar Kutusu Pozisyonu (History butonunun üstüne binmesin) */
+.dice-overlay { bottom: 90px; right: 20px; }
+
+/* MOBİL DÜZELTMELERİ */
+@media (max-width: 600px) {
+    .history-panel { 
+        width: 260px; /* Mobilde parmakla basmak için azıcık daha geniş */
+        right: -280px; /* Tamamen gizle */
+    }
+    .history-panel.open { right: 0; }
+    
+    /* Fontları mobilde bir tık büyüt okunabilir olsun */
+    .h-source { font-size: 0.9em; } 
+    .btn-clear-history, .btn-close-bottom { padding: 10px 0; font-size: 0.85em; }
+}
 
 /* ------------------------------------------------------------
    3. RESPONSIVE (Mobil & Tablet)
