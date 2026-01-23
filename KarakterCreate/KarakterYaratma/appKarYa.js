@@ -11,6 +11,8 @@ import { useScoreLogic } from './src/logicScores.js';
 import { useSkillLogic } from './src/logicSkills.js';
 import { avatarList } from './src/data/avatarList.js';
 import { useDiceLogic } from './src/logicDice.js';
+import { useInventoryLogic } from './src/logicInventory.js';
+
 
 const app = createApp({
     setup() {
@@ -29,7 +31,6 @@ const app = createApp({
         // ============================================================
         // 2. IRK MANTIĞI
         // ============================================================
-        // Not: Score ile ilgili değişkenler buradan kaldırıldı ve useScoreLogic'e taşındı.
         const { 
             raceList, 
             flatRaceList, 
@@ -38,6 +39,10 @@ const app = createApp({
             activeRaceTraits, 
             raceChoiceConfig 
         } = useRaceLogic();
+
+        // [DÜZELTME 1] selectedRace değişkenini tanımlıyoruz
+        // Store içindeki seçili ırkı dinleyen bir computed (hesaplanan) değer oluşturuyoruz.
+        const selectedRace = computed(() => store.race.selected);
 
         // ============================================================
         // 3. SINIF MANTIĞI
@@ -60,7 +65,6 @@ const app = createApp({
         // ============================================================
         // 4. PUANLAR (SCORE LOGIC)
         // ============================================================
-        // Düzeltme: handleOrbClick ve diğer drag-drop fonksiyonları buradan çekildi.
         const {
             statLabels, 
             selectableStats, 
@@ -80,13 +84,12 @@ const app = createApp({
             statBonuses, 
             finalAbilityScores, 
             proficiencyBonus,
-            // --- YENİ EKLENEN SİSTEMLER ---
             scoreAllocations, 
             draggedItem, 
             assignScore, 
             unassignScore, 
             syncAllocationsFromStore,
-            handleOrbClick // <--- BURASI EKLENDİ (Daha önce tanımlı değildi ama return ediliyordu)
+            handleOrbClick 
         } = useScoreLogic(raceBonuses);
 
         // ============================================================
@@ -104,6 +107,22 @@ const app = createApp({
             currentExpertCount
         } = useSkillLogic(finalAbilityScores, proficiencyBonus);
 
+        // ============================================================
+        // 6. ENVANTER (INVENTORY LOGIC)
+        // ============================================================
+        // [DÜZELTME 2] Artık selectedRace tanımlı olduğu için hata vermeyecek
+        const {
+            weaponList, armorList,
+            calculatedAC, attackList,
+            toggleWeapon, toggleWeaponProficiency, 
+            setArmor, toggleShield,
+            checkProficiencyRule 
+        } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace); 
+
+        // Toast Gösterme Fonksiyonu
+        const showWarningToast = (msg) => {
+            alert("⚠️ DİKKAT: " + msg);
+        };
 
         // ============================================================
         // UI & SİSTEM DEĞİŞKENLERİ
@@ -145,15 +164,13 @@ const app = createApp({
         const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
 
         // --- DIŞARI TIKLAMA İLE GALERİYİ KAPATMA ---
-        const galleryContainer = ref(null); // HTML'deki ref ile eşleşir
-        const galleryButton = ref(null);    // HTML'deki ref ile eşleşir
+        const galleryContainer = ref(null); 
+        const galleryButton = ref(null);    
 
         const handleClickOutside = (event) => {
-            // Eğer galeri açıksa VE tıklanan yer galeri değilse VE tıklanan yer buton değilse
             if (isGalleryExpanded.value && 
                 galleryContainer.value && !galleryContainer.value.contains(event.target) &&
                 galleryButton.value && !galleryButton.value.contains(event.target)) {
-                
                 isGalleryExpanded.value = false;
             }
         };
@@ -173,7 +190,6 @@ const app = createApp({
             }, 3000);
         };
 
-        // --- HANDLER WRAPPERS ---
         const handleFinish = () => { finishCreation(showToast); };
         const handleRoll = () => { rollStats(showToast); };
 
@@ -197,6 +213,7 @@ const app = createApp({
                 ch: userChoices.value,
                 sm: selectedScoreMethod.value, 
                 rp: rolledPool.value,
+                inv: store.inventory, 
                 av: store.meta.avatar 
             };      
             try {
@@ -263,9 +280,14 @@ const app = createApp({
                 if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
                 store.skills.proficiencies = [...(data.p || [])];
                 store.skills.expertises = [...(data.e || [])];
-                userChoices.value = { ...data.ch };              
+                userChoices.value = { ...data.ch };    
+                
+                // Envanter Yükleme
+                if (data.inv) {
+                    store.inventory = { ...store.inventory, ...data.inv };
+                }
 
-                // Havuzu güncelle (Re-hydration)
+                // Havuzu güncelle
                 setTimeout(() => { syncAllocationsFromStore(); }, 200); 
 
                 showToast("Karakter Başarıyla Yüklendi!", "🚀");
@@ -277,108 +299,65 @@ const app = createApp({
                 showToast("Yükleme sırasında hata oluştu!", "❌");
             }
         };
-        // YENİ: Kaynak Yönetimi Fonksiyonları
+
+        // Kaynak Yönetimi
         const updateResource = (id, delta, max) => {
-            // Mevcut değeri al veya yoksa max değerden başlat
             const current = store.resources[id] !== undefined ? store.resources[id] : max;
             let newVal = current + delta;
-
-            // Sınırları koru (0 ile Max arası)
             if (newVal > max) newVal = max;
             if (newVal < 0) newVal = 0;
-
             store.resources[id] = newVal;
         };
 
-        // YENİ: Dinlenme Fonksiyonu (Short veya Long)
+        // Dinlenme
         const handleRest = (type) => {
             let msg = "";
-
-            // 1. Can (HP) Mantığı
             if (type === 'long') {
                 msg = "Uzun dinlenme: HP, Büyüler ve Yetenekler yenilendi! 💤";
-                // (HP fulleme kodun varsa buraya eklersin)
             } else {
                 msg = "Kısa dinlenme yapıldı. (Warlock büyüleri ve bazı yetenekler yenilendi) ☕";
             }
-        
-            // 2. Kaynakları Yenileme (Rage, Ki, vb.)
             classResources.value.forEach(res => {
-                // Long rest her şeyi doldurur. Short rest sadece 'short' tipleri doldurur.
                 if (type === 'long' || res.reset === 'short') {
                     store.resources[res.id] = res.max;
                 }
             });
-        
             showToast(msg);
         };
-        // YENİ: Kaydetme Yetkinliği Kontrolü
-        const { 
-                diceResult, 
-                rollD20, 
-                closeDiceResult, 
-                // Yeni eklenenleri buraya alıyoruz:
-                diceHistory,
-                isHistoryOpen,
-                clearHistory,
-                toggleHistory
-            } = useDiceLogic();
-        const isSaveProficient = (key) => {
-        const cls = selectedClass.value;
-            if (!cls || !cls.proficiency) return false;
-            // ============================================================
-            // Veri tabanındaki tüm prof.ları küçük harfe ve temiz hale getir
-            // Örn: ["Wisdom", "Charisma"] -> ["wisdom", "charisma"]
-            // Örn: ["Akıl", "Karizma"] -> ["akıl", "karizma"]
-            const profs = cls.proficiency.map(p => p.toLowerCase());
 
-            // Anahtar Kelime Haritası (Hem İngilizce hem Türkçe olasılıkları)
+        // Zar Mantığı
+        const { 
+            diceResult, 
+            rollD20, 
+            closeDiceResult, 
+            diceHistory,
+            isHistoryOpen,
+            clearHistory,
+            toggleHistory
+        } = useDiceLogic();
+
+        const isSaveProficient = (key) => {
+            const cls = selectedClass.value;
+            if (!cls || !cls.proficiency) return false;
+            const profs = cls.proficiency.map(p => p.toLowerCase());
             const map = {
                 str: ['str', 'strength', 'güç', 'kuv', 'kuvvet'],
                 dex: ['dex', 'dexterity', 'çev', 'çeviklik'],
                 con: ['con', 'constitution', 'day', 'dayanıklılık'],
                 int: ['int', 'intelligence', 'zek', 'zeka'],
-                wis: ['wis', 'wisdom', 'aki', 'akı', 'akıl', 'bilgelik'], // AKI sorununu çözer
+                wis: ['wis', 'wisdom', 'aki', 'akı', 'akıl', 'bilgelik'],
                 cha: ['cha', 'charisma', 'kar', 'karizma']
             };
-
-            // Eğer haritadaki kelimelerden biri, sınıfın prof listesinde geçiyorsa TRUE döner
             return map[key].some(term => profs.some(p => p.includes(term)));
         };
-        // ============================================================
-        //  TARİHÇE PANELİ İÇİN AKILLI TIKLAMA MANTIĞI
-        // ============================================================
-        
-        // Vue mount edildikten sonra çalışması için setTimeout içine alıyoruz
-        setTimeout(() => {
-            window.addEventListener('click', (e) => {
-                const panel = document.querySelector('.history-panel');
-                const btn = document.querySelector('.history-toggle-btn');
-                
-                // Eğer panel zaten kapalıysa işlem yapma
-                if (!isHistoryOpen.value) return;
 
-                // Tıklanan yerin analizi:
-                const isClickInsidePanel = panel && panel.contains(e.target);
-                const isClickOnToggleBtn = btn && btn.contains(e.target);
-                
-                // KRİTİK KISIM: Tıklanan element (veya ebeveyni) 'clickable-stat' sınıfına sahip mi?
-                // Yani kullanıcı bir stat, skill veya save'e mi tıkladı?
-                const isClickOnDiceRoller = e.target.closest('.clickable-stat');
-
-                // EĞER: Panel içinde değilse VE Butonda değilse VE Zar atılan bir yer değilse -> KAPAT
-                if (!isClickInsidePanel && !isClickOnToggleBtn && !isClickOnDiceRoller) {
-                    isHistoryOpen.value = false;
-                }
-            });
-        }, 1000);
+        const isInventoryOpen = ref(false); 
 
         // ============================================================
         // LIFE CYCLE (ON MOUNTED)
         // ============================================================
         onMounted(async () => {
-            document.addEventListener('click', handleClickOutside); // Dinleyiciyi başlat
-            // Varsayılan Avatar Kontrolü
+            document.addEventListener('click', handleClickOutside);
             if (!store.meta.avatar || typeof store.meta.avatar !== 'string') {
                 store.meta.avatar = "../../img/avatars/default-avatar.png";
             }
@@ -425,7 +404,7 @@ const app = createApp({
                 if(loader) loader.remove();
             }
         });
-         // Sayfa kapanırken dinleyiciyi kaldır (Performans için)
+
         onUnmounted(() => {
             document.removeEventListener('click', handleClickOutside);
         });
@@ -434,7 +413,6 @@ const app = createApp({
         // RETURN OBJECT
         // ============================================================
         return {
-            // Store ve Genel
             store, 
             currentStep, 
             steps, 
@@ -448,36 +426,26 @@ const app = createApp({
             toggleMobileSheet,
             copyLink, 
             showToast, 
-            
-            // Veri Listeleri ve Seed
             backgroundList, 
             featList, 
             seedText, 
             characterSeed, 
             loadFromSeed, 
             copySeed,
-            
-            // Utils ve Icons
             formatEntry, 
             parseTags, 
             dndIcons, 
-            
-            // Logic 1: Karakter Sayfası
             isSheetMode, 
             activeSheetTab, 
             finishCreation: handleFinish,
             hasCreatedSheet, 
             activeFeatureSubTab, 
-            
-            // Logic 2: Irk
             raceList, 
             flatRaceList, 
             selectedFlatOption, 
             raceBonuses, 
             activeRaceTraits, 
             raceChoiceConfig,
-            
-            // Logic 3: Sınıf
             classList, 
             selectedClass, 
             selectedSubclass, 
@@ -489,8 +457,6 @@ const app = createApp({
             getHitDie, 
             getAvailableOptions, 
             getChoiceDetail,
-            
-            // Logic 4: Puanlar (Score)
             statLabels, 
             selectableStats, 
             scoreMethods, 
@@ -509,15 +475,12 @@ const app = createApp({
             statBonuses, 
             finalAbilityScores, 
             proficiencyBonus,
-            // Score Yeni Eklenenler (Drag/Drop/Click)
-            handleOrbClick, // <--- ARTIK TANIMLI VE DÖNÜYOR
+            handleOrbClick, 
             scoreAllocations, 
             draggedItem, 
             assignScore, 
             unassignScore, 
             syncAllocationsFromStore,
-            
-            // Logic 5: Yetenekler (Skills)
             SKILL_DEFINITIONS, 
             calculatedSkills, 
             toggleSkill, 
@@ -527,20 +490,15 @@ const app = createApp({
             classSkillInfo, 
             currentProfCount, 
             currentExpertCount, 
-            
-            // Avatar Gallery
             avatarGallery, 
             avatarList, 
             showCustomAvatarInput, 
             isGalleryExpanded,
             galleryContainer,
             galleryButton,
-
-            classResources,   // HTML'de v-for döngüsü için gerekli
-            updateResource,   // + ve - butonları için gerekli
+            classResources,   
+            updateResource,   
             handleRest,
-
-            // Zar Mantığı
             diceResult, 
             rollD20, 
             closeDiceResult, 
@@ -548,9 +506,15 @@ const app = createApp({
             diceHistory, 
             isHistoryOpen, 
             clearHistory, 
-            toggleHistory
-
-        
+            toggleHistory,
+            isInventoryOpen,
+            calculatedAC,
+            attackList,
+            weaponList, armorList,
+            toggleWeapon, setArmor, toggleShield,
+            toggleWeaponProficiency,
+            checkProficiencyRule,
+            showWarningToast
         };
     }
 });

@@ -30,6 +30,13 @@ export const store = reactive({
         expertises: []     // Ustalık (Expertise)
     },
     resources: {},
+    inventory: {
+        weapons: [],    // Sadece ID'ler tutulacak: ['dagger', 'longbow']
+        armor: 'none',  // Tek bir ID: 'leather'
+        shield: false,  // Boolean: true/false
+        items: {},      // { 'pot_heal': 3 } şeklinde
+        gold: 0         // Para (Ucunu açık bıraktık)
+    },
     choices: {} 
 });
 

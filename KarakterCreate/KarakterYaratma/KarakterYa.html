@@ -747,8 +747,8 @@
                     <div class="combat-stats-row">
                         <div class="c-stat-box">
                             <span class="label">Zırh Sınıfı</span>
-                            <span class="value shield-shape">
-                                {{ 10 + Math.floor((finalAbilityScores.dex - 10) / 2) }}
+                            <span class="value shield-shape" :style="store.inventory.shield ? 'border-color:#4caf50' : ''">
+                                {{ calculatedAC }}
                             </span>
                         </div>
                         <div class="c-stat-box clickable-stat" 
@@ -827,8 +827,26 @@
                                 </div>
                             </div>
                             <h3>Saldırılar & Aksiyonlar</h3>
-                            <div class="attack-row">
-                               </div>
+                            <div v-if="attackList.length === 0" style="text-align:center; color:#666; font-style:italic; padding:10px;">
+                                Henüz bir silah kuşanmadınız. <br>
+                                <button @click="isInventoryOpen = true" class="btn btn-secondary" style="margin-top:5px; font-size:0.8em;">🎒 Ekipman Seç</button>
+                            </div>
+
+                            <div class="attack-grid">
+                                <div v-for="atk in attackList" :key="atk.id" 
+                                     class="attack-card clickable-stat"
+                                     @click="rollD20(atk.name + ' Saldırısı', parseInt(atk.hit))">
+
+                                    <div class="atk-top">
+                                        <span class="atk-name">{{ atk.name }}</span>
+                                        <span class="atk-bonus">{{ atk.hit }}</span>
+                                    </div>
+                                    <div class="atk-btm">
+                                        <span class="atk-dmg">{{ atk.dmg }} {{ atk.bonus >= 0 ? '+' : '' }}{{ atk.bonus }}</span>
+                                        <span class="atk-type">{{ atk.dmgType }}</span>
+                                    </div>
+                                </div>
+                            </div>
                            
                         </div>
         
@@ -1004,6 +1022,79 @@
             <div class="history-footer">
                 <button @click="clearHistory" class="btn-clear-history">🗑️ Temizle</button>
                 <button @click="isHistoryOpen = false" class="btn-close-bottom">✖ Kapat</button>
+            </div>
+        </div>
+        <!-- Inventory Modal -->
+        <div class="modal-overlay" v-if="isInventoryOpen">
+            <div class="modal-window">
+                <div class="modal-header">
+                    <h3>🎒 Ekipman Çantası</h3>
+                    <span class="close-modal" @click="isInventoryOpen = false">✖</span>
+                </div>
+                <div class="modal-content">
+
+                    <div class="gold-pouch">
+                        <label>💰 Altın (GP):</label>
+                        <input type="number" v-model.number="store.inventory.gold" class="gold-input">
+                    </div>
+                
+                    <div class="equip-section">
+                        <h4>🛡️ Zırh & Kalkan</h4>
+                        <select :value="store.inventory.armor" @change="setArmor($event.target.value)" class="main-select">
+                            <option v-for="a in armorList" :key="a.id" :value="a.id">
+                                {{ a.name }} (AC {{ a.ac }}{{ a.type === 'light' ? '+Dex' : (a.type==='medium' ? '+Dex(Max2)' : '') }})
+                            </option>
+                        </select>
+                        <label class="checkbox-row">
+                            <input type="checkbox" :checked="store.inventory.shield" @change="toggleShield">
+                            Kalkan (+2 AC)
+                        </label>
+                    </div>
+                
+                    <div class="equip-section">
+                        <h4>⚔️ Silahlar</h4>
+                        <div class="weapon-list-scroll">
+                            <div v-for="w in weaponList" :key="w.id" 
+                                 class="weapon-item" 
+                                 :class="{ 'selected': store.inventory.weapons.some(i => (typeof i==='string'?i:i.id) === w.id) }">
+                                 
+                                <div @click="toggleWeapon(w.id)" style="flex:1; display:flex; justify-content:space-between; align-items:center;">
+                                    <span>{{ w.name }}</span>
+                                    <span class="w-meta">{{ w.dmg }}</span>
+                                </div>
+                            
+                                <div v-if="store.inventory.weapons.some(i => (typeof i==='string'?i:i.id) === w.id)" 
+                                     class="prof-toggle-wrapper"
+                                     @click.stop> <label class="prof-switch" title="Ustalık (Proficiency) Durumu">
+                                        <input type="checkbox" 
+                                               :checked="(() => {
+                                                   const item = store.inventory.weapons.find(i => (typeof i==='string'?i:i.id) === w.id);
+                                                   if(item.custom !== null && item.custom !== undefined) return item.custom;
+                                                   return checkProficiencyRule(w).isProficient;
+                                               })()"
+                                               @change="(e) => {
+                                                   const rule = checkProficiencyRule(w);
+                                                   const newState = e.target.checked;
+                                                   
+                                                   // UYARI MANTIĞI
+                                                   if (newState && !rule.isProficient) {
+                                                       showWarningToast('Sınıfınız veya ırkınız bu silahta eğitimli değil! Yine de kullanmak istiyorsanız devam edebilirsiniz.');
+                                                   }
+                                                   if (rule.warning) {
+                                                        showWarningToast(rule.warning);
+                                                   }
+                                               
+                                                   toggleWeaponProficiency(w.id, newState);
+                                               }">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
             </div>
         </div>
 
