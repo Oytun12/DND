@@ -776,14 +776,24 @@
                             <svg :viewBox="dndIcons.actions.viewBox" class="tab-icon" v-html="dndIcons.actions.content"></svg>
                             Aksiyonlar
                         </button>
+                        
                         <button @click="activeSheetTab = 'spells'" :class="{ active: activeSheetTab === 'spells' }">
                             <svg :viewBox="dndIcons.spells.viewBox" class="tab-icon" v-html="dndIcons.spells.content"></svg>
                             Büyüler
                         </button>
+
+                        <button @click="activeSheetTab = 'inventory'" :class="{ active: activeSheetTab === 'inventory' }">
+                            <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19,6H16V3c0-1.1-0.9-2-2-2h-4c-1.1,0-2,0.9-2,2v3H5C3.9,6,3,6.9,3,8v12c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V8C21,6.9,20.1,6,19,6z M10,3h4v3h-4V3z M19,20H5V8h14V20z M12,12c-1.1,0-2-0.9-2-2h4C14,11.1,13.1,12,12,12z"/>
+                            </svg>
+                            Envanter
+                        </button>
+
                         <button @click="activeSheetTab = 'features'" :class="{ active: activeSheetTab === 'features' }">
                             <svg :viewBox="dndIcons.features.viewBox" class="tab-icon" v-html="dndIcons.features.content"></svg>
                             Özellikler
                         </button>
+                        
                         <button @click="activeSheetTab = 'description'" :class="{ active: activeSheetTab === 'description' }">
                             <svg :viewBox="dndIcons.description.viewBox" class="tab-icon" v-html="dndIcons.description.content"></svg>
                             Açıklama
@@ -795,63 +805,261 @@
                         <div v-if="activeSheetTab === 'actions'">
     
                             <div v-if="classResources.length > 0" class="resources-dashboard">
-                                <h4 style="margin: 0 0 15px 0; color: #b52b2b; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                    Sınıf Kaynakları
-                                </h4>
-
+                                <h4 style="margin: 0 0 15px 0; color: #b52b2b; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 5px;">Sınıf Kaynakları</h4>
                                 <div class="res-grid">
-                                    <div v-for="res in classResources" :key="res.id" 
-                                         class="res-card"
-                                         :class="{ 'empty': (store.resources[res.id] !== undefined ? store.resources[res.id] : res.max) === 0 }">
-
-                                        <div class="res-info">
-                                            <h5>{{ res.name }}</h5>
-                                            <div class="res-meta">
-                                                <span v-if="res.reset === 'short'">⚡ Kısa Dinlenme</span>
-                                                <span v-else>💤 Uzun Dinlenme</span>
-                                            </div>
-                                        </div>
-                                    
-                                        <div class="res-controls">
-                                            <button @click="updateResource(res.id, -1, res.max)" class="res-btn minus">–</button>
-
-                                            <div class="res-value">
-                                                {{ store.resources[res.id] !== undefined ? store.resources[res.id] : res.max }}
-                                                <span class="max">/{{ res.max }}</span>
-                                            </div>
-
-                                            <button @click="updateResource(res.id, 1, res.max)" class="res-btn plus">+</button>
-                                        </div>
-                                    
+                                    <div v-for="res in classResources" :key="res.id" class="res-card" :class="{ 'empty': (store.resources[res.id] !== undefined ? store.resources[res.id] : res.max) === 0 }">
+                                        <div class="res-info"><h5>{{ res.name }}</h5><div class="res-meta"><span v-if="res.reset === 'short'">⚡ Kısa Dinlenme</span><span v-else>💤 Uzun Dinlenme</span></div></div>
+                                        <div class="res-controls"><button @click="updateResource(res.id, -1, res.max)" class="res-btn minus">–</button><div class="res-value">{{ store.resources[res.id] !== undefined ? store.resources[res.id] : res.max }}<span class="max">/{{ res.max }}</span></div><button @click="updateResource(res.id, 1, res.max)" class="res-btn plus">+</button></div>
                                     </div>
                                 </div>
                             </div>
+
                             <h3>Saldırılar & Aksiyonlar</h3>
-                            <div v-if="attackList.length === 0" style="text-align:center; color:#666; font-style:italic; padding:10px;">
-                                Henüz bir silah kuşanmadınız. <br>
-                                <button @click="isInventoryOpen = true" class="btn btn-secondary" style="margin-top:5px; font-size:0.8em;">🎒 Ekipman Seç</button>
+                            
+                            <div v-if="attackList.length === 0" style="text-align:center; color:#666; font-style:italic; padding:20px; border:1px dashed #333; border-radius:6px; margin-bottom:15px;">
+                                Henüz kuşanılmış bir silahınız yok. <br>
+                                <span style="font-size:0.85em; color:#888;">(Envanter sekmesinden ekleyebilirsiniz)</span>
                             </div>
 
                             <div class="attack-grid">
-                                <div v-for="atk in attackList" :key="atk.id" 
-                                     class="attack-card clickable-stat"
-                                     @click="rollD20(atk.name + ' Saldırısı', parseInt(atk.hit))">
-
-                                    <div class="atk-top">
+                                <div v-for="atk in attackList" :key="atk.id" class="attack-card-split">
+                                    
+                                    <div class="atk-btn-top" 
+                                         @click="rollD20(atk.name + ' Saldırısı', parseInt(atk.hit))"
+                                         title="Saldırı Zarı At (d20 + Bonus)">
                                         <span class="atk-name">{{ atk.name }}</span>
-                                        <span class="atk-bonus">{{ atk.hit }}</span>
+                                        <span class="atk-hit-badge">HIT: {{ atk.hit }}</span>
                                     </div>
-                                    <div class="atk-btm">
-                                        <span class="atk-dmg">{{ atk.dmg }} {{ atk.bonus >= 0 ? '+' : '' }}{{ atk.bonus }}</span>
-                                        <span class="atk-type">{{ atk.dmgType }}</span>
+
+                                    <div class="atk-btn-bottom" 
+                                         @click="rollDamage(atk.name, atk.dmg, atk.bonus, atk.dmgType)">
+                                        <span class="atk-dmg-val">{{ atk.dmg }} {{ atk.totalBonusDisplay }}</span>
+                                        <span class="atk-dmg-type">{{ atk.dmgType }}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                        </div>
+        
+                        <div v-if="activeSheetTab === 'spells'">
+                            <p style="text-align: center; color: #aaa; margin-top: 20px;">
+                                Henüz büyü kitabı oluşturulmadı. <br>
+                                <span style="font-size: 0.8em;">(Yakında eklenecek...)</span>
+                            </p>
+                        </div>
+
+                        <div v-if="activeSheetTab === 'inventory'">
+                            
+                            <div class="feature-sub-tabs">
+                                <button @click="activeInventoryTab = 'owned'" :class="{ active: activeInventoryTab === 'owned' }">🎒 Çantam</button>
+                                <button @click="activeInventoryTab = 'all'" :class="{ active: activeInventoryTab === 'all' }">📋 Eşya Listesi</button>
+                            </div>
+
+                            <div v-if="activeInventoryTab === 'owned'">
+                                <div class="gold-pouch">
+                                    <label>💰 Altın (GP):</label>
+                                    <input type="number" v-model.number="store.inventory.gold" class="gold-input">
+                                </div>
+
+                                <div class="sheet-section" style="margin-top: 20px;">
+                                    <h4 style="color:#b52b2b; border-bottom:1px solid #333; padding-bottom:5px;">Kuşanılan Zırhlar</h4>
+                                    
+                                    <div v-if="store.inventory.armor !== 'none'" class="weapon-item selected" style="cursor: default;">
+                                        <span>🛡️ {{ armorList.find(a => a.id === store.inventory.armor)?.name }}</span>
+                                        <span class="w-meta">AC {{ armorList.find(a => a.id === store.inventory.armor)?.ac }}</span>
+                                    </div>
+                                    <div v-if="store.inventory.shield" class="weapon-item selected" style="cursor: default; margin-top:5px;">
+                                        <span>🛡️ Kalkan</span>
+                                        <span class="w-meta">+2 AC</span>
+                                    </div>
+                                </div>
+
+                                <div class="sheet-section" style="margin-top: 20px;">
+                                    <h4 style="color:#e67e22; border-bottom:1px solid #333; padding-bottom:5px;">Silahlar</h4>
+                                    
+                                    <div v-if="store.inventory.weapons.length === 0" style="color:#666; font-style:italic;">Çantanızda silah yok.</div>
+
+                                    <div v-for="wItem in store.inventory.weapons" :key="(typeof wItem==='string'?wItem:wItem.id)" 
+                                         class="weapon-item" 
+                                         style="cursor: default; border-left: 3px solid #b52b2b; background: #1a1a1a;">
+                                        
+                                        <div style="flex:1;">
+                                            <span>⚔️ {{ (wItem.isCustomWeapon) ? wItem.name : weaponList.find(x => x.id === (typeof wItem==='string'?wItem:wItem.id))?.name }}</span>
+                                            
+                                            <div style="font-size:0.75em; color:#888;">
+                                                <span v-if="wItem.isCustomWeapon">
+                                                    {{ wItem.dmg }} ({{ wItem.type }})
+                                                </span>
+                                                <span v-else>
+                                                    {{ weaponList.find(x => x.id === (typeof wItem==='string'?wItem:wItem.id))?.dmg }} 
+                                                    {{ weaponList.find(x => x.id === (typeof wItem==='string'?wItem:wItem.id))?.type }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="prof-toggle-wrapper" @click.stop> 
+                                            <label class="prof-switch" title="Ustalık Durumu (Değiştirmek İçin Tıkla)">
+                                                <input type="checkbox" 
+                                                       :checked="(() => {
+                                                           // 1. Eğer Özel Silahsa -> Direkt kendi içindeki veriyi kullan
+                                                           if (wItem.isCustomWeapon) {
+                                                               return wItem.customProficient;
+                                                           }
+                                                           
+                                                           // 2. Standart Silahsa -> Kuralı hesapla
+                                                           const wId = (typeof wItem==='string'?wItem:wItem.id);
+                                                           const wData = weaponList.find(x => x.id === wId);
+                                                           if(wItem.custom !== null && wItem.custom !== undefined) return wItem.custom;
+                                                           // wData yoksa false dön (Crash önleyici)
+                                                           return wData ? checkProficiencyRule(wData).isProficient : false;
+                                                       })()"
+                                                       @change="(e) => {
+                                                           const newState = e.target.checked;
+
+                                                           if (wItem.isCustomWeapon) {
+                                                               // Özel silahın ustalığını güncelle (Reaktif olması için store'u tetiklemen gerekebilir ama şimdilik obje üzerinden)
+                                                               wItem.customProficient = newState;
+                                                           } else {
+                                                               // Standart silah mantığı
+                                                               const wId = (typeof wItem==='string'?wItem:wItem.id);
+                                                               const wData = weaponList.find(x => x.id === wId);
+                                                               if (wData) {
+                                                                   const rule = checkProficiencyRule(wData);
+                                                                   if (newState && !rule.isProficient) {
+                                                                       showWarningToast('Sınıfınız veya ırkınız bu silahta eğitimli değil! Yine de kullanmak istiyorsanız devam edebilirsiniz.');
+                                                                   }
+                                                               }
+                                                               toggleWeaponProficiency(wId, newState);
+                                                           }
+                                                       }">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-                           
+
+                            <div v-if="activeInventoryTab === 'all'">
+                                <div class="equip-section" style="border-bottom-width: 2px; border-bottom-style: dashed; border-bottom-color: rgb(51, 51, 51); margin-bottom: 20px; padding-bottom: 20px;">
+                                    <h4>🛡️ Zırh & Kalkan Seçimi</h4>
+                                    <select :value="store.inventory.armor" @change="setArmor($event.target.value)" class="main-select">
+                                        <option v-for="a in armorList" :key="a.id" :value="a.id">
+                                            {{ a.name }} (AC {{ a.ac }}{{ a.type === 'light' ? '+Dex' : (a.type==='medium' ? '+Dex(Max2)' : '') }})
+                                        </option>
+                                    </select>
+                                    <label class="checkbox-row" style="margin-top:10px; display:flex; align-items:center; gap:10px; cursor:pointer;">
+                                        <input type="checkbox" :checked="store.inventory.shield" @change="toggleShield" style="width:20px; height:20px;">
+                                        Kalkan (+2 AC)
+                                    </label>
+                                </div>
+                                
+                                <div class="equip-section">
+                                    <h4>⚔️ Silah Ekle / Çıkar</h4>
+                                    <div class="weapon-list-scroll">
+                                        <div v-for="w in weaponList" :key="w.id" 
+                                             class="weapon-item" 
+                                             :class="{ 'selected': store.inventory.weapons.some(i => (typeof i==='string'?i:i.id) === w.id) }">
+                                             
+                                            <div @click="toggleWeapon(w.id)" style="flex:1; display:flex; justify-content:space-between; align-items:center;">
+                                                <span>{{ w.name }}</span>
+                                                <span class="w-meta">{{ w.dmg }}</span>
+                                            </div>
+            
+                                            <div v-if="store.inventory.weapons.some(i => (typeof i==='string'?i:i.id) === w.id)" 
+                                                 class="prof-toggle-wrapper"
+                                                 @click.stop> 
+                                                <label class="prof-switch">
+                                                    <input type="checkbox" 
+                                                           :checked="(() => {
+                                                               const item = store.inventory.weapons.find(i => (typeof i==='string'?i:i.id) === w.id);
+                                                               if(item.custom !== null && item.custom !== undefined) return item.custom;
+                                                               return checkProficiencyRule(w).isProficient;
+                                                           })()"
+                                                           @change="(e) => {
+                                                               const rule = checkProficiencyRule(w);
+                                                               const newState = e.target.checked;
+                                                               if (newState && !rule.isProficient) showWarningToast('Sınıfınız veya ırkınız bu silahta eğitimli değil!');
+                                                               toggleWeaponProficiency(w.id, newState);
+                                                           }">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="border-top: 2px dashed #333; margin-top: 20px; padding-top: 20px;">
+    
+                                    <button @click="isCustomWeaponFormOpen = !isCustomWeaponFormOpen" 
+                                            class="btn btn-secondary" 
+                                            style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                        <span>{{ isCustomWeaponFormOpen ? '✖ İptal' : '➕ Özel Silah Oluştur' }}</span>
+                                    </button>
+                                
+                                    <div v-if="isCustomWeaponFormOpen" style="margin-top: 15px; background: #1a1a1a; padding: 15px; border-radius: 8px; border: 1px solid #444; animation: slideDown 0.3s ease;">
+                                        
+                                        <div class="form-group">
+                                            <label>Silahın İsmi:</label>
+                                            <input type="text" v-model="customWeaponForm.name" placeholder="Örn: Hexblade Kılıcı" class="big-input" style="width: 100%; background:#222; border:1px solid #444; color:#fff;">
+                                        </div>
+                                    
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                                            <div class="form-group">
+                                                <label>Hasar Zarı:</label>
+                                                <input type="text" v-model="customWeaponForm.dmg" placeholder="1d8" class="mini-select" style="width: 100%;">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Hasar Tipi:</label>
+                                                <input type="text" v-model="customWeaponForm.type" placeholder="Nekrotik" class="mini-select" style="width: 100%;">
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="form-group" style="margin-top: 10px;">
+                                            <label title="Saldırı ve hasar bonusu hangi stattan gelsin?">Kullanılan Stat (Scaling):</label>
+                                            <select v-model="customWeaponForm.stat" class="mini-select" style="width: 100%;">
+                                                <option value="str">Kuvvet (STR)</option>
+                                                <option value="dex">Çeviklik (DEX)</option>
+                                                <option value="con">Dayanıklılık (CON) - (Nadir)</option>
+                                                <option value="int">Zeka (INT) - (Artificer/Wizard)</option>
+                                                <option value="wis">Bilgelik (WIS) - (Shillelagh)</option>
+                                                <option value="cha">Karizma (CHA) - (Hexblade/Paladin)</option>
+                                                <option value="finesse">Finesse (En Yüksek STR/DEX)</option>
+                                            </select>
+                                        </div>
+
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                                            <div class="form-group">
+                                                <label title="Sadece tutturma zarına eklenir (+1 Silah, Archery vb.)">Ekstra Hit Bonusu:</label>
+                                                <input type="number" v-model.number="customWeaponForm.bonusHit" class="mini-select" style="width: 100%;">
+                                            </div>
+                                            <div class="form-group">
+                                                <label title="Sadece hasar zarına eklenir (+1 Silah, GWM vb.)">Ekstra Hasar Bonusu:</label>
+                                                <input type="number" v-model.number="customWeaponForm.bonusDmg" class="mini-select" style="width: 100%;">
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="form-group" style="margin-top: 15px; display: flex; align-items: center; justify-content: space-between; background: #222; padding: 10px; border-radius: 4px;">
+                                            <label style="margin:0; color: #ccc;">Bu silahta uzman mısın?</label>
+                                            <div class="prof-toggle-wrapper"> 
+                                                <label class="prof-switch">
+                                                    <input type="checkbox" v-model="customWeaponForm.isProficient">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    
+                                        <button @click="saveCustomWeapon" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
+                                            💾 Çantaya Ekle
+                                        </button>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-        
+
                         <div v-if="activeSheetTab === 'features'">
-                             
                             <div class="feature-sub-tabs">
                                 <button @click="activeFeatureSubTab = 'race'" :class="{ active: activeFeatureSubTab === 'race' }">Irk</button>
                                 <button @click="activeFeatureSubTab = 'class'" :class="{ active: activeFeatureSubTab === 'class' }">Sınıf</button>
@@ -894,19 +1102,10 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-        
-                        <div v-if="activeSheetTab === 'spells'">
-                            <p style="text-align: center; color: #aaa; margin-top: 20px;">
-                                Henüz büyü kitabı oluşturulmadı. <br>
-                                <span style="font-size: 0.8em;">(Yakında eklenecek...)</span>
-                            </p>
-                        </div>
-
+                        
                         <div v-if="activeSheetTab === 'description'">
-                            
-                            <div v-if="selectedClass" class="sheet-section">
+                             <div v-if="selectedClass" class="sheet-section">
                                 <h4 style="color: #b52b2b; border-bottom: 1px solid rgba(181, 43, 43, 0.3); padding-bottom: 5px; margin-bottom: 10px;">
                                     Sınıf Donanımı ({{ selectedClass.name }})
                                 </h4>
@@ -914,17 +1113,14 @@
                                 <div v-if="selectedClass.startingProficiencies" style="margin-bottom: 20px;">
                                     <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🛡️ Zırh ve Silah Yetkinlikleri</strong>
                                     <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: disc;">
-                                        
                                         <li v-if="selectedClass.startingProficiencies.armor && selectedClass.startingProficiencies.armor.length">
                                             <strong style="color: #aaa;">Zırhlar:</strong> 
                                             <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.armor.join(', ') }}</span>
                                         </li>
-                                        
                                         <li v-if="selectedClass.startingProficiencies.weapons && selectedClass.startingProficiencies.weapons.length" style="margin-top: 5px;">
                                             <strong style="color: #aaa;">Silahlar:</strong> 
                                             <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.weapons.join(', ') }}</span>
                                         </li>
-
                                         <li v-if="selectedClass.startingProficiencies.tools && selectedClass.startingProficiencies.tools.length" style="margin-top: 5px;">
                                             <strong style="color: #aaa;">Aletler:</strong> 
                                             <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.tools.join(', ') }}</span>
@@ -934,13 +1130,11 @@
 
                                 <div v-if="selectedClass.startingEquipment">
                                     <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🎒 Standart Başlangıç Ekipmanları</strong>
-                                    
                                     <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: circle;">
                                         <li v-for="(item, index) in selectedClass.startingEquipment.default" :key="index" style="margin-bottom: 5px;">
                                             {{ item }}
                                         </li>
                                     </ul>
-
                                     <div v-if="selectedClass.startingEquipment.goldAlternative" style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #333; font-size: 0.85em; color: #888;">
                                         <span style="color: #e67e22;">💰 Alternatif Varlık:</span> 
                                         Eğer ekipman almak yerine altın ile başlamayı seçerseniz: 
@@ -948,9 +1142,8 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-        
+                        
                     </div>
                 </main>
             </div>
@@ -972,7 +1165,11 @@
                     <span class="d20-icon" :class="{ 'nat-20': diceResult.isCrit, 'nat-1': diceResult.isFail }">
                         {{ diceResult.baseRoll }}
                     </span>
-                    <span>(d20)</span>
+
+                    <span style="font-size: 0.8em; color: #888;">
+                        ({{ diceResult.diceLabel || 'd20' }})
+                    </span>
+                
                     <span>{{ diceResult.modifier >= 0 ? '+' : '' }}{{ diceResult.modifier }}</span>
                 </div>
 

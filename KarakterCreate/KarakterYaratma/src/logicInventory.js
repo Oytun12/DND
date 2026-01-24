@@ -1,63 +1,48 @@
 // src/logicInventory.js
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { store } from './store.js';
 import { weaponList, armorList } from './data/items.js';
 
-// Parametrelere class ve race eklendi
 export function useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace) {
 
-    // --- YARDIMCI: USTALIK KONTROLÜ (DEDEKTİF) ---
+    // --- DEDEKTİF: USTALIK KONTROLÜ (Aynı Kalıyor) ---
     const checkProficiencyRule = (item) => {
-        // 1. Karakterin Bildiği Tüm Ustalıkları Topla (Lower case yaparak)
         const knownProfs = [];
-        
-        // Sınıftan gelenler
         if (selectedClass.value && selectedClass.value.proficiency) {
             selectedClass.value.proficiency.forEach(p => knownProfs.push(p.toLowerCase()));
         }
-        // Irktan gelenler (Varsa)
         if (selectedRace.value && selectedRace.value.proficiency) {
             selectedRace.value.proficiency.forEach(p => knownProfs.push(p.toLowerCase()));
         }
 
-        // 2. Kontrol Et
         let isProficient = false;
         let warning = null;
 
-        // Kategori Kontrolü (Simple / Martial)
-        // Veritabanımızda "Basit Silahlar", "Simple Weapons" vb. farklı yazılmış olabilir, anahtar kelime arıyoruz.
         if (item.category === 'simple') {
             if (knownProfs.some(p => p.includes('simple') || p.includes('basit'))) isProficient = true;
         } else if (item.category === 'martial') {
             if (knownProfs.some(p => p.includes('martial') || p.includes('savaş'))) isProficient = true;
         }
 
-        // İsim Kontrolü (Spesifik silah hakkı, örn: Elf Weapon Training - Longsword)
-        // item.name: "Uzun Kılıç" -> "uzun kılıç"
         if (!isProficient) {
             if (knownProfs.some(p => item.name.toLowerCase().includes(p) || p.includes(item.id))) {
                 isProficient = true;
             }
         }
 
-        // 3. Zırh/Silah Gereksinim Kontrolü (STR Şartı)
-        // Eğer silah heavy ise ve karakter küçükse vs. (Şimdilik sadece Zırh STR şartı ekleyelim)
         if (item.strReq) {
             const currentStr = finalAbilityScores.value.str || 10;
             if (currentStr < item.strReq) {
-                warning = `Yetersiz Güç! (Gereken: ${item.strReq}, Sizde: ${currentStr})`;
-                // Gereksinim karşılanmazsa kural olarak proficiency düşmez ama hız düşer. 
-                // Biz basitlik adına burada da uyarı verelim.
+                warning = `⚠️ Yetersiz Güç! (Gereken: ${item.strReq}, Sizde: ${currentStr})`;
             }
         }
 
         return { isProficient, warning };
     };
 
-
     // --- HESAPLAMALAR ---
 
-    // 1. Zırh Sınıfı (AC)
+    // 1. Zırh Sınıfı (AC) (Aynı Kalıyor)
     const calculatedAC = computed(() => {
         const dexMod = Math.floor(((finalAbilityScores.value.dex || 10) - 10) / 2);
         const equippedArmorId = store.inventory.armor || 'none';
@@ -66,7 +51,6 @@ export function useInventoryLogic(finalAbilityScores, proficiencyBonus, selected
 
         let baseAC = armorData.ac;
 
-        // Zırh türü ve Dex hesabı
         if (armorData.type === 'light') baseAC += dexMod;
         else if (armorData.type === 'medium') baseAC += Math.min(dexMod, 2);
         // Heavy: Dex yok
@@ -75,41 +59,66 @@ export function useInventoryLogic(finalAbilityScores, proficiencyBonus, selected
         return baseAC;
     });
 
-    // 2. Saldırı Listesi (GÜNCELLENDİ)
+    // 2. Saldırı Listesi (GÜNCELLENDİ: TÜM STATLAR & AYRIK BONUSLAR)
     const attackList = computed(() => {
-        const strMod = Math.floor(((finalAbilityScores.value.str || 10) - 10) / 2);
-        const dexMod = Math.floor(((finalAbilityScores.value.dex || 10) - 10) / 2);
+        // Tüm modları hazırla
+        const mods = {
+            str: Math.floor(((finalAbilityScores.value.str || 10) - 10) / 2),
+            dex: Math.floor(((finalAbilityScores.value.dex || 10) - 10) / 2),
+            con: Math.floor(((finalAbilityScores.value.con || 10) - 10) / 2),
+            int: Math.floor(((finalAbilityScores.value.int || 10) - 10) / 2),
+            wis: Math.floor(((finalAbilityScores.value.wis || 10) - 10) / 2),
+            cha: Math.floor(((finalAbilityScores.value.cha || 10) - 10) / 2)
+        };
         const pb = proficiencyBonus.value;
 
-        // store.inventory.weapons artık obje dizisi olmalı: [{id:'dagger', custom:true}, {id:'club'}]
-        // Geriye dönük uyumluluk için string ise objeye çeviriyoruz.
-        const weaponInventory = store.inventory.weapons.map(w => {
-            return (typeof w === 'string') ? { id: w, custom: null } : w;
-        });
+        const weaponInventory = store.inventory.weapons.map(w => 
+            (typeof w === 'string') ? { id: w, custom: null } : w
+        );
 
         return weaponInventory.map(wItem => {
-            const wData = weaponList.find(i => i.id === wItem.id);
+            let wData;
+            
+            // Veriyi Al
+            if (wItem.isCustomWeapon) {
+                wData = wItem; 
+            } else {
+                wData = weaponList.find(i => i.id === wItem.id);
+            }
+
             if (!wData) return null;
 
-            // Stat Seçimi
-            let usedMod = strMod;
-            if (wData.stat === 'dex') usedMod = dexMod;
-            else if (wData.stat === 'finesse') usedMod = Math.max(strMod, dexMod);
+            // --- STAT SEÇİMİ (GÜNCELLENDİ) ---
+            let selectedStatKey = wData.stat || 'str'; // Varsayılan STR
+            let usedMod = mods.str;
 
-            // Ustalık Kontrolü
-            const ruleCheck = checkProficiencyRule(wData);
-            
-            // Nihai Karar: Kullanıcı override etmiş mi? Yoksa Kural mı geçerli?
-            // wItem.custom === true (Kullanıcı "Ben ustayım" dedi)
-            // wItem.custom === false (Kullanıcı "Usta değilim" dedi - nadir)
-            // wItem.custom === null/undefined (Varsayılan kurala uy)
-            
-            let isProficient = ruleCheck.isProficient;
-            if (wItem.custom === true) isProficient = true; 
-            // Kullanıcı özellikle tiklemişse, kural ne derse desin ustadır.
+            if (selectedStatKey === 'finesse') {
+                // Finesse ise STR ve DEX'ten büyük olanı al
+                usedMod = Math.max(mods.str, mods.dex);
+            } else if (mods[selectedStatKey] !== undefined) {
+                // Hexblade (Cha), Shillelagh (Wis), Artificer (Int) desteği
+                usedMod = mods[selectedStatKey];
+            }
 
-            const hitBonus = usedMod + (isProficient ? pb : 0);
-            const dmgBonus = usedMod;
+            // --- BONUSLAR (GÜNCELLENDİ) ---
+            // Özel silahsa kendi içindeki ayrı bonusları al, yoksa (standartsa) genel bonus yoktur (0)
+            const extraHit = wItem.isCustomWeapon ? (wItem.bonusHit || 0) : 0;
+            const extraDmg = wItem.isCustomWeapon ? (wItem.bonusDmg || 0) : 0;
+
+            // --- USTALIK ---
+            let isProficient = false;
+            if (wItem.isCustomWeapon) {
+                isProficient = wItem.customProficient; 
+            } else {
+                const ruleCheck = checkProficiencyRule(wData);
+                isProficient = ruleCheck.isProficient;
+                if (wItem.custom === true) isProficient = true;
+                if (wItem.custom === false) isProficient = false;
+            }
+
+            // --- NİHAİ HESAP ---
+            const hitBonus = usedMod + (isProficient ? pb : 0) + extraHit;
+            const dmgBonus = usedMod + extraDmg;
 
             return {
                 id: wData.id,
@@ -119,37 +128,39 @@ export function useInventoryLogic(finalAbilityScores, proficiencyBonus, selected
                 dmgType: wData.type,
                 bonus: dmgBonus,
                 totalBonusDisplay: (dmgBonus >= 0 ? '+' : '') + dmgBonus,
-                // UI için gerekli bilgiler:
-                isProficient, 
-                warning: ruleCheck.warning,
-                ruleSays: ruleCheck.isProficient // Kuralın asıl fikri (Toast için lazım)
+                isProficient: isProficient
             };
         }).filter(x => x !== null);
     });
 
     // --- YÖNETİM FONKSİYONLARI ---
 
-    // Silah Ekle/Çıkar (GÜNCELLENDİ)
     const toggleWeapon = (id) => {
-        // Envanterdeki mevcut durumu bul
-        // Not: store.inventory.weapons artık obje ve string karışık olabilir, normalize ediyoruz
         const index = store.inventory.weapons.findIndex(w => (typeof w === 'string' ? w : w.id) === id);
-
-        if (index > -1) {
-            // Varsa çıkar
-            store.inventory.weapons.splice(index, 1);
-        } else {
-            // Yoksa ekle (Varsayılan olarak 'null' yani kurala uy)
-            // { id: 'dagger', custom: null }
-            store.inventory.weapons.push({ id: id, custom: null });
-        }
+        if (index > -1) store.inventory.weapons.splice(index, 1);
+        else store.inventory.weapons.push({ id: id, custom: null });
     };
 
-    // Ustalık Tikini Değiştir (YENİ)
+    // GÜNCELLENDİ: Yeni formatta veri ekleme
+    const addCustomWeaponToInventory = (formData) => {
+        const newWeapon = {
+            id: 'custom_' + Date.now(),
+            isCustomWeapon: true,
+            name: formData.name || 'İsimsiz Silah',
+            dmg: formData.dmg || '1d4',
+            type: formData.type || 'Kesici',
+            stat: formData.stat || 'str',
+            // YENİ: Ayrı bonusları kaydet
+            bonusHit: formData.bonusHit || 0,
+            bonusDmg: formData.bonusDmg || 0,
+            customProficient: formData.isProficient
+        };
+        store.inventory.weapons.push(newWeapon);
+    };
+
     const toggleWeaponProficiency = (id, forceState) => {
         const item = store.inventory.weapons.find(w => (typeof w === 'string' ? w : w.id) === id);
         if (item) {
-            // Eğer item string ise objeye çevir (Eski seed uyumluluğu)
             if (typeof item === 'string') {
                 const idx = store.inventory.weapons.indexOf(item);
                 store.inventory.weapons[idx] = { id: item, custom: forceState };
@@ -167,6 +178,7 @@ export function useInventoryLogic(finalAbilityScores, proficiencyBonus, selected
         calculatedAC, attackList,
         toggleWeapon, toggleWeaponProficiency,
         setArmor, toggleShield,
-        checkProficiencyRule // Toast mesajı için dışarı açıyoruz
+        checkProficiencyRule,
+        addCustomWeaponToInventory
     };
 }

@@ -27,6 +27,9 @@ const app = createApp({
             hasCreatedSheet, 
             activeFeatureSubTab 
         } = useCharacterSheet();
+
+        // Envanter Alt Sekmesi için Değişken (YENİ)
+        const activeInventoryTab = ref('owned'); // 'owned' veya 'all'
         
         // ============================================================
         // 2. IRK MANTIĞI
@@ -40,8 +43,7 @@ const app = createApp({
             raceChoiceConfig 
         } = useRaceLogic();
 
-        // [DÜZELTME 1] selectedRace değişkenini tanımlıyoruz
-        // Store içindeki seçili ırkı dinleyen bir computed (hesaplanan) değer oluşturuyoruz.
+        // Seçili ırkı dinleyen computed (Envanter mantığı için gerekli)
         const selectedRace = computed(() => store.race.selected);
 
         // ============================================================
@@ -107,22 +109,6 @@ const app = createApp({
             currentExpertCount
         } = useSkillLogic(finalAbilityScores, proficiencyBonus);
 
-        // ============================================================
-        // 6. ENVANTER (INVENTORY LOGIC)
-        // ============================================================
-        // [DÜZELTME 2] Artık selectedRace tanımlı olduğu için hata vermeyecek
-        const {
-            weaponList, armorList,
-            calculatedAC, attackList,
-            toggleWeapon, toggleWeaponProficiency, 
-            setArmor, toggleShield,
-            checkProficiencyRule 
-        } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace); 
-
-        // Toast Gösterme Fonksiyonu
-        const showWarningToast = (msg) => {
-            alert("⚠️ DİKKAT: " + msg);
-        };
 
         // ============================================================
         // UI & SİSTEM DEĞİŞKENLERİ
@@ -325,16 +311,21 @@ const app = createApp({
             showToast(msg);
         };
 
-        // Zar Mantığı
+        // ============================================================
+        // ZAR VE HASAR MANTIĞI
+        // ============================================================
         const { 
             diceResult, 
-            rollD20, 
+            rollD20,
+            rollDamage, // <--- useDiceLogic'ten otomatik geliyor
             closeDiceResult, 
             diceHistory,
             isHistoryOpen,
             clearHistory,
             toggleHistory
         } = useDiceLogic();
+
+        
 
         const isSaveProficient = (key) => {
             const cls = selectedClass.value;
@@ -352,6 +343,58 @@ const app = createApp({
         };
 
         const isInventoryOpen = ref(false); 
+
+        // ============================================================
+        // 6. ENVANTER (INVENTORY LOGIC)
+        // ============================================================
+
+        // ÖZEL SİLAH FORM DEĞİŞKENLERİ
+        const isCustomWeaponFormOpen = ref(false);
+        const customWeaponForm = ref({
+            name: '',
+            dmg: '1d6',
+            type: 'Kesici',
+            stat: 'str',
+            bonusHit: 0, // YENİ: Ayrı Tutturma
+            bonusDmg: 0, // YENİ: Ayrı Hasar
+            isProficient: false
+        });
+
+        const {
+            weaponList, armorList,
+            calculatedAC, attackList,
+            toggleWeapon, toggleWeaponProficiency, 
+            setArmor, toggleShield,
+            checkProficiencyRule,
+            addCustomWeaponToInventory 
+        } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
+
+        // FORMU KAYDET VE SIFIRLA
+        const saveCustomWeapon = () => {
+            if (!customWeaponForm.value.name) {
+                alert("Lütfen silaha bir isim verin.");
+                return;
+            }
+            
+            addCustomWeaponToInventory(customWeaponForm.value);
+            
+            // Formu Sıfırla
+            customWeaponForm.value = {
+                name: '', 
+                dmg: '1d6', 
+                type: 'Kesici', 
+                stat: 'str', 
+                bonusHit: 0, 
+                bonusDmg: 0, 
+                isProficient: false
+            };
+            isCustomWeaponFormOpen.value = false;
+            
+            alert("Silah başarıyla eklendi! Çantam sekmesinden görebilirsiniz.");
+        };
+
+        // Toast Fonksiyonu
+        const showWarningToast = (msg) => { alert("⚠️ DİKKAT: " + msg); };
 
         // ============================================================
         // LIFE CYCLE (ON MOUNTED)
@@ -437,6 +480,7 @@ const app = createApp({
             dndIcons, 
             isSheetMode, 
             activeSheetTab, 
+            activeInventoryTab, // YENİ EKLENDİ
             finishCreation: handleFinish,
             hasCreatedSheet, 
             activeFeatureSubTab, 
@@ -500,7 +544,8 @@ const app = createApp({
             updateResource,   
             handleRest,
             diceResult, 
-            rollD20, 
+            rollD20,
+            rollDamage, // YENİ EKLENDİ
             closeDiceResult, 
             isSaveProficient,
             diceHistory, 
@@ -514,7 +559,11 @@ const app = createApp({
             toggleWeapon, setArmor, toggleShield,
             toggleWeaponProficiency,
             checkProficiencyRule,
-            showWarningToast
+            showWarningToast,
+
+            isCustomWeaponFormOpen,
+            customWeaponForm,
+            saveCustomWeapon
         };
     }
 });

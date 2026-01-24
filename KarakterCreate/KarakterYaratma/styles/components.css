@@ -660,7 +660,7 @@ a.dnd-link.spell-link:hover {
 
 .equip-section { margin-bottom: 20px; }
 .weapon-list-scroll {
-    max-height: 200px; overflow-y: auto; border: 1px solid #333; border-radius: 4px;
+    max-height: 400px; overflow-y: auto; border: 1px solid #333; border-radius: 4px;
 }
 .weapon-item {
     padding: 8px 12px; border-bottom: 1px solid #2a2a2a; cursor: pointer;
