@@ -303,7 +303,7 @@
     .hp-box { grid-column: 1 / -1; order: -1; }
     .sheet-tabs { width: 100%; display: flex; padding-bottom: 5px; border-bottom: 1px solid #444; }
     .sheet-tabs button { flex: 1; padding: 15px 10px; font-size: 0.95em; justify-content: center; }
-    .sheet-tab-content { padding: 15px; border: none; }
+    .sheet-tab-content { padding: 15px; border: none; margin-bottom: 100px; }
     .st-grid { grid-template-columns: repeat(3, 1fr); }
     .st-row { flex-direction: row; justify-content: space-between; padding: 8px 12px; }
     .st-info { flex-direction: row; gap: 8px; }
