@@ -202,6 +202,7 @@ const app = createApp({
                 ch: userChoices.value,
                 sm: selectedScoreMethod.value, 
                 rp: rolledPool.value,
+                hp: store.hp,
                 inv: store.inventory, 
                 av: store.meta.avatar 
             };      
@@ -271,6 +272,9 @@ const app = createApp({
                 store.skills.expertises = [...(data.e || [])];
                 userChoices.value = { ...data.ch };    
                 
+                // Can Yükleme
+                if (data.hp) { store.hp = { ...store.hp, ...data.hp }; }
+
                 // Envanter Yükleme
                 if (data.inv) {
                     store.inventory = { ...store.inventory, ...data.inv };
@@ -398,6 +402,90 @@ const app = createApp({
 
         // Toast Fonksiyonu
         const showWarningToast = (msg) => { alert("⚠️ DİKKAT: " + msg); };
+
+
+        // ============================================================
+        // 7. CAN (HP) YÖNETİMİ SİSTEMİ (YENİ)
+        // ============================================================
+        
+        const isHpModalOpen = ref(false);
+        const hpModalValue = ref(0); // Inputtaki değer
+
+        // 1. Maksimum Can Hesabı (Tekrar kullanılabilir hale getirdik)
+        const maxHP = computed(() => {
+            if (!selectedClass.value) return 0;
+            
+            const hitDie = parseInt(getHitDie(selectedClass.value)) || 8;
+            const conMod = Math.floor(((finalAbilityScores.value.con || 10) - 10) / 2);
+            const lvl = targetLevel.value;
+
+            // Seviye 1: Full Zar + Con
+            // Sonraki Seviyeler: (Zar/2 + 1) + Con
+            const firstLevel = hitDie + conMod;
+            const nextLevels = ((hitDie / 2) + 1 + conMod) * (lvl - 1);
+
+            return firstLevel + nextLevels;
+        });
+
+        // 2. Mevcut Can (Store ile senkronize)
+        const currentHP = computed({
+            get: () => {
+                // Eğer store'da değer yoksa (null), karakter full candadır.
+                if (store.hp.current === null || store.hp.current === undefined) {
+                    return maxHP.value;
+                }
+                return store.hp.current;
+            },
+            set: (val) => {
+                // Sınırları koru (0 ile Max arası)
+                if (val > maxHP.value) val = maxHP.value;
+                if (val < 0) val = 0;
+                store.hp.current = val;
+            }
+        });
+
+        // 3. Renk Sınıfı Belirleyici (%30 ve %10 kuralı)
+        const hpStatusClass = computed(() => {
+            if (maxHP.value === 0) return '';
+            const percent = (currentHP.value / maxHP.value) * 100;
+
+            if (percent <= 0) return 'hp-dead'; // Ölü (Gri/Siyah)
+            if (percent <= 10) return 'hp-critical'; // Kritik (Kırmızı Yanıp Sönen)
+            if (percent <= 30) return 'hp-low'; // Düşük (Turuncu)
+            return ''; // Normal (Beyaz/Yeşil)
+        });
+
+        // 4. İşlemler (SADELEŞTİRİLDİ & BİRLEŞTİRİLDİ)
+        
+        // Değeri değiştir (Artık eksiye de düşebilir)
+        const adjustHpModalValue = (amount) => {
+            hpModalValue.value += amount;
+        };
+
+        // Tek Buton Mantığı: Artıysa iyileş, eksiyse hasar al
+        const applyHpChange = () => {
+            const val = hpModalValue.value;
+            if (val === 0) return;
+
+            // currentHP computed özelliği zaten sınırları (0 ve Max) koruyor
+            // Bu yüzden direkt topluyoruz. (Hasar ise val negatiftir, toplamak çıkartmak demektir)
+            currentHP.value += val;
+
+            // Mesaj ver
+            if (val > 0) showToast(`${val} İyileşildi!`, "💚");
+            else showToast(`${Math.abs(val)} Hasar Alındı!`, "🩸");
+
+            // Sıfırla ve kapat
+            hpModalValue.value = 0;
+            isHpModalOpen.value = false;
+        };
+
+        const setFullHp = () => {
+            currentHP.value = maxHP.value;
+            showToast("Can tamamen yenilendi!", "✨");
+            // isHpModalOpen.value = false; // İsteğe bağlı: Resetleyince pencere kapanmasın, oyuncu görsün
+        };
+
 
         // ============================================================
         // LIFE CYCLE (ON MOUNTED)
@@ -580,7 +668,16 @@ const app = createApp({
 
             isCustomWeaponFormOpen,
             customWeaponForm,
-            saveCustomWeapon
+            saveCustomWeapon,
+
+            isHpModalOpen,
+            hpModalValue,
+            maxHP,
+            currentHP,
+            hpStatusClass,
+            setFullHp,
+            adjustHpModalValue, // <--- Bunu ekle
+            applyHpChange // <--- Bunu ekle
         };
     }
 });

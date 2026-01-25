@@ -37,6 +37,10 @@ export const store = reactive({
         items: {},      // { 'pot_heal': 3 } şeklinde
         gold: 0         // Para (Ucunu açık bıraktık)
     },
+    hp: {
+        current: null, // null ise Maksimuma eşit sayacağız
+        temp: 0
+    },
     choices: {} 
 });
 

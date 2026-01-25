@@ -339,6 +339,195 @@
     color: #ccc;
 }
 
+/* ============================================================
+   CAN (HP) GÖSTERGE STİLLERİ
+   ============================================================ */
+
+/* Normal Durum (Varsayılan beyaz/yeşilimsi, CSS müdahalesine gerek yok) */
+
+/* Düşük Can (%30 altı - Turuncu) */
+.hp-low {
+    color: #ff9800 !important;
+    text-shadow: 0 0 5px rgba(255, 152, 0, 0.4);
+    animation: pulse-orange 2s infinite;
+}
+
+/* Kritik Can (%10 altı - Kırmızı) */
+.hp-critical {
+    color: #ff4444 !important;
+    text-shadow: 0 0 8px rgba(255, 68, 68, 0.6);
+    animation: pulse-red 1s infinite; /* Daha hızlı atıyor */
+}
+
+/* Baygın/Ölü (0 HP) */
+.hp-dead {
+    color: #555 !important;
+    text-decoration: line-through;
+}
+
+@keyframes pulse-orange {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+@keyframes pulse-red {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); color: #ff0000; }
+    100% { transform: scale(1); }
+}
+
+/* ============================================================
+   MODERN HP MODAL TASARIMI
+   ============================================================ */
+
+.hp-modal-window {
+    max-width: 380px !important;
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 16px; /* Daha yuvarlak köşeler */
+    overflow: hidden;
+}
+
+.no-border { border-bottom: none !important; }
+
+/* Mevcut Can Göstergesi (Devasa) */
+.hp-display-large {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1;
+}
+
+.hp-display-large .current { font-size: 4em; font-weight: 800; color: #fff; }
+.hp-display-large .divider { font-size: 2em; color: #444; vertical-align: super; margin: 0 5px; }
+.hp-display-large .max { font-size: 1.5em; color: #666; font-weight: 600; }
+
+/* Stepper (Sayaç) Yapısı */
+.hp-stepper-container {
+    background: #111;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #2a2a2a;
+}
+
+.stepper-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+}
+
+.step-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #2b2b2b;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+    font-size: 0.9em;
+}
+
+.step-btn:active { transform: scale(0.9); }
+.step-btn:hover { background: #444; }
+
+.step-btn.secondary {
+    background: #1f1f1f;
+    color: #888;
+    font-size: 0.8em;
+}
+
+.step-value-display {
+    font-size: 2em;
+    font-weight: bold;
+    color: #e67e22; /* Turuncu vurgu */
+    width: 60px;
+    text-align: center;
+    user-select: none;
+}
+
+.stepper-label {
+    text-align: center; color: #444; font-size: 0.7em; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px;
+}
+
+/* Aksiyon Butonları */
+.hp-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.hp-action-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 15px;
+    border: none; border-radius: 12px;
+    cursor: pointer; transition: transform 0.1s, opacity 0.2s;
+    color: white; font-weight: bold; font-size: 1.1em;
+}
+
+.hp-action-btn:active { transform: scale(0.95); }
+.hp-action-btn:disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(100%); }
+
+.hp-action-btn .icon { font-size: 1.5em; margin-bottom: 5px; }
+
+.hp-action-btn.damage { background: linear-gradient(135deg, #b52b2b, #8a1c1c); box-shadow: 0 4px 10px rgba(181, 43, 43, 0.3); }
+.hp-action-btn.heal { background: linear-gradient(135deg, #4caf50, #2e7d32); box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
+
+/* Minik Reset Butonu */
+.mini-reset-btn {
+    width: 24px; height: 24px;
+    border-radius: 50%; border: 1px solid #444;
+    background: transparent; color: #666;
+    font-size: 12px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+}
+.mini-reset-btn:hover { border-color: #b52b2b; color: #b52b2b; transform: rotate(180deg); }
+
+/* --- AKILLI HP BUTON STİLLERİ --- */
+
+/* Değer Göstergesi Renkleri */
+.step-value-display { transition: color 0.2s; }
+.step-value-display.val-pos { color: #4caf50; } /* Yeşil */
+.step-value-display.val-neg { color: #ff4444; } /* Kırmızı */
+
+/* Akıllı Buton Temeli */
+.smart-btn {
+    width: 100%; /* Tam genişlik */
+    background: #333; /* Nötr (0 iken) */
+    color: #888;
+    box-shadow: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Pozitif (İyileşme) Durumu */
+.smart-btn.btn-heal {
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    color: white;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Negatif (Hasar) Durumu */
+.smart-btn.btn-dmg {
+    background: linear-gradient(135deg, #b52b2b, #8a1c1c);
+    color: white;
+    box-shadow: 0 4px 15px rgba(181, 43, 43, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Disabled Durumu */
+.smart-btn:disabled {
+    background: #222;
+    color: #555;
+    cursor: default;
+    box-shadow: none;
+    transform: none;
+}
+
 /* Mobilde Responsive */
 @media (max-width: 850px) {
     .ability-scores-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -357,4 +546,5 @@
 }
 @media (max-width: 500px) {
     .st-grid { grid-template-columns: repeat(2, 1fr); }
+    
 }

@@ -773,12 +773,18 @@
                             <span class="label">Hız</span>
                             <span class="value">{{ store.race.selected?.speed || 30 }} ft.</span>
                         </div>
-                        <div class="c-stat-box hp-box">
-                            <span class="label">Can Puanı (HP)</span>
-                            <span class="value">
-                                {{ (parseInt(getHitDie(selectedClass)) + Math.floor((finalAbilityScores.con - 10) / 2)) + ((parseInt(getHitDie(selectedClass))/2 + 1 + Math.floor((finalAbilityScores.con - 10) / 2)) * (targetLevel - 1)) }}
+                        <div class="c-stat-box hp-box clickable-stat" 
+                             @click="isHpModalOpen = true"
+                             title="Canı Düzenlemek İçin Tıkla">
+                            
+                            <div style="display:flex; flex-direction:column; align-items:flex-start;">
+                                <span class="label">Can Puanı (HP)</span>
+                                <span class="sub-label" style="font-size:0.7em; color:#666;">Maksimum: {{ maxHP }}</span>
+                            </div>
+
+                            <span class="value" :class="hpStatusClass" style="font-size: 1.4em;">
+                                {{ currentHP }}
                             </span>
-                            <span class="sub-label">Maksimum</span>
                         </div>
 
                         
@@ -1304,6 +1310,64 @@
                         </div>
                     </div>
                 
+                </div>
+            </div>
+        </div>
+
+        <!-- HP Modal -->
+        <div class="modal-overlay" v-if="isHpModalOpen"@click.self="isHpModalOpen = false">
+            <div class="modal-window hp-modal-window">
+                
+                <div class="modal-header no-border">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <h3>❤️ Can Durumu</h3>
+                        <button @click="setFullHp" class="mini-reset-btn" title="Canı Full (Max) Yap">
+                            ↺
+                        </button>
+                    </div>
+                    <span class="close-modal" @click="isHpModalOpen = false">✖</span>
+                </div>
+
+                <div class="modal-content hp-modal-content">
+                    
+                    <div class="hp-display-large" :class="hpStatusClass">
+                        <span class="current">{{ currentHP }}</span>
+                        <span class="divider">/</span>
+                        <span class="max">{{ maxHP }}</span>
+                    </div>
+
+                    <div class="hp-stepper-container">
+                        <div class="stepper-row">
+                            <button class="step-btn secondary" @click="adjustHpModalValue(-10)">-10</button>
+                            <button class="step-btn" @click="adjustHpModalValue(-1)">-1</button>
+                            
+                            <div class="step-value-display" 
+                                 :class="{ 'val-pos': hpModalValue > 0, 'val-neg': hpModalValue < 0 }">
+                                {{ hpModalValue > 0 ? '+' : '' }}{{ hpModalValue }}
+                            </div>
+
+                            <button class="step-btn" @click="adjustHpModalValue(1)">+1</button>
+                            <button class="step-btn secondary" @click="adjustHpModalValue(10)">+10</button>
+                        </div>
+                        <div class="stepper-label">
+                            {{ hpModalValue > 0 ? 'İyileşme Miktarı' : (hpModalValue < 0 ? 'Hasar Miktarı' : 'Değişim Yok') }}
+                        </div>
+                    </div>
+
+                    <button @click="applyHpChange" 
+                            class="hp-action-btn smart-btn" 
+                            :class="{ 'btn-heal': hpModalValue > 0, 'btn-dmg': hpModalValue < 0 }"
+                            :disabled="hpModalValue === 0">
+                        
+                        <div class="icon" v-if="hpModalValue < 0">🩸</div>
+                        <div class="icon" v-else-if="hpModalValue > 0">💚</div>
+                        <div class="icon" v-else>⚪</div>
+
+                        <span>
+                            {{ hpModalValue > 0 ? 'Uygula (İyileş)' : (hpModalValue < 0 ? 'Uygula (Hasar)' : 'Değer Giriniz') }}
+                        </span>
+                    </button>
+
                 </div>
             </div>
         </div>
