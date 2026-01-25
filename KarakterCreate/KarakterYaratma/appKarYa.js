@@ -12,6 +12,7 @@ import { useSkillLogic } from './src/logicSkills.js';
 import { avatarList } from './src/data/avatarList.js';
 import { useDiceLogic } from './src/logicDice.js';
 import { useInventoryLogic } from './src/logicInventory.js';
+import { useSpellLogic } from './src/logicSpells.js'; // En tepeye import olarak ekle
 
 
 const app = createApp({
@@ -337,15 +338,22 @@ const app = createApp({
         const isSaveProficient = (key) => {
             const cls = selectedClass.value;
             if (!cls || !cls.proficiency) return false;
+            
             const profs = cls.proficiency.map(p => p.toLowerCase());
+
+            // GENİŞLETİLMİŞ HARİTA (Hem TR, Hem ENG, Hem Kısaltma)
             const map = {
                 str: ['str', 'strength', 'güç', 'kuv', 'kuvvet'],
                 dex: ['dex', 'dexterity', 'çev', 'çeviklik'],
                 con: ['con', 'constitution', 'day', 'dayanıklılık'],
                 int: ['int', 'intelligence', 'zek', 'zeka'],
-                wis: ['wis', 'wisdom', 'aki', 'akı', 'akıl', 'bilgelik'],
+                wis: ['wis', 'wisdom', 'aki', 'akı', 'akıl', 'bilgelik', 'sezgi'], 
                 cha: ['cha', 'charisma', 'kar', 'karizma']
             };
+
+            // key (örn: 'str') haritada var mı bak
+            if (!map[key]) return false;
+
             return map[key].some(term => profs.some(p => p.includes(term)));
         };
 
@@ -403,6 +411,75 @@ const app = createApp({
         // Toast Fonksiyonu
         const showWarningToast = (msg) => { alert("⚠️ DİKKAT: " + msg); };
 
+
+
+   
+
+            // ============================================================
+        // 8. BÜYÜ SİSTEMİ (GARANTİLİ VERSİYON)
+        // ============================================================
+        const {
+            allSpells,
+            isLoadingSpells,
+            loadSpellsData,
+            knownSpellsList,
+            groupedSpells,
+            maxSpellSlots,
+            toggleSpellKnown,
+            castSpell,
+            renderEntry
+        } = useSpellLogic(targetLevel, selectedClass, finalAbilityScores);
+
+        // UI Değişkenleri
+        const isSpellBrowserOpen = ref(false);
+        const spellSearchQuery = ref("");
+        
+        // KRİTİK: Başlangıçta 50 büyü göster. Bu değişken eksikse liste boş gelir!
+        const browserDisplayLimit = ref(50); 
+
+        // Pencere açılınca veriyi yüklemeyi ZORLA
+        watch(isSpellBrowserOpen, (newValue) => {
+            if (newValue === true) {
+                console.log("Büyü kütüphanesi açıldı, veri kontrol ediliyor...");
+                loadSpellsData(); // Veri yoksa çeker, varsa pas geçer
+                browserDisplayLimit.value = 50; // Scroll'u başa sar
+            }
+        });
+
+        // Filtreli Liste (Sıralı ve Limitli)
+        const filteredSpells = computed(() => {
+            if (!allSpells.value || allSpells.value.length === 0) return [];
+
+            const q = spellSearchQuery.value.toLowerCase();
+            
+            // 1. Filtrele
+            let result = allSpells.value.filter(s => s.searchString && s.searchString.includes(q));
+
+            // 2. SIRALA (Önce Seviye, Sonra İsim)
+            result.sort((a, b) => {
+                // Seviye farkı varsa ona göre sırala (Küçükten büyüğe)
+                if (a.level !== b.level) {
+                    return a.level - b.level;
+                }
+                // Seviyeler aynıysa isme göre sırala (Alfabetik)
+                return a.name.localeCompare(b.name);
+            });
+
+            // 3. Limitle (Sonsuz Kaydırma için)
+            return result.slice(0, browserDisplayLimit.value);
+        });
+
+        // Sonsuz Kaydırma (Infinite Scroll)
+        const onSpellBrowserScroll = (e) => {
+            const { scrollTop, clientHeight, scrollHeight } = e.target;
+            // Listenin sonuna yaklaşıldı mı?
+            if (scrollTop + clientHeight >= scrollHeight - 100) {
+                // Eğer daha fazla veri varsa, limiti 50 artır
+                if (filteredSpells.value.length >= browserDisplayLimit.value) {
+                    browserDisplayLimit.value += 50;
+                }
+            }
+        };
 
         // ============================================================
         // 7. CAN (HP) YÖNETİMİ SİSTEMİ (YENİ)
@@ -677,7 +754,20 @@ const app = createApp({
             hpStatusClass,
             setFullHp,
             adjustHpModalValue, // <--- Bunu ekle
-            applyHpChange // <--- Bunu ekle
+            applyHpChange, // <--- Bunu ekle
+
+            // Sihir Sistemi
+            isSpellBrowserOpen,
+            spellSearchQuery,
+            filteredSpells,
+            knownSpellsList,
+            groupedSpells,
+            maxSpellSlots,
+            toggleSpellKnown,
+            castSpell,
+            renderEntry,
+            isLoadingSpells,
+            onSpellBrowserScroll,
         };
     }
 });

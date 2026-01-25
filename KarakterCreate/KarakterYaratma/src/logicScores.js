@@ -4,12 +4,12 @@ import { store } from './store.js';
 export function useScoreLogic(raceBonuses) {
     // --- SABİTLER ---
     const selectableStats = { 
-        'str': 'KUV', 
-        'dex': 'ÇEV', 
-        'con': 'DAY', 
-        'int': 'ZEK', 
-        'wis': 'AKI', 
-        'cha': 'KAR' 
+        'str': 'STR', 
+        'dex': 'DEX', 
+        'con': 'CON', 
+        'int': 'INT', 
+        'wis': 'WIS', 
+        'cha': 'CHA' 
     };
     
     const scoreMethods = [

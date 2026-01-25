@@ -862,10 +862,105 @@
                         </div>
         
                         <div v-if="activeSheetTab === 'spells'">
-                            <p style="text-align: center; color: #aaa; margin-top: 20px;">
-                                Henüz büyü kitabı oluşturulmadı. <br>
-                                <span style="font-size: 0.8em;">(Yakında eklenecek...)</span>
-                            </p>
+                            
+                            <div class="spell-slots-dashboard" v-if="maxSpellSlots[1] > 0">
+                                <div v-for="lvl in 9" :key="lvl" v-show="maxSpellSlots[lvl] > 0" class="slot-row">
+                                    <div class="slot-label">{{ lvl }}. Seviye</div>
+                                    <div class="slot-pips">
+                                        <label v-for="n in maxSpellSlots[lvl]" :key="n" class="slot-checkbox">
+                                            <input type="checkbox" 
+                                                   :checked="n <= store.spells.slots[lvl]"
+                                                   @change="store.spells.slots[lvl] = $event.target.checked ? n : n-1">
+                                            <span class="slot-gem"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button @click="isSpellBrowserOpen = true" class="btn btn-secondary full-width" style="margin: 15px 0;">
+                                📖 Büyü Kitabını Aç / Büyü Ekle
+                            </button>
+
+                            <div v-if="knownSpellsList.length === 0" style="text-align:center; color:#666; font-style:italic;">
+                                Henüz büyü bilmiyorsunuz. Kitabı açıp ekleyin.
+                            </div>
+
+                            <div v-for="(spells, level) in groupedSpells" :key="level" class="spell-group">
+                                <h4 class="spell-level-header">
+                                    {{ level == 0 ? 'Cantrips (Sıfırıncı Seviye)' : level + '. Seviye' }}
+                                </h4>
+                                
+                                <div v-for="spell in spells" :key="spell.id" class="spell-card">
+                                    <div class="spell-header">
+                                        <div class="spell-name">{{ spell.name }}</div>
+                                        <div class="spell-meta" style="white-space: nowrap;">
+                                            {{ spell.school }} • {{ spell.time[0]?.number }} {{ spell.time[0]?.unit }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="spell-actions">
+                                        <button @click="castSpell(spell)" class="cast-btn">⚡ AT</button>
+                                        <div class="spell-detail-toggle" onclick="this.parentElement.nextElementSibling.classList.toggle('show')">
+                                            Detay ▼
+                                        </div>
+                                    </div>
+
+                                    <div class="spell-details-body">
+                                        <p><strong>Menzil:</strong> {{ spell.range.distance.amount ? spell.range.distance.amount + ' ft' : spell.range.distance.type }}</p>
+                                        <p><strong>Süre:</strong> {{ spell.duration[0]?.duration ? spell.duration[0].duration.amount + ' ' + spell.duration[0].duration.type : 'Anlık' }}</p>
+                                        <div class="spell-desc" v-html="spell.entries.map(renderEntry).join('<br><br>')"></div>
+                                        
+                                        <button @click="toggleSpellKnown(spell.id)" class="remove-spell-btn">Kitaptan Sil</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-overlay" v-if="isSpellBrowserOpen" @click.self="isSpellBrowserOpen = false">
+                            <div class="modal-window spell-browser-modal">
+                                <div class="modal-header">
+                                    <h3>Büyü Kütüphanesi</h3>
+                                    <span class="close-modal" @click="isSpellBrowserOpen = false">✖</span>
+                                </div>
+                                <div class="modal-content">
+                                    <input type="text" v-model="spellSearchQuery" placeholder="Büyü ara (İsim, Seviye, Okul)..." class="big-input" style="width:100%; margin-bottom:10px;">
+                                    
+                                    <div class="spell-browser-list" @scroll="onSpellBrowserScroll">
+                                        
+                                        <div v-if="isLoadingSpells" style="padding:20px; text-align:center; color:#e67e22;">
+                                            ⏳ Büyüler yükleniyor...
+                                        </div>
+                                        <div v-if="!isLoadingSpells && filteredSpells.length === 0" style="text-align:center; padding:20px; color:#666;">
+                                            Sonuç bulunamadı.
+                                        </div>
+
+                                        <div v-for="(spell, index) in filteredSpells" :key="spell.id">
+                                            
+                                            <div v-if="index === 0 || spell.level !== filteredSpells[index - 1].level" 
+                                                 class="browser-level-header">
+                                                {{ spell.level === 0 ? 'Cantrips (Sıfırıncı Seviye)' : spell.level + '. Seviye' }}
+                                            </div>
+
+                                            <div class="browser-item">
+                                                <div class="browser-info">
+                                                    <strong>{{ spell.name }}</strong>
+                                                    <span style="font-size:0.8em; color:#888; white-space: nowrap;">
+                                                        {{ spell.school }}
+                                                    </span>
+                                                </div>
+                                                <button @click="toggleSpellKnown(spell.id)" 
+                                                        class="btn-icon" 
+                                                        :class="{ 'added': store.spells.known.includes(spell.id) }"
+                                                        title="Büyü Kitabına Ekle/Çıkar">
+                                                    {{ store.spells.known.includes(spell.id) ? '✓' : '+' }}
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div v-if="activeSheetTab === 'inventory'">

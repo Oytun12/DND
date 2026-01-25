@@ -41,6 +41,13 @@ export const store = reactive({
         current: null, // null ise Maksimuma eşit sayacağız
         temp: 0
     },
+    spells: {
+        known: [], // Öğrenilen büyülerin ID'leri veya tam objeleri
+        slots: {   // Harcanan slot sayıları (Maksimumlar sınıftan hesaplanacak)
+            1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0,
+            pact: 0 // Warlock için
+        }
+    },
     choices: {} 
 });
 

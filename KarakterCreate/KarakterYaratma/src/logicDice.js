@@ -1,25 +1,38 @@
 // src/logicDice.js
 import { ref } from 'vue';
 
+// --- PAYLAŞIMLI DURUM (GLOBAL STATE) ---
+// Bu değişkenler fonksiyonun dışına alındı, böylece tüm uygulama aynı veriyi paylaşır.
+const diceResult = ref({
+    visible: false,
+    source: '',      
+    baseRoll: 0,    
+    modifier: 0,    
+    total: 0,
+    diceLabel: 'd20',
+    isCrit: false,   
+    isFail: false    
+});
+
+const diceHistory = ref([]);
+const isHistoryOpen = ref(false);
+let autoCloseTimer = null;
+
+// --- FONKSİYONLAR ---
 export function useDiceLogic() {
     
-    // Zar Sonuç Durumu
-    const diceResult = ref({
-        visible: false,
-        source: '',      
-        baseRoll: 0,    
-        modifier: 0,    
-        total: 0,
-        diceLabel: 'd20', // <--- YENİ: Varsayılan etiket
-        isCrit: false,   
-        isFail: false    
-    });
+    // YARDIMCI: Sonucu Gösterme (Hepsi aynı 'diceResult'ı günceller)
+    const showResult = (result) => {
+        diceResult.value = { ...result, visible: true }; 
+        diceHistory.value.unshift(result);
 
-    const diceHistory = ref([]);
-    const isHistoryOpen = ref(false);
-    let autoCloseTimer = null;
+        if (autoCloseTimer) clearTimeout(autoCloseTimer);
+        autoCloseTimer = setTimeout(() => {
+            diceResult.value.visible = false;
+        }, 4000);
+    };
 
-    // --- 1. D20 ATMA ---
+    // 1. D20 ATMA
     const rollD20 = (sourceName, modifier) => {
         const roll = Math.floor(Math.random() * 20) + 1;
         
@@ -30,7 +43,7 @@ export function useDiceLogic() {
             baseRoll: roll,
             modifier: modifier,
             total: roll + modifier,
-            diceLabel: 'd20', // <--- D20 atışlarında etiket
+            diceLabel: 'd20',
             isCrit: roll === 20,
             isFail: roll === 1,
             type: 'd20'
@@ -39,8 +52,9 @@ export function useDiceLogic() {
         showResult(result);
     };
 
-    // --- 2. HASAR ZARI ATMA ---
+    // 2. HASAR ZARI ATMA
     const rollDamage = (name, diceString, bonus, damageType) => {
+        // diceString Örn: "8d6" veya "1d4"
         if (!diceString || !diceString.includes('d')) {
             console.error("Hatalı zar formatı:", diceString);
             return;
@@ -58,28 +72,17 @@ export function useDiceLogic() {
         const result = {
             id: Date.now(),
             time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-            source: `${name} Hasarı (${damageType})`,
+            source: `${name} (${damageType})`,
             baseRoll: diceSum, 
             modifier: bonus,
             total: diceSum + bonus,
-            diceLabel: diceString, // <--- YENİ: "2d6", "1d8" gibi gelen stringi buraya yazıyoruz
+            diceLabel: diceString, 
             isCrit: false, 
             isFail: false,
             type: 'damage'
         };
 
         showResult(result);
-    };
-
-    // --- YARDIMCI ---
-    const showResult = (result) => {
-        diceResult.value = { ...result, visible: true }; // Tüm veriyi state'e aktar
-        diceHistory.value.unshift(result);
-
-        if (autoCloseTimer) clearTimeout(autoCloseTimer);
-        autoCloseTimer = setTimeout(() => {
-            diceResult.value.visible = false;
-        }, 4000);
     };
 
     const closeDiceResult = () => {

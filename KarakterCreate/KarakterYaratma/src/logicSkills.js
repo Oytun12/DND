@@ -4,15 +4,24 @@ import { store } from './store.js';
 export function useSkillLogic(finalAbilityScores, proficiencyBonus) {
 
     const SKILL_DEFINITIONS = [
-        { id: 'acrobatics', name: 'Akrobasi', attr: 'dex' }, { id: 'animal_handling', name: 'Hayvan Terbiyesi', attr: 'wis' },
-        { id: 'arcana', name: 'Arkana', attr: 'int' }, { id: 'athletics', name: 'Atletizm', attr: 'str' },
-        { id: 'deception', name: 'Kandırma', attr: 'cha' }, { id: 'history', name: 'Tarih', attr: 'int' },
-        { id: 'insight', name: 'Sezgi', attr: 'wis' }, { id: 'intimidation', name: 'Gözdağı', attr: 'cha' },
-        { id: 'investigation', name: 'Araştırma', attr: 'int' }, { id: 'medicine', name: 'Tıp', attr: 'wis' },
-        { id: 'nature', name: 'Doğa', attr: 'int' }, { id: 'perception', name: 'Algı', attr: 'wis' },
-        { id: 'performance', name: 'Performans', attr: 'cha' }, { id: 'persuasion', name: 'İkna', attr: 'cha' },
-        { id: 'religion', name: 'Din', attr: 'int' }, { id: 'sleight_of_hand', name: 'El Çabukluğu', attr: 'dex' },
-        { id: 'stealth', name: 'Gizlilik', attr: 'dex' }, { id: 'survival', name: 'Hayatta Kalma', attr: 'wis' }
+        { id: 'acrobatics', name: 'Akrobasi', attr: 'dex' },
+        { id: 'sleight_of_hand', name: 'El Çabukluğu', attr: 'dex' }, // "El Çubuklu" düzeltildi
+        { id: 'stealth', name: 'Gizlilik', attr: 'dex' },
+        { id: 'arcana', name: 'Arcana', attr: 'int' },
+        { id: 'history', name: 'Tarih', attr: 'int' },
+        { id: 'investigation', name: 'Araştırma', attr: 'int' },
+        { id: 'nature', name: 'Nature', attr: 'int' },
+        { id: 'religion', name: 'Din', attr: 'int' },
+        { id: 'animal_handling', name: 'Hayvan Terbiyesi', attr: 'wis' }, // Listede yoktu, standart gereği ekledim
+        { id: 'insight', name: 'Sezgi', attr: 'wis' },
+        { id: 'medicine', name: 'Medicine', attr: 'wis' }, // "Medicane" düzeltildi
+        { id: 'perception', name: 'Algı', attr: 'wis' },
+        { id: 'survival', name: 'Survival', attr: 'wis' },
+        { id: 'deception', name: 'Aldatma', attr: 'cha' },
+        { id: 'intimidation', name: 'Gözdağı', attr: 'cha' },
+        { id: 'performance', name: 'Performans', attr: 'cha' },
+        { id: 'persuasion', name: 'İkna', attr: 'cha' },
+        { id: 'athletics', name: 'Atletizm', attr: 'str' }
     ];
 
     // Irkın verdiği yetenek hakları
@@ -147,13 +156,13 @@ export function useSkillLogic(finalAbilityScores, proficiencyBonus) {
             };
         });
 
-        // 2. SONRA SIRALA (YENİ EKLENEN KISIM)
+        // 2. SONRA SIRALA
         return list.sort((a, b) => {
-            // Kriter 1: Uzmanlık Seviyesi (Önce Expert, Sonra Proficient, En son Acemiler)
+            // Kriter 1: Uzmanlık Seviyesi (Önce ★, Sonra ●, En son •)
             if (b.profLevel !== a.profLevel) {
                 return b.profLevel - a.profLevel;
             }
-            // Kriter 2: İsim (Alfabetik)
+            // Kriter 2: İsim (Alfabetik - Türkçe karakter uyumlu)
             return a.name.localeCompare(b.name, 'tr');
         });
     });
