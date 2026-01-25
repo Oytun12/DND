@@ -91,3 +91,101 @@
     
     .character-sheet-layout { margin: 0; padding: 0; overflow-x: hidden; }
 }
+
+/* ============================================================
+   MOBİL İÇİN ÖZEL YERLEŞİM (SONUÇ KAĞIDI DÜZENİ)
+   ============================================================ */
+
+@media (max-width: 850px) {
+    
+    /* 1. En dış katmanı Flex Container yapıyoruz */
+    .character-sheet-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 2. SİHİRLİ DOKUNUŞ: Ara katmanları "yok" sayıyoruz (display: contents).
+       Böylece 'sheet-header', 'sidebar' ve 'main-content' içindeki her şey
+       aynı seviyede kardeş gibi davranır ve sıralanabilir hale gelir. */
+    .sheet-grid,
+    .sheet-main-content {
+        display: contents; 
+    }
+
+    /* --- SIRALAMA (ORDER) AYARLARI --- */
+    
+    /* SIRA 1: Başlık (İsim, Avatar) */
+    .sheet-header-main {
+        order: 1;
+        margin-bottom: 10px;
+    }
+
+    /* SIRA 2: Savaş İstatistikleri (Can, AC, Hız - İstediğin Gibi En Tepeye) */
+    .combat-stats-row {
+        order: 2;
+        margin-bottom: 15px;
+        /* Kutuları mobilde yan yana (2x2) dizelim */
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        gap: 8px;
+        padding: 0 10px; /* Kenarlardan hafif boşluk */
+    }
+    
+    /* SIRA 3: Kurtulma Zarları */
+    .saving-throws-panel {
+        order: 3;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+
+    /* SIRA 4: Sol Menü (Statlar ve Skiller) */
+    .sheet-sidebar {
+        order: 4;
+        width: 100%;
+        margin-bottom: 20px;
+        border-right: none;
+        padding: 0 10px;
+        
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* SIRA 5: Sekmeler (Tabs) - Yapışkan Olsun */
+    .sheet-tabs {
+        order: 5;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #121212;
+        padding-top: 10px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #333;
+        border-top: 1px solid #333; /* Üste de çizgi atalım belli olsun */
+    }
+
+    /* SIRA 6: Sekme İçeriği */
+    .sheet-tab-content {
+        order: 6;
+        padding: 0 10px 40px 10px; /* Alttan biraz boşluk */
+    }
+
+    /* --- GÖRSEL DÜZELTMELER (MOBİL) --- */
+    
+    /* Can puanı kutusu (HP) çok dar kalmasın, tam satır kaplasın */
+    .combat-stats-row .hp-box {
+        grid-column: 1 / -1; /* Tüm satırı kapla */
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background: #1f1f1f; /* Biraz daha belirgin olsun */
+    }
+
+    /* Stat kutularını (STR, DEX...) yan yana diz */
+    .sheet-sidebar .ability-scores-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 Yan yana */
+        gap: 8px;
+    }
+}

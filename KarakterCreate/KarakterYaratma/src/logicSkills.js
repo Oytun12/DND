@@ -121,19 +121,40 @@ export function useSkillLogic(finalAbilityScores, proficiencyBonus) {
         } else store.skills.expertises = store.skills.expertises.filter(id => id !== skillId);
     };
 
-    // Nihai Yetenek Hesaplaması
     const calculatedSkills = computed(() => {
-        const stats = finalAbilityScores.value;
-        const pb = proficiencyBonus.value;
-        const labels = { 'str': 'KUV', 'dex': 'ÇEV', 'con': 'DAY', 'int': 'ZEK', 'wis': 'AKI', 'cha': 'KAR' };
-        
-        return SKILL_DEFINITIONS.map(skill => {
-            const score = stats[skill.attr] || 10;
-            const mod = Math.floor((score - 10) / 2);
-            let level = 0;
-            if (store.skills.proficiencies.includes(skill.id)) level = 1;
-            if (store.skills.expertises.includes(skill.id)) level = 2;
-            return { ...skill, totalBonus: mod + (pb * level), profLevel: level, attrLabel: labels[skill.attr].substring(0, 3) };
+        // 1. Önce hesapla
+        const list = SKILL_DEFINITIONS.map(def => {
+            const attrKey = def.attr;
+            const attrScore = finalAbilityScores.value[attrKey] || 10;
+            const attrMod = Math.floor((attrScore - 10) / 2);
+            
+            // Proficiency Seviyesi (0: Yok, 1: Var, 2: Expertise)
+            // Store'da sadece string ID'ler tutuluyor, bu yüzden kontrol ediyoruz
+            let profLevel = 0;
+            if (store.skills.expertises.includes(def.id)) profLevel = 2;
+            else if (store.skills.proficiencies.includes(def.id)) profLevel = 1;
+
+            // Bonus Hesapla: (ProfLevel * PB) + Stat Mod
+            const profBonus = profLevel > 0 ? (proficiencyBonus.value * (profLevel === 2 ? 2 : 1)) : 0;
+            const totalBonus = attrMod + profBonus;
+
+            return {
+                ...def,
+                attrMod,
+                profLevel,
+                totalBonus,
+                attrLabel: def.attr.toUpperCase()
+            };
+        });
+
+        // 2. SONRA SIRALA (YENİ EKLENEN KISIM)
+        return list.sort((a, b) => {
+            // Kriter 1: Uzmanlık Seviyesi (Önce Expert, Sonra Proficient, En son Acemiler)
+            if (b.profLevel !== a.profLevel) {
+                return b.profLevel - a.profLevel;
+            }
+            // Kriter 2: İsim (Alfabetik)
+            return a.name.localeCompare(b.name, 'tr');
         });
     });
 

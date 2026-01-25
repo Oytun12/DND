@@ -109,6 +109,9 @@ const app = createApp({
             currentExpertCount
         } = useSkillLogic(finalAbilityScores, proficiencyBonus);
 
+        // Yetenek Paneli Durumu (Başlangıçta ekran genişliğine göre karar ver)
+        const isSkillsExpanded = ref(window.innerWidth > 800);
+
 
         // ============================================================
         // UI & SİSTEM DEĞİŞKENLERİ
@@ -446,6 +449,19 @@ const app = createApp({
                 const loader = document.getElementById('initial-loader');
                 if(loader) loader.remove();
             }
+        
+            // --- PENCERE BOYUTU DİNLEYİCİSİ (ÇİFT TARAFLI) ---
+            window.addEventListener('resize', () => {
+                const isDesktop = window.innerWidth > 850;
+
+                if (isDesktop) {
+                    // Geniş ekran: Eğer kapalıysa AÇ
+                    if (!isSkillsExpanded.value) isSkillsExpanded.value = true;
+                } else {
+                    // Dar ekran: Eğer açıksa KAPAT
+                    if (isSkillsExpanded.value) isSkillsExpanded.value = false;
+                }
+            });
         });
 
         onUnmounted(() => {
@@ -481,6 +497,7 @@ const app = createApp({
             isSheetMode, 
             activeSheetTab, 
             activeInventoryTab, // YENİ EKLENDİ
+            isSkillsExpanded, // <--- EKLENDİ
             finishCreation: handleFinish,
             hasCreatedSheet, 
             activeFeatureSubTab, 

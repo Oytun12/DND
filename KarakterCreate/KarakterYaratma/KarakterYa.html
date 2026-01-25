@@ -693,10 +693,17 @@
                 </div>
              
                 <div class="sheet-skills-panel">
-                    <h3 style="font-size: 0.9em; text-align: center; border-bottom: 1px solid #333; padding-bottom: 5px;">Yetenekler</h3>
+                    <h3 class="clickable-header" 
+                        @click="isSkillsExpanded = !isSkillsExpanded"
+                        title="Tüm yetenekleri göster/gizle">
+                        Yetenekler
+                        <span class="toggle-arrow" :class="{ 'rotated': isSkillsExpanded }">▼</span>
+                    </h3>
+
                     <div class="skills-container">
                         <div v-for="skill in calculatedSkills" :key="skill.id" 
                              class="sheet-skill-row clickable-stat"
+                             v-show="skill.profLevel > 0 || isSkillsExpanded"
                              @click="rollD20(skill.name, skill.totalBonus)">
 
                             <div class="skill-left">
@@ -707,15 +714,21 @@
                                 </div>
 
                                 <div>
-                                    <span class="skill-name">{{ skill.name }}</span>
+                                    <span class="skill-name" :class="{ 'dimmed-text': skill.profLevel === 0 }">{{ skill.name }}</span>
                                     <span class="skill-attr" style="color:#666; font-size:0.8em; margin-left:4px;">({{ skill.attrLabel }})</span>
                                 </div>
                             </div>
 
-                            <div class="skill-val" :style="skill.profLevel > 0 ? 'color:#fff' : 'color:#666'">
+                            <div class="skill-val" :style="skill.profLevel > 0 ? 'color:#fff; font-weight:bold;' : 'color:#555'">
                                 {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
                             </div>
 
+                        </div>
+                        
+                        <div v-if="!isSkillsExpanded" 
+                             @click="isSkillsExpanded = true"
+                             style="text-align:center; font-size:0.75em; color:#666; padding:5px; cursor:pointer; font-style:italic;">
+                             + Diğer yetenekleri göster...
                         </div>
                     </div>
                 </div>

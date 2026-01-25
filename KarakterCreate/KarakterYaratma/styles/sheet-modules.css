@@ -293,6 +293,52 @@
     margin-top: 2px;
 }
 
+/* ============================================================
+   YETENEK PANELİ MOBİL DÜZENLEMELERİ
+   ============================================================ */
+
+/* Tıklanabilir Başlık */
+.clickable-header {
+    font-size: 0.9em; 
+    text-align: center; 
+    border-bottom: 1px solid #333; 
+    padding-bottom: 5px; 
+    cursor: pointer; 
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+
+.clickable-header:hover {
+    color: #eee;
+}
+
+/* Ok İşareti Animasyonu */
+.toggle-arrow {
+    font-size: 0.8em;
+    color: #666;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+}
+
+.toggle-arrow.rotated {
+    transform: rotate(180deg); /* Açılınca ters dön */
+    color: #b52b2b;
+}
+
+/* Uzman Olunmayan Yeteneklerin Yazısı */
+.dimmed-text {
+    color: #888; /* Biraz daha sönük olsun */
+}
+
+/* Hover durumunda satır parlasın */
+.sheet-skill-row:hover .dimmed-text {
+    color: #ccc;
+}
+
 /* Mobilde Responsive */
 @media (max-width: 850px) {
     .ability-scores-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
