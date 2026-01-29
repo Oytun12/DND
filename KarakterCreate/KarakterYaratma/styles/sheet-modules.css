@@ -429,7 +429,7 @@
 /* ============================================================
    9. RESPONSIVE (MOBİL UYUMLULUK)
    ============================================================ */
-@media (max-width: 850px) {
+@media (max-width: 860px) {
     .ability-scores-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .ability-score-card { padding: 15px 5px; background: #202020; }
     .score-modifier { font-size: 2em; }

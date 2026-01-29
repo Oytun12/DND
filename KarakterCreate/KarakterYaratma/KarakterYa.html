@@ -122,7 +122,9 @@
                             </div>
                         </div>
 
-                        <button ref="galleryButton" @click="isGalleryExpanded = !isGalleryExpanded" class="btn-crimson-outline">
+                        <button ref="galleryButton" 
+                                @click="toggleGallery" 
+                                class="btn-crimson-outline">
                             {{ isGalleryExpanded ? 'Kütüphaneyi Gizle' : 'Resmi Değiştir (' + avatarList.length + ' Görsel)' }}
                         </button>
 
@@ -782,7 +784,7 @@
                                 <span class="sub-label" style="font-size:0.7em; color:#666;">Maksimum: {{ maxHP }}</span>
                             </div>
 
-                            <span class="value" :class="hpStatusClass" style="font-size: 1.4em;">
+                            <span class="value" :class="hpStatusClass">
                                 {{ currentHP }}
                             </span>
                         </div>
@@ -791,30 +793,44 @@
                     </div>
         
                     <div class="sheet-tabs">
-                        <button @click="activeSheetTab = 'actions'" :class="{ active: activeSheetTab === 'actions' }">
-                            <svg :viewBox="dndIcons.actions.viewBox" class="tab-icon" v-html="dndIcons.actions.content"></svg>
+    
+                        <button @click="activeSheetTab = 'actions'" 
+                                :class="{ active: activeSheetTab === 'actions' }">
+                            <svg :viewBox="dndIcons.actions.viewBox" 
+                                 class="tab-icon" 
+                                 v-html="dndIcons.actions.content"></svg>
                             Aksiyonlar
                         </button>
                         
-                        <button @click="activeSheetTab = 'spells'" :class="{ active: activeSheetTab === 'spells' }">
-                            <svg :viewBox="dndIcons.spells.viewBox" class="tab-icon" v-html="dndIcons.spells.content"></svg>
+                        <button @click="activeSheetTab = 'spells'" 
+                                :class="{ active: activeSheetTab === 'spells' }">
+                            <svg :viewBox="dndIcons.spells.viewBox" 
+                                 class="tab-icon" 
+                                 v-html="dndIcons.spells.content"></svg>
                             Büyüler
                         </button>
-
-                        <button @click="activeSheetTab = 'inventory'" :class="{ active: activeSheetTab === 'inventory' }">
-                            <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M19,6H16V3c0-1.1-0.9-2-2-2h-4c-1.1,0-2,0.9-2,2v3H5C3.9,6,3,6.9,3,8v12c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V8C21,6.9,20.1,6,19,6z M10,3h4v3h-4V3z M19,20H5V8h14V20z M12,12c-1.1,0-2-0.9-2-2h4C14,11.1,13.1,12,12,12z"/>
-                            </svg>
+                    
+                        <button @click="activeSheetTab = 'inventory'" 
+                                :class="{ active: activeSheetTab === 'inventory' }">
+                            <svg :viewBox="dndIcons.inventory.viewBox" 
+                                 class="tab-icon" 
+                                 v-html="dndIcons.inventory.content"></svg>
                             Envanter
                         </button>
-
-                        <button @click="activeSheetTab = 'features'" :class="{ active: activeSheetTab === 'features' }">
-                            <svg :viewBox="dndIcons.features.viewBox" class="tab-icon" v-html="dndIcons.features.content"></svg>
+                    
+                        <button @click="activeSheetTab = 'features'" 
+                                :class="{ active: activeSheetTab === 'features' }">
+                            <svg :viewBox="dndIcons.features.viewBox" 
+                                 class="tab-icon" 
+                                 v-html="dndIcons.features.content"></svg>
                             Özellikler
                         </button>
                         
-                        <button @click="activeSheetTab = 'description'" :class="{ active: activeSheetTab === 'description' }">
-                            <svg :viewBox="dndIcons.description.viewBox" class="tab-icon" v-html="dndIcons.description.content"></svg>
+                        <button @click="activeSheetTab = 'description'" 
+                                :class="{ active: activeSheetTab === 'description' }">
+                            <svg :viewBox="dndIcons.description.viewBox" 
+                                 class="tab-icon" 
+                                 v-html="dndIcons.description.content"></svg>
                             Açıklama
                         </button>
                     </div>

@@ -1,4 +1,4 @@
-import { createApp, ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { createApp, ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'; 
 
 // --- MODÜLLER ---
 import { store, cleanObject } from './src/store.js';
@@ -111,7 +111,7 @@ const app = createApp({
         } = useSkillLogic(finalAbilityScores, proficiencyBonus);
 
         // Yetenek Paneli Durumu (Başlangıçta ekran genişliğine göre karar ver)
-        const isSkillsExpanded = ref(window.innerWidth > 800);
+        const isSkillsExpanded = ref(window.innerWidth > 860);
 
 
         // ============================================================
@@ -146,12 +146,33 @@ const app = createApp({
             "../../img/avatars/wizard.jpg"
         ];
 
+        
+
         const showCustomAvatarInput = ref(false);
         const isGalleryExpanded = ref(false); 
         const isMobileMenuOpen = ref(false);
         const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value; };
         const isMobileSheetOpen = ref(false);
         const toggleMobileSheet = () => { isMobileSheetOpen.value = !isMobileSheetOpen.value; };
+
+        const toggleGallery = () => {
+            isGalleryExpanded.value = !isGalleryExpanded.value;
+                
+            if (isGalleryExpanded.value) {
+                // 1. Vue'nun DOM'u güncellemesini bekle
+                nextTick(() => {
+                    // 2. Mobil tarayıcıların animasyonu algılaması için küçük bir gecikme ekle (300ms)
+                    setTimeout(() => {
+                        if (galleryContainer.value) {
+                            galleryContainer.value.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'start' // Mobilde en üste hizalamak en iyisidir
+                            });
+                        }
+                    }, 300); // 300ms, animasyonun başladığından emin olmak için yeterlidir
+                });
+            }
+        };
 
         // --- DIŞARI TIKLAMA İLE GALERİYİ KAPATMA ---
         const galleryContainer = ref(null); 
@@ -180,7 +201,18 @@ const app = createApp({
             }, 3000);
         };
 
-        const handleFinish = () => { finishCreation(showToast); };
+        const handleFinish = () => { 
+            finishCreation(showToast);
+
+            // Sayfa yapısı tamamen değiştiği için DOM güncellemesini bekle
+            nextTick(() => {
+                // Sayfanın en tepesine (0, 0) noktasına kaydır
+                window.scrollTo({ 
+                    top: 0, 
+                    behavior: 'smooth' 
+                });
+            });
+        };
         const handleRoll = () => { rollStats(showToast); };
 
         // ============================================================
@@ -617,7 +649,7 @@ const app = createApp({
         
             // --- PENCERE BOYUTU DİNLEYİCİSİ (ÇİFT TARAFLI) ---
             window.addEventListener('resize', () => {
-                const isDesktop = window.innerWidth > 850;
+                const isDesktop = window.innerWidth > 860;
 
                 if (isDesktop) {
                     // Geniş ekran: Eğer kapalıysa AÇ
@@ -720,6 +752,7 @@ const app = createApp({
             avatarList, 
             showCustomAvatarInput, 
             isGalleryExpanded,
+            toggleGallery,
             galleryContainer,
             galleryButton,
             classResources,   
