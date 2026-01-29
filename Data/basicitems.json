@@ -1,0 +1,401 @@
+{
+	"basicitems": [
+		{
+			"name": "Dolgulu Zırh (Padded)",
+			"type": "LA",
+			"rarity": "none",
+			"value": "5 gp",
+			"weight": "8",
+			"ac": 11,
+			"stealth": true,
+			"entries": ["Dolgulu zırh, kapitone kumaş katmanlarından oluşur."]
+		},
+		{
+			"name": "Deri Zırh (Leather)",
+			"type": "LA",
+			"rarity": "none",
+			"value": "10 gp",
+			"weight": "10",
+			"ac": 11,
+			"entries": ["Bu zırhın göğüs ve omuz kısımları sertleştirilmiş deriden yapılmıştır."]
+		},
+		{
+			"name": "Zımbalı Deri (Studded Leather)",
+			"type": "LA",
+			"rarity": "none",
+			"value": "45 gp",
+			"weight": "13",
+			"ac": 12,
+			"entries": ["Sağlam deriden yapılmış bu zırh, perçinler ve zımbalarla güçlendirilmiştir."]
+		},
+		{
+			"name": "Post Zırh (Hide)",
+			"type": "MA",
+			"rarity": "none",
+			"value": "10 gp",
+			"weight": "12",
+			"ac": 12,
+			"entries": ["Bu kaba zırh, kalın kürklerden ve postlardan oluşur."]
+		},
+		{
+			"name": "Zincir Gömlek (Chain Shirt)",
+			"type": "MA",
+			"rarity": "none",
+			"value": "50 gp",
+			"weight": "20",
+			"ac": 13,
+			"entries": ["İç içe geçmiş metal halkalardan yapılmış bu gömlek, giysilerin altına giyilir."]
+		},
+		{
+			"name": "Pullu Zırh (Scale Mail)",
+			"type": "MA",
+			"rarity": "none",
+			"value": "50 gp",
+			"weight": "45",
+			"ac": 14,
+			"stealth": true,
+			"entries": ["Bu zırh, birbiri üzerine binen metal parçalarıyla kaplıdır."]
+		},
+		{
+			"name": "Göğüs Zırhı (Breastplate)",
+			"type": "MA",
+			"rarity": "none",
+			"value": "400 gp",
+			"weight": "20",
+			"ac": 14,
+			"entries": ["Bu zırh, deri kayışlarla tutturulmuş bir metal göğüs parçasından oluşur."]
+		},
+		{
+			"name": "Yarım Plaka (Half Plate)",
+			"type": "MA",
+			"rarity": "none",
+			"value": "750 gp",
+			"weight": "40",
+			"ac": 15,
+			"stealth": true,
+			"entries": ["Yarım plaka, vücudun çoğunu kaplayan şekillendirilmiş metal plakalardan oluşur."]
+		},
+		{
+			"name": "Halkalı Zırh (Ring Mail)",
+			"type": "HA",
+			"rarity": "none",
+			"value": "30 gp",
+			"weight": "40",
+			"ac": 14,
+			"stealth": true,
+			"entries": ["Bu zırh, deri bir zırhın üzerine dikilmiş ağır metal halkalardan oluşur."]
+		},
+		{
+			"name": "Zincir Zırh (Chain Mail)",
+			"type": "HA",
+			"rarity": "none",
+			"value": "75 gp",
+			"weight": "55",
+			"ac": 16,
+			"strength": 13,
+			"stealth": true,
+			"entries": ["Tüm vücudu kaplayan, iç içe geçmiş metal halkalardan yapılmıştır."]
+		},
+		{
+			"name": "Şerit Zırh (Splint)",
+			"type": "HA",
+			"rarity": "none",
+			"value": "200 gp",
+			"weight": "60",
+			"ac": 17,
+			"strength": 15,
+			"stealth": true,
+			"entries": ["Bu zırh, dikey metal şeritlerden oluşan perçinli bir yapıya sahiptir."]
+		},
+		{
+			"name": "Plaka Zırh (Plate)",
+			"type": "HA",
+			"rarity": "none",
+			"value": "1500 gp",
+			"weight": "65",
+			"ac": 18,
+			"strength": 15,
+			"stealth": true,
+			"entries": ["Plaka zırh, tüm vücudu kaplayan, şekillendirilmiş ağır metal plakalardan oluşur."]
+		},
+		{
+			"name": "Kalkan (Shield)",
+			"type": "S",
+			"rarity": "none",
+			"value": "10 gp",
+			"weight": "6",
+			"ac": 2,
+			"entries": ["Kalkan kullanmak Zırh Sınıfını (AC) 2 artırır."]
+		},
+		{
+			"name": "Sopa (Club)",
+			"type": "M",
+			"value": "1 sp",
+			"weight": "2",
+			"dmg1": "1d4",
+			"dmgType": "B",
+			"property": ["L"],
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Hançer (Dagger)",
+			"type": "M",
+			"value": "2 gp",
+			"weight": "1",
+			"dmg1": "1d4",
+			"dmgType": "P",
+			"property": ["F", "L", "T"],
+			"range": "20/60",
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Büyük Sopa (Greatclub)",
+			"type": "M",
+			"value": "2 sp",
+			"weight": "10",
+			"dmg1": "1d8",
+			"dmgType": "B",
+			"property": ["2H"],
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "El Baltası (Handaxe)",
+			"type": "M",
+			"value": "5 gp",
+			"weight": "2",
+			"dmg1": "1d6",
+			"dmgType": "S",
+			"property": ["L", "T"],
+			"range": "20/60",
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Cirit (Javelin)",
+			"type": "M",
+			"value": "5 sp",
+			"weight": "2",
+			"dmg1": "1d6",
+			"dmgType": "P",
+			"property": ["T"],
+			"range": "30/120",
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Hafif Çekiç (Light Hammer)",
+			"type": "M",
+			"value": "2 gp",
+			"weight": "2",
+			"dmg1": "1d4",
+			"dmgType": "B",
+			"property": ["L", "T"],
+			"range": "20/60",
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Gürz (Mace)",
+			"type": "M",
+			"value": "5 gp",
+			"weight": "4",
+			"dmg1": "1d6",
+			"dmgType": "B",
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Sopa (Quarterstaff)",
+			"type": "M",
+			"value": "2 sp",
+			"weight": "4",
+			"dmg1": "1d6",
+			"dmg2": "1d8",
+			"dmgType": "B",
+			"property": ["V"],
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Mızrak (Spear)",
+			"type": "M",
+			"value": "1 gp",
+			"weight": "3",
+			"dmg1": "1d6",
+			"dmg2": "1d8",
+			"dmgType": "P",
+			"property": ["T", "V"],
+			"range": "20/60",
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Hafif Arbalet (Light Crossbow)",
+			"type": "R",
+			"value": "25 gp",
+			"weight": "5",
+			"dmg1": "1d8",
+			"dmgType": "P",
+			"property": ["A", "LD", "2H"],
+			"range": "80/320",
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Kısa Yay (Shortbow)",
+			"type": "R",
+			"value": "25 gp",
+			"weight": "2",
+			"dmg1": "1d6",
+			"dmgType": "P",
+			"property": ["A", "2H"],
+			"range": "80/320",
+			"weaponCategory": "simple"
+		},
+		{
+			"name": "Savaş Baltası (Battleaxe)",
+			"type": "M",
+			"value": "10 gp",
+			"weight": "4",
+			"dmg1": "1d8",
+			"dmg2": "1d10",
+			"dmgType": "S",
+			"property": ["V"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Büyük Balta (Greataxe)",
+			"type": "M",
+			"value": "30 gp",
+			"weight": "7",
+			"dmg1": "1d12",
+			"dmgType": "S",
+			"property": ["H", "2H"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Büyük Kılıç (Greatsword)",
+			"type": "M",
+			"value": "50 gp",
+			"weight": "6",
+			"dmg1": "2d6",
+			"dmgType": "S",
+			"property": ["H", "2H"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Uzun Kılıç (Longsword)",
+			"type": "M",
+			"value": "15 gp",
+			"weight": "3",
+			"dmg1": "1d8",
+			"dmg2": "1d10",
+			"dmgType": "S",
+			"property": ["V"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Gürz (Maul)",
+			"type": "M",
+			"value": "10 gp",
+			"weight": "10",
+			"dmg1": "2d6",
+			"dmgType": "B",
+			"property": ["H", "2H"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Meç (Rapier)",
+			"type": "M",
+			"value": "25 gp",
+			"weight": "2",
+			"dmg1": "1d8",
+			"dmgType": "P",
+			"property": ["F"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Pala (Scimitar)",
+			"type": "M",
+			"value": "25 gp",
+			"weight": "3",
+			"dmg1": "1d6",
+			"dmgType": "S",
+			"property": ["F", "L"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Kısa Kılıç (Shortsword)",
+			"type": "M",
+			"value": "10 gp",
+			"weight": "2",
+			"dmg1": "1d6",
+			"dmgType": "P",
+			"property": ["F", "L"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Savaş Çekici (Warhammer)",
+			"type": "M",
+			"value": "15 gp",
+			"weight": "2",
+			"dmg1": "1d8",
+			"dmg2": "1d10",
+			"dmgType": "B",
+			"property": ["V"],
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Ağır Arbalet (Heavy Crossbow)",
+			"type": "R",
+			"value": "50 gp",
+			"weight": "18",
+			"dmg1": "1d10",
+			"dmgType": "P",
+			"property": ["A", "H", "LD", "2H"],
+			"range": "100/400",
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Uzun Yay (Longbow)",
+			"type": "R",
+			"value": "50 gp",
+			"weight": "2",
+			"dmg1": "1d8",
+			"dmgType": "P",
+			"property": ["A", "H", "2H"],
+			"range": "150/600",
+			"weaponCategory": "martial"
+		},
+		{
+			"name": "Sırt Çantası (Backpack)",
+			"type": "G",
+			"value": "2 gp",
+			"weight": "5",
+			"entries": ["Bir sırt çantası bir feet küp/30 pound ekipman taşıyabilir."]
+		},
+		{
+			"name": "Levye (Crowbar)",
+			"type": "G",
+			"value": "2 gp",
+			"weight": "5",
+			"entries": ["Kaldıraç kullanılabilecek durumlarda Kuvvet testi yaparken avantaj sağlar."]
+		},
+		{
+			"name": "İp, Kenevir (Rope, Hempen)",
+			"type": "G",
+			"value": "1 gp",
+			"weight": "10",
+			"entries": ["50 fit (15 metre) uzunluğunda, dayanıklı kenevir ip."]
+		},
+		{
+			"name": "Meşale (Torch)",
+			"type": "G",
+			"value": "1 cp",
+			"weight": "1",
+			"entries": ["Bir meşale 1 saat boyunca yanar. 20 fit yarıçapında parlak ışık yayar."]
+		},
+		{
+			"name": "Şifa İksiri (Potion of Healing)",
+			"type": "G",
+			"value": "50 gp",
+			"weight": "0.5",
+			"entries": ["Bu kırmızı sıvıyı içen bir karakter 2d4 + 2 can puanı iyileşir."]
+		}
+	],
+    "itemProperty": [],
+    "itemType": []
+}

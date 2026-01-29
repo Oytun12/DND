@@ -1,155 +1,238 @@
-/* Temel Ayarlar (Back.css ile uyumlu) */
-@font-face {
-    font-family: 'Convergence';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Convergence-Regular'), url('../../fonts/Convergence-Regular.ttf') format('truetype');
-}
+/* ============================================================
+   STYLESENVANTER.CSS - Modern Ekipmanlar Teması
+   ============================================================ */
+
+/* --- TEMEL AYARLAR (BASE) --- */
+* { box-sizing: border-box; }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f5e3;
-    color: #333;
-    margin: 0;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+.hidden { display: none !important; }
+
+/* --- HEADER & NAVİGASYON --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; 
+    height: 70px;
+    display: flex; align-items: center; 
+    position: relative; z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.header-container {
+    width: 100%; max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; letter-spacing: 1px; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Menü */
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+
+.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
+
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 99;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    display: none; 
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+.mobile-nav ul li a:hover { color: #b52b2b; }
+
+/* --- ANA İÇERİK --- */
+.main-container {
+    max-width: 1100px;
+    margin: 40px auto;
     padding: 20px;
 }
 
-/* Tab Menü Stilleri */
-.tab-menu {
+.intro-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.intro-section h2 { color: #b52b2b; font-size: 2em; margin-bottom: 10px; }
+.intro-section p { color: #aaa; font-size: 1.1em; }
+
+/* --- ANA KUTU (WRAPPER) --- */
+.main-content-box {
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* --- KATEGORİ KARTLARI (ACCORDION) --- */
+.category-card {
+    background-color: #2a2a2a;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.category-card:hover { border-color: #555; }
+
+.collapsible-header {
+    background-color: #333;
+    padding: 15px 25px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #b52b2b;
+    transition: background 0.2s;
+}
+.collapsible-header:hover { background-color: #444; }
+.collapsible-header h3 { margin: 0; font-size: 1.3em; color: #eee; font-weight: 600; }
+
+.arrow-icon { transition: transform 0.3s ease; color: #888; }
+.category-card.active .arrow-icon { transform: rotate(180deg); color: #b52b2b; }
+
+.category-content {
+    background-color: #252525;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, padding 0.4s ease;
+}
+.category-card.active .category-content {
+    max-height: 5000px; /* İçerik uzun olabilir */
+    border-top: 1px solid #3b3b3b;
+}
+
+/* --- TABLO STİLLERİ --- */
+.item-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.item-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+    font-size: 0.95em;
+}
+
+.item-table th, .item-table td {
+    padding: 12px 20px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+.item-table th {
+    background-color: #2e2e2e;
+    color: #b52b2b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+    position: sticky;
+    top: 0;
+}
+
+.item-table tr:nth-child(even) { background-color: #292929; }
+.item-table tr:hover { background-color: #333; }
+
+/* Hücre Özelleştirmeleri */
+.col-name { font-weight: bold; color: #eee; width: 30%; }
+.col-cost, .col-weight { color: #aaa; width: 15%; }
+.col-props { color: #ccc; font-style: italic; }
+
+/* Detay Satırı (Gizli) */
+.item-detail-row { display: none; background-color: #222 !important; }
+.item-detail-row.active { display: table-row; }
+.item-desc { padding: 15px 25px; color: #bbb; line-height: 1.6; border-left: 3px solid #555; margin: 10px 0; }
+
+/* Linkler */
+.dnd-link { color: #8ab4f8; cursor: pointer; border-bottom: 1px dotted #8ab4f8; }
+a.dnd-link.spell-link { color: #a855f7; text-decoration: none; border-bottom: 1px dotted #a855f7; padding: 0 2px; }
+a.dnd-link.spell-link:hover { color: #d8b4fe; background-color: rgba(168, 85, 247, 0.15); border-radius: 4px; }
+
+/* Responsive */
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    .main-container { padding: 15px; margin: 0; }
+    .main-content-box { background: transparent; border: none; padding: 0; box-shadow: none; border-radius: 0; }
+    .category-card { border-radius: 0; border-left: none; border-right: none; }
+    .item-table th, .item-table td { padding: 10px; }
+    .col-cost, .col-weight { font-size: 0.85em; }
+}
+
+/* ============================================================
+   STYLESENVANTER.CSS - Güncelleme (Tab Stilleri)
+   ============================================================ */
+
+/* --- SEKME (TAB) YAPISI --- */
+.tabs-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 0; /* Değişiklik: Boşluk kaldırıldı, artık yapışık */
-    /*border-bottom: 2px solid #8b4513;*/
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
-.tab-link {
-    background-color: #f5deb3;
-    border: 2px solid #8b4513; /* Değişiklik: Çerçeve kalınlığı 2px yapıldı */
-    border-bottom: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 20px;
-    transition: 0.3s;
-    font-family: 'Georgia', serif;
+.tab-btn {
+    background-color: #222;
+    color: #888;
+    border: 1px solid #333;
+    padding: 12px 30px;
     font-size: 1.1em;
-    color: #8b4513;
-    margin: 0 2px;
-    border-radius: 10px 10px 0 0;
-    position: relative; /* Eklendi: z-index için gerekli */
-    top: 2px; /* Eklendi: Çizgiye tam basması için hafif aşağı itildi */
-}
-
-.tab-link:hover {
-    background-color: #e6c99c;
-}
-
-.tab-link.active {
-    background-color: #fff;
-    border-bottom: 2px solid #fff; /* Alt çizgiyi beyaz yaparak "siliyoruz" */
-    font-weight: bold;
-    z-index: 5; /* Eklendi: Çizginin üstünde durmasını sağlar */
-    top: 2px; /* Konumu koru */
-}
-
-/* Tab İçerik Alanları */
-.tab-content {
-    display: none; 
-    padding: 10px;
-    border: 3px solid #8b4513; 
-    /*border-top: none;  Üst çizgi yok, menünün çizgisi kullanılıyor */
-    background-color: #fff;
-    border-radius: 10px 10px 10px 10px; /* Sadece alt köşeler yuvarlak */
-    position: relative;
-    z-index: 1; /* Menünün altında kalmaması için */
-}
-
-.active-content {
-    display: block; /* Sadece aktif olan görünür */
-    animation: fadeEffect 0.5s;
-}
-
-/* Animasyon */
-@keyframes fadeEffect {
-    from {opacity: 0;}
-    to {opacity: 1;}
-}
-
-/* Collapsible (Açılır-Kapanır) Yapı */
-.collapsible {
-    box-sizing: border-box; /* <-- EKLENECEK SİHİRLİ SATIR BU */
-    
-    background-color: #FBF1DE;
-    color: #8b4513;
     cursor: pointer;
-    padding: 10px;
-    width: 100%;
-    border: 2px solid #DB9D43;
-    border-radius: 7px;
-    text-align: left;
-    outline: none;
-    font-size: 1.2em;
-    font-family: 'Georgia', serif;
-    margin-top: 10px;
-}
-.active, .collapsible:hover {
-    background-color: #f0e6cc;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-.icerik {
-    padding: 0 10px;
-    background-color: white;
-    overflow: hidden;
-    border-left: 3px solid #8b4513;
-    margin-bottom: 10px;
+.tab-btn:hover {
+    background-color: #2a2a2a;
+    color: #ccc;
+    border-color: #444;
 }
 
-.hidden {
-    display: none;
+/* Aktif Sekme Stili */
+.tab-btn.active {
+    background-color: #b52b2b; /* Tema Rengi */
+    color: #fff;
+    border-color: #b52b2b;
+    box-shadow: 0 4px 10px rgba(181, 43, 43, 0.4);
 }
 
-.visible {
-    display: block;
-}
-
-/* Liste Öğeleri (Satırlar) */
-.item-card {
-    padding: 5px 5px; /* Üst-Alt boşluğu 10px'ten 5px'e düşürdük */
-    border-bottom: 1px solid #ddd;
-    display: flex; /* İçeriği dikeyde ortalamak için */
-    align-items: center; /* Yazıyı kutunun tam ortasına hizalar */
-    min-height: 30px; /* Satırın çok küçülmesini engeller */
-}
-
-/* Satır içindeki yazı ayarları - EN ÖNEMLİ KISIM */
-.item-card p {
-    margin: 0; /* Paragrafın o koca boşluğunu sıfırladık */
-    padding: 0; /* Garanti olsun diye iç boşluğu da sıfırladık */
-    line-height: 1.2; /* Satır aralığını biraz kıstık */
-}
-
-/* Arka plan renkleri aynen kalıyor */
-.koyu {
-    background-color: #faf0e0c3;
-}
-.bold {
-    font-weight: bold;
-    color: #000;
-}
-
-.ozellik {
-    font-style: italic;
-    color: #555;
-}
-
-.altbaslık {
-    margin: 0;
-    pointer-events: none; /* Tıklamayı h3'e geçirir */
-}
-
-/* Mobil Uyumluluk */
+/* Mobilde Sekmeler Alt Alta Dursun */
 @media (max-width: 600px) {
-    .tab-link {
-        font-size: 0.9em;
-        padding: 10px;
+    .tabs-container {
+        flex-direction: column;
+    }
+    .tab-btn {
+        width: 100%;
+        text-align: center;
     }
 }
+
+/* ... Diğer stiller aynen kalıyor ... */

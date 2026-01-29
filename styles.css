@@ -1,108 +1,307 @@
+/* ============================================================
+   STYLES.CSS - Modern D&D 5e Türkçe Teması (v2)
+   ============================================================ */
+
+/* --- TEMEL AYARLAR (BASE) --- */
+* { box-sizing: border-box; }
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f5e3;
-    color: #333;
-    margin: 0;
-    padding: 20px;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+/* Scrollbar Özelleştirmesi */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+.hidden { display: none !important; }
+
+/* --- HEADER & NAVİGASYON (LAYOUT) --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; 
+    height: 70px;
+    display: flex; 
+    align-items: center; 
+    position: relative; 
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.header-container {
+    width: 100%; 
+    max-width: 1200px; 
+    margin: 0 auto;
+    display: flex; 
+    justify-content: space-between; 
     align-items: center;
-    background-color: #ddddac;
-    border: 2px solid rgb(186, 184, 184);
-    border-radius: 10px;
-    color: #8b4513;
-    font-family: 'Georgia', serif;
-    padding: 1rem 0;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); */
-    position: relative;
 }
 
-.menu-icon {
-    cursor: pointer;
-    font-size: 2.2em;
-}
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
 
-.title {
-    font-family: 'Georgia', serif;
-    font-size: 2em;
-}
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; letter-spacing: 1px; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
 
-.logo-img {
-    width: 60px; /* Logonun genişliği */
-    height: auto; /* Oranını koruyarak yüksekliği otomatik ayarlar */
-}
- 
-nav {
-    position: absolute;
-    top: 121%; /* Menü ikonunun hemen altında başlar */
-    left: -4px;
-    width: 200px;
-    background-color: #cabe80;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    display: none;
-    z-index: 1000; /* Menü ikonunun üstünde görünmesi için */
-}
+/* Masaüstü Menü */
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
 
-nav ul {
-    margin-left: 20px;
-    list-style: disc;
-    padding: 0;
+.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
+
+/* Mobil Menü */
+.mobile-nav {
+    position: absolute; 
+    top: 70px; 
+    left: 0; 
+    width: 100%;
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 20px; 
+    z-index: 99;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    display: none; /* JS ile açılacak */
 }
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+.mobile-nav ul li a:hover { color: #b52b2b; }
 
-nav ul li {
-    text-align: left;
-
-    margin-left: 13px; 
-    margin-bottom: 13px;
-}
-
-nav ul li a {
-    color: #8b4513;
-    font-size: 1.2em;
-    font-family: 'Georgia', serif;
-    text-decoration: none;
-}
-
-.hidden {
-    display: none;
-}
-
-.visible {
-    display: block;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+/* --- ANA İÇERİK DÜZENİ --- */
+.main-container {
+    max-width: 1000px;
+    margin: 40px auto;
     padding: 20px;
-    background-color: #fff;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-    background-size: cover;
 }
 
-h1, h2 {
-    font-family: 'Georgia', serif;
-    margin-bottom: 20px;
-    color: #8b4513;
+/* Kart / Kutu Yapısı */
+.content-card {
+    background-color: #222; 
+    border-radius: 8px; 
+    padding: 30px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    margin-bottom: 30px;
 }
 
-@media (max-width: 600px) {
-    #skillsyazı {
-        font-size: 0.85em;
-    }
+.welcome-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.welcome-section h2 {
+    color: #b52b2b;
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.welcome-section p {
+    color: #aaa;
+    font-size: 1.1em;
+    max-width: 600px;
+    margin: 0 auto 10px auto;
+}
+
+/* Hızlı Erişim Linkleri (Grid) */
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.link-card {
+    background: #2b2b2b;
+    padding: 20px;
+    border-radius: 6px;
+    border-left: 4px solid #b52b2b;
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.link-card:hover {
+    transform: translateY(-5px);
+    background: #333;
+}
+
+.link-card h3 { margin: 0 0 10px 0; color: #fff; font-size: 1.2em; }
+.link-card p { margin: 0; color: #888; font-size: 0.9em; line-height: 1.4; }
+
+/* Buton Stilleri */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary {
+    background-color: #b52b2b;
+    color: #fff;
+    border: none;
+}
+.btn-primary:hover { background-color: #d63d3d; }
+
+/* Responsive */
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    .main-container { padding: 10px; margin-top: 10px; }
+    .content-card { padding: 20px; }
+    .welcome-section h2 { font-size: 1.5em; }
+}
+
+/* ============================================================
+    INDEX SAYFASI İÇERİK GELİŞTİRMESİ
+   ============================================================ */
+
+/* --- Welcome Section Geliştirmeleri --- */
+
+/* Ana karşılama kartının iç boşluğunu ve görsel derinliğini artırıyoruz */
+.welcome-card {
+    padding: 40px;
+    /* Hafif bir dikey degrade ile karta derinlik katıyoruz */
+    background: linear-gradient(180deg, #2a2a2a 0%, #222 100%);
+    /* Gölgeyi biraz daha belirginleştirerek öne çıkarıyoruz */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    border: 1px solid #333;
+}
+
+/* Ana başlık stili */
+.welcome-title {
+    color: #eee;
+    font-size: 2.2em;
+    margin-bottom: 25px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    /* Metne hafif bir gölge ekleyerek okunaklılığı artırıyoruz */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+/* Başlık içindeki "Türkçe Rehberi" kısmını vurgulamak için */
+.welcome-title .highlight { color: #b52b2b; }
+
+/* Ana misyon metni bloğu */
+.mission-text p {
+    font-size: 1.1em; /* Yazı boyutunu biraz büyüttük */
+    color: #ccc;
+    line-height: 1.7; /* Satır aralığını açarak okumayı kolaylaştırdık */
+    margin-bottom: 25px;
+    text-align: left;
+}
+/* Metin içindeki önemli kısımların vurgusu */
+.mission-text strong { color: #fff; font-weight: 600; }
+
+/* Şık Ayraç Çizgisi */
+.section-divider {
+    border: 0;
+    height: 2px;
+    /* Kenarlara doğru soluklaşan kırmızı bir çizgi */
+    background-image: linear-gradient(to right, rgba(181, 43, 43, 0), rgba(181, 43, 43, 0.8), rgba(181, 43, 43, 0));
+    margin: 35px 0;
+}
+
+/* Alt Başlıklar (H4) Stili - Referanslar vb. için */
+.sub-section-title {
+    color: #b52b2b;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* İkon ile metin arası boşluk */
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333; /* Başlık altına ince bir çizgi */
+}
+.sub-section-title .icon { font-size: 1.2em; } /* İkon boyutu */
+
+/* Kredi/Referans Metni */
+.credits-text {
+    font-size: 1em;
+    color: #aaa;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+/* Metin içindeki linklerin stili */
+.credits-link, .disclaimer-link {
+    color: #b52b2b;
+    text-decoration: none;
+    border-bottom: 1px dotted #b52b2b;
+    transition: all 0.2s;
+}
+.credits-link:hover, .disclaimer-link:hover {
+    color: #eee;
+    border-bottom-style: solid;
+}
+
+/* Yasal Uyarı Kutusu - Diğerlerinden görsel olarak ayrılması için */
+.disclaimer-box {
+    background-color: rgba(0, 0, 0, 0.3); /* Daha koyu, yarı saydam bir arka plan */
+    border-left: 4px solid #666; /* Sol tarafa gri bir vurgu çizgisi */
+    padding: 20px;
+    border-radius: 0 6px 6px 0; /* Sadece sağ köşeleri yuvarlat */
+    margin-top: 20px;
+}
+/* Yasal uyarı kutusunun başlığı */
+.disclaimer-box .sub-section-title {
+    color: #999; /* Daha sönük bir renk */
+    font-size: 1.1em;
+    border-bottom: none; /* Alt çizgiyi kaldır */
+    margin-bottom: 10px;
+    padding-bottom: 0;
+}
+/* Yasal uyarı metni */
+.disclaimer-text {
+    font-size: 0.9em;
+    color: #bbb;
+    font-style: italic; /* İtalik yaparak farklı bir ton veriyoruz */
+    margin: 0;
+    line-height: 1.5;
+}
+/* Yasal uyarı içindeki linklerin rengini uyumlu hale getir */
+.disclaimer-link { color: #bbb; border-color: #bbb; }
+.disclaimer-link:hover { color: #eee; border-color: #eee; }
+
+/* Çağrı Butonu (CTA) Alanı */
+.cta-container {
+    margin-top: 45px;
+    text-align: center;
+}
+/* Ana aksiyon butonunu daha büyük ve çekici yapıyoruz */
+.btn-cta-large {
+    padding: 15px 35px;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 6px rgba(181, 43, 43, 0.3);
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+/* Butonun üzerine gelince efekti */
+.btn-cta-large:hover {
+    transform: translateY(-3px); /* Hafifçe yukarı kalksın */
+    box-shadow: 0 7px 15px rgba(181, 43, 43, 0.5);
+    background-color: #d63d3d;
+}
+
+/* Responsive İnce Ayarlar */
+@media (max-width: 768px) {
+    .welcome-card { padding: 25px; }
+    .welcome-title { font-size: 1.8em; }
+    .mission-text p { font-size: 1em; }
+    .btn-cta-large { width: 100%; padding: 15px 0; } /* Mobilde tam genişlik */
 }

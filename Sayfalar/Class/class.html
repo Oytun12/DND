@@ -3,88 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="manifest" href="manifest.json">
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="D&D Rehberi">
-    <meta name="theme-color" content="#8b4513">
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
     
-    <title>D&D 5e Sınıflar ve Yetenekler | 5e Türkçe</title>
-    <meta name="description" content="Dungeons & Dragons sınıfları rehberi. Barbar, Büyücü, Paladin, Rogue ve diğer sınıfların özellikleri, hit zarları ve yetenekleri.">
-    <meta name="keywords" content="D&D Sınıflar, DND Classes, 5e Sınıf Özellikleri, Barbar, Büyücü, Paladin, Warlock, Türkçe FRP">
-    <meta name="author" content="Oytun">
+    <title>D&D 5e Sınıflar ve Özellikleri | 5e Türkçe</title>
     
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://oytun12.github.io/DND/Sayfalar/Class/class.html">
-    <meta property="og:title" content="D&D 5e Sınıflar Rehberi">
-    <meta property="og:description" content="Hangi sınıfı seçmelisin? Tüm D&D sınıflarının Türkçe detaylı incelemesi.">
-    <meta property="og:image" content="https://oytun12.github.io/DND/SariZar.png">
-
-    <link rel="icon" href="https://oytun12.github.io/DND/favicon.png" type="image/png">
-    
+    <link rel="icon" href="../../favicon.png" type="image/png">
     <link rel="stylesheet" href="stylesClass.css">
-    
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          "name": "D&D Sınıflar Listesi",
-          "url": "https://oytun12.github.io/DND/Sayfalar/Class/class.html",
-          "description": "D&D 5e sınıfları ve mekanikleri.",
-          "author": { "@type": "Person", "name": "Oytun" }
-        }
-    </script>
 </head>
+
 <body>
-    <header>
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <div class="title">Sınıflar</div>   
-        <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
-       <nav id="hamburger-menu" class="hidden">
-           <ul>
-               <li><a href="../../index.html">Ana Sayfa</a></li>
-               <li><a href="../Race/race.html">Irklar</a></li>
-               <li><a href="../BackGround/back.html">Karakter Geçmişleri</a></li>
-               <li><a href="../Envanter/envanter.html">Ekipmanlar</a></li>
-               <li><a href="../../KarakterCreate/KarakterOlusturma/karakterOl.html">Karakter Oluşturma</a></li>
-               <li><a href="../../KarakterCreate/PointBuy/PointBuy.html">Karakter Oluşturma (Point Buy)</a></li>
-               <li><a href="../../KarakterCreate/KarakterSheet/KaKa.html">Karakter Kağıdı (Beta)</a></li>
-           </ul>
-       </nav>
-   </header>
-
-    <main>
-        <div class="container">
-            <section id="siniflar-bolumu">
-                <h2>Sınıfları</h2>
-                <p>Bu rehberde, karakterinizin macera boyunca nasıl gelişeceğini inceleyebilirsiniz. <strong>"Sınıf Rehberi"</strong> sekmesinde yetenekleri ve açıklamaları okuyabilir, <strong>"Gelişim Tablosu"</strong> sekmesinde ise seviye bazlı istatistik artışlarını ve kazanımları toplu halde görebilirsiniz.</p>
-                
-                <div class="tab-menu">
-                    <button class="tab-link active" onclick="openTab(event, 'view-features')">Sınıf Rehberi</button>
-                    <button class="tab-link" onclick="openTab(event, 'view-tables')">Gelişim Tablosu</button>
-                </div>
-
-                <div id="view-features" class="tab-view active-view">
-                    <div id="container-features">
-                        <p style="text-align:center; color:#888;">Yükleniyor...</p>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <a href="../../index.html" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
+                    <div class="titles">
+                        <h1 class="main-title">D&D 5e Türkçe</h1>
+                        <span class="sub-title">Sınıflar Rehberi</span>
                     </div>
-                </div>
-
-                <div id="view-tables" class="tab-view" style="display:none;">
-                    <div id="container-tables"></div>
-                </div>
-
-            </section>
+                </a>
+            </div>
+        
+            <nav class="desktop-nav">
+                <a href="../../index.html" class="nav-link">Ana Sayfa</a>
+                <a href="../Race/race.html" class="nav-link">Irklar</a>
+                <a href="class.html" class="nav-link" style="color: #b52b2b;">Sınıflar</a>
+                <a href="../Envanter/envanter.html">Ekipmanlar</a>
+                <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
+            </nav>
+        
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
         </div>
+    
+        <nav id="mobile-menu" class="mobile-nav">
+            <ul>
+                <li><a href="../../index.html">Ana Sayfa</a></li>
+                <li><a href="../Race/race.html">Irklar</a></li>
+                <li><a href="../BackGround/back.html">Geçmişler</a></li>
+                <li><a href="../Envanter/envanter.html">Ekipmanlar</a></li>
+                <li style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                    <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" style="color: #b52b2b;">✨ Karakter Yaratıcısı</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        
+        <section class="intro-section">
+            <h2>Kahraman Sınıfları</h2>
+            <p>Karakterinizin macera boyunca nasıl gelişeceğini inceleyin. Yetenekler ve Gelişim Tabloları için sekmeleri kullanın.</p>
+        </section>
+
+        <div class="main-content-box">
+            
+            <div class="tab-menu">
+                <button class="tab-link active" onclick="openTab(event, 'view-features')">📖 Sınıf Rehberi</button>
+                <button class="tab-link" onclick="openTab(event, 'view-tables')">📊 Gelişim Tablosu</button>
+            </div>
+
+            <div id="view-features" class="tab-view active-view">
+                <div id="container-features">
+                    <p style="text-align:center; color:#888;">Veriler Yükleniyor...</p>
+                </div>
+            </div>
+
+            <div id="view-tables" class="tab-view" style="display:none;">
+                <div id="container-tables">
+                    <p style="text-align:center; color:#888;">Tablolar Yükleniyor...</p>
+                </div>
+            </div>
+
+        </div>
+
     </main>
 
     <script src="scriptClass.js"></script>
-
 </body>
 </html>
-
-
-
-
-

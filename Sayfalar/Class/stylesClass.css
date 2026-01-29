@@ -1,556 +1,446 @@
-/* =========================================
-   1. TEMEL STİLLER (Senin Gönderdiğin Çalışan Kod)
-   ========================================= */
-@font-face {
-    font-family: 'Convergence';
-    src: local('Convergence-Regular'), url('../../fonts/Convergence-Regular.ttf') format('truetype');
-}
+/* ============================================================
+   STYLESCLASS.CSS - Modern Dark Tema (Eski Fonksiyonel Yapı İçin)
+   ============================================================ */
+
+/* --- TEMEL AYARLAR (BASE) --- */
+* { box-sizing: border-box; }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f5e3;
-    color: #333;
-    margin: 0;
-    padding: 20px;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ddddac;
-    border: 2px solid rgb(186, 184, 184);
-    border-radius: 10px;
-    color: #8b4513;
-    font-family: 'Georgia', serif;
-    padding: 1rem 0;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    position: relative;
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+.hidden { display: none !important; }
+
+/* --- HEADER & NAVİGASYON --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; 
+    height: 70px;
+    display: flex; align-items: center; 
+    position: relative; 
+    z-index: 2001; /* GÜNCELLEME: En üstte olsun */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
-.menu-icon {
-    cursor: pointer;
-    font-size: 2.2em;
+.header-container {
+    width: 100%; max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
 }
 
-.title {
-    font-family: 'Georgia', serif;
-    font-size: 2em;
-}
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
 
-.logo-img {
-    width: 60px;
-    height: auto;
-}
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; letter-spacing: 1px; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
 
-nav {
-    position: absolute;
-    top: 121%;
-    left: -4px;
-    width: 200px;
-    background-color: #cabe80;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    display: none;
-    z-index: 1000;
-}
+/* Menü */
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
 
-nav ul {
-    margin-left: 20px;
-    list-style: disc;
-    padding: 0;
-}
+.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
 
-nav ul li {
-    text-align: left;
-    margin-left: 13px; 
-    margin-bottom: 13px;
-}
-
-nav ul li a {
-    color: #8b4513;
-    font-size: 1.2em;
-    font-family: 'Georgia', serif;
-    text-decoration: none;
-}
-
-.hidden { display: none; }
-.visible { display: block; }
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-    background-size: cover;
-}
-
-h1, h2 {
-    font-family: 'Georgia', serif;
-    margin-bottom: 20px;
-    color: #8b4513;
-}
-
-
-/* =========================================
-   2. SINIF SAYFASI ÖZEL STİLLERİ (YENİ EKLENENLER)
-   ========================================= */
-
-/* Başlıklar (Açılır/Kapanır) */
-.collapsible {
-    background-color: #FBF1DE;
-    color: #8b4513;
-    cursor: pointer;
-    padding: 15px;
+/* Mobil Menü */
+.mobile-nav {
+    position: absolute; 
+    top: 70px; 
+    left: 0; 
     width: 100%;
-    border: 2px solid #DB9D43;
-    border-radius: 7px;
-    text-align: left;
-    outline: none;
-    font-size: 1.3em;
-    font-family: 'Georgia', serif;
-    margin-top: 15px;
-    transition: background-color 0.3s;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 20px; 
+    z-index: 2000; /* GÜNCELLEME: Sticky headerların (1000) üzerinde olsun */
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    display: none; 
 }
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+.mobile-nav ul li a:hover { color: #b52b2b; }
 
-.collapsible:hover, .active {
-    background-color: #f0e6cc;
-}
-
-/* Artı (+) İşareti */
-.collapsible:after {
-    content: '\002B';
-    color: #8b4513;
-    font-weight: bold;
-    font-size: 1.2em;
-    margin-left: auto;
-}
-
-/* Eksi (-) İşareti */
-.active:after {
-    content: "\2212";
-}
-
-/* İçerik Alanı */
-.class-content {
+/* --- ANA İÇERİK --- */
+.main-container {
+    max-width: 1100px;
+    margin: 40px auto;
     padding: 20px;
-    background-color: #fff;
-    border: 2px solid #DB9D43;
-    border-top: none;
-    border-radius: 0 0 7px 7px;
-    margin-bottom: 10px;
-    display: none;
-    overflow: hidden;
 }
 
-/* Özellik Kutuları ve Tablolar */
-.feature-block {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #faf0e0c3;
-    border-radius: 5px;
-    border-left: 3px solid #8b4513;
-}
-
-h4 {
-    color: #8b4513;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
-    margin-top: 20px;
-    font-family: 'Georgia', serif;
-}
-
-h5 {
-    color: #555;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-family: Arial, sans-serif;
-}
-
-ul { margin: 5px 0 10px 20px; }
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 10px 0;
-    font-size: 0.9em;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-th {
-    background-color: #f5deb3;
-    color: #8b4513;
-    font-weight: bold;
-}
-
-tr:nth-child(even) { background-color: #f9f9f9; }
-
-.bold { font-weight: bold; color: #000; }
-
-/* Alt Sınıf Seçim Butonları */
-.subclass-selection-area {
-    margin: 15px 0 20px 0;
-    padding: 15px;
-    background-color: #faf0e0;
-    border: 1px dashed #8b4513;
-    border-radius: 5px;
+.intro-section {
     text-align: center;
+    margin-bottom: 30px;
+}
+.intro-section h2 { color: #b52b2b; font-size: 2em; margin-bottom: 10px; }
+.intro-section p { color: #aaa; font-size: 1.1em; }
+
+/* --- ANA KUTU (WRAPPER) --- */
+.main-content-box {
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.subclass-title {
-    font-weight: bold;
-    color: #8b4513;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.btn-subclass {
-    background-color: #e6c99c;
-    border: 1px solid #8b4513;
-    color: #4a2c0f;
-    padding: 8px 15px;
-    margin: 5px;
-    cursor: pointer;
-    font-family: 'Georgia', serif;
-    font-size: 0.95em;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.btn-subclass:hover {
-    background-color: #dcb374;
-    transform: translateY(-1px);
-}
-
-.btn-subclass.active {
-    background-color: #8b4513;
-    color: #fff;
-    border-color: #5e2f0d;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.feature-block.subclass-feature {
-    border-left: 3px solid #2c7a2c;
-    background-color: #e8f5e9;
-}
-
-/* --- ALT SINIF ÖZELLİKLERİ (MAVİ TEMA & SADE BAŞLIK) --- */
-
-.feature-block.subclass-feature {
-    border-left: 5px solid #2b5a8e; /* Koyu Mavi Çizgi */
-    background-color: #eaf4fc;      /* Çok açık mavi arka plan */
-    margin-top: 20px;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-/* Alt Sınıf Başlığı */
-.feature-block.subclass-feature h5 {
-    color: #1a4a7a;       /* Başlık rengi: Lacivert */
-    font-family: 'Georgia', serif;
-    font-size: 1.4em;
-    font-weight: bold;
-    border-bottom: 2px solid #b6d4fe; /* Altına ince mavi çizgi */
-    padding-bottom: 8px;
-    margin-bottom: 12px;
-    margin-top: 0;
-    display: block;       /* Flex yerine Block yaptık, düz yazı olsun */
-}
-
-/* .subclass-tag stilini silebilirsin, artık kullanılmıyor */
-
-
-/* --- SEKME (TAB) YAPISI (DOSYA KLASÖRÜ GÖRÜNÜMÜ) --- */
+/* --- SEKME (TAB) YAPISI --- */
 .tab-menu {
     display: flex;
-    justify-content: center; /* Ortalar, istersen 'flex-start' yapıp sola yaslayabilirsin */
-    margin-bottom: 0;
-    /* border-bottom: İPTAL EDİLDİ (Artık kutunun kendi çerçevesi var) */
-    margin-top: 20px;
-    position: relative;
-    z-index: 10; /* Kutunun üstünde dursun */
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 15px;
 }
 
 .tab-link {
-    background-color: #e6c99c; /* Pasif renk (Biraz daha koyu) */
-    border: 2px solid #8b4513;
-    border-bottom: none; /* Alt çizgi yok, kutuyla birleşecek */
-    outline: none;
-    cursor: pointer;
-    padding: 10px 25px;
-    transition: all 0.2s ease;
-    font-family: 'Georgia', serif;
+    background-color: #2a2a2a;
+    color: #888;
+    border: 1px solid #333;
+    padding: 12px 25px;
     font-size: 1.1em;
-    font-weight: bold;
-    color: #5e2f0d;
-    margin: 0 2px; /* Sekmeler arası ufak boşluk */
-    border-radius: 8px 8px 0 0; /* Sadece üst köşeler oval */
-    position: relative;
-    top: 2px; /* Çizgiye tam otursun diye */
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
 
-.tab-link:hover {
-    background-color: #f5deb3;
-    transform: translateY(-2px); /* Üzerine gelince hafif zıplasın */
-}
+.tab-link:hover { background-color: #333; color: #ccc; }
 
-/* AKTİF SEKME (ÖNEMLİ AYARLAR) */
 .tab-link.active {
-    background-color: #fff; /* İçerik kutusuyla aynı renk */
-    color: #8b4513;
-    border-color: #8b4513;
-    border-bottom: 2px solid #fff; /* Alt çizgiyi BEYAZ yaparak kutu çizgisini siliyoruz */
-    z-index: 20; /* En üstte durmalı */
-    top: 2px; /* Kutu sınırına basmalı */
-    padding-bottom: 12px; /* Aşağıya uzayıp boşluğu kapatsın */
+    background-color: #b52b2b;
+    color: #fff;
+    border-color: #b52b2b;
+    box-shadow: 0 4px 10px rgba(181, 43, 43, 0.4);
 }
 
-/* --- İÇERİK KUTUSU (KONTEYNER) --- */
-.tab-view {
-    /* Senin istediğin radiuslu, çerçeveli kutu */
-    border: 2px solid #8b4513;
-    background-color: #fff;
-    border-radius: 9px; /* Köşeleri yuvarlattık */
-    padding: 15px;      /* İçerik kenarlara yapışmasın (3-5pt az olur, 15px idealdir) */
-    margin-top: 0;      /* Yukarıyla sıfıra sıfır */
-    position: relative;
-    z-index: 5;         /* Sekmelerin altında kalsın */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Hafif derinlik katalım */
-    
-    animation: fadeEffect 0.5s;
-    display: none; /* Varsayılan gizli */
+/* --- ACCORDION (ESKİ SCRIPT UYUMLU) --- */
+/* Script 'class-wrapper' ve 'collapsible' sınıflarını kullanıyor */
+
+.class-wrapper {
+    margin-bottom: 15px;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #2a2a2a;
 }
 
-/* Aktif görünüm için display ayarı JS'ten yapılıyor ama buraya da ekleyelim */
-.tab-view.active-view {
-    display: block;
+.collapsible {
+    background-color: #333;
+    color: #eee;
+    cursor: pointer;
+    padding: 15px 20px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    font-size: 1.2em;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #b52b2b;
+    margin: 0; /* Eski stilden gelen margin'i sıfırla */
 }
 
-@keyframes fadeEffect {
-    from {opacity: 0; transform: translateY(5px);}
-    to {opacity: 1; transform: translateY(0);}
+.collapsible:hover, .collapsible.active {
+    background-color: #444;
 }
 
-/* --- GELİŞİM TABLOLARI STİLİ --- */
+/* Ok işareti yerine +/- */
+.collapsible:after {
+    content: '+';
+    color: #b52b2b;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+.collapsible.active:after {
+    content: '-';
+}
+
+/* İçerik */
+.class-content {
+    padding: 20px;
+    background-color: #252525;
+    display: none; /* JS ile açılacak */
+    border-top: 1px solid #3b3b3b;
+}
+
+/* --- REHBER İÇERİĞİ (ÖZELLİK KUTULARI) --- */
+.feature-block {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #2e2e2e;
+    border-radius: 6px;
+    border-left: 3px solid #b52b2b;
+}
+
+.feature-block h5 {
+    color: #b52b2b;
+    font-size: 1.1em;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+}
+
+h4 { 
+    color: #fff; 
+    border-bottom: 1px solid #444; 
+    padding-bottom: 5px; 
+    margin-top: 30px; 
+    font-size: 1.3em;
+}
+
+p, li { color: #ccc; line-height: 1.6; }
+.bold { font-weight: bold; color: #fff; }
+
+/* Alt Sınıf Butonları */
+.subclass-selection-area {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #2a2a2a;
+    border: 1px dashed #555;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.subclass-title { display: block; color: #aaa; margin-bottom: 10px; font-weight: bold; }
+
+.btn-subclass {
+    background-color: #333;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn-subclass:hover { background-color: #444; }
+.btn-subclass.active {
+    background-color: #b52b2b;
+    color: #fff;
+    border-color: #b52b2b;
+}
+
+/* --- TABLOLAR (GELİŞİM TABLOSU) --- */
 .progression-table-wrapper {
-    overflow-x: auto; /* Mobilde tablo taşarsa kaydırma çubuğu çıksın */
+    overflow-x: auto;
+    margin-top: 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
 }
 
 .progression-table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 600px;
     font-size: 0.9em;
-    margin-top: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
 .progression-table th {
-    background-color: #8b4513;
-    color: white;
+    background-color: #333;
+    color: #b52b2b;
     padding: 12px;
     text-align: center;
-    border: 1px solid #5e2f0d;
+    border-bottom: 2px solid #444;
+    white-space: nowrap;
 }
 
 .progression-table td {
     padding: 10px;
-    border: 1px solid #ddd;
+    border-bottom: 1px solid #333;
     text-align: center;
+    color: #ccc;
 }
 
-/* Zebra Deseni: Satırları ayırt etmek için */
-.progression-table tr:nth-child(even) {
-    background-color: #f9f5e3; /* Kağıt rengi */
-}
-.progression-table tr:nth-child(odd) {
-    background-color: #fff;
-}
-
-.progression-table tr:hover {
-    background-color: #e6c99c; /* Üzerine gelince parlasın */
-}
-
-/* --- METİN İÇİ ETİKETLER --- */
-.dnd-link {
-    color: #2b5a8e; /* Link gibi mavi dursun */
-    font-weight: bold;
-    text-decoration: none;
-    cursor: default; /* Tıklanmadığını belli et */
-}
-
-.dnd-bold {
-    font-weight: bold;
-    color: #8b4513;
-}
-
-.dnd-italic {
-    font-style: italic;
-}
-
-/* Saldırı ikonları vb. için */
-.dnd-icon-text {
-    font-weight: bold;
-    color: #a71e1e; /* Koyu kırmızı */
-}
-
-/* --- TABLO BAŞLIĞI RENK DÜZELTMESİ --- */
-.progression-table th .dnd-link {
-    color: #ffffff !important; /* Bordo zemin üstünde Beyaz */
-    text-decoration: none;     /* Altı çizili olmasın */
-}
+.progression-table tr:nth-child(even) { background-color: #2a2a2a; }
+.progression-table tr:hover { background-color: #333; }
 
 
-/* =========================================
-   DÜZELTME: Kapat Butonu Varsayılan Olarak HERKESTE Gizli Olsun
-   (Bunu @media sorgusunun DIŞINA, buraya yazıyoruz)
-   ========================================= */
-.mobile-back-btn {
-    display: none; 
-}
+/* ============================================================
+   3. RESPONSIVE / MOBİL AYARLAR (HEPSİ BİR ARADA)
+   ============================================================ */
 
-/* =========================================
-   3. MOBİL ODAK MODU (ZEN MODE) - FİNAL DÜZELTME
-   ========================================= */
-@media (max-width: 768px) {
+/* Kapat butonu varsayılan olarak HER ZAMAN gizli */
+.mobile-back-btn { display: none !important; }
+
+/* 800px altı (Tablet ve Telefon) */
+@media (max-width: 800px) {
+
+    /* --- A. GENEL MOBİL DÜZENİ (Menü Düzeltmesi) --- */
     
-    /* Body kaydırmasını kilitle */
+    /* 1. Masaüstü menüyü gizle, Hamburgeri göster */
+    .desktop-nav { display: none !important; }
+    .menu-icon { display: block !important; cursor: pointer; }
+
+    /* 2. Ana konteyner boşluklarını sıfırla (Mobilde geniş yer kalsın) */
+    .main-container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 10px; /* Kenarlardan hafif boşluk */
+    }
+
+    /* 3. Kutuların çerçevesini kaldır (Mobilde düz görünüm) */
+    .main-content-box {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+    }
+
+    /* --- B. ODAK MODU (SINIF AÇILDIĞINDA STICKY HEADER) --- */
+    
+    /* Body kaydırmasını kilitle (Sadece odak modunda) */
     body.mobile-focus {
         overflow-x: hidden !important;
         padding: 0 !important;
     }
 
-    /* GEREKSİZLERİ GİZLE 
-       DÜZELTME: '.subclass-selection-area' (Alt sınıf butonları) buradan çıkarıldı!
-       Artık mobilde de görünecekler.
-    */
-    body.mobile-focus header,
-    body.mobile-focus nav,
-    body.mobile-focus .menu-icon,
-    body.mobile-focus #siniflar-bolumu > h2, 
-    body.mobile-focus #siniflar-bolumu > p {
-        display: none !important;
+    /* Gereksizleri Gizle (Header, Intro vb.) */
+    body.mobile-focus .main-header,
+    body.mobile-focus .intro-section,
+    body.mobile-focus .main-container {
+        padding: 0 !important; /* Odaklanınca paddingi sıfırla */
     }
 
-    /* --- SEKME MENÜSÜ AYARLARI --- */
+    /* KATMAN 1: TAB MENÜSÜ (EN ÜST) */
     body.mobile-focus .tab-menu {
         display: flex !important;
         position: sticky;       
-        top: 0;
-        z-index: 150;           
-        background-color: #fff; 
+        top: 0;                 
+        z-index: 1000;          
+        background-color: #1a1a1a; 
         width: 100%;
         margin: 0 !important;
-        padding-top: 0; /* Üst boşluğu aldık */
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
-        height: 40px; /* Sabit ve kısa bir yükseklik verelim */
+        padding: 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        height: 50px;           
+        border-bottom: 1px solid #333;
     }
 
     body.mobile-focus .tab-link {
         flex: 1;             
         text-align: center;
-        padding: 8px 5px; /* İç boşluğu azalttık */
-        font-size: 0.9em; /* Yazıyı biraz küçülttük */
+        padding: 0;
+        font-size: 0.95em;
         border-radius: 0;    
-        top: 0; 
-        line-height: 20px; /* Satır yüksekliğini sabitledik */
+        border: none;
+        background-color: #222;
+        color: #888;
+        line-height: 50px;      
+        height: 50px;
     }
     
     body.mobile-focus .tab-link.active {
-        border-bottom: 3px solid #8b4513; 
-        background-color: #fcf9f2;
+        background-color: #b52b2b; 
+        color: #fff;
     }
 
-    /* --- KONTEYNER SIFIRLAMA --- */
-    body.mobile-focus .container {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
+    /* SINIF KAPSAYICISI (Sticky için overflow visible olmalı) */
+    body.mobile-focus .class-wrapper.focus-active {
+        display: block !important;
+        overflow: visible !important;
+        border: none;
+        border-radius: 0;
         margin: 0 !important;
-        border: none !important;
-        background: #fff;
         min-height: 100vh;
+        background-color: #1a1a1a;
     }
 
-    /* --- KLASÖR KUTUSU SIFIRLAMA --- */
-    body.mobile-focus .tab-view {
-        padding: 0 !important;
-        border: none !important;
-        margin: 0 !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-    }
-
-    /* Aktif olmayan sınıfları gizle */
-    body.mobile-focus .class-wrapper:not(.focus-active) {
-        display: none !important;
-    }
-
-    /* --- BAŞLIK AYARLARI --- */
+    /* KATMAN 2: SINIF BAŞLIĞI */
     body.mobile-focus .class-wrapper.focus-active .collapsible {
         position: sticky;
-        top: 40px; /* Sekmelerin yeni yüksekliği kadar aşağıda */
-        z-index: 100;
+        top: 50px; /* Tabların hemen altına yapış */
+        z-index: 999;
+        
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
         margin: 0 !important;
         border-radius: 0;
         border: none;
+        border-bottom: 2px solid #b52b2b;
         
-        /* İnceltme Ayarları */
-        background-color: #8b4513;
+        background-color: #2a2a2a; 
         color: #fff;
-        padding: 8px 15px; /* 15px'ten 8px'e düşürdük */
-        font-size: 1.1em;  /* Yazı boyutunu küçülttük (Eskiden 1.3em idi) */
-        
-        display: flex;
-        justify-content: space-between; /* Yazı ve butonu uçlara it */
-        align-items: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.15); 
+        padding: 0 15px;
+        height: 60px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+    }
+
+    /* İsim Alanı */
+    body.mobile-focus .class-wrapper.focus-active .collapsible .cls-name {
+        font-size: 1.2em;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        text-align: left;
     }
     
+    /* Eski +/- işaretini kaldır */
     body.mobile-focus .class-wrapper.focus-active .collapsible:after {
         display: none;
     }
 
-    /* --- İÇERİK ALANI --- */
-    body.mobile-focus .class-content {
-        border: none !important;
-        border-radius: 0 !important;
-        padding: 10px 15px !important; 
-        margin: 0 !important;
-        margin-bottom: 50px;
+    /* KAPAT (X) BUTONU */
+    body.mobile-focus .class-wrapper.focus-active .mobile-back-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        
+        background-color: rgba(181, 43, 43, 0.2);
+        color: #b52b2b;
+        border: 1px solid #b52b2b;
+        
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        font-size: 1.2em;
+        line-height: 1;
+        cursor: pointer;
+        margin-left: 15px;
+        flex-shrink: 0;
     }
 
-    /* --- GERİ DÖN BUTONU --- */
-    /* Masaüstünde gizlemiştik, şimdi sadece mobilde ve odaktayken gösteriyoruz */
-    body.mobile-focus .mobile-back-btn {
-        display: inline-block !important;
-        margin-left: auto; /* Sağa yasla */
-        background-color: rgba(255,255,255,0.2); /* Yarı saydam beyaz yapalım, daha şık durur */
-        color: #fff;
-        border: 1px solid rgba(255,255,255,0.4);
-        padding: 3px 10px; /* Butonu küçülttük */
-        border-radius: 15px; /* Yuvarlak hatlı olsun */
-        font-weight: normal;
-        font-size: 0.75em; /* Yazısını küçülttük */
-        cursor: pointer;
+    /* İÇERİK */
+    body.mobile-focus .class-content {
+        display: block !important;
+        border: none !important;
+        padding: 20px !important;
+        margin: 0 !important;
+        background-color: #1a1a1a;
+    }
+
+    /* Aktif olmayanları gizle */
+    body.mobile-focus .class-wrapper:not(.focus-active) {
+        display: none !important;
+    }
+    
+    /* Diğer elementleri gizle */
+    body.mobile-focus .main-content-box,
+    body.mobile-focus .tab-view {
+        padding: 0 !important; border: none !important; margin: 0 !important; background: transparent;
     }
 }
+
+.mobile-back-btn { display: none; } /* Masaüstünde gizli */
+@media (max-width: 800px) { .mobile-back-btn { display: inline-block; } }

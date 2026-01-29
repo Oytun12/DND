@@ -8,72 +8,122 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="D&D Rehberi">
-    <meta name="theme-color" content="#8b4513">
+    <meta name="theme-color" content="#1a1a1a">
     
-    <title>D&D Karakter Yaratma | 5e Türkçe Rehberi ve Karakter Kağıdı Oluşturucu</title>
-    <meta name="description" content="Dungeons & Dragons 5e için Türkçe karakter yaratma aracı. Dungeons and Dragons ırkları, sınıfları, ekipmanları, point buy hesaplama sistemi ve Türkçe karakter kağıdı oluşturucu.">
-    <meta name="keywords" content="D&D, DND, Dungeons and Dragons, Karakter Yaratma, Karakter Oluşturma,Dnd Sınıflar, 5e Türkçe, Karakter Kağıdı, RPG, FRP, Rol Yapma Oyunu">
+    <title>D&D Karakter Yaratma | 5e Türkçe Rehberi</title>
+    <meta name="description" content="Dungeons & Dragons 5e için Türkçe karakter yaratma aracı. Dungeons and Dragons ırkları, sınıfları ve Türkçe karakter kağıdı oluşturucu.">
+    <meta name="keywords" content="D&D, DND, Dungeons and Dragons, Karakter Yaratma, Karakter Oluşturma, Dnd Sınıflar, 5e Türkçe, Karakter Kağıdı">
     <meta name="author" content="Oytun">
     
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://oytun12.github.io/DND/">
     <meta property="og:title" content="D&D Türkçe Karakter Yaratma Aracı">
-    <meta property="og:description" content="D&D 5e karakterinizi saniyeler içinde Türkçe oluşturun. Irklar, sınıflar ve ekipmanlar burada.">
-    <meta property="og:image" content="https://oytun12.github.io/DND/SariZar.png">
+    <meta property="og:description" content="D&D 5e karakterinizi saniyeler içinde Türkçe oluşturun.">
+    <meta property="og:image" content="https://oytun12.github.io/DND/img/SariZar.svg">
 
-    <link rel="icon" href="https://oytun12.github.io/DND/favicon.png" type="image/png">
-    <link rel="canonical" href="https://oytun12.github.io/DND/" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.png" type="image/png">
     
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          "name": "D&D Türkçe Karakter Yaratma",
-          "url": "https://oytun12.github.io/DND",
-          "applicationCategory": "GameApplication",
-          "operatingSystem": "Web",
-          "image": "https://oytun12.github.io/DND/favicon.png",
-          "description": "D&D 5e kurallarına uygun Türkçe karakter oluşturma ve rehber uygulaması.",
-          "author": {
-            "@type": "Person",
-            "name": "Oytun"
-          }
-        }
-    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <div class="title">Ana Sayfa</div>   
-        <div class="logo">
-            <img src="SariZar.png" alt="Logo" class="logo-img">
+    
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <img src="img/SariZar.svg" alt="Logo" class="logo-img">
+                <div class="titles">
+                    <h1 class="main-title">D&D 5e Türkçe</h1>
+                    <span class="sub-title">Rehber ve Araçlar</span>
+                </div>
+            </div>
+        
+            <nav class="desktop-nav">
+                <a href="index.html" class="nav-link" style="color: #b52b2b;">Ana Sayfa</a>
+                <a href="Sayfalar/Race/race.html" class="nav-link">Irklar</a>
+                <a href="Sayfalar/Class/class.html" class="nav-link">Sınıflar</a>
+                <a href="KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
+            </nav>
+        
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
         </div>
-       <nav id="hamburger-menu" class="hidden">
-           <ul>
-            <li><a href="Sayfalar/Race/race.html">Irklar</a></li>
-            <li><a href="Sayfalar/BackGround/back.html">Karakter Geçmişleri</a></li>
-            <li><a href="Sayfalar/Class/class.html">Sınıflar</a></li>
-            <li><a href="Sayfalar/Envanter/envanter.html">Ekipmanlar</a></li>
-            <li><a href="KarakterCreate/KarakterOlusturma/karakterOl.html">Karakter Oluşturma</a></li>
-            <li><a href="KarakterCreate/KarakterYaratma/KarakterYa.html">1. Seviye Ve Sonrası</a></li>
-            <li><a href="KarakterCreate/PointBuy/PointBuy.html">Karakter Oluşturma (Point Buy)</a></li>
-            <li><a href="KarakterCreate/KarakterSheet/KaKa.html">Karakter Kağıdı (Beta)</a></li>
-           </ul>
-       </nav>
-   </header>
+    
+        <nav id="mobile-menu" class="mobile-nav">
+            <ul>
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="Sayfalar/Race/race.html">Irklar</a></li>
+                <li><a href="Sayfalar/Class/class.html">Sınıflar</a></li>
+                <li><a href="Sayfalar/BackGround/back.html">Geçmişler</a></li>
+                <li><a href="Sayfalar/Envanter/envanter.html">Ekipmanlar</a></li>
+                <li style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                    <a href="KarakterCreate/KarakterYaratma/KarakterYa.html" style="color: #b52b2b;">✨ Karakter Yaratıcısı</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-    <main>
-        <div class="container">
-            <section id="ana-sayfa">
-                <h2>D&D Karakter Yaratma İçin Her Şey</h2>
-                <p>Bu sitede D&D 5e karakterlerinizi kolayca oluşturabilirsiniz.</p>
-                <p>Irklar sayfasından D&D 5E de bulunan ve en çok oynanan ırklar hakkında bilgilere ulaşabileceğiniz gibi,</p>
-                <p>Sınıflar sayfasından da D&D 5E de bulunan sınıflar hakkında bilgilere rahatlıkla ulaşabilirsiniz.</p>
-                <p>Karakter Oluşturma bölümünden ise basit bir test çözerek oynamak istediğiniz karakterin karakter kağıdını otomatik olarak oluşturabilirsiniz.</p>
-            </section>
-        </div>  
+    <main class="main-container">
+        
+        <div class="content-card welcome-card">
+            <h2 class="welcome-title"><span class="highlight">Türkçe D&D Karakter Yaratma Aracı</span></h2>
+            
+            <div class="mission-text">
+                <p>
+                    Bu proje, Dungeons & Dragons (5. Edisyon) oynakak isteyen oyuncular için <strong>kapsamlı, Ücretsiz ve Türkçe</strong> bir dijital rehber oluşturmak amacıyla hayata geçirilmiştir.
+                </p>
+                <p>
+                    Temel amacımız, dil bariyerini aşmanın yanı sıra; karakter yaratma ve oynama süreçlerindeki karmaşık mekanikleri <strong>otomatize ederek</strong>, hesaplamalara değil <strong>rol yapmaya ve hikayenize odaklanmanızı</strong> sağlamaktır. Ayrıca geliştirdiğimiz <strong>Seed ve Link Paylaşım</strong> altyapısı sayesinde, oluşturduğunuz karakterleri saklayabilir ve oyun grubunuzla saniyeler içinde paylaşabilirsiniz.
+                </p>
+            </div>
+            
+            <hr class="section-divider">
+
+            <div>
+                <h4 class="sub-section-title">
+                    <span class="icon">📜</span> Referanslar ve Teşekkür
+                </h4>
+                <p class="credits-text">
+                    Sitemizin veri altyapısı ve Türkçe çevirileri, açık kaynaklı bir topluluk girişimi olan <strong>5E Türkçe</strong> projesinden ve bu projenin yaratıcısı <a href="https://github.com/kanguen" target="_blank" class="credits-link">Kanguen</a>'in GitHub deposundan (5e.tools adaptasyonu) sağlanmıştır. Bu devasa veriyi Türkçeleştirerek topluluğa kazandırdıkları için kendilerine teşekkürü borç biliriz.
+                </p>
+            </div>
+            <hr class="section-divider">
+            <div class="disclaimer-box">
+                <h4 class="sub-section-title">
+                    <span class="icon">⚖️</span> Yasal Sorumluluk Reddi
+                </h4>
+                <p class="disclaimer-text">
+                    Bu web sitesi, ticari amaç gütmeyen bir hayran projesidir (Fan Project). Sitede kullanılan görsel materyallerin büyük bir kısmı, referans ve görsel zenginlik amacıyla <a href="https://www.dndbeyond.com/en" target="_blank" class="disclaimer-link">D&D Beyond</a> ve Wizards of the Coast kaynaklarından temin edilmiştir. Görseller için resmi bir lisanslama veya izin alınmamıştır; tüm haklar ilgili eser sahiplerine aittir. İçerikler "Adil Kullanım" (Fair Use) prensipleri çerçevesinde, yalnızca eğitim ve hobi amaçlı olarak sunulmaktadır.
+                </p>
+            </div>
+            <hr class="section-divider">
+            <div class="cta-container">
+                <a href="KarakterCreate/KarakterYaratma/KarakterYa.html" class="btn btn-primary btn-cta-large">
+                    🎲 Karakter Yaratıcı
+                </a>
+            </div>
+        </div>
+
+        <div class="quick-links-grid">
+            <a href="Sayfalar/Race/race.html" class="link-card">
+                <h3>🧬 Irklar</h3>
+                <p>D&D 5e evrenindeki oynanabilir ırkların detaylı özellikleri, bonusları ve hikayeleri.</p>
+            </a>
+            <a href="Sayfalar/Class/class.html" class="link-card">
+                <h3>⚔️ Sınıflar</h3>
+                <p>Barbar'dan Büyücü'ye kadar tüm sınıfların yetenekleri, büyüleri ve gelişim tabloları.</p>
+            </a>
+            <a href="Sayfalar/Envanter/envanter.html" class="link-card">
+                <h3>🎒 Ekipmanlar</h3>
+                <p>Silahlar, zırhlar ve macera ekipmanlarının Türkçe listesi ve özellikleri.</p>
+            </a>
+        </div>
+
     </main>
-    <script src="script.js"></script>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('open');
+        }
+    </script>
 </body>
 </html>

@@ -3,465 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="manifest" href="manifest.json">
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="D&D Rehberi">
-    <meta name="theme-color" content="#8b4513">
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
     
-    <title>D&D Ekipmanlar ve Silahlar | 5e Türkçe</title>
-    <meta name="description" content="D&D 5e silahlar, zırhlar ve macera ekipmanları listesi. Hasar zarları, zırh sınıfları (AC) ve başlangıç paketleri hakkında detaylı Türkçe bilgiler.">
-    <meta name="keywords" content="D&D Silahlar, Zırhlar, Ekipman Listesi, 5e Eşyalar, Dungeons and Dragons Envanter">
-    <meta name="author" content="Oytun">
+    <title>D&D 5e Ekipmanlar ve Eşyalar | 5e Türkçe</title>
     
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://oytun12.github.io/DND/Sayfalar/Envanter/envanter.html"> <meta property="og:title" content="D&D 5e Ekipman ve Silah Rehberi">
-    <meta property="og:description" content="Karakteriniz için en iyi silahı ve zırhı seçin. Türkçe açıklamalı ekipman listesi.">
-    <meta property="og:image" content="https://oytun12.github.io/DND/SariZar.png">
-
-    <link rel="icon" href="https://oytun12.github.io/DND/favicon.png" type="image/png">
-    
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="icon" href="../../favicon.png" type="image/png">
     <link rel="stylesheet" href="stylesEnvanter.css">
-    
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "WebPage", 
-          "name": "D&D Ekipmanlar Listesi",
-          "url": "https://oytun12.github.io/DND/Sayfalar/Envanter/envanter.html",
-          "description": "D&D 5e silah ve zırh tabloları.",
-          "author": {
-            "@type": "Person",
-            "name": "Oytun"
-          }
-        }
-    </script>
 </head>
+
 <body>
-    <header>
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <div class="title">Ekipmanlar</div>   
-        <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <a href="../../index.html" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
+                    <div class="titles">
+                        <h1 class="main-title">D&D 5e Türkçe</h1>
+                        <span class="sub-title">Ekipman Rehberi</span>
+                    </div>
+                </a>
+            </div>
         
-        <nav id="hamburger-menu" class="hidden">
-           <ul>
-               <li><a href="../../index.html">Ana Sayfa</a></li>
-               <li><a href="../Race/race.html">Irklar</a></li>
-               <li><a href="../Class/class.html">Sınıflar</a></li>
-               <li><a href="../BackGround/back.html">Karakter Geçmişleri</a></li>
-               <li><a href="../../KarakterCreate/KarakterOlusturma/karakterOl.html">Karakter Oluşturma</a></li>
-               <li><a href="envanter.html">Ekipmanlar</a></li>
-           </ul>
-       </nav>
-   </header>
+            <nav class="desktop-nav">
+                <a href="../../index.html" class="nav-link">Ana Sayfa</a>
+                <a href="../Race/race.html" class="nav-link">Irklar</a>
+                <a href="../Class/class.html" class="nav-link">Sınıflar</a>
+                <a href="envanter.html" class="nav-link" style="color: #b52b2b;">Ekipmanlar</a>
+                <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
+            </nav>
+        
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        </div>
+    
+        <nav id="mobile-menu" class="mobile-nav">
+            <ul>
+                <li><a href="../../index.html">Ana Sayfa</a></li>
+                <li><a href="../Race/race.html">Irklar</a></li>
+                <li><a href="../Class/class.html">Sınıflar</a></li>
+                <li><a href="../BackGround/back.html">Geçmişler</a></li>
+                <li style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                    <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" style="color: #b52b2b;">✨ Karakter Yaratıcısı</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-    <main>
-        <div class="container">
-            <div class="tab-menu">
-                <button class="tab-link active" onclick="openTab(event, 'Silahlar')">Silahlar</button>
-                <button class="tab-link" onclick="openTab(event, 'Zirhlar')">Zırhlar</button>
-                <button class="tab-link" onclick="openTab(event, 'Ekipmanlar')">Ekipmanlar</button>
-            </div>
+    <main class="main-container">
+        
+        <section class="intro-section">
+            <h2>Maceracı Pazarı</h2>
+            <p>Silahlar, zırhlar ve büyülü hazineler. Detayları görmek için eşya adına tıklayabilirsiniz.</p>
+        </section>
 
-            <div id="Silahlar" class="tab-content active-content">
-                <h2>Silahlar</h2>
-                <p>Sınıfın sana belirli silahlarla uzmanlık verir, bu o sınıfın odağını ve en sık kullanacağın aletleri yansıtır. Tercihin bir uzun kılıç ya da bir uzun yay olabilir, silahını etkili bir şekilde kullanma yeteneğin maceracılıkta yaşam ve ölüm arasındaki fark anlamına gelebilir.</p>
-                <p style="font-size: 0.9em; color: #555;"><i>*Tablo; silahların adını, hasarını, ağırlığını, özelliklerini ve değerini gösterir.</i></p>
-                
-                <h3 class="collapsible"><div class="altbaslık">Basit Yakın Dövüş Silahları</div></h3>
-                <div class="icerik hidden">
-                    <div class="item-card">
-                        <p><span class="bold">Sopa (Club):</span> 1d4 Ezme | 2 lb. | <span class="ozellik">Hafif</span> | 1 sp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Hançer (Dagger):</span> 1d4 Delme | 1 lb. | <span class="ozellik">Beceri, Hafif, Fırlatma (20/60)</span> | 2 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Büyük Sopa (Greatclub):</span> 1d8 Ezme | 10 lb. | <span class="ozellik">Çift El</span> | 2 sp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">El Baltası (Handaxe):</span> 1d6 Kesme | 2 lb. | <span class="ozellik">Hafif, Fırlatma (20/60)</span> | 5 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Cirit (Javelin):</span> 1d6 Delme | 2 lb. | <span class="ozellik">Fırlatma (30/120)</span> | 5 sp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Hafif Çekiç (Light Hammer):</span> 1d4 Ezme | 2 lb. | <span class="ozellik">Hafif, Fırlatma (20/60)</span> | 2 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Gürz (Mace):</span> 1d6 Ezme | 4 lb. | <span class="ozellik">—</span> | 5 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Değnek (Quarterstaff):</span> 1d6 Ezme | 4 lb. | <span class="ozellik">Değişken (1d8)</span> | 2 sp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Orak (Sickle):</span> 1d4 Kesme | 2 lb. | <span class="ozellik">Hafif</span> | 1 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Mızrak (Spear):</span> 1d6 Delme | 3 lb. | <span class="ozellik">Fırlatma (20/60), Değişken (1d8)</span> | 1 gp</p>
-                    </div>
-                </div>
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab('basic')">🛡️ Temel Ekipmanlar</button>
+            <button class="tab-btn" onclick="switchTab('magic')">✨ Sihirli Eşyalar & Artifaktlar</button>
+        </div>
 
-                <h3 class="collapsible"><div class="altbaslık">Basit Menzilli Silahlar</div></h3>
-                <div class="icerik hidden">
-                    <div class="item-card">
-                        <p><span class="bold">Arbalet, Hafif (Crossbow, Light):</span> 1d8 Delme | 5 lb. | <span class="ozellik">Cephane (80/320), Kurmalı, Çift El</span> | 25 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Dart:</span> 1d4 Delme | 1/4 lb. | <span class="ozellik">Beceri, Fırlatma (20/60)</span> | 5 cp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Kısa Yay (Shortbow):</span> 1d6 Delme | 2 lb. | <span class="ozellik">Cephane (80/320), Çift El</span> | 25 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Sapan (Sling):</span> 1d4 Ezme | — | <span class="ozellik">Cephane (30/120)</span> | 1 sp</p>
-                    </div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Askeri Yakın Dövüş Silahları</div></h3>
-                <div class="icerik hidden">
-                    <div class="item-card">
-                        <p><span class="bold">Savaş Baltası (Battleaxe):</span> 1d8 Kesme | 4 lb. | <span class="ozellik">Değişken (1d10)</span> | 10 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Zincirli Gürz (Flail):</span> 1d8 Ezme | 2 lb. | <span class="ozellik">—</span> | 10 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Kılıçlı Kargı (Glaive):</span> 1d10 Kesme | 6 lb. | <span class="ozellik">Ağır, Erişim, Çift El</span> | 20 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Büyük Balta (Greataxe):</span> 1d12 Kesme | 7 lb. | <span class="ozellik">Ağır, Çift El</span> | 30 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Büyük Kılıç (Greatsword):</span> 2d6 Kesme | 6 lb. | <span class="ozellik">Ağır, Çift El</span> | 50 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Baltalı Kargı (Halberd):</span> 1d10 Kesme | 6 lb. | <span class="ozellik">Ağır, Erişim, Çift El</span> | 20 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Süvari Mızrağı (Lance):</span> 1d12 Delme | 6 lb. | <span class="ozellik">Erişim, Özel</span> | 10 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Uzun Kılıç (Longsword):</span> 1d8 Kesme | 3 lb. | <span class="ozellik">Değişken (1d10)</span> | 15 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Tokmak (Maul):</span> 2d6 Ezme | 10 lb. | <span class="ozellik">Ağır, Çift El</span> | 10 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Dikenli Gürz (Morningstar):</span> 1d8 Delme | 4 lb. | <span class="ozellik">—</span> | 15 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Kargı (Pike):</span> 1d10 Delme | 18 lb. | <span class="ozellik">Ağır, Erişim, Çift El</span> | 5 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Meç (Rapier):</span> 1d8 Delme | 2 lb. | <span class="ozellik">Beceri</span> | 25 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Pala (Scimitar):</span> 1d6 Kesme | 3 lb. | <span class="ozellik">Beceri, Hafif</span> | 25 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Kısa Kılıç (Shortsword):</span> 1d6 Delme | 2 lb. | <span class="ozellik">Beceri, Hafif</span> | 10 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Üç Dişli Mızrak (Trident):</span> 1d6 Delme | 4 lb. | <span class="ozellik">Fırlatma (20/60), Değişken (1d8)</span> | 5 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Savaş Kazması (War Pick):</span> 1d8 Delme | 2 lb. | <span class="ozellik">—</span> | 5 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Savaş Çekici (Warhammer):</span> 1d8 Ezme | 2 lb. | <span class="ozellik">Değişken (1d10)</span> | 15 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Kırbaç (Whip):</span> 1d4 Kesme | 3 lb. | <span class="ozellik">Beceri, Erişim</span> | 2 gp</p>
-                    </div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Askeri Menzilli Silahlar</div></h3>
-                <div class="icerik hidden">
-                    <div class="item-card">
-                        <p><span class="bold">Dart Borusu (Blowgun):</span> 1 Delme | 1 lb. | <span class="ozellik">Cephane (25/100), Kurmalı</span> | 10 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Arbalet, El (Crossbow, hand):</span> 1d6 Delme | 3 lb. | <span class="ozellik">Cephane (30/120), Hafif, Kurmalı</span> | 75 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Arbalet, Ağır (Crossbow, heavy):</span> 1d10 Delme | 18 lb. | <span class="ozellik">Cephane (100/400), Ağır, Kurmalı, Çift El</span> | 50 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Uzun Yay (Longbow):</span> 1d8 Delme | 2 lb. | <span class="ozellik">Cephane (150/600), Ağır, Çift El</span> | 50 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Ağ (Net):</span> — | 3 lb. | <span class="ozellik">Özel, Fırlatma (5/15)</span> | 1 gp</p>
-                    </div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Silah Özellikleri ve Kurallar</div></h3>
-                <div class="icerik hidden">
-                    <p><strong class="bold">Silah Uzmanlığı:</strong> Bir silahla uzmanlık sahibi olman, o silahla yapacağın saldırı zarlarına uzmanlık bonusunu (Proficiency Bonus) eklemeni sağlar.</p>
-                    <hr>
-                    <p><strong class="bold">Cephane (Ammunition):</strong> Silahla her saldırışında bir parça cephane harcarsın. Savaşın sonunda, savaş alanını 1 dakika aradıktan sonra harcanan cephanenin yarısını geri bulabilirsin.</p>
-                    <hr>
-                    <p><strong class="bold">Beceri (Finesse):</strong> Saldırı ve hasar zarı için Kuvvet (STR) yerine Çeviklik (DEX) bonusunu kullanabilirsin.</p>
-                    <hr>
-                    <p><strong class="bold">Ağır (Heavy):</strong> Küçük boyutlu (Small) varlıkların ağır silahlarla yaptıkları saldırı zarları dezavantajlı olur.</p>
-                    <hr>
-                    <p><strong class="bold">Hafif (Light):</strong> İki silahla savaşmak için idealdir.</p>
-                    <hr>
-                    <p><strong class="bold">Kurmalı (Loading):</strong> Bu özelliği olan bir silahla, saldırı sayına bakılmaksızın tur başına sadece bir kez ateş edebilirsin.</p>
-                    <hr>
-                    <p><strong class="bold">Menzil (Range):</strong> (Normal/Uzak). Normal menzilin ötesinde saldırırken dezavantaj alırsın. Uzak menzilin ötesine saldıramazsın.</p>
-                    <hr>
-                    <p><strong class="bold">Erişim (Reach):</strong> Bu silahla saldırırken erişim alanına 5 fit eklenir.</p>
-                    <hr>
-                    <p><strong class="bold">Fırlatma (Thrown):</strong> Yakın dövüş silahı fırlatılıyorsa, yakın dövüşte kullandığın stat (STR veya DEX) fırlatırken de kullanılır.</p>
-                    <hr>
-                    <p><strong class="bold">Çift El (Two-Handed):</strong> Bu silahla saldırmak için iki elini de kullanman gerekir.</p>
-                    <hr>
-                    <p><strong class="bold">Değişken (Versatile):</strong> Bu silah tek veya çift elle kullanılabilir. Parantez içindeki değer, çift elle kullanıldığındaki hasarıdır.</p>
-                    <hr>
-                    <p><strong class="bold">Doğaçlama Silahlar:</strong> Gerçek bir silaha benzemeyen nesneler (masa ayağı, kırık cam vb.) genellikle 1d4 hasar verir.</p>
-                    <hr>
-                    <p><strong class="bold">Gümüş Kaplı Silahlar:</strong> Büyüsüz hasara dirençli varlıklar için kullanılır. Bir silahı gümüşletme bedeli 100 gp'dir.</p>
-                    <hr>
-                    <p><strong class="bold">Özel Silahlar:</strong>
-                        <br><i>Süvari Mızrağı:</i> 5 fit içindeki hedefe saldırırken dezavantajlıdır. Binek üstünde değilken iki el gerektirir.
-                        <br><i>Ağ:</i> Vurulan hedef kısıtlanır (Restrained). Kurtulmak için DC 10 STR zarı gerekir veya ağa 5 kesme hasarı (AC 10) verilmelidir.
-                    </p>
-                </div>
-            </div>
-
-<div id="Zirhlar" class="tab-content">
-                <h2>Zırh ve Kalkanlar</h2>
-                <p>D&D evrenleri her biri ayrı bir teknoloji seviyesinde farklı kültürlerden oluşan geniş bir yelpazedir. Bu sebeple, maceracıların bir çok zırh tipine erişimi vardır. Zırhlar tablosu oyunda en yaygın şekilde bulunabilecek zırhları listeler.</p>
-                <p style="font-size: 0.9em; color: #555;"><i>*Tablo; zırhların adını, Zırh Sınıfını (AC), ağırlığını, gizlilik durumunu ve değerini gösterir.</i></p>
-                
-                <h3 class="collapsible"><div class="altbaslık">Hafif Zırhlar</div></h3>
-                <div class="icerik hidden">
-                    <p style="margin-top: 0; padding-top: 3px; margin-bottom: 10px; font-size: 0.95em;">
-                        İnce ve esnek materyallerden yapılan hafif zırhlar, hareket gücünü azaltmadan koruma sağladığı için çevik maceracılar tercih eder. 
-                        <br><b>AC Hesabı:</b> Zırh Değeri + Çeviklik (Dex) Bonusu
-                    </p>
-                    <hr>
-                    
-                    <div class="item-card">
-                        <p><span class="bold">Dolgu (Padded):</span> 11 + Dex | 8 lb. | <span class="ozellik">Dezavantaj (Gizlenme)</span> | 5 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Deri (Leather):</span> 11 + Dex | 10 lb. | <span class="ozellik">—</span> | 10 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Perçinli Deri (Studded Leather):</span> 12 + Dex | 13 lb. | <span class="ozellik">—</span> | 45 gp</p>
-                    </div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Orta Zırhlar</div></h3>
-                <div class="icerik hidden">
-                    <p style="margin-top: 0; padding-top: 3px; margin-bottom: 10px; font-size: 0.95em;">
-                        Orta zırhlar hafiflerden daha fazla koruma sağlarlar, ama hareketi de daha fazla kısıtlarlar. 
-                        <br><b>AC Hesabı:</b> Zırh Değeri + Çeviklik (Dex) Bonusu (Maksimum +2)
-                    </p>
-                    <hr>
-
-                    <div class="item-card">
-                        <p><span class="bold">Post (Hide):</span> 12 + Dex (max 2) | 12 lb. | <span class="ozellik">—</span> | 10 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Örme Gömlek (Chain Shirt):</span> 13 + Dex (max 2) | 20 lb. | <span class="ozellik">—</span> | 50 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Pullu (Scale Mail):</span> 14 + Dex (max 2) | 45 lb. | <span class="ozellik">Dezavantaj (Gizlenme)</span> | 50 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Göğüslük (Breastplate):</span> 14 + Dex (max 2) | 20 lb. | <span class="ozellik">—</span> | 400 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Yarı Plaka (Half Plate):</span> 15 + Dex (max 2) | 40 lb. | <span class="ozellik">Dezavantaj (Gizlenme)</span> | 750 gp</p>
-                    </div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Ağır Zırhlar</div></h3>
-                <div class="icerik hidden">
-                    <p style="margin-top: 0; padding-top: 3px; margin-bottom: 10px; font-size: 0.95em;">
-                        Tüm zırh kategorileri arasından, ağır zırh en iyi korumayı sağlar. Bu zırhlar tüm vücudu korur. 
-                        <br><b>AC Hesabı:</b> Sadece Zırh Değeri (Dex bonusu eklenmez)
-                    </p>
-                    <hr>
-
-                    <div class="item-card">
-                        <p><span class="bold">Halka Örme (Ring Mail):</span> AC 14 | 40 lb. | <span class="ozellik">Dezavantaj (Gizlenme)</span> | 30 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Örme (Chain Mail):</span> AC 16 | 55 lb. | <span class="ozellik">Güç 13, Dezavantaj (Gizlenme)</span> | 75 gp</p>
-                    </div>
-                    <div class="item-card">
-                        <p><span class="bold">Lamellar (Splint):</span> AC 17 | 60 lb. | <span class="ozellik">Güç 15, Dezavantaj (Gizlenme)</span> | 200 gp</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p><span class="bold">Plaka (Plate):</span> AC 18 | 65 lb. | <span class="ozellik">Güç 15, Dezavantaj (Gizlenme)</span> | 1,500 gp</p>
-                    </div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Kalkan</div></h3>
-                <div class="icerik hidden">
-                    <div class="item-card" style="margin-top: 3px;"> <p><span class="bold">Kalkan (Shield):</span> +2 AC | 6 lb. | <span class="ozellik">Tek el gerektirir</span> | 10 gp</p>
-                    </div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Zırh Kuralları ve Giyme Süreleri</div></h3>
-                <div class="icerik hidden">
-                    <p style="margin-top: 0; padding-top: 3px;"><strong class="bold">Zırh Uzmanlığı:</strong> Eğer uzmanlığın olmayan bir zırh giyersen; Kuvvet veya Çeviklik temelli tüm yetenek, kurtulma ve saldırı zarlarında dezavantajlı olursun ve büyü yapamazsın.</p>
-                    <hr>
-                    <p><strong class="bold">Ağır Zırhlar (Kuvvet Şartı):</strong> Tabloda belirtilen Kuvvet skoruna (Kuv 13 veya 15) sahip değilsen, zırh hızını 10 fit azaltır.</p>
-                    <hr>
-                    <p><strong class="bold">Gizlenme (Dezavantaj):</strong> Tabloda "Dezavantaj" yazan zırhlar, Çeviklik (Gizlenme) zarlarında dezavantaj verir.</p>
-                    <hr>
-                    <br>
-                    <h4>Zırh Giyme ve Çıkarma Süreleri</h4>
-                    <table style="width:100%; text-align: left; font-size: 0.9em; border-collapse: collapse;">
-                        <tr style="border-bottom: 1px solid #8b4513;">
-                            <th style="padding: 5px;">Kategori</th>
-                            <th style="padding: 5px;">Giyme</th>
-                            <th style="padding: 5px;">Çıkarma</th>
-                        </tr>
-                        <tr class="koyu">
-                            <td style="padding: 5px;">Hafif Zırhlar</td>
-                            <td style="padding: 5px;">1 dakika</td>
-                            <td style="padding: 5px;">1 dakika</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px;">Orta Zırhlar</td>
-                            <td style="padding: 5px;">5 dakika</td>
-                            <td style="padding: 5px;">1 dakika</td>
-                        </tr>
-                        <tr class="koyu">
-                            <td style="padding: 5px;">Ağır Zırhlar</td>
-                            <td style="padding: 5px;">10 dakika</td>
-                            <td style="padding: 5px;">5 dakika</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px;">Kalkan</td>
-                            <td style="padding: 5px;">1 eylem</td>
-                            <td style="padding: 5px;">1 eylem</td>
-                        </tr>
-                    </table>
-                    <br>
-                </div>
-            </div>
-
-<div id="Ekipmanlar" class="tab-content">
-                <h2>Macera Ekipmanları</h2>
-                <p>Bu kısım, bir maceracının zindanlarda ve yaban hayatta hayatta kalmak için ihtiyaç duyabileceği özel kuralları olan veya açıklama gerektiren eşyaları içerir.</p>
-                
-                <h3 class="collapsible"><div class="altbaslık">Başlangıç Ekipman Paketleri</div></h3>
-                <div class="icerik hidden">
-                    <p style="margin-top: 0; padding-top: 3px; margin-bottom: 10px; font-size: 0.95em;">
-                        Sınıfından edindiğin başlangıç ekipmanı bir paket içerisinde toplanmış birçok macera tertibatı içerir. Bu paketleri ayrı ayrı almaktan daha ucuza gelir.
-                    </p>
-                    <hr>
-                    <div class="item-card">
-                        <p style="padding: 0 0 3px 0;"><span class="bold">Hırsız Paketi (16 gp):</span> Sırt çantası, 1000 bilyelik kese, 10 ft sicim, çan, 5 mum, levye, çekiç, 10 dağcı çivisi, örtülü fener, 2 matara gazyağı, 5 günlük erzak, kav kutusu, kırba, 50 ft kendir halat.</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p style="padding: 3px 0 3px 0;"><span class="bold">Zindancı Paketi (12 gp):</span> Sırt çantası, levye, çekiç, 10 dağcı çivisi, 10 meşale, kav kutusu, 10 günlük erzak, kırba, 50 ft kendir halat.</p>
-                    </div>
-                    <div class="item-card">
-                        <p style="padding: 3px 0 3px 0;"><span class="bold">Kaşif Paketi (10 gp):</span> Sırt çantası, kamp yatağı, yemek kiti, kav kutusu, 10 meşale, 10 günlük erzak, kırba, 50 ft kendir halat.</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p style="padding: 3px 0 3px 0;"><span class="bold">Diplomat Paketi (39 gp):</span> Sandık, harita/tomar için 2 kap, kaliteli kıyafet, mürekkep, kalem, lamba, 2 matara gazyağı, 5 kağıt, parfüm, mühür mumu, sabun.</p>
-                    </div>
-                    <div class="item-card">
-                        <p style="padding: 3px 0 3px 0;"><span class="bold">Ozan Paketi (40 gp):</span> Sırt çantası, kamp yatağı, 2 kostüm, 5 mum, 5 günlük erzak, kırba, kılık değiştirme kiti.</p>
-                    </div>
-                    <div class="item-card koyu">
-                        <p style="padding: 3px 0 3px 0;"><span class="bold">Rahip Paketi (19 gp):</span> Sırt çantası, battaniye, 10 mum, kav kutusu, bağış kutusu, 2 tütsü, buhurdan, tören kıyafeti, 2 günlük erzak, kırba.</p>
-                    </div>
-                    <div class="item-card">
-                        <p style="padding: 3px 0 3px 0;"><span class="bold">Bilge Paketi (40 gp):</span> Sırt çantası, bilgi kitabı, mürekkep, kalem, 10 parşömen, kum kesesi, küçük bıçak.</p>
-                    </div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Genel Macera Tertibatı</div></h3>
-                <div class="icerik hidden">
-                    <div class="item-card"><p><span class="bold">Arcane Odak (Kristal/Asa/Değnek):</span> 5-20 gp | Büyücü sınıfları için büyü odağı.</p></div>
-                    
-                    <div class="item-card koyu"><p><span class="bold">Meşale:</span> 1 cp | 1 lb. | 1 saat yanar (20/20 ft ışık).</p></div>
-                    <div class="item-card"><p><span class="bold">Mum:</span> 1 cp | — | 1 saat yanar (5/5 ft ışık).</p></div>
-                    <div class="item-card koyu"><p><span class="bold">Lamba:</span> 5 sp | 1 lb. | 6 saat yanar (15/30 ft ışık).</p></div>
-                    <div class="item-card"><p><span class="bold">Fener, Örtülü:</span> 5 gp | 2 lb. | 6 saat yanar (30/30 ft ışık).</p></div>
-                    
-                    <div class="item-card koyu"><p><span class="bold">Erzak (1 gün):</span> 5 sp | 2 lb. | Kuru yiyecekler.</p></div>
-                    <div class="item-card"><p><span class="bold">Ok (20'lik):</span> 1 gp | 1 lb.</p></div>
-                    <div class="item-card koyu"><p><span class="bold">Şifacı Kiti:</span> 5 gp | 3 lb. | 10 kullanım (0 HP'dekini stabilize eder).</p></div>
-                    <div class="item-card"><p><span class="bold">Sağlık İksiri:</span> 50 gp | 1/2 lb. | 2d4+2 HP yeniler.</p></div>
-
-                    <div class="item-card koyu"><p><span class="bold">Sırt Çantası:</span> 2 gp | 5 lb.</p></div>
-                    <div class="item-card"><p><span class="bold">Halat, Kendir (50 ft):</span> 1 gp | 10 lb. | DC 17 Strength ile koparılabilir.</p></div>
-                    <div class="item-card koyu"><p><span class="bold">Levye:</span> 2 gp | 5 lb. | Güç zarlarına avantaj verir.</p></div>
-                    <div class="item-card"><p><span class="bold">Kav Kutusu (Tinderbox):</span> 5 sp | 1 lb. | Ateş yakmak için gereklidir.</p></div>
-                    <div class="item-card koyu"><p><span class="bold">Kilit:</span> 10 gp | 1 lb. | Anahtarsız açmak için DC 15 Dex gerekir.</p></div>
-                    <div class="item-card"><p><span class="bold">Büyü Kitabı:</span> 50 gp | 3 lb. | 100 boş sayfa.</p></div>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Özel Eşya Kuralları</div></h3>
-                <div class="icerik hidden">
-                    <p style="margin-top: 0; padding-top: 10px;"><strong class="bold">Asit (25 gp):</strong> Eylem olarak 20 ft'e fırlatılabilir. Menzilli saldırı yapılır, vurursa 2d6 asit hasarı verir.</p>
-                    <hr>
-                    <p><strong class="bold">Simyacı Ateşi (50 gp):</strong> Eylem olarak 20 ft'e fırlatılabilir. Vurursa, hedef her tur başında 1d4 ateş hasarı alır (Söndürmek için DC 10 Dex).</p>
-                    <hr>
-                    <p><strong class="bold">Antitoksin (50 gp):</strong> İçildiğinde zehre karşı kurtulma zarlarında 1 saat avantaj sağlar.</p>
-                    <hr>
-                    <p><strong class="bold">Bilyeler (1 gp):</strong> 10 ft karelik alanı kaplar. Geçenler DC 10 Dex atar, başarısızsa düşer (Prone).</p>
-                    <hr>
-                    <p><strong class="bold">Demir Dikenler (1 gp):</strong> 5 ft karelik alanı kaplar. Basan DC 15 Dex atar, başarısızsa 1 hasar alır ve hızı 10 ft azalır.</p>
-                    <hr>
-                    <p><strong class="bold">Kutsal Su (25 gp):</strong> 20 ft'e fırlatılabilir. Zebani veya yaşayan ölülere 2d6 radyant hasar verir.</p>
-                    <hr>
-                    <p><strong class="bold">Av Tuzağı (5 gp):</strong> Basan varlık DC 13 Dex atar, başarısızsa 1d4 hasar alır ve hareketi kısıtlanır. Kurtulmak için DC 13 Str gerekir.</p>
-                    <hr>
-                    <p><strong class="bold">Zehir, Basit (100 gp):</strong> Silaha sürülür (1 eylem). Vurulan hedef DC 10 Con atar, başarısızsa 1d4 zehir hasarı alır.</p>
-                </div>
-
-                <h3 class="collapsible"><div class="altbaslık">Çanta ve Kap Kapasiteleri</div></h3>
-                <div class="icerik hidden">
-                    <table style="width:100%; text-align: left; font-size: 0.9em; border-collapse: collapse; margin-top: 10px;">
-                        <tr style="border-bottom: 1px solid #8b4513;">
-                            <th style="padding: 5px;">Kap</th>
-                            <th style="padding: 5px;">Kapasite</th>
-                        </tr>
-                        <tr class="koyu">
-                            <td style="padding: 5px;">Sırt Çantası</td>
-                            <td style="padding: 5px;">1 ft küp / 30 lb. eşya</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px;">Kese</td>
-                            <td style="padding: 5px;">1/5 ft küp / 6 lb. eşya</td>
-                        </tr>
-                        <tr class="koyu">
-                            <td style="padding: 5px;">Çuval</td>
-                            <td style="padding: 5px;">1 ft küp / 30 lb. eşya</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px;">Sandık</td>
-                            <td style="padding: 5px;">12 ft küp / 300 lb. eşya</td>
-                        </tr>
-                        <tr class="koyu">
-                            <td style="padding: 5px;">Kırba</td>
-                            <td style="padding: 5px;">2 litre sıvı</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px;">Matara</td>
-                            <td style="padding: 5px;">Yarım litre sıvı</td>
-                        </tr>
-                    </table>
-                    <br>
+        <div class="main-content-box">
+            
+            <div id="inventory-container">
+                <div style="text-align: center; color: #888; padding: 20px;">
+                    <p>Eşyalar Yükleniyor...</p>
                 </div>
             </div>
 
         </div>
+
     </main>
+
     <script src="scriptEnvanter.js"></script>
 </body>
 </html>

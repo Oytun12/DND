@@ -1,17 +1,76 @@
+/* ============================================================
+   SCRIPTCLASS.JS - TAM SÜRÜM (Sticky Header + Orijinal Render)
+   ============================================================ */
+
 let ALL_CLASSES_DATA = [];
 let currentActiveIndex = null; // HAFIZA: Şu an hangi sınıf açık?
 
 // ------------------ MENÜ & TAB İŞLEMLERİ ------------------
-const toggleMenu = () => {
-    const menu = document.getElementById('hamburger-menu');
-    menu.classList.toggle('hidden');
-    menu.classList.toggle('visible');
-};
 
-// TAB DEĞİŞTİRME FONKSİYONU (GÜNCELLENDİ: GEREKSİZ TIKLAMA ENGELİ)
+/* --- MENÜ İŞLEMLERİ (Düzeltildi) --- */
+function toggleMenu() {
+    // Hem yeni ID'yi (mobile-menu) hem eski ID'yi (hamburger-menu) dene
+    let menu = document.getElementById('mobile-menu');
+    
+    if (!menu) {
+        menu = document.getElementById('hamburger-menu');
+    }
+
+    if (menu) {
+        // Hem 'open' (yeni stil) hem 'visible' (eski stil) classlarını toggle et
+        menu.classList.toggle('open');
+        menu.classList.toggle('visible');
+        menu.classList.toggle('hidden'); // Eğer hidden varsa kaldırır
+    } else {
+        console.error("Menü bulunamadı! HTML'deki nav ID'sini kontrol edin (mobile-menu olmalı).");
+    }
+}
+
+// Menü dışına tıklayınca kapatma
+document.addEventListener('click', (event) => {
+    const menu = document.getElementById('mobile-menu') || document.getElementById('hamburger-menu');
+    const menuIcon = document.querySelector('.menu-icon');
+    
+    if (menu && (menu.classList.contains('open') || menu.classList.contains('visible'))) {
+        if (!menu.contains(event.target) && !menuIcon.contains(event.target)) {
+            menu.classList.remove('open');
+            menu.classList.remove('visible');
+            menu.classList.add('hidden');
+        }
+    }
+
+    // 2. Sınıf Kapatma (Boşluğa tıklama)
+    // Header'a, İçeriğe, Tab'a veya Alt Sınıf butonuna tıklanmadıysa kapat
+    // Sınıf Kapatma (Boşluğa tıklama)
+    const isHeader = event.target.closest('.collapsible');
+    const isContent = event.target.closest('.class-content');
+    const isTab = event.target.closest('.tab-link');
+    const isSubBtn = event.target.closest('.btn-subclass');
+    const isCloseBtn = event.target.classList.contains('mobile-back-btn');
+
+
+    // Menüye veya ikona tıklanmadıysa ve sınıf elemanlarına tıklanmadıysa kapat
+    if (!isHeader && !isContent && !isTab && !isSubBtn && !isCloseBtn && !menu.contains(event.target) && !menuIcon.contains(event.target)) {
+        closeAllAccordions();
+    }
+});
+
+function closeAllAccordions() {
+    // İçerikleri gizle
+    document.querySelectorAll('.class-content').forEach(el => el.style.display = 'none');
+    // Aktif sınıfları kaldır
+    document.querySelectorAll('.collapsible').forEach(el => el.classList.remove('active'));
+    // Sticky wrapper sınıfını kaldır
+    document.querySelectorAll(".class-wrapper").forEach(w => w.classList.remove("focus-active"));
+    // Body scroll kilidini kaldır
+    document.body.classList.remove("mobile-focus");
+    
+    currentActiveIndex = null;
+}
+
+// TAB DEĞİŞTİRME FONKSİYONU
 function openTab(evt, viewId) {
-    // DÜZELTME BURADA:
-    // Eğer tıklanan butonda zaten 'active' sınıfı varsa, fonksiyonu hemen durdur.
+    // Eğer zaten aktifse işlem yapma
     if (evt.currentTarget.classList.contains('active')) return;
 
     // 1. Tüm görünümleri gizle
@@ -29,7 +88,7 @@ function openTab(evt, viewId) {
     evt.currentTarget.classList.add('active');
 
     // --- SENKRONİZASYON ---
-    // Eğer hafızada bir sınıf varsa, yeni sekmede de onu aç
+    // Eğer hafızada bir sınıf varsa, yeni sekmede de onu aç (veya en azından scroll et)
     if (currentActiveIndex !== null) {
         const targetType = (viewId === 'view-features') ? 'feat' : 'table';
         const wrapperId = `wrapper-${targetType}-${currentActiveIndex}`;
@@ -37,41 +96,23 @@ function openTab(evt, viewId) {
         
         if (wrapper) {
             const header = wrapper.querySelector('.collapsible');
-            if (header) {
-                // Tıklama efektini tetikle
-                header.click();
+            const contentDiv = wrapper.querySelector('.class-content');
+            
+            // Eğer içerik henüz render edilmemişse (boşsa), render et
+            if (contentDiv && contentDiv.innerHTML === "") {
+                if (targetType === 'feat') {
+                    renderClassFeatures(currentActiveIndex, `content-${targetType}-${currentActiveIndex}`);
+                } else {
+                    renderClassTable(currentActiveIndex, `content-${targetType}-${currentActiveIndex}`);
+                }
             }
+            
+            // Görsel olarak açık olduğunu işaretle
+            header.classList.add("active");
+            contentDiv.style.display = "block";
+            wrapper.classList.add("focus-active");
         }
     }
-}
-
-// ------------------ GLOBAL TIKLAMA & KAPATMA ------------------
-document.addEventListener('click', (event) => {
-    // Menü Kapatma
-    const menu = document.getElementById('hamburger-menu');
-    const menuIcon = document.querySelector('.menu-icon');
-    if (menu.classList.contains('visible') && !menu.contains(event.target) && !menuIcon.contains(event.target)) {
-        menu.classList.remove('visible');
-        menu.classList.add('hidden');
-    }
-
-    // Sınıf Kapatma (Boşluğa tıklama)
-    const isHeader = event.target.closest('.collapsible');
-    const isContent = event.target.closest('.class-content');
-    const isTab = event.target.closest('.tab-link');
-    const isSubBtn = event.target.closest('.btn-subclass'); // Alt sınıf butonları da kapatmasın
-
-    if (!isHeader && !isContent && !isTab && !isSubBtn) {
-        closeAllAccordions();
-    }
-});
-
-function closeAllAccordions() {
-    document.querySelectorAll('.class-content').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.collapsible').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll(".class-wrapper").forEach(w => w.classList.remove("focus-active"));
-    document.body.classList.remove("mobile-focus");
-    currentActiveIndex = null; // Hafızayı sil
 }
 
 // ------------------ BAŞLATMA ------------------
@@ -79,12 +120,13 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch('../../Data/classes.json')
         .then(response => response.json())
         .then(data => {
-            ALL_CLASSES_DATA = data.class;
+            // Veri yapısını kontrol et: data.class veya direkt data
+            ALL_CLASSES_DATA = data.class || data;
             renderAllViews();
         })
         .catch(error => {
             console.error('Hata:', error);
-            document.getElementById('container-features').innerHTML = "<p style='color:red;'>Veri yüklenemedi. Lütfen Data/classes.json dosyasını kontrol edin.</p>";
+            document.getElementById('container-features').innerHTML = "<p style='color:#b52b2b;'>Veri yüklenemedi. classes.json dosyasını kontrol edin.</p>";
         });
 });
 
@@ -96,11 +138,15 @@ function renderAllViews() {
     containerTable.innerHTML = "";
 
     ALL_CLASSES_DATA.forEach((cls, index) => {
-        createClassAccordionItem(containerFeat, cls, index, 'feat');
-        createClassAccordionItem(containerTable, cls, index, 'table');
+        // İsmi olan sınıfları listele
+        if(cls.name) {
+            createClassAccordionItem(containerFeat, cls, index, 'feat');
+            createClassAccordionItem(containerTable, cls, index, 'table');
+        }
     });
 }
 
+// --- KART OLUŞTURMA (STICKY HEADER UYUMLU) ---
 function createClassAccordionItem(container, cls, index, type) {
     const wrapper = document.createElement('div');
     wrapper.className = 'class-wrapper';
@@ -108,8 +154,12 @@ function createClassAccordionItem(container, cls, index, type) {
 
     const header = document.createElement('h3');
     header.className = 'collapsible';
-    // Mobilde geri butonu
-    header.innerHTML = `${cls.name} <button class="mobile-back-btn" onclick="closeFocusMode(event)">KAPAT ✕</button>`;
+    
+    // YENİ HTML YAPISI: İsim (span) ve Buton (button)
+    header.innerHTML = `
+        <span class="cls-name">${cls.name}</span>
+        <button class="mobile-back-btn" onclick="closeFocusMode(event)">✕</button>
+    `;
     
     const contentId = `content-${type}-${index}`;
     
@@ -126,51 +176,53 @@ function createClassAccordionItem(container, cls, index, type) {
 
 // Akordiyon Açma/Kapama
 function toggleClassAccordion(e, classIndex, headerElement, contentId, type, wrapperId) {
+    // Eğer kapat butonuna tıklandıysa bu fonksiyonu çalıştırma (closeFocusMode çalışacak)
     if(e.target.classList.contains('mobile-back-btn')) return;
-    e.stopPropagation();
-
+    
     const contentDiv = document.getElementById(contentId);
     const wrapper = document.getElementById(wrapperId);
     const isOpen = contentDiv.style.display === "block";
 
-    // Önce hepsini kapat (Görsel temizlik)
-    document.querySelectorAll(".class-content").forEach(c => c.style.display = "none");
-    document.querySelectorAll(".collapsible").forEach(h => h.classList.remove("active"));
-    document.querySelectorAll(".class-wrapper").forEach(w => w.classList.remove("focus-active"));
-    document.body.classList.remove("mobile-focus");
+    // 1. Önce Hepsini Kapat (Temiz bir sayfa için)
+    closeAllAccordions();
 
+    // 2. Eğer kapalıysa aç
     if (!isOpen) {
         // Tıklananı aç
         headerElement.classList.add("active");
         contentDiv.style.display = "block";
-        wrapper.classList.add("focus-active");
+        wrapper.classList.add("focus-active"); // CSS bu sınıfı görünce sticky yapacak
 
         currentActiveIndex = classIndex; // Hafızaya al
 
-        // Mobil Odak Modu
+        // Mobil Odak Modu: Scroll Ayarı
         if (window.innerWidth <= 768) {
             document.body.classList.add("mobile-focus");
-            window.scrollTo(0, 0);
+            window.scrollTo(0, 0); // En tepeye at (Sticky headerların oturması için)
         } else {
+            // Masaüstünde hafif kaydırma
             if (e.isTrusted) {
-                setTimeout(() => headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                setTimeout(() => headerElement.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
             }
         }
 
-        // İçeriği Doldur
-        if (type === 'feat') {
-            renderClassFeatures(classIndex, contentId);
-        } else {
-            renderClassTable(classIndex, contentId);
+        // İçerik Doldur (Eğer boşsa)
+        if (contentDiv.innerHTML === "") {
+            if (type === 'feat') {
+                renderClassFeatures(classIndex, contentId);
+            } else {
+                renderClassTable(classIndex, contentId);
+            }
         }
     } else {
-        // Zaten açıksa kapat ve hafızayı sil
+        // Zaten açıksa kapat (closeAllAccordions zaten kapattı)
         currentActiveIndex = null;
     }
 }
 
+// Kapat Butonu Fonksiyonu
 function closeFocusMode(e) {
-    e.stopPropagation();
+    e.stopPropagation(); // Header'ın onclick olayını tetikleme
     closeAllAccordions();
 }
 
@@ -190,7 +242,6 @@ function renderClassTable(classIndex, containerId) {
     html += `<th>Seviye</th>`;
     html += `<th>Uzmanlık Bonusu</th>`;
     
-    // DÜZELTME BURADA: label'ı format5eText() içine aldık
     cls.classTableGroups.forEach(group => {
         group.colLabels.forEach(label => {
             html += `<th>${format5eText(label)}</th>`; 
@@ -216,60 +267,33 @@ function renderClassTable(classIndex, containerId) {
         html += `</tr>`;
     }
     html += `</tbody></table></div>`;
-    html += `<p style="font-size:0.8em; color:#666; margin-top:10px;">* Tabloyu yana kaydırarak diğer sütunları görebilirsiniz.</p>`;
+    html += `<p style="font-size:0.8em; color:#888; margin-top:10px;">* Mobilde tabloyu yana kaydırabilirsiniz.</p>`;
 
     container.innerHTML = html;
 }
 
-// Hücre Verisi Düzenleyici (Keşiş Array Sorunu ve Bonus Hız Fixlendi)
+// Hücre Verisi Düzenleyici
 function formatTableCell(cell) {
-    // 1. Boş veri kontrolü
     if (cell === null || cell === undefined) return "—";
     if (cell === 0 || cell === "0") return "—";
 
-    // 2. Eğer veri bir NESNE (Object) ise
     if (typeof cell === 'object') {
-        
-        // --- ZAR TİPİ (Fix: Keşiş Dizisi Kontrolü) ---
         if (cell.type === 'dice') {
-            // SENARYO A: toRoll bir DİZİ ise (Keşiş Tablosu Buraya Düşer)
             if (Array.isArray(cell.toRoll)) {
-                // Dizinin ilk elemanını alalım (Genelde tek zar olur)
                 const die = cell.toRoll[0];
-                if (die && die.faces) {
-                    return `${die.number || 1}d${die.faces}`;
-                }
+                if (die && die.faces) return `${die.number || 1}d${die.faces}`;
             }
-            // SENARYO B: toRoll düz yazı ise
             if (typeof cell.toRoll === 'string') return cell.toRoll;
-            
-            // SENARYO C: number/faces direkt objede ise
             if (cell.faces) return `${cell.number || 1}d${cell.faces}`;
         }
-
-        // --- BONUS TİPİ (+2 vb.) ---
-        if (cell.type === 'bonus') {
-            return `+${cell.value}`;
-        }
-
-        // --- HIZ TİPİ (+10 ft. vb.) ---
-        // Keşiş 'bonusSpeed' tipini kullanır
+        if (cell.type === 'bonus') return `+${cell.value}`;
         if (cell.type === 'speed' || cell.type === 'bonusSpeed' || (cell.value !== undefined && typeof cell.value === 'number' && cell.value >= 5)) {
              return `+${cell.value} ft.`;
         }
-
-        // --- ARALIK (Öfke sayısı vb.) ---
-        if (cell.roll) {
-            return cell.roll.exact || `${cell.roll.min}-${cell.roll.max}`;
-        }
-        
-        // Kurtarılamayan veri için yedek
+        if (cell.roll) return cell.roll.exact || `${cell.roll.min}-${cell.roll.max}`;
         if (cell.value) return format5eText(cell.value.toString());
-
         return "—";
     }
-
-    // 3. Düz metin veya sayı ise temizleyip bas
     return format5eText(cell.toString());
 }
 
@@ -284,11 +308,19 @@ function renderClassFeaturesWithSubclass(classIndex, containerId, subIndex) {
     
     let html = `<p><span class="bold">Hit Zarı:</span> 1d${cls.hd.faces}</p>`;
     const profs = cls.startingProficiencies;
-    html += `<p><span class="bold">Zırhlar:</span> ${profs.armor ? profs.armor.join(", ") : "Yok"}</p>`;
-    html += `<p><span class="bold">Silahlar:</span> ${profs.weapons ? profs.weapons.join(", ") : "Yok"}</p>`;
-    if (profs.skills) html += `<p><span class="bold">Beceriler:</span> ${profs.skills.choose} tane seçin: ${profs.skills.from.join(", ")}</p>`;
+    const armor = profs.armor ? profs.armor.join(", ") : "Yok";
+    const weapons = profs.weapons ? profs.weapons.join(", ") : "Yok";
     
-    html += `<hr>`;
+    html += `<p><span class="bold">Zırhlar:</span> ${armor}</p>`;
+    html += `<p><span class="bold">Silahlar:</span> ${weapons}</p>`;
+    
+    if (profs.skills) {
+        const count = profs.skills.choose ? profs.skills.choose.count : 1;
+        const fromList = profs.skills.choose && profs.skills.choose.from ? profs.skills.choose.from.join(", ") : "";
+        if(fromList) html += `<p><span class="bold">Beceriler:</span> ${count} tane seçin: ${fromList}</p>`;
+    }
+    
+    html += `<hr style="border-color:#444; margin:15px 0;">`;
 
     if (cls.subclasses && cls.subclasses.length > 0) {
         html += `<div class="subclass-selection-area"><span class="subclass-title">Alt Sınıf Seçiniz:</span>`;
@@ -315,24 +347,18 @@ function renderClassFeaturesWithSubclass(classIndex, containerId, subIndex) {
                     if (subs) {
                         subs.forEach(sf => {
                             let featureName = sf.name;
-                            let entriesToRender = sf.entries; // Varsayılan: Her şeyi yazdır
+                            let entriesToRender = sf.entries; 
 
-                            // DÜZELTME: Eğer ana isim yoksa ve içeride isim varsa
                             if (!featureName && sf.entries && sf.entries[0] && sf.entries[0].name) {
-                                // 1. İsmi alıp başlığa taşı
                                 featureName = sf.entries[0].name;
-                                
-                                // 2. KRİTİK NOKTA: İçeriği yazdırırken, başlığı aldığımız o ilk katmanı "soyup" atıyoruz.
-                                // Sadece o katmanın içindeki "entries" kısmını alıyoruz.
                                 if (sf.entries[0].entries) {
                                     entriesToRender = sf.entries[0].entries;
                                 }
                             }
-                            
-                            if (!featureName) featureName = ""; 
+                            if (!featureName) featureName = "Alt Sınıf Özelliği"; 
 
-                            html += `<div class="feature-block subclass-feature">
-                                        <h5>${featureName}</h5>
+                            html += `<div class="feature-block subclass-feature" style="border-left:3px solid #2b5a8e; background:#222;">
+                                        <h5 style="color:#4dabf7;">${featureName}</h5>
                                         ${renderEntries(entriesToRender)}
                                      </div>`;
                         });
@@ -345,17 +371,17 @@ function renderClassFeaturesWithSubclass(classIndex, containerId, subIndex) {
     container.innerHTML = html;
 }
 
+// Global fonksiyon (HTML'den erişilebilsin diye window'a atıyoruz)
 window.updateSubclassView = function(classIndex, containerId, subIndex) {
     renderClassFeaturesWithSubclass(classIndex, containerId, subIndex);
 };
 
 
-// ------------------ KARMAŞIK METİN İŞLEYİCİ (GÜNCELLENDİ) ------------------
+// ------------------ KARMAŞIK METİN İŞLEYİCİ ------------------
 function renderEntries(entries) {
     if (!entries) return "";
     let html = "";
     
-    // Eğer entries tek bir obje ise onu diziye çevir
     if (!Array.isArray(entries)) {
         entries = [entries];
     }
@@ -364,7 +390,6 @@ function renderEntries(entries) {
         if (!e) return;
 
         if (typeof e === "string") {
-            // DÜZELTME: Metni doğrudan basmak yerine formatlayıp basıyoruz
             html += `<p>${format5eText(e)}</p>`;
         } else if (typeof e === "object") {
             // Liste
@@ -381,26 +406,25 @@ function renderEntries(entries) {
                  });
                  html += `</tbody></table>`;
             } 
-            // İç İçe Başlıklar (Entries)
+            // İç İçe Başlıklar
             else if (e.type === "entries" || e.type === "section") {
                 if (e.name) html += `<h5>${format5eText(e.name)}</h5>`;
                 html += renderEntries(e.entries);
             }
             // Kutucuk (Inset)
             else if (e.type === "inset") {
-                 html += `<div style="border:1px solid #ccc; padding:10px; background:#f9f9f9; margin:10px 0;">`;
+                 html += `<div style="border:1px solid #444; padding:10px; background:#2a2a2a; margin:10px 0; border-radius:4px;">`;
                  if (e.name) html += `<h5>${format5eText(e.name)}</h5>`;
                  html += renderEntries(e.entries);
                  html += `</div>`;
             }
-            // "quote" (Alıntı)
+            // Alıntı
             else if (e.type === "quote") {
-                html += `<blockquote style="border-left: 4px solid #8b4513; padding-left: 10px; font-style: italic;">
+                html += `<blockquote style="border-left: 4px solid #b52b2b; padding-left: 10px; font-style: italic; color:#aaa;">
                             ${renderEntries(e.entries)}
-                            <footer style="font-size:0.8em; font-weight:bold;">— ${e.by || ""}</footer>
+                            <footer style="font-size:0.8em; font-weight:bold; color:#fff;">— ${e.by || ""}</footer>
                          </blockquote>`;
             }
-            // Bilinmeyen tipler için içerik varsa yazdır
             else if (e.entries) {
                 html += renderEntries(e.entries);
             }
@@ -409,41 +433,40 @@ function renderEntries(entries) {
     return html;
 }
 
-// ------------------ 5e TOOLS FORMAT TEMİZLEYİCİ (YENİ!) ------------------
+// ------------------ 5e TOOLS FORMAT TEMİZLEYİCİ ------------------
 function format5eText(text) {
     if (!text || typeof text !== 'string') return text;
 
-    // 1. Önce basit etiketleri temizle: {@spell Fireball} -> Fireball
-    // Regex mantığı: {@etiketAdı Icerik|Kaynak|Ekstra} -> Sadece "Icerik" kısmını al
-    
     // {@bold ...} -> Kalın yap
-    text = text.replace(/{@bold ([^}]+)}/g, '<span class="dnd-bold">$1</span>');
-    text = text.replace(/{@b ([^}]+)}/g, '<span class="dnd-bold">$1</span>');
+    text = text.replace(/{@bold ([^}]+)}/g, '<span class="bold">$1</span>');
+    text = text.replace(/{@b ([^}]+)}/g, '<span class="bold">$1</span>');
     
     // {@italic ...} -> İtalik yap
-    text = text.replace(/{@italic ([^}]+)}/g, '<span class="dnd-italic">$1</span>');
-    text = text.replace(/{@i ([^}]+)}/g, '<span class="dnd-italic">$1</span>');
+    text = text.replace(/{@italic ([^}]+)}/g, '<span style="font-style:italic;">$1</span>');
+    text = text.replace(/{@i ([^}]+)}/g, '<span style="font-style:italic;">$1</span>');
 
-    // Saldırı Tipleri {@atk mw} -> "Yakın Dövüş Saldırısı:"
-    text = text.replace(/{@atk mw}/g, '<span class="dnd-icon-text">🗡️ Yakın Dövüş Saldırısı:</span>');
-    text = text.replace(/{@atk rw}/g, '<span class="dnd-icon-text">🏹 Menzilli Silah Saldırısı:</span>');
-    text = text.replace(/{@atk ms}/g, '<span class="dnd-icon-text">✨ Yakın Büyü Saldırısı:</span>');
-    text = text.replace(/{@atk rs}/g, '<span class="dnd-icon-text">🔥 Menzilli Büyü Saldırısı:</span>');
+    // Saldırı Tipleri
+    text = text.replace(/{@atk mw}/g, '<span style="color:#b52b2b; font-weight:bold;">🗡️ Yakın Dövüş:</span>');
+    text = text.replace(/{@atk rw}/g, '<span style="color:#b52b2b; font-weight:bold;">🏹 Menzilli:</span>');
+    text = text.replace(/{@atk ms}/g, '<span style="color:#a855f7; font-weight:bold;">✨ Büyü (Yakın):</span>');
+    text = text.replace(/{@atk rs}/g, '<span style="color:#a855f7; font-weight:bold;">🔥 Büyü (Menzil):</span>');
     
-    // Hit (Vuruş) ve DC
-    text = text.replace(/{@h}/g, '<span class="dnd-icon-text">Vuruş:</span>');
-    text = text.replace(/{@dc ([^}]+)}/g, '<span class="dnd-bold">DC $1</span>');
+    text = text.replace(/{@h}/g, '<span style="font-weight:bold;">Vuruş:</span>');
+    text = text.replace(/{@dc ([^}]+)}/g, '<span class="bold">DC $1</span>');
 
-    // {@recharge 5} -> (Zar 5-6 gelince yenilenir)
     text = text.replace(/{@recharge ([^}]+)}/g, '(Yenilenme $1-6)');
     text = text.replace(/{@recharge}/g, '(Yenilenme 6)');
 
-    // GENEL TEMİZLİK: {@spell Fireball|PHB} gibi olan her şeyi temizle
-    // Mantık: {@birsey Icerik} veya {@birsey Icerik|Kaynak} -> "Icerik" kısmını alıp süslü link yap
-    text = text.replace(/{@\w+ ([^}|]+)(?:\|[^}]+)?}/g, '<span class="dnd-link">$1</span>');
+    // Linkler (Spell vb.) - Mor Renk
+    text = text.replace(/{@spell\s+([^}]+)}/gi, (match, content) => {
+        const parts = content.split('|');
+        const displayText = parts[2] || parts[0];
+        const link = `https://kanguen.github.io/spells.html#${encodeURIComponent(parts[0].toLowerCase())}_phb`;
+        return `<a href="${link}" target="_blank" style="color:#a855f7; text-decoration:none; border-bottom:1px dotted #a855f7;">${displayText}</a>`;
+    });
 
-    // {@dice 1d6} gibi zar kodları
-    // Not: Üstteki genel temizlik bunu da yakalar ama özel stil vermek istersen buraya ekleyebilirsin.
-    
+    // Diğer etiketleri temizle
+    text = text.replace(/{@\w+ ([^}|]+)(?:\|[^}]+)?}/g, '$1');
+
     return text;
 }

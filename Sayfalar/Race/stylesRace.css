@@ -1,252 +1,216 @@
-@font-face {
-    font-family: 'Convergence';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Convergence-Regular'), url('fonts/Convergence-Regular.ttf') format('truetype');
-}
+/* ============================================================
+   STYLESRACE.CSS - Modern Irklar Sayfası Teması
+   ============================================================ */
 
-@font-face {
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    src: local('glyphicons-halflings-regular'), url('fonts/glyphicons-halflings-regular.ttf') format('truetype');
-}
-
-.indented {
-    padding-left: 20px;
-} 
+/* --- TEMEL AYARLAR (BASE) --- */
+* { box-sizing: border-box; }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f5e3;
-    color: #333;
-    margin: 0;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+/* Scrollbar Özelleştirmesi */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+.hidden { display: none !important; }
+
+/* --- HEADER & NAVİGASYON --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; 
+    height: 70px;
+    display: flex; 
+    align-items: center; 
+    position: relative; 
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.header-container {
+    width: 100%; 
+    max-width: 1200px; 
+    margin: 0 auto;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; letter-spacing: 1px; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Menüler */
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+
+.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
+
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 99;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    display: none; 
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+.mobile-nav ul li a:hover { color: #b52b2b; }
+
+
+/* --- ANA İÇERİK DÜZENİ --- */
+.main-container {
+    max-width: 1000px; /* Genişliği biraz artırdık ki kutu içinde sıkışmasın */
+    margin: 40px auto;
     padding: 20px;
 }
 
-header {
+.intro-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.intro-section h2 { color: #b52b2b; font-size: 2em; margin-bottom: 10px; }
+.intro-section p { color: #aaa; font-size: 1.1em; }
+
+/* --- YENİ EKLENEN ANA KUTU (WRAPPER) --- */
+.main-content-box {
+    background-color: #222;       /* Kutu rengi */
+    border: 1px solid #333;       /* İnce çerçeve */
+    border-radius: 12px;          /* Köşeleri yuvarla */
+    padding: 40px;                /* İç boşluk */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Derinlik veren gölge */
+}
+
+/* --- IRK KARTLARI (ACCORDION) --- */
+.race-card {
+    background-color: #2a2a2a; /* Ana kutudan biraz daha açık bir ton */
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.race-card:hover { border-color: #555; }
+
+/* Tıklanabilir Başlık */
+.collapsible-header {
+    background-color: #333;
+    padding: 15px 20px;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ddddacc3;
-    border: 2px solid rgb(186, 184, 184);
-    border-radius: 10px;
-    color: #8b4513;
-    font-family: 'Georgia', serif;
-    padding: 1rem 0;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    /* background-color: #f5deb3;  Krem tonunda arka plan 
-    border: 2px solid #d2b48c; Daha yumuşak krem tonunda kenarlık */
+    border-left: 4px solid #b52b2b;
+    transition: background 0.2s;
+}
+.collapsible-header:hover { background-color: #444; }
+.collapsible-header h3 {
+    margin: 0;
+    font-size: 1.15em;
+    color: #eee;
+    font-weight: 600;
+}
+/* Ok İkonu */
+.arrow-icon {
+    transition: transform 0.3s ease;
+    color: #888;
+}
+.race-card.active .arrow-icon { transform: rotate(180deg); color: #b52b2b; }
+
+/* İçerik Alanı */
+.race-content {
+    background-color: #252525;
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease;
+    border-top: 1px solid transparent;
 }
 
-.menu-icon {
-    cursor: pointer;
-    font-size: 2.2em;
-}
-
-.title {
-    font-family: 'Georgia', serif;
-    font-size: 2em;
-}
-
-.logo-img {
-    width: 60px; /* Logonun genişliği */
-    height: auto; /* Oranını koruyarak yüksekliği otomatik ayarlar */
-}
-
-nav {
-    position: absolute;
-    top: 121%; /* Menü ikonunun hemen altında başlar */
-    left: -4px;
-    width: 200px;
-    background-color: #cabe80;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    display: none;
-    z-index: 1000; /* Menü ikonunun üstünde görünmesi için */
-    /* background-color: #f5deb3;
-    background-color: #f5deb3;  Krem tonunda arka plan
-    border: 2px solid #d2b48c; Daha yumuşak krem tonunda kenarlık */
-}
-
-nav ul {
-    margin-left: 20px;
-    list-style: disc;
-    padding: 0;
-}
-
-nav ul li {
-    text-align: left;
-    margin-left: 13px; 
-    margin-bottom: 13px;
-}
-
-nav ul li a {
-    color: #8b4513;
-    font-size: 1.2em;
-    font-family: 'Georgia', serif;
-    text-decoration: none;
-}
-
-.hidden {
-    display: none;
-}
-
-.visible {
-    display: block;
-}
-
-.collapsible{
-    cursor: pointer;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+.race-card.active .race-content {
     padding: 20px;
-    background-color: #fff;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-    background-size: cover;
+    border-top: 1px solid #3b3b3b;
+    max-height: 2000px;
 }
 
-.bucuklukTez, .bucuklukTik, .cuceDa, .cuceTe, .ejder, .elfD, .elfO, .elfU, .gnomeO, .insan, .insanAl, .tiefling, .yarıElf, .yarıOrc{
-    padding-right: 20px;
-    padding-left: 20px;
-    /* padding-top: 10px;
-    padding-bottom: 10px; */
-    background-color: #FBF1DE;
-    border: 2px solid #DB9D43;
-    border-radius: 7px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-    font-family: 'Convergence', sans-serif;
-}
-.gnomeK{
-    padding-right: 20px;
-    padding-left: 20px;
-    /* padding-top: 10px;
-    padding-bottom: 10px; */
-    background-color: #FBF1DE;
-    border: 2px solid #DB9D43;
-    border-radius: 7px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-    font-family: 'Convergence', sans-serif;
-}
-.collapsibleGnome{
-    text-decoration: underline;
-    cursor: pointer;
-    border: #000;
-    margin-top: -20px;
-    padding-bottom: 20px;
-}
+/* İçerik Metinleri */
+.race-content p { color: #ccc; line-height: 1.6; margin-bottom: 15px; }
+.race-content .bold { color: #b52b2b; font-weight: bold; margin-right: 5px; }
 
-.draconicSoy{
-    margin-top: 10px;
-    background-color: #fefaf0;
-    border: 2px solid #862F1B;
-    border-radius: 5px;
-}
+/* Ayraç */
+hr { border: 0; border-top: 1px solid #444; margin: 15px 0; }
 
-.koyu{
-    padding-left: 10px;
-    /* border: solid 1px #f3e9d7; */
-    background-color: #fef8ec;
-}
-
-.acık, .acık1{
-    padding-left: 10px;
-    /* border:solid 1px #FBF1DE; */
-    background-color: #fcf9f2;
-}
-.hr1{
-    padding-left: 10px;
-    margin-left: -10px;
-}
-
-
-
-h3, h4{
+/* Tablo Stilleri */
+.draconic-table {
     width: 100%;
-    font-size: 1.5em;
-    font-family: 'Andada', serif;
-    font-variant: small-caps;
-    font-weight: 500;
-    padding-left: 0.25em;
-    cursor: pointer;
-    color: #8b4513;
+    margin-top: 15px;
+    background-color: #1e1e1e;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #333;
 }
 
-.altbaslık{
-    margin-top: -15px;
-    margin-bottom: -15px;
-}
-
-hr {
-    border: 1.4px solid #862F1B;
-    width: 100%;
-    margin: 20px 0;
-}
-
-.bold {
-    font-weight: bold;
-    font-style: italic;
-    font-family: 'Convergence', sans-serif;
-    color: #000;
-}
-
-.siyah{
-    color: #000;
-}
-.mavi{
-    color: #00008B;
-}
-.pirinc{
-    color: #8B4513 ;
-}
-.bronz{
-    color: #8B3E2F;
-}
-.altin{
-    color: #B8860B;
-}
-.yesil{
-    color: #006400 ;
-}
-.kirmizi{
-    color: #8B0000 ;
-}
-.gumus{
-    color: #708090
-}
-.beyaz{
-    color: #000000;
-}
-
-h1 {
-    font-family: 'Georgia', serif;
-    margin-bottom: 20px;
-    color: #8b4513;
-}
-h2 {
-    margin-top: 5px;
-    font-size: 2em;
-    font-family: 'Georgia', serif;
-    margin-bottom: 20px;
-    color: #8b4513;
-}
-
-@media (max-width: 600px) {
-    #skillsyazı {
-        font-size: 0.85em;
+/* Responsive (Mobil) Ayarlar */
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    
+    /* Mobil'de Ana Konteyner Ayarları */
+    .main-container { padding: 15px; margin: 0; }
+    
+    /* İŞTE SİHİRLİ KISIM: Mobilde kutuyu "yok ediyoruz" */
+    .main-content-box {
+        background-color: transparent; /* Arka plan şeffaf */
+        border: none;                  /* Çerçeve yok */
+        box-shadow: none;              /* Gölge yok */
+        padding: 0;                    /* Boşluk yok */
+        border-radius: 0;
     }
+    
+    /* Mobilde kartlar daha belirgin olsun diye renklerini düzenleyebiliriz */
+    .race-card {
+        background-color: #222;
+        border: 1px solid #333;
+    }
+}
+
+/* ============================================================
+   BÜYÜ VE EŞYA LİNKLERİ (Karakter Sihirbazı Stili)
+   ============================================================ */
+
+.dnd-link {
+    color: #8ab4f8;
+    cursor: pointer;
+    border-bottom: 1px dotted #8ab4f8;
+    transition: all 0.2s ease;
+}
+
+/* Büyü Linkleri için Özel Mor Stil */
+a.dnd-link.spell-link {
+    color: #a855f7; /* Mistik Mor */
+    text-decoration: none;
+    border-bottom: 1px dotted #a855f7;
+    padding: 0 2px; /* Hafif boşluk, hover arka planı için */
+}
+
+a.dnd-link.spell-link:hover {
+    color: #d8b4fe; /* Açık Lila */
+    border-bottom: 1px solid #d8b4fe;
+    background-color: rgba(168, 85, 247, 0.15); /* Arkaya hafif mor ışık */
+    border-radius: 4px;
+    text-decoration: none;
 }
