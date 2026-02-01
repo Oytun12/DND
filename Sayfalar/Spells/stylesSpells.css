@@ -251,11 +251,88 @@ ul { list-style: none; padding: 0; margin: 0; }
 .no-results { text-align: center; padding: 40px; color: #aaa; font-style: italic; }
 
 /* Responsive */
+/* ============================================================
+   GELİŞMİŞ MOBİL DÜZENİ (Responsive Fix)
+   ============================================================ */
+
+/* Dropdown Grubu (Masaüstü Varsayılanı) */
+.dropdown-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1; /* Kalan alanı kapla */
+}
+
+/* 800px altı (Tablet ve Telefon) */
 @media (max-width: 800px) {
+    
+    /* 1. Header ve Menü Ayarları */
     .desktop-nav { display: none; }
     .menu-icon { display: block; }
-    .main-container { padding: 0 10px; margin-top: 20px; }
-    .filter-section { padding: 15px 10px; top: 0; }
-    .filters-row { flex-direction: column; align-items: stretch; }
-    .level-filters { justify-content: center; }
+    
+    /* 2. Filtre Alanı Düzeni (Daha kompakt) */
+    .filter-section {
+        padding: 10px 15px; /* Boşlukları azalttık */
+        top: 0;
+    }
+
+    .filter-container {
+        gap: 10px;
+    }
+
+    /* 3. Seviye Butonları (YATAY KAYDIRMA / SCROLL) */
+    /* Alt alta dizilip ekranı kapatmasın diye yana kaydırmalı yaptık */
+    .level-filters {
+        display: flex;
+        flex-wrap: nowrap;       /* Asla alt satıra geçme */
+        overflow-x: auto;        /* Yatay kaydırmaya izin ver */
+        white-space: nowrap;     /* Satır kırmayı engelle */
+        padding-bottom: 5px;     /* Kaydırma çubuğu için hafif boşluk */
+        gap: 8px;
+        -webkit-overflow-scrolling: touch; /* iOS için akıcı kaydırma */
+        
+        /* Scrollbar'ı gizle (Görsel kirliliği önlemek için) */
+        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;  /* IE/Edge */
+    }
+    .level-filters::-webkit-scrollbar { 
+        display: none; /* Chrome/Safari */
+    }
+
+    .filter-btn {
+        flex: 0 0 auto; /* Butonların küçülmesini engelle */
+        padding: 8px 16px; /* Dokunma alanını biraz büyüt */
+        font-size: 1em;
+    }
+
+    /* 4. Dropdown Menüler (ALT ALTA VE TAM GENİŞLİK) */
+    .filters-row { 
+        flex-direction: column; 
+        align-items: stretch; 
+        gap: 10px;
+    }
+
+    .dropdown-group {
+        flex-direction: column; /* Alt alta diz */
+        width: 100%;
+        gap: 10px;
+    }
+
+    .dropdown-filter {
+        width: 100%; /* Ekranı tam kapla */
+        padding: 12px; /* Mobilde kolay tıklama için */
+        font-size: 1em;
+        background-color: #2a2a2a; /* Mobilde daha belirgin zemin */
+    }
+
+    /* 5. Arama Kutusu */
+    .search-input {
+        padding: 12px;
+    }
+
+    /* 6. İçerik Alanı */
+    .main-container { 
+        padding: 0 15px; 
+        margin-top: 15px; 
+    }
 }
