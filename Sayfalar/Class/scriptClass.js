@@ -1,74 +1,82 @@
 /* ============================================================
-   SCRIPTCLASS.JS - TAM SÜRÜM (Sticky Header + Orijinal Render)
+   SCRIPTCLASS.JS - Geliştirilmiş Menü ve Tab Yapısı (Düzeltildi)
    ============================================================ */
 
 let ALL_CLASSES_DATA = [];
 let currentActiveIndex = null; // HAFIZA: Şu an hangi sınıf açık?
 
-// ------------------ MENÜ & TAB İŞLEMLERİ ------------------
-
-/* --- MENÜ İŞLEMLERİ (Düzeltildi) --- */
-function toggleMenu() {
-    // Hem yeni ID'yi (mobile-menu) hem eski ID'yi (hamburger-menu) dene
-    let menu = document.getElementById('mobile-menu');
-    
-    if (!menu) {
-        menu = document.getElementById('hamburger-menu');
+/* --- 1. GARANTİLİ MENÜ FONKSİYONU --- */
+// HTML'den 'toggleMenu(event)' olarak çağırılmalıdır.
+function toggleMenu(event) {
+    // Tıklama olayını yakala ve yayılmasını engelle (Sayfa boşluğuna gitmesin)
+    if (event) {
+        event.stopPropagation();
     }
 
+    // Olası ID'leri kontrol et (Eski/Yeni uyumu için)
+    let menu = document.getElementById('mobile-menu');
+    if (!menu) menu = document.getElementById('hamburger-menu');
+
     if (menu) {
-        // Hem 'open' (yeni stil) hem 'visible' (eski stil) classlarını toggle et
-        menu.classList.toggle('open');
-        menu.classList.toggle('visible');
-        menu.classList.toggle('hidden'); // Eğer hidden varsa kaldırır
+        // Toggle işlemi: Varsa kaldır, yoksa ekle
+        const isOpen = menu.classList.contains('open');
+        
+        if (isOpen) {
+            menu.classList.remove('open');
+            // Eski stil classlar varsa onları da temizle
+            menu.classList.remove('visible');
+            menu.classList.add('hidden');
+        } else {
+            menu.classList.add('open');
+            menu.classList.remove('hidden');
+            menu.classList.add('visible');
+        }
     } else {
-        console.error("Menü bulunamadı! HTML'deki nav ID'sini kontrol edin (mobile-menu olmalı).");
+        console.error("Menü elementi bulunamadı! (ID: mobile-menu veya hamburger-menu)");
     }
 }
 
-// Menü dışına tıklayınca kapatma
+/* --- 2. GLOBAL TIKLAMA YÖNETİCİSİ (Kapatma İşlemleri) --- */
 document.addEventListener('click', (event) => {
     const menu = document.getElementById('mobile-menu') || document.getElementById('hamburger-menu');
     const menuIcon = document.querySelector('.menu-icon');
-    
-    if (menu && (menu.classList.contains('open') || menu.classList.contains('visible'))) {
-        if (!menu.contains(event.target) && !menuIcon.contains(event.target)) {
+
+    // A) Menü Kapatma Kontrolü
+    // Eğer menü açıksa VE tıklanan yer menü veya ikon değilse -> Kapat
+    if (menu && menu.classList.contains('open')) {
+        if (!menu.contains(event.target) && (!menuIcon || !menuIcon.contains(event.target))) {
             menu.classList.remove('open');
             menu.classList.remove('visible');
             menu.classList.add('hidden');
         }
     }
 
-    // 2. Sınıf Kapatma (Boşluğa tıklama)
-    // Header'a, İçeriğe, Tab'a veya Alt Sınıf butonuna tıklanmadıysa kapat
-    // Sınıf Kapatma (Boşluğa tıklama)
+    // B) Sınıf Kapatma (Boşluğa Tıklama) Kontrolü
+    // Tıklanan elementleri kontrol et
     const isHeader = event.target.closest('.collapsible');
     const isContent = event.target.closest('.class-content');
     const isTab = event.target.closest('.tab-link');
     const isSubBtn = event.target.closest('.btn-subclass');
     const isCloseBtn = event.target.classList.contains('mobile-back-btn');
-
-
-    // Menüye veya ikona tıklanmadıysa ve sınıf elemanlarına tıklanmadıysa kapat
-    if (!isHeader && !isContent && !isTab && !isSubBtn && !isCloseBtn && !menu.contains(event.target) && !menuIcon.contains(event.target)) {
-        closeAllAccordions();
+    
+    // Eğer menü ikonuna TIKLANMADIYSA ve sınıf öğelerine TIKLANMADIYSA -> Sınıfları kapat
+    // (Menü ikonuna tıklayınca sınıfın kapanmasını istemiyoruz, sadece menü açılsın)
+    if (!menuIcon || !menuIcon.contains(event.target)) {
+        if (!isHeader && !isContent && !isTab && !isSubBtn && !isCloseBtn) {
+            closeAllAccordions();
+        }
     }
 });
 
 function closeAllAccordions() {
-    // İçerikleri gizle
     document.querySelectorAll('.class-content').forEach(el => el.style.display = 'none');
-    // Aktif sınıfları kaldır
     document.querySelectorAll('.collapsible').forEach(el => el.classList.remove('active'));
-    // Sticky wrapper sınıfını kaldır
     document.querySelectorAll(".class-wrapper").forEach(w => w.classList.remove("focus-active"));
-    // Body scroll kilidini kaldır
-    document.body.classList.remove("mobile-focus");
-    
+    document.body.classList.remove("mobile-focus"); // Odak modunu kaldır
     currentActiveIndex = null;
 }
 
-// TAB DEĞİŞTİRME FONKSİYONU
+/* --- 3. SEKME (TAB) DEĞİŞTİRME --- */
 function openTab(evt, viewId) {
     // Eğer zaten aktifse işlem yapma
     if (evt.currentTarget.classList.contains('active')) return;
@@ -88,7 +96,7 @@ function openTab(evt, viewId) {
     evt.currentTarget.classList.add('active');
 
     // --- SENKRONİZASYON ---
-    // Eğer hafızada bir sınıf varsa, yeni sekmede de onu aç (veya en azından scroll et)
+    // Eğer hafızada bir sınıf varsa, diğer sekmeye geçince de onu açık tut
     if (currentActiveIndex !== null) {
         const targetType = (viewId === 'view-features') ? 'feat' : 'table';
         const wrapperId = `wrapper-${targetType}-${currentActiveIndex}`;

@@ -57,7 +57,22 @@ ul { list-style: none; padding: 0; margin: 0; }
 .nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
 .nav-link:hover { color: #b52b2b; }
 
-.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
+/* MENÜ İKONU (DÜZELTİLMİŞ) */
+.menu-icon { 
+    display: none; 
+    font-size: 28px;        /* Biraz daha belirgin */
+    cursor: pointer; 
+    color: #fff; 
+    user-select: none;
+    
+    /* Tıklama Kolaylaştırma */
+    padding: 15px;          /* Parmak için geniş alan */
+    margin-right: -15px;    /* Hizayı korumak için */
+    
+    position: relative; 
+    z-index: 10000;         /* HER ŞEYİN EN ÜSTÜNDE */
+    pointer-events: auto;   /* Tıklamayı zorla kabul et */
+}
 
 /* Mobil Menü */
 .mobile-nav {
@@ -68,9 +83,9 @@ ul { list-style: none; padding: 0; margin: 0; }
     background-color: #222; 
     border-bottom: 2px solid #b52b2b;
     padding: 20px; 
-    z-index: 99;
+    z-index: 2000; /* GÜNCELLEME: Header'ın (100) üstünde ama İkonun (10000) altında */
     box-shadow: 0 5px 10px rgba(0,0,0,0.5);
-    display: none; /* JS ile açılacak */
+    display: none; 
 }
 .mobile-nav.open { display: block; }
 .mobile-nav ul li { margin-bottom: 15px; text-align: center; }

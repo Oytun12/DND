@@ -47,12 +47,11 @@
                 <a href="KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
             </nav>
         
-            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+            <div class="menu-icon" onclick="toggleMenu(event)">☰</div>
         </div>
     
         <nav id="mobile-menu" class="mobile-nav">
             <ul>
-                <li><a href="index.html">Ana Sayfa</a></li>
                 <li><a href="Sayfalar/Race/race.html">Irklar</a></li>
                 <li><a href="Sayfalar/Class/class.html">Sınıflar</a></li>
                 <li><a href="Sayfalar/BackGround/back.html">Geçmişler</a></li>
@@ -126,11 +125,6 @@
 
     </main>
 
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('open');
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

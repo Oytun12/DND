@@ -1,27 +1,36 @@
-const toggleMenu = () => {
-    const menu = document.getElementById('hamburger-menu');
-    if (menu.classList.contains('hidden')) {
-        menu.classList.remove('hidden');
-        menu.classList.add('visible');
-    } else {
-        menu.classList.remove('visible');
-        menu.classList.add('hidden');
-    }
-};
+/* ============================================================
+   SCRIPT.JS - Ana Sayfa Menü Mantığı (Güncellendi)
+   ============================================================ */
 
-// Menü dışında bir yere tıklanınca menüyü gizle
+/* --- 1. GARANTİLİ MENÜ FONKSİYONU --- */
+function toggleMenu(event) {
+    // Tıklama olayını yakala ve yayılmasını engelle (Sayfa boşluğuna gitmesin)
+    if (event) {
+        event.stopPropagation();
+    }
+
+    // Menüyü bul
+    const menu = document.getElementById('mobile-menu');
+
+    if (menu) {
+        // Toggle işlemi: Varsa kaldır, yoksa ekle
+        // Sadece 'open' sınıfını kullanıyoruz (CSS ile uyumlu)
+        menu.classList.toggle('open');
+    } else {
+        console.error("Menü elementi (id='mobile-menu') bulunamadı!");
+    }
+}
+
+/* --- 2. GLOBAL TIKLAMA YÖNETİCİSİ (Boşluğa Tıklayınca Kapat) --- */
 document.addEventListener('click', (event) => {
-    const menu = document.getElementById('hamburger-menu');
+    const menu = document.getElementById('mobile-menu');
     const menuIcon = document.querySelector('.menu-icon');
 
-    // Eğer tıklama menüde veya menü ikonu üzerindeyse bir şey yapma
-    if (menu.contains(event.target) || menuIcon.contains(event.target)) {
-        return;
-    }
-
-    // Aksi halde menüyü gizle
-    if (menu.classList.contains('visible')) {
-        menu.classList.remove('visible');
-        menu.classList.add('hidden');
+    // Eğer menü açıksa
+    if (menu && menu.classList.contains('open')) {
+        // Ve tıklanan yer menü değilse VE ikon değilse
+        if (!menu.contains(event.target) && (!menuIcon || !menuIcon.contains(event.target))) {
+            menu.classList.remove('open');
+        }
     }
 });

@@ -52,7 +52,21 @@ ul { list-style: none; padding: 0; margin: 0; }
 .nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
 .nav-link:hover { color: #b52b2b; }
 
-.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
+.menu-icon { 
+    display: none; 
+    font-size: 28px;        /* Biraz daha belirgin */
+    cursor: pointer; 
+    color: #fff; 
+    user-select: none;
+    
+    /* Tıklama Kolaylaştırma */
+    padding: 15px;          /* Parmak için geniş alan */
+    margin-right: -15px;    /* Hizayı korumak için */
+    
+    position: relative; 
+    z-index: 10000;         /* HER ŞEYİN EN ÜSTÜNDE */
+    pointer-events: auto;   /* Tıklamayı zorla kabul et */
+}
 
 /* Mobil Menü */
 .mobile-nav {
@@ -312,11 +326,18 @@ p, li { color: #ccc; line-height: 1.6; }
         padding: 0 !important;
     }
 
-    /* Gereksizleri Gizle (Header, Intro vb.) */
+    /* 1. Header ve Intro'yu TAMAMEN GİZLE (Display: None) */
     body.mobile-focus .main-header,
-    body.mobile-focus .intro-section,
+    body.mobile-focus .intro-section {
+        display: none !important;
+    }
+
+    /* 2. Ana Konteynerin SADECE boşluklarını sıfırla (İçerik burada, gizleme!) */
     body.mobile-focus .main-container {
-        padding: 0 !important; /* Odaklanınca paddingi sıfırla */
+        padding: 0 !important; 
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     /* KATMAN 1: TAB MENÜSÜ (EN ÜST) */
