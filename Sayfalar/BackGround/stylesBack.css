@@ -1,250 +1,310 @@
-@font-face {
-    font-family: 'Convergence';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Convergence-Regular'), url('fonts/Convergence-Regular.ttf') format('truetype');
-}
+/* ============================================================
+   STYLESBACK.CSS - Modern Karakter Geçmişleri Teması
+   ============================================================ */
 
-@font-face {
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    src: local('glyphicons-halflings-regular'), url('fonts/glyphicons-halflings-regular.ttf') format('truetype');
-}
-
-.indented {
-    padding-left: 20px;
-} 
+/* --- TEMEL AYARLAR (BASE) --- */
+* { box-sizing: border-box; }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f5e3;
-    color: #333;
-    margin: 0;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+.hidden { display: none !important; }
+
+/* --- HEADER & NAVİGASYON (Standart) --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; 
+    height: 70px;
+    display: flex; align-items: center; 
+    position: relative; z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.header-container {
+    width: 100%; max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; letter-spacing: 1px; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Menü */
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+
+.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
+
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 99;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    display: none; 
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+.mobile-nav ul li a:hover { color: #b52b2b; }
+
+/* --- ANA İÇERİK --- */
+.main-container {
+    max-width: 1000px;
+    margin: 40px auto;
     padding: 20px;
 }
 
-header {
+.intro-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.intro-section h2 { color: #b52b2b; font-size: 2em; margin-bottom: 10px; }
+.intro-section p { color: #aaa; font-size: 1.1em; }
+
+/* --- ANA KUTU (WRAPPER) --- */
+.main-content-box {
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* --- GEÇMİŞ KARTLARI (BAŞLIK) --- */
+h3.collapsible {
+    background-color: #333;
+    padding: 15px 20px;
+    margin: 0;
+    cursor: pointer;
+    
+    /* Flexbox Ayarları */
+    display: flex;
+    justify-content: space-between; /* İsim sola, Meta sağa yaslansın */
+    align-items: center;            /* Dikey ortala */
+    
+    border-left: 4px solid #b52b2b;
+    color: #eee;
+    font-size: 1.2em;
+    transition: background 0.2s;
+}
+
+h3.collapsible:hover { background-color: #444; }
+h3.collapsible.active { background-color: #444; }
+
+/* ESKİ OKU SİLİYORUZ (Pseudo-element iptal) */
+h3.collapsible:after {
+    content: none; 
+}
+
+/* --- YENİ SAĞ TARAF (KAYNAK + OK) --- */
+.header-meta {
+    display: flex;
+    align-items: center; /* Dikey ortala */
+    gap: 10px;           /* Kaynak yazısı ile ok arasına boşluk */
+}
+
+.bg-source {
+    color: #888;
+    font-weight: normal;
+    font-size: 0.75em;
+    white-space: nowrap; /* Mobilde alt satıra kaymasın */
+}
+
+/* --- YENİ OK İKONU --- */
+.arrow-icon {
+    font-size: 0.8em;
+    color: #888;
+    transition: transform 0.3s ease;
+    display: inline-block; /* Dönme animasyonu için gerekli */
+}
+
+/* Başlık aktif olduğunda oku döndür */
+h3.collapsible.active .arrow-icon {
+    transform: rotate(180deg);
+    color: #b52b2b;
+}
+
+/* İçerik Divleri (asker, bilge vb. classlar) */
+div.asker, div.bilge, div.denizci, div.gosteriAdami, div.halkKahramani, 
+div.loncaZanatkari, div.munzevi, div.murit, div.sokakCocugu, div.soylu, 
+div.suclu, div.yabanci, div.sarlatan {
+    background-color: #1e1e1e; /* Kartın içi */
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    /* Hidden class'ı script ile yönetiliyor */
+}
+
+/* --- İÇERİK DETAYLARI --- */
+.bold { color: #b52b2b; font-weight: bold; }
+.ciz { text-decoration: none; border-bottom: 1px dotted #aaa; color: #fff; }
+p { line-height: 1.6; color: #ccc; margin-bottom: 15px; }
+
+/* İçerdeki alt başlıklar (Uzmanlık Dalı vb.) */
+.collapsibleKarGec {
+    color: #b52b2b;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.05em;
+    border-bottom: 1px solid #444;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* --- TABLOLAR (Gecmisler, Kisilikler) --- */
+.gecmisler, .kisilikler {
+    background-color: #252525;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+h4 {
+    color: #fff;
+    border-bottom: 1px solid #b52b2b;
+    padding-bottom: 5px;
+    margin-top: 0;
+    font-size: 1.1em;
+}
+
+/* Tablo Satırları (Koyu/Acik HTML sınıfları var) */
+.koyu, .acık, .acık1 {
+    padding: 8px 10px;
+    margin: 0;
+    border-bottom: 1px solid #333;
+    color: #ccc;
+    font-size: 0.95em;
+}
+
+.koyu { background-color: #2a2a2a; }
+.acık, .acık1 { background-color: #222; }
+
+/* Gereksiz HR'leri temizle */
+.hr1 { display: none; }
+
+/* Responsive */
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    .main-container { padding: 10px; margin: 0; }
+    .main-content-box { padding: 15px; background: transparent; border: none; box-shadow: none; }
+}
+
+/* ============================================================
+   STYLESBACK.CSS - Tablo ve İçerik Güncellemeleri
+   ============================================================ */
+
+/* ... (Üst kısımlar aynı kalabilir) ... */
+
+/* --- GEÇMİŞ KARTLARI --- */
+.bg-card-wrapper {
+    margin-bottom: 15px;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #2a2a2a;
+}
+
+h3.collapsible {
+    background-color: #333;
+    padding: 15px 20px;
+    margin: 0; /* Margin sıfırlandı çünkü wrapper var */
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ddddacc3;
-    border: 2px solid rgb(186, 184, 184);
-    border-radius: 10px;
-    color: #8b4513;
-    font-family: 'Georgia', serif;
-    padding: 1rem 0;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    /* background-color: #f5deb3;  Krem tonunda arka plan 
-    border: 2px solid #d2b48c; Daha yumuşak krem tonunda kenarlık */
-}
-
-.menu-icon {
-    cursor: pointer;
-    font-size: 2.2em;
-}
-
-.title {
-    font-family: 'Georgia', serif;
-    font-size: 2em;
-}
-
-.logo-img {
-    width: 60px; /* Logonun genişliği */
-    height: auto; /* Oranını koruyarak yüksekliği otomatik ayarlar */
-}
-
-nav {
-    position: absolute;
-    top: 121%; /* Menü ikonunun hemen altında başlar */
-    left: -4px;
-    width: 200px;
-    background-color: #cabe80;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    display: none;
-    z-index: 1000; /* Menü ikonunun üstünde görünmesi için */
-    /* background-color: #f5deb3; 
-    background-color: #f5deb3;  Krem tonunda arka plan
-    border: 2px solid #d2b48c; Daha yumuşak krem tonunda kenarlık */
-}
-
-nav ul {
-    margin-left: 20px;
-    list-style: disc;
-    padding: 0;
-}
-
-nav ul li {
-    text-align: left;
-    margin-left: 13px; 
-    margin-bottom: 13px;
-}
-
-nav ul li a {
-    color: #8b4513;
+    border-left: 4px solid #b52b2b;
+    color: #eee;
     font-size: 1.2em;
-    font-family: 'Georgia', serif;
-    text-decoration: none;
+    transition: background 0.2s;
 }
 
-.hidden {
-    display: none;
-}
+h3.collapsible:hover { background-color: #444; }
+h3.collapsible.active { background-color: #444; }
 
-.visible {
-    display: block;
-}
 
-.collapsible{
-    cursor: pointer;
-}
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+.bg-content {
+    background-color: #1e1e1e;
     padding: 20px;
-    background-color: #fff;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-    background-size: cover;
+    border-top: 1px solid #333;
+    transition: all 0.3s ease;
+}
+.bg-content.hidden { display: none; }
+
+/* --- İÇERİK TİPOGRAFİSİ --- */
+.sub-header {
+    color: #b52b2b;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    text-transform: uppercase;
 }
 
-.asker,.bilge, .denizci, .gosteriAdami, .halkKahramani, .loncaZanatkari, .munzevi, .murit, .sokakCocugu, .soylu, .suclu, .yabanci, .sarlatan{
-    padding-right: 20px;
-    padding-left: 20px;
-    /* padding-top: 10px;
-    padding-bottom: 10px; */
-    background-color: #FBF1DE;
-    border: 2px solid #DB9D43;
-    border-radius: 7px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-    font-family: 'Convergence', sans-serif;
+.bold { color: #fff; font-weight: bold; }
+p { color: #ccc; line-height: 1.6; margin-bottom: 15px; }
+
+/* --- TABLOLAR (Önemli Kısım) --- */
+.table-responsive {
+    overflow-x: auto;
+    margin: 15px 0;
+    border-radius: 6px;
+    border: 1px solid #444;
 }
 
-.collapsibleKarGec{
-    text-decoration: underline;
-    cursor: pointer;
-    border: #000;
-}
-
-.gecmisler{
-    margin-top: 10px;
-    background-color: #fefaf0;
-    border: 2px solid #862F1B;
-    border-radius: 5px;
-}
-.kisilikler{
-    margin-top: 10px;
-    margin-bottom: 15px;
-    background-color: #fefaf0;
-    border: 2px solid #862F1B;
-    border-radius: 5px;
-}
-
-.koyu{
-    padding-left: 10px;
-    /* border: solid 1px #f3e9d7; */
-    background-color: #faf0e0c3;
-}
-
-.acık, .acık1{
-    padding-left: 10px;
-    /* border:solid 1px #FBF1DE; */
-    background-color: #fcf9f2;
-}
-.hr1{
-    padding-left: 10px;
-    margin-left: -10px;
-}
-
-h1 {
-    font-family: 'Georgia', serif;
-    margin-bottom: 20px;
-    color: #8b4513;
-}
-h2 {
-    margin-top: 5px;
-    font-size: 2em;
-    font-family: 'Georgia', serif;
-    margin-bottom: 20px;
-    color: #8b4513;
-}
-
-h3, h4{
+.bg-table {
     width: 100%;
-    font-size: 1.5em;
-    font-family: 'Andada', serif;
-    /* font-variant: small-caps; */
-    font-weight: 500;
-    padding-left: 0.25em;
-    cursor: pointer;
-    color: #8b4513;
+    border-collapse: collapse;
+    min-width: 500px; /* Mobilde taşarsa kaydırma açılır */
+    background-color: #252525;
 }
 
-.altbaslık{
-    margin-top: -15px;
-    margin-bottom: -15px;
+.bg-table th {
+    background-color: #333;
+    color: #b52b2b;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #444;
 }
 
-hr {
-    border: 1.4px solid #862F1B;
-    width: 100%;
-    margin: 20px 0;
+.bg-table td {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    color: #ccc;
+    font-size: 0.95em;
+    vertical-align: top;
 }
 
-.bold {
-    font-weight: bold;
-    font-style: italic;
-    font-family: 'Convergence', sans-serif;
-    color: #000;
-}
+.bg-table tr:last-child td { border-bottom: none; }
+.bg-table tr:nth-child(even) { background-color: #2a2a2a; }
 
-.siyah{
-    color: #000;
-}
-.mavi{
-    color: #00008B;
-}
-.pirinc{
-    color: #8B4513 ;
-}
-.bronz{
-    color: #8B3E2F;
-}
-.altin{
-    color: #B8860B;
-}
-.yesil{
-    color: #006400 ;
-}
-.kirmizi{
-    color: #8B0000 ;
-}
-.gumus{
-    color: #708090
-}
-.beyaz{
-    color: #000000;
-}
+/* Zar Sütunu (d8, d6) */
+.col-dice { width: 60px; text-align: center; }
+.text-center { text-align: center; }
 
-
-.ciz {
-    text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-    #skillsyazı {
-        font-size: 0.85em;
-    }
-}
+/* Liste Stilleri */
+ul { padding-left: 20px; list-style: none; }
+li { margin-bottom: 5px; color: #bbb; }

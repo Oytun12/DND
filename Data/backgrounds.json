@@ -2331,7 +2331,7 @@
 			]
 		},
 		{
-			"name": "Alternatif Şehir Bekçisi (Dedektif)",
+			"name": "Şehir Bekçisi (Dedektif)",
 			"source": "SCAG",
 			"page": 145,
 			"skillProficiencies": "Sezgi, Araştırma",
@@ -3979,7 +3979,7 @@
 			]
 		},
 		{
-			"name": "Alternatif Suçlu (Ajan)",
+			"name": "Suçlu (Ajan)",
 			"source": "PHB",
 			"page": 130,
 			"skillProficiencies": "Aldatma, Gizlenme",
@@ -4018,7 +4018,7 @@
 			]
 		},
 		{
-			"name": "Alternatif Gösteri Adamı (Gladyatör)",
+			"name": "Gösteri Adamı (Gladyatör)",
 			"source": "PHB",
 			"page": 131,
 			"skillProficiencies": "Akrobasi, Performans",
@@ -4057,7 +4057,7 @@
 			]
 		},
 		{
-			"name": "Alternatif Loca Zanaatkarı (Loca Tüccarı)",
+			"name": "Loca Zanaatkarı (Loca Tüccarı)",
 			"source": "PHB",
 			"page": 133,
 			"skillProficiencies": "Sezgi, İkna",
@@ -4098,7 +4098,7 @@
 			]
 		},
 		{
-			"name": "Alternatif Soylu (Şövalye)",
+			"name": "Soylu (Şövalye)",
 			"source": "PHB",
 			"page": 136,
 			"skillProficiencies": "Tarih, İkna",
@@ -4153,7 +4153,7 @@
 			]
 		},
 		{
-			"name": "Alternatif Denizci (Korsan)",
+			"name": "Denizci (Korsan)",
 			"source": "PHB",
 			"page": 139,
 			"skillProficiencies": "Atletizm, Algı",
