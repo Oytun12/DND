@@ -1,0 +1,261 @@
+/* ============================================================
+   STYLESSPELLS.CSS - Modern Büyü Grimoire Teması
+   ============================================================ */
+
+/* --- TEMEL AYARLAR --- */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+.hidden { display: none !important; }
+
+/* --- HEADER (Standart) --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; 
+    height: 70px;
+    display: flex; align-items: center; 
+    position: relative; z-index: 2001;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.header-container {
+    width: 100%; max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Menü */
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+
+.menu-icon { 
+    display: none; 
+    font-size: 28px; 
+    cursor: pointer; 
+    color: #fff; 
+    user-select: none; 
+    padding: 15px; margin-right: -15px;
+    position: relative; z-index: 10000; pointer-events: auto;
+}
+
+/* Mobil Menü */
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 2000; box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    display: none; 
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+
+/* --- FİLTRELEME ALANI (Gelişmiş) --- */
+.filter-section {
+    background-color: #222;
+    padding: 20px;
+    border-bottom: 1px solid #333;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.filter-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Arama Çubuğu */
+.search-box {
+    position: relative;
+    width: 100%;
+}
+.search-input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+.search-input:focus {
+    outline: none;
+    border-color: #b52b2b;
+    box-shadow: 0 0 5px rgba(181, 43, 43, 0.3);
+}
+
+/* Filtre Grupları */
+.filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.level-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.filter-btn {
+    background-color: #333;
+    border: 1px solid #444;
+    color: #aaa;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.2s;
+}
+.filter-btn:hover { background-color: #444; color: #fff; }
+.filter-btn.active {
+    background-color: #b52b2b;
+    color: #fff;
+    border-color: #b52b2b;
+}
+
+/* Dropdown Filtreler */
+.dropdown-filter {
+    background-color: #333;
+    color: #ccc;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+}
+
+/* --- BÜYÜ LİSTESİ --- */
+.main-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.spell-card {
+    background-color: #2a2a2a;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.spell-card:hover { border-color: #555; }
+
+/* Kart Başlığı */
+.spell-header {
+    background-color: #333;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid transparent; /* Okul rengi buraya gelecek */
+    transition: background 0.2s;
+}
+.spell-header:hover { background-color: #3a3a3a; }
+
+.spell-name-group {
+    display: flex;
+    flex-direction: column;
+}
+.spell-name { font-size: 1.1em; font-weight: bold; color: #fff; }
+.spell-meta-short { font-size: 0.85em; color: #888; margin-top: 3px; }
+
+/* Okul İkonu/Rengi */
+.school-icon {
+    font-size: 1.2em;
+    color: #666;
+    margin-right: 10px;
+}
+
+/* Okul Renkleri (Border-left için JS ile atanacak) */
+.school-A { border-left-color: #f0f0f0; } /* Abjuration - Beyaz */
+.school-C { border-left-color: #eab308; } /* Conjuration - Sarı */
+.school-D { border-left-color: #a8a29e; } /* Divination - Gri */
+.school-E { border-left-color: #ef4444; } /* Evocation - Kırmızı */
+.school-EN { border-left-color: #ec4899; } /* Enchantment - Pembe */
+.school-I { border-left-color: #3b82f6; } /* Illusion - Mavi */
+.school-N { border-left-color: #22c55e; } /* Necromancy - Yeşil */
+.school-T { border-left-color: #f97316; } /* Transmutation - Turuncu */
+
+/* Kart İçeriği */
+.spell-content {
+    background-color: #252525;
+    padding: 20px;
+    display: none; /* JS ile açılır */
+    border-top: 1px solid #3b3b3b;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+/* Detay Izgarası */
+.spell-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #444;
+}
+.detail-item strong { display: block; color: #b52b2b; font-size: 0.85em; text-transform: uppercase; }
+.detail-item span { color: #eee; }
+
+/* Sınıf Etiketleri */
+.spell-classes {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.class-tag {
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    color: #888;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+/* Yükleme ve Hata Mesajları */
+#loading-msg { text-align: center; color: #888; padding: 40px; }
+.no-results { text-align: center; padding: 40px; color: #aaa; font-style: italic; }
+
+/* Responsive */
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    .main-container { padding: 0 10px; margin-top: 20px; }
+    .filter-section { padding: 15px 10px; top: 0; }
+    .filters-row { flex-direction: column; align-items: stretch; }
+    .level-filters { justify-content: center; }
+}

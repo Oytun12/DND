@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <title>D&D 5e Büyüler (Spells) | 5e Türkçe</title>
+    
+    <link rel="icon" href="../../favicon.png" type="image/png">
+    <link rel="stylesheet" href="stylesSpells.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <a href="../../index.html" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
+                    <div class="titles">
+                        <h1 class="main-title">D&D 5e Türkçe</h1>
+                        <span class="sub-title">Büyü Kitabı</span>
+                    </div>
+                </a>
+            </div>
+        
+            <nav class="desktop-nav">
+                <a href="../../index.html" class="nav-link">Ana Sayfa</a>
+                <a href="../Race/race.html" class="nav-link">Irklar</a>
+                <a href="../Class/class.html" class="nav-link">Sınıflar</a>
+                <a href="../BackGround/back.html" class="nav-link">Geçmişler</a>
+                <a href="../Envanter/envanter.html" class="nav-link">Ekipmanlar</a>
+                <a href="spells.html" class="nav-link" style="color: #b52b2b;">Büyüler</a>
+                <a>|</a>
+                <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
+            </nav>
+        
+            <div class="menu-icon" onclick="toggleMenu(event)">☰</div>
+        </div>
+    
+        <nav id="mobile-menu" class="mobile-nav">
+            <ul>
+                <li><a href="../../index.html">Ana Sayfa</a></li>
+                <li><a href="../Race/race.html">Irklar</a></li>
+                <li><a href="../Class/class.html">Sınıflar</a></li>
+                <li><a href="../BackGround/back.html">Geçmişler</a></li>
+                <li><a href="../Envanter/envanter.html">Ekipmanlar</a></li>
+                <li style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                    <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" style="color: #b52b2b;">✨ Karakter Yaratıcısı</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="Büyü adı ara... (Örn: Fireball, Şifa)">
+            </div>
+            
+            <div class="filters-row">
+                <div class="level-filters" id="level-filters">
+                    <button class="filter-btn active" data-level="all">Tümü</button>
+                    <button class="filter-btn" data-level="0">0</button>
+                    <button class="filter-btn" data-level="1">1</button>
+                    <button class="filter-btn" data-level="2">2</button>
+                    <button class="filter-btn" data-level="3">3</button>
+                    <button class="filter-btn" data-level="4">4</button>
+                    <button class="filter-btn" data-level="5">5</button>
+                    <button class="filter-btn" data-level="6">6</button>
+                    <button class="filter-btn" data-level="7">7</button>
+                    <button class="filter-btn" data-level="8">8</button>
+                    <button class="filter-btn" data-level="9">9</button>
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <select id="school-select" class="dropdown-filter">
+                        <option value="all">Tüm Okullar</option>
+                        <option value="A">Abjuration (Koruma)</option>
+                        <option value="C">Conjuration (Çağırma)</option>
+                        <option value="D">Divination (Kehanet)</option>
+                        <option value="E">Evocation (Yıkım)</option>
+                        <option value="EN">Enchantment (Efsun)</option>
+                        <option value="I">Illusion (İlüzyon)</option>
+                        <option value="N">Necromancy (Ölüm)</option>
+                        <option value="T">Transmutation (Dönüşüm)</option>
+                    </select>
+
+                    <select id="class-select" class="dropdown-filter">
+                        <option value="all">Tüm Sınıflar</option>
+                        <option value="Bard">Ozan (Bard)</option>
+                        <option value="Cleric">Rahip (Cleric)</option>
+                        <option value="Druid">Druid</option>
+                        <option value="Paladin">Şövalye (Paladin)</option>
+                        <option value="Ranger">Korucu (Ranger)</option>
+                        <option value="Sorcerer">Büyücü (Sorcerer)</option>
+                        <option value="Warlock">Sihirbaz (Warlock)</option>
+                        <option value="Wizard">Büyücü (Wizard)</option>
+                    </select>
+                    <select id="sort-select" class="dropdown-filter">
+                        <option value="name-asc">İsim (A-Z)</option>
+                        <option value="name-desc">İsim (Z-A)</option>
+                        <option value="level-asc">Seviye (Düşük > Yüksek)</option>
+                        <option value="level-desc">Seviye (Yüksek > Düşük)</option>
+                        <option value="school">Okul (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-container">
+        <div id="spell-list">
+            <div id="loading-msg">Büyüler Yükleniyor...</div>
+        </div>
+    </main>
+
+    <script src="scriptSpells.js"></script>
+</body>
+</html>
