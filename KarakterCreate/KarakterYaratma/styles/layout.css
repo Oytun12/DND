@@ -23,7 +23,7 @@
 .nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
 .nav-link:hover { color: #b52b2b; }
 
-.menu-icon { display: none; font-size: 24px; cursor: pointer; color: #fff; user-select: none; }
+.menu-icon { display: none; font-size: 28px; cursor: pointer; color: #fff; user-select: none; }
 
 /* Mobil Menü */
 .mobile-nav {
