@@ -800,45 +800,21 @@
                     </div>
         
                     <div class="sheet-tabs">
-    
-                        <button @click="activeSheetTab = 'actions'" 
-                                :class="{ active: activeSheetTab === 'actions' }">
-                            <svg :viewBox="dndIcons.actions.viewBox" 
+                        <button v-for="tab in sheetTabs" 
+                                :key="tab.id"
+                                @click="activeSheetTab = tab.id" 
+                                :class="{ active: activeSheetTab === tab.id }"
+                                draggable="true"
+                                @dragstart="handleTabDragStart($event, tab.id)"
+                                @dragend="handleTabDragEnd($event)"
+                                @dragover.prevent
+                                @drop="handleTabDrop($event, tab.id)"
+                                title="Sırasını değiştirmek için sürükleyin">
+                            
+                            <svg :viewBox="tab.icon.viewBox" 
                                  class="tab-icon" 
-                                 v-html="dndIcons.actions.content"></svg>
-                            Aksiyonlar
-                        </button>
-                        
-                        <button @click="activeSheetTab = 'spells'" 
-                                :class="{ active: activeSheetTab === 'spells' }">
-                            <svg :viewBox="dndIcons.spells.viewBox" 
-                                 class="tab-icon" 
-                                 v-html="dndIcons.spells.content"></svg>
-                            Büyüler
-                        </button>
-                    
-                        <button @click="activeSheetTab = 'inventory'" 
-                                :class="{ active: activeSheetTab === 'inventory' }">
-                            <svg :viewBox="dndIcons.inventory.viewBox" 
-                                 class="tab-icon" 
-                                 v-html="dndIcons.inventory.content"></svg>
-                            Envanter
-                        </button>
-                    
-                        <button @click="activeSheetTab = 'features'" 
-                                :class="{ active: activeSheetTab === 'features' }">
-                            <svg :viewBox="dndIcons.features.viewBox" 
-                                 class="tab-icon" 
-                                 v-html="dndIcons.features.content"></svg>
-                            Özellikler
-                        </button>
-                        
-                        <button @click="activeSheetTab = 'description'" 
-                                :class="{ active: activeSheetTab === 'description' }">
-                            <svg :viewBox="dndIcons.description.viewBox" 
-                                 class="tab-icon" 
-                                 v-html="dndIcons.description.content"></svg>
-                            Açıklama
+                                 v-html="tab.icon.content"></svg>
+                            {{ tab.label }}
                         </button>
                     </div>
         

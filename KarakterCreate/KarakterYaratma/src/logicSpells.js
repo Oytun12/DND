@@ -1,11 +1,11 @@
 /* ============================================================
-   LOGICSPELLS.JS - FINAL (AUTO-REFRESH + REST SYSTEM)
+   LOGICSPELLS.JS - FINAL (AUTO-REFRESH + REST SYSTEM + TR FILTER FIXED)
    ============================================================ */
 
 if (typeof window.ALL_DATA === 'undefined') window.ALL_DATA = {};
 let modalDisplayLimit = 50;
 let isScrollListenerAttached = false;
-let cachedLevel = 1; // Seviyeyi hafızada tutmak için değişken
+let cachedLevel = 1; 
 
 /* --- SINIF AYARLARI --- */
 const SPELL_CASTING_CONFIG = {
@@ -22,6 +22,18 @@ const SPELL_CASTING_CONFIG = {
     "Rogue":     { ability: "int", type: "third" }  
 };
 
+/* --- ÇEVİRİ HARİTASI --- */
+const DB_CLASS_MAP = {
+    "Sorcerer": "Sorcerer",
+    "Büyücü": "Büyücü",
+    "Rahip": "Rahip",
+    "Paladin": "Paladin",
+    "Kolcu": "Kolcu",
+    "Ozan": "Ozan",
+    "Druid": "Druid",
+    "Warlock": "Warlock",
+};
+
 const FULL_CASTER_SLOTS = [
     [2,0,0,0,0,0,0,0,0], [3,0,0,0,0,0,0,0,0], [4,2,0,0,0,0,0,0,0], [4,3,0,0,0,0,0,0,0], [4,3,2,0,0,0,0,0,0],
     [4,3,3,0,0,0,0,0,0], [4,3,3,1,0,0,0,0,0], [4,3,3,2,0,0,0,0,0], [4,3,3,3,1,0,0,0,0], [4,3,3,3,2,0,0,0,0],
@@ -34,25 +46,11 @@ const WARLOCK_SLOTS = [
     {c:3,l:5}, {c:3,l:5}, {c:3,l:5}, {c:3,l:5}, {c:3,l:5}, {c:3,l:5}, {c:4,l:5}, {c:4,l:5}, {c:4,l:5}, {c:4,l:5}
 ];
 
-/* --- ANA RENDER --- */
-window.renderSpellTab = async function(currentScores, currentLevel) {
-    if (!currentScores && window.store && window.store.abilities) {
-        currentScores = window.store.abilities.base;
-    }
-    // Seviye bilgisini güncelle ve hafızaya al
-    if (currentLevel) cachedLevel = currentLevel;
-    else if (window.store && window.targetLevel) cachedLevel = window.targetLevel; // Yedek
+/* ============================================================
+   FONKSİYON TANIMLARI (Önce tanımla, sonra window'a ata)
+   ============================================================ */
 
-    updateSpellStats(currentScores, cachedLevel);
-
-    if (!window.ALL_DATA.spells || window.ALL_DATA.spells.length === 0) {
-        const container = document.getElementById('spell-list-container');
-        if(container) container.innerHTML = `<div style="text-align:center; padding:20px; color:#e67e22;">⏳ Büyü veritabanı yükleniyor...</div>`;
-        await loadSpellData();
-    }
-    renderMySpellList(cachedLevel);
-};
-
+/* --- VERİ YÜKLEME --- */
 async function loadSpellData() {
     try {
         const response = await fetch('../../Data/spells/spells-phb.json');
@@ -62,7 +60,25 @@ async function loadSpellData() {
     } catch (err) { console.error("Büyü hatası:", err); }
 }
 
-/* --- İSTATİSTİKLERİ GÜNCELLE --- */
+/* --- ANA RENDER --- */
+async function renderSpellTab(currentScores, currentLevel) {
+    if (!currentScores && window.store && window.store.abilities) {
+        currentScores = window.store.abilities.base;
+    }
+    if (currentLevel) cachedLevel = currentLevel;
+    else if (window.store && window.targetLevel) cachedLevel = window.targetLevel;
+
+    updateSpellStats(currentScores, cachedLevel);
+
+    if (!window.ALL_DATA.spells || window.ALL_DATA.spells.length === 0) {
+        const container = document.getElementById('spell-list-container');
+        if(container) container.innerHTML = `<div style="text-align:center; padding:20px; color:#e67e22;">⏳ Büyü veritabanı yükleniyor...</div>`;
+        await loadSpellData();
+    }
+    renderMySpellList(cachedLevel);
+}
+
+/* --- İSTATİSTİKLER --- */
 function updateSpellStats(scores, level) {
     const store = window.store || {};
     const charClass = (store.class && store.class.selected) ? store.class.selected.name : "Büyücü";
@@ -82,7 +98,7 @@ function updateSpellStats(scores, level) {
     }
 }
 
-/* --- LİSTEYİ RENDER ET (ÜST SEVİYE DESTEKLİ) --- */
+/* --- LİSTE RENDER --- */
 function renderMySpellList(level) {
     const container = document.getElementById('spell-list-container');
     if(!container) return;
@@ -91,14 +107,8 @@ function renderMySpellList(level) {
     const effectiveLevel = level || cachedLevel;
     const store = window.store || { spells: { known: [] } };
     if (!store.spells) store.spells = { known: [] };
-    
-    // Veri Yoksa Hata Vermesin
-    const mySpells = (store.spells.known || []).map(name => 
-        window.ALL_DATA.spells.find(s => s.name === name) || 
-        { name: name, level: 0, school: "U", entries: ["Veri yok"] }
-    );
+    const mySpells = (store.spells.known || []).map(name => window.ALL_DATA.spells.find(s => s.name === name) || { name: name, level: 0, school: "U", entries: ["Veri yok"] });
 
-    // Slot Hesaplama (Aynı kalıyor)
     const charClass = (store.class && store.class.selected) ? store.class.selected.name : "Büyücü";
     const config = SPELL_CASTING_CONFIG[charClass] || { type: "full" };
     let slots = [0,0,0,0,0,0,0,0,0];
@@ -138,10 +148,7 @@ function renderMySpellList(level) {
                 spellsOfLevel.forEach(spell => {
                     const safeName = spell.name.replace(/'/g, "\\'");
                     
-                    // --- 1. NORMAL AÇIKLAMALAR ---
                     let detailsHTML = renderEntries(spell.entries);
-
-                    // --- 2. ÜST SEVİYE BİLGİSİ VARSA EKLE ---
                     if (spell.entriesHigherLevel) {
                         detailsHTML += `<div style="margin-top:12px; padding-top:8px; border-top:1px dashed #444; color:#ccc;">`;
                         detailsHTML += renderEntries(spell.entriesHigherLevel);
@@ -156,7 +163,7 @@ function renderMySpellList(level) {
                                 <span class="spell-name">${spell.name} <span class="arrow-icon">▼</span></span>
                                 <span class="spell-meta">${formatSchool(spell.school)} • ${formatComponents(spell.components)}</span>
                             </div>
-                            <button class="btn-remove-spell" onclick="window.removeSpellFromCharacter('${safeName}')">❌</button>
+                            <button class="btn-remove-spell" onclick="window.removeSpellFromCharacter('${safeName}')">🗑</button>
                         </div>
                         <div class="spell-detail-content">${detailsHTML}</div>
                     `;
@@ -168,33 +175,26 @@ function renderMySpellList(level) {
     }
 }
 
-/* --- FORMATLAMA FONKSİYONU (TÜRKÇELEŞTİRME EKLENDİ) --- */
+/* --- YARDIMCILAR --- */
+function toggleSpellDetail(el) { el.closest('.spell-row').classList.toggle('expanded'); }
+
 function renderEntries(entries) {
     if (!entries) return "";
     let html = "";
     if (!Array.isArray(entries)) entries = [entries];
-    
     entries.forEach(e => {
-        if (typeof e === 'string') {
-            html += `<p>${format5eText(e)}</p>`;
-        } 
+        if (typeof e === 'string') html += `<p>${format5eText(e)}</p>`;
         else if (e.entries) {
-            // Başlık Çevirisi
             let header = e.name || "";
             if (header === "At Higher Levels") header = "Üst Seviyelerde";
-
-            html += `<p><strong>${header}.</strong> ${renderEntries(e.entries)}</p>`;
+            html += `<p><strong style="color:#e67e22;">${header}.</strong> ${renderEntries(e.entries)}</p>`;
         }
     });
     return html;
 }
 
-/* --- YARDIMCILAR --- */
-window.toggleSpellDetail = function(el) { el.closest('.spell-row').classList.toggle('expanded'); };
-
 function format5eText(text) {
     if (!text || typeof text !== 'string') return text || "";
-    // ZAR: onclick="window.globalRollDice('1d6')"
     text = text.replace(/{@damage ([^}]+)}/g, (m, d) => 
         `<span class="spell-text-damage clickable" onclick="event.stopPropagation(); window.globalRollDice('${d}')">✨ ${d}</span>`
     );
@@ -207,86 +207,33 @@ function format5eText(text) {
     return text;
 }
 
-/* --- DİNLENME VE RESETLEME (YENİ) --- */
-window.resetSpellSlots = function(restType) {
+function resetSpellSlots(restType) {
     const store = window.store;
     if (!store || !store.class || !store.class.selected) return;
-
     const charClass = store.class.selected.name;
     const config = SPELL_CASTING_CONFIG[charClass] || { type: 'full' };
     const isWarlock = config.type === 'pact';
-
-    // Uzun Dinlenme: Herkesin slotu yenilenir
-    // Kısa Dinlenme: Sadece Warlock'un slotu yenilenir
     if (restType === 'long' || (restType === 'short' && isWarlock)) {
-        const slots = document.querySelectorAll('.slot-checkbox');
-        let count = 0;
-        slots.forEach(cb => {
-            if (cb.checked) {
-                cb.checked = false;
-                count++;
-            }
-        });
-        if (count > 0) {
-            console.log(`${count} büyü yuvası yenilendi.`);
-        }
+        document.querySelectorAll('.slot-checkbox').forEach(cb => cb.checked = false);
     }
-};
+}
 
 /* ============================================================
-   MODAL, FİLTRELEME VE SIRALAMA (PROFESYONEL VERSİYON)
+   MODAL VE FİLTRELEME (DÜZELTİLMİŞ)
    ============================================================ */
 
-/* --- MODAL AÇ --- */
-window.openSpellModal = async function() {
-    const modal = document.getElementById('modal-spell-search');
-    if(modal) modal.classList.remove('hidden');
-    
-    // Veri Yükle
-    if (!window.ALL_DATA.spells) await loadSpellData();
-    
-    // Sınıf Filtresini Doldur (Sadece bir kere)
-    populateClassFilter();
-
-    // Event Listener'ları kur (Scroll ve Inputlar)
-    setupModalListeners();
-
-    // İlk Render
-    filterAndRenderModalSpells();
-};
-
-/* --- MODAL KAPAT --- */
-window.closeSpellModal = function() { 
-    const modal = document.getElementById('modal-spell-search');
-    if(modal) modal.classList.add('hidden'); 
-};
-
-/* --- SINIF LİSTESİNİ DOLDUR --- */
 function populateClassFilter() {
     const classSelect = document.getElementById('modal-spell-class-filter');
-    if (!classSelect || classSelect.options.length > 1) return; // Zaten doluysa geç
-
-    const classes = [
-        "Bard", "Cleric", "Druid", "Paladin", "Ranger", 
-        "Sorcerer", "Warlock", "Wizard", "Artificer"
-    ];
-    
-    // Türkçe Çeviri Haritası (İsteğe bağlı, veri tabanı İngilizce ise value İngilizce kalmalı)
-    const trMap = {
-        "Bard": "Ozan", "Cleric": "Rahip", "Druid": "Druid", "Paladin": "Paladin",
-        "Ranger": "Kolcu", "Sorcerer": "Sorcerer", "Warlock": "Warlock", 
-        "Wizard": "Büyücü", "Artificer": "Artificer"
-    };
-
-    classes.forEach(cls => {
+    if (!classSelect || classSelect.options.length > 1) return; 
+    const classNames = Object.keys(DB_CLASS_MAP).sort();
+    classNames.forEach(clsName => {
         const option = document.createElement('option');
-        option.value = cls; // Veritabanındaki isim (Genelde İngilizce)
-        option.text = trMap[cls] || cls;
+        option.value = clsName; 
+        option.text = clsName;
         classSelect.appendChild(option);
     });
 }
 
-/* --- LISTENER KURULUMU --- */
 function setupModalListeners() {
     const body = document.querySelector('#modal-spell-search .modal-body');
     const inputs = [
@@ -296,7 +243,6 @@ function setupModalListeners() {
         'modal-spell-sort'
     ];
 
-    // Scroll Listener
     if(body && !isScrollListenerAttached) {
         body.addEventListener('scroll', () => {
             if (body.scrollTop + body.clientHeight >= body.scrollHeight - 50) {
@@ -307,19 +253,29 @@ function setupModalListeners() {
         isScrollListenerAttached = true;
     }
 
-    // Input Change Listeners
     inputs.forEach(id => {
         const el = document.getElementById(id);
         if(el) {
-            // Eski listenerları temizlemek zor olduğu için onchange/oninput üzerine yazıyoruz
+            // BURASI KRİTİK: Artık fonksiyon direkt adıyla çağrılabilir
             el.oninput = () => { modalDisplayLimit=50; filterAndRenderModalSpells(); };
             el.onchange = () => { modalDisplayLimit=50; filterAndRenderModalSpells(); };
         }
     });
 }
 
-/* --- ANA FİLTRELEME VE RENDER FONKSİYONU --- */
-window.filterAndRenderModalSpells = function(keepScroll = false) {
+async function openSpellModal() {
+    document.getElementById('modal-spell-search').classList.remove('hidden');
+    if (!window.ALL_DATA.spells) await loadSpellData();
+    populateClassFilter();
+    setupModalListeners();
+    filterAndRenderModalSpells();
+}
+
+function closeSpellModal() { 
+    document.getElementById('modal-spell-search').classList.add('hidden'); 
+}
+
+function filterAndRenderModalSpells(keepScroll = false) {
     const searchInput = document.getElementById('modal-spell-search-input');
     const levelSelect = document.getElementById('modal-spell-level-filter');
     const classSelect = document.getElementById('modal-spell-class-filter');
@@ -329,58 +285,34 @@ window.filterAndRenderModalSpells = function(keepScroll = false) {
 
     if(!searchInput || !resultsContainer || !window.ALL_DATA.spells) return;
 
-    // Scroll Pozisyonunu Kaydet
     const currentScroll = scrollContainer ? scrollContainer.scrollTop : 0;
-    if (!keepScroll) { 
-        modalDisplayLimit = 50; 
-        if(scrollContainer) scrollContainer.scrollTop = 0; 
-    }
+    if (!keepScroll) { modalDisplayLimit = 50; if(scrollContainer) scrollContainer.scrollTop = 0; }
 
-    // Değerleri Al
     const searchText = searchInput.value.toLowerCase();
     const levelVal = levelSelect ? levelSelect.value : "all";
     const classVal = classSelect ? classSelect.value : "all";
     const sortVal  = sortSelect ? sortSelect.value : "level_asc";
 
-    // 1. FİLTRELEME
     let filtered = window.ALL_DATA.spells.filter(spell => {
-        // İsim Filtresi
         if (searchText && !spell.name.toLowerCase().includes(searchText)) return false;
-        
-        // Seviye Filtresi
         if (levelVal !== "all" && spell.level.toString() !== levelVal) return false;
-        
-        // Sınıf Filtresi (Zor Kısım)
-        // Veri yapısı genellikle: spell.classes.fromClassList = [{name: "Wizard", ...}]
         if (classVal !== "all") {
+            const dbClassName = DB_CLASS_MAP[classVal]; 
             if (!spell.classes || !spell.classes.fromClassList) return false;
-            const belongsToClass = spell.classes.fromClassList.some(c => c.name === classVal);
+            const belongsToClass = spell.classes.fromClassList.some(c => c.name === dbClassName);
             if (!belongsToClass) return false;
         }
-
         return true;
     });
 
-    // 2. SIRALAMA (SORTING)
     filtered.sort((a, b) => {
-        if (sortVal === 'name_asc') {
-            return a.name.localeCompare(b.name);
-        } 
-        else if (sortVal === 'level_asc') {
-            // Önce seviye, seviyeler eşitse isim
-            return (a.level - b.level) || a.name.localeCompare(b.name);
-        } 
-        else if (sortVal === 'level_desc') {
-            // Önce seviye (ters), seviyeler eşitse isim
-            return (b.level - a.level) || a.name.localeCompare(b.name);
-        }
+        if (sortVal === 'name_asc') return a.name.localeCompare(b.name);
+        else if (sortVal === 'level_asc') return (a.level - b.level) || a.name.localeCompare(b.name);
+        else if (sortVal === 'level_desc') return (b.level - a.level) || a.name.localeCompare(b.name);
         return 0;
     });
 
-    // 3. LİMİTLEME (Infinite Scroll)
     const visibleSpells = filtered.slice(0, modalDisplayLimit);
-    
-    // 4. RENDER
     resultsContainer.innerHTML = "";
 
     if(visibleSpells.length === 0) {
@@ -391,20 +323,11 @@ window.filterAndRenderModalSpells = function(keepScroll = false) {
     visibleSpells.forEach(spell => {
         const safeName = spell.name.replace(/'/g, "\\'");
         const isAdded = window.store && window.store.spells && window.store.spells.known.includes(spell.name);
-        
-        // Okul (School) Kısaltması
         const schoolCode = spell.school || "U";
         
-        // Sınıflar (Tooltip veya küçük bilgi için - opsiyonel)
-        // const classListStr = spell.classes && spell.classes.fromClassList ? spell.classes.fromClassList.map(c=>c.name).join(', ') : "";
-
-        // Buton
-        let btnHTML = "";
-        if (isAdded) {
-            btnHTML = `<button class="btn-select-spell remove-mode" onclick="window.toggleSpellFromModal('${safeName}', this)">Çıkar</button>`;
-        } else {
-            btnHTML = `<button class="btn-select-spell" onclick="window.toggleSpellFromModal('${safeName}', this)">Ekle</button>`;
-        }
+        let btnHTML = isAdded 
+            ? `<button class="btn-select-spell remove-mode" onclick="window.toggleSpellFromModal('${safeName}', this)">Çıkar</button>`
+            : `<button class="btn-select-spell" onclick="window.toggleSpellFromModal('${safeName}', this)">Ekle</button>`;
 
         const div = document.createElement('div');
         div.className = 'spell-result-card';
@@ -421,11 +344,10 @@ window.filterAndRenderModalSpells = function(keepScroll = false) {
         resultsContainer.appendChild(div);
     });
 
-    // Scrollu geri yükle (Sadece scroll ile tetiklendiyse)
     if (keepScroll && scrollContainer) scrollContainer.scrollTop = currentScroll;
 }
 
-window.toggleSpellFromModal = function(spellName, btnElement) {
+function toggleSpellFromModal(spellName, btnElement) {
     const store = window.store;
     if (!store) return;
     if (!store.spells) store.spells = { known: [] };
@@ -435,31 +357,36 @@ window.toggleSpellFromModal = function(spellName, btnElement) {
     
     if (index > -1) {
         store.spells.known.splice(index, 1);
-        if (btnElement) {
-            btnElement.innerText = "Ekle";
-            btnElement.className = "btn-select-spell";
-        }
+        if (btnElement) { btnElement.innerText = "Ekle"; btnElement.className = "btn-select-spell"; }
     } else {
         store.spells.known.push(spellName);
-        if (btnElement) {
-            btnElement.innerText = "Çıkar";
-            btnElement.className = "btn-select-spell remove-mode";
-        }
+        if (btnElement) { btnElement.innerText = "Çıkar"; btnElement.className = "btn-select-spell remove-mode"; }
     }
-    // GÜNCELLEME: Listeyi anında yenile (Cache kullanarak)
-    renderMySpellList(); 
-};
+    renderMySpellList(cachedLevel); 
+}
 
-window.addSpellToCharacter = window.toggleSpellFromModal; 
-window.removeSpellFromCharacter = function(spellName) { 
+function removeSpellFromCharacter(spellName) { 
     if (!confirm("Silinsin mi?")) return;
     const store = window.store;
     if (!store || !store.spells) return;
     store.spells.known = store.spells.known.filter(s => s !== spellName);
-    renderMySpellList();
-};
+    renderMySpellList(cachedLevel);
+}
 
 function formatSchool(code) { const map = { "E": "Evoc", "C": "Conj", "N": "Necro", "I": "Illu", "A": "Abjur", "T": "Trans", "D": "Div", "EN": "Ench" }; return map[code] || code; }
 function formatComponents(comp) { if (!comp) return ""; let res = []; if(comp.v) res.push("V"); if(comp.s) res.push("S"); if(comp.m) res.push("M"); return res.join(", "); }
+
+/* ============================================================
+   WINDOW ATAMALARI (GLOBAL ERİŞİM)
+   ============================================================ */
+window.renderSpellTab = renderSpellTab;
+window.openSpellModal = openSpellModal;
+window.closeSpellModal = closeSpellModal;
+window.filterAndRenderModalSpells = filterAndRenderModalSpells;
+window.toggleSpellFromModal = toggleSpellFromModal;
+window.toggleSpellDetail = toggleSpellDetail;
+window.removeSpellFromCharacter = removeSpellFromCharacter;
+window.resetSpellSlots = resetSpellSlots;
+window.addSpellToCharacter = toggleSpellFromModal;
 
 export function useSpellLogic() { return {}; }

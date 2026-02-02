@@ -17,60 +17,67 @@ import { useSpellLogic } from './src/logicSpells.js';
 const app = createApp({
     setup() {
         
-        // GLOBAL STORE (Diğer dosyaların erişimi için şart)
+        // GLOBAL STORE
         window.store = store;
 
         // ============================================================
         // 1. GENEL SAYFA MANTIĞI
         // ============================================================
-        const { 
-            isSheetMode, activeSheetTab, finishCreation, 
-            hasCreatedSheet, activeFeatureSubTab 
-        } = useCharacterSheet();
-
+        const { isSheetMode, activeSheetTab, finishCreation, hasCreatedSheet, activeFeatureSubTab } = useCharacterSheet();
         const activeInventoryTab = ref('owned'); 
         
+        // --- SEKME (TAB) YÖNETİMİ VE SÜRÜKLE-BIRAK (YENİ) ---
+        const sheetTabs = ref([
+            { id: 'actions',    label: 'Aksiyonlar',  icon: dndIcons.actions },
+            { id: 'spells',     label: 'Büyüler',     icon: dndIcons.spells },
+            { id: 'inventory',  label: 'Envanter',    icon: dndIcons.inventory },
+            { id: 'features',   label: 'Özellikler',  icon: dndIcons.features },
+            { id: 'description',label: 'Açıklama',    icon: dndIcons.description }
+        ]);
+
+        const draggingTabId = ref(null);
+
+        const handleTabDragStart = (evt, tabId) => {
+            draggingTabId.value = tabId;
+            evt.dataTransfer.effectAllowed = 'move';
+            evt.target.style.opacity = '0.5'; 
+        };
+
+        const handleTabDragEnd = (evt) => {
+            evt.target.style.opacity = '1';
+            draggingTabId.value = null;
+        };
+
+        const handleTabDrop = (evt, targetTabId) => {
+            const fromIndex = sheetTabs.value.findIndex(t => t.id === draggingTabId.value);
+            const toIndex = sheetTabs.value.findIndex(t => t.id === targetTabId);
+            
+            if (fromIndex !== -1 && toIndex !== -1 && fromIndex !== toIndex) {
+                const item = sheetTabs.value.splice(fromIndex, 1)[0];
+                sheetTabs.value.splice(toIndex, 0, item);
+            }
+        };
+
         // ============================================================
         // 2. IRK MANTIĞI
         // ============================================================
-        const { 
-            raceList, flatRaceList, selectedFlatOption, 
-            raceBonuses, activeRaceTraits, raceChoiceConfig 
-        } = useRaceLogic();
-
+        const { raceList, flatRaceList, selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig } = useRaceLogic();
         const selectedRace = computed(() => store.race.selected);
 
         // ============================================================
         // 3. SINIF MANTIĞI
         // ============================================================
-        const { 
-            classList, selectedClass, selectedSubclass, targetLevel, 
-            userChoices, subclassOptions, subclassUnlockLevel, 
-            activeFeatures, getHitDie, getAvailableOptions, 
-            getChoiceDetail, classResources, 
-        } = useClassLogic();
+        const { classList, selectedClass, selectedSubclass, targetLevel, userChoices, subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, getAvailableOptions, getChoiceDetail, classResources } = useClassLogic();
 
         // ============================================================
         // 4. PUANLAR
         // ============================================================
-        const {
-            statLabels, selectableStats, scoreMethods, selectedScoreMethod, 
-            standardArrayValues, rolledPool, hasRolled, isCapped20, isRolling,
-            pointBuyBudget, currentPbCost, getFlexCost, changePointBuy, 
-            rollStats, isOptionDisabled, statBonuses, finalAbilityScores, 
-            proficiencyBonus, scoreAllocations, draggedItem, assignScore, 
-            unassignScore, syncAllocationsFromStore, handleOrbClick 
-        } = useScoreLogic(raceBonuses);
+        const { statLabels, selectableStats, scoreMethods, selectedScoreMethod, standardArrayValues, rolledPool, hasRolled, isCapped20, isRolling, pointBuyBudget, currentPbCost, getFlexCost, changePointBuy, rollStats, isOptionDisabled, statBonuses, finalAbilityScores, proficiencyBonus, scoreAllocations, draggedItem, assignScore, unassignScore, syncAllocationsFromStore, handleOrbClick } = useScoreLogic(raceBonuses);
 
         // ============================================================
         // 5. YETENEKLER
         // ============================================================
-        const {
-            SKILL_DEFINITIONS, raceSkillInfo, classSkillInfo,
-            skillBudget, expertiseBudget, toggleSkill, calculatedSkills,
-            currentProfCount, currentExpertCount
-        } = useSkillLogic(finalAbilityScores, proficiencyBonus);
-
+        const { SKILL_DEFINITIONS, raceSkillInfo, classSkillInfo, skillBudget, expertiseBudget, toggleSkill, calculatedSkills, currentProfCount, currentExpertCount } = useSkillLogic(finalAbilityScores, proficiencyBonus);
         const isSkillsExpanded = ref(window.innerWidth > 860);
 
         // ============================================================
@@ -78,7 +85,6 @@ const app = createApp({
         // ============================================================
         const currentStep = ref(0);
         const steps = [{ title: "Konsept" }, { title: "Irk" }, { title: "Sınıf" }, { title: "Puanlar" }, { title: "Geçmiş" }];
-        
         const nextStep = () => { if (currentStep.value < steps.length - 1) currentStep.value++; };
         const prevStep = () => { if (currentStep.value > 0) currentStep.value--; };
 
@@ -108,9 +114,7 @@ const app = createApp({
             if (isGalleryExpanded.value) {
                 nextTick(() => {
                     setTimeout(() => {
-                        if (galleryContainer.value) {
-                            galleryContainer.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
+                        if (galleryContainer.value) galleryContainer.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }, 300);
                 });
             }
@@ -134,16 +138,10 @@ const app = createApp({
             toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
             document.body.appendChild(toast);       
             setTimeout(() => toast.classList.add('show'), 10);      
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
         };
 
-        const handleFinish = () => { 
-            finishCreation(showToast);
-            nextTick(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-        };
+        const handleFinish = () => { finishCreation(showToast); nextTick(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }); };
         const handleRoll = () => { rollStats(showToast); };
 
         // ============================================================
@@ -156,12 +154,11 @@ const app = createApp({
                 b: store.abilities.base, asi: store.abilities.asi, bg: store.background.selected?.name,
                 p: store.skills.proficiencies, e: store.skills.expertises, ch: userChoices.value,
                 sm: selectedScoreMethod.value, rp: rolledPool.value, hp: store.hp, inv: store.inventory, av: store.meta.avatar,
-                spl: store.spells?.known || [] 
+                spl: store.spells?.known || [],
+                tabs: sheetTabs.value.map(t => t.id) // Tab sırasını kaydet
             };      
-            try {
-                const cleanData = cleanObject(JSON.parse(JSON.stringify(exportData)));
-                return window.LZString.compressToEncodedURIComponent(JSON.stringify(cleanData));
-            } catch (e) { return ""; }
+            try { return window.LZString.compressToEncodedURIComponent(JSON.stringify(cleanObject(JSON.parse(JSON.stringify(exportData))))); } 
+            catch (e) { return ""; }
         });
 
         const copySeed = () => { navigator.clipboard.writeText(characterSeed.value); showToast("Karakter kodu kopyalandı!"); };
@@ -194,27 +191,28 @@ const app = createApp({
                 store.abilities.base = { ...data.b }; store.abilities.asi = { ...data.asi };
                 if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
                 store.skills.proficiencies = [...(data.p || [])]; store.skills.expertises = [...(data.e || [])];
-                userChoices.value = { ...data.ch }; if (data.hp) store.hp = { ...store.hp, ...data.hp };
-                if (data.inv) store.inventory = { ...store.inventory, ...data.inv };
-
+                userChoices.value = { ...data.ch }; 
                 if (data.hp) store.hp = { ...store.hp, ...data.hp };
                 if (data.inv) store.inventory = { ...store.inventory, ...data.inv };
 
-                // --- YENİ EKLENEN KISIM: BÜYÜLERİ YÜKLE ---
+                // Büyüleri Yükle
                 if (data.spl && Array.isArray(data.spl)) {
-                    // Store yapısını garantiye al
                     if (!store.spells) store.spells = { known: [] };
-                    
-                    // Büyüleri aktar
                     store.spells.known = [...data.spl];
-                    
-                    // Eğer o an büyü sekmesi açıksa listeyi yenilemesi için render'ı tetikle
                     setTimeout(() => {
-                         if(typeof window.renderMySpellList === 'function') {
-                             // Seviyeyi de göndererek render et (hafızadaki level'ı kullanır)
-                             window.renderMySpellList(); 
-                         }
+                         if(typeof window.renderMySpellList === 'function') window.renderMySpellList(); 
                     }, 500);
+                }
+
+                // Tab Sırasını Yükle
+                if (data.tabs && Array.isArray(data.tabs)) {
+                    sheetTabs.value.sort((a, b) => {
+                        let idxA = data.tabs.indexOf(a.id);
+                        let idxB = data.tabs.indexOf(b.id);
+                        if (idxA === -1) idxA = 99;
+                        if (idxB === -1) idxB = 99;
+                        return idxA - idxB;
+                    });
                 }
 
                 setTimeout(() => { syncAllocationsFromStore(); }, 200); 
@@ -231,40 +229,23 @@ const app = createApp({
 
         const handleRest = (type) => {
             let msg = type === 'long' ? "Uzun dinlenme: HP, Büyüler ve Yetenekler yenilendi! 💤" : "Kısa dinlenme yapıldı. ☕";
+            classResources.value.forEach(res => { if (type === 'long' || res.reset === 'short') store.resources[res.id] = res.max; });
             
-            // 1. Kaynakları Yenile (Mevcut Kod)
-            classResources.value.forEach(res => { 
-                if (type === 'long' || res.reset === 'short') store.resources[res.id] = res.max; 
-            });
-
-            // 2. Büyü Yuvalarını Yenile (YENİ EKLENEN KISIM)
-            // logicSpells.js'deki fonksiyonu çağırıyoruz
             if (typeof window.resetSpellSlots === 'function') {
                 window.resetSpellSlots(type);
-                // Warlock için özel mesaj bilgisi
-                // (Fonksiyon içerde kontrol ediyor ama kullanıcıya bilgi verelim)
                 const charClass = store.class.selected?.name;
-                if (type === 'short' && charClass === 'Warlock') {
-                    msg += " (Pact Büyüleri Yenilendi)";
-                }
+                if (type === 'short' && charClass === 'Warlock') msg += " (Pact Büyüleri Yenilendi)";
             }
-
             showToast(msg);
         };
 
         // ============================================================
-        // ZAR VE HASAR MANTIĞI (TEMİZLENMİŞ)
+        // ZAR VE HASAR MANTIĞI
         // ============================================================
-        const { 
-            diceResult, rollD20, rollDamage, closeDiceResult, 
-            diceHistory, isHistoryOpen, clearHistory, toggleHistory
-        } = useDiceLogic();
+        const { diceResult, rollD20, rollDamage, closeDiceResult, diceHistory, isHistoryOpen, clearHistory, toggleHistory } = useDiceLogic();
 
-        // --- GLOBAL KÖPRÜ (TEK VE DOĞRU OLAN) ---
-        // Büyü zarı (logicSpells.js) tıklandığında burası çalışır.
-        // Bu da logicDice.js içindeki rollDamage fonksiyonunu çağırır.
         window.globalRollDice = (diceExpression) => {
-            console.log("🎲 Global Zar Tetiklendi:", diceExpression);
+            console.log("🎲 Global Zar:", diceExpression);
             rollDamage("Büyü Etkisi", diceExpression, 0, "Büyüsel");
         };
 
@@ -284,11 +265,7 @@ const app = createApp({
         const isCustomWeaponFormOpen = ref(false);
         const customWeaponForm = ref({ name: '', dmg: '1d6', type: 'Kesici', stat: 'str', bonusHit: 0, bonusDmg: 0, isProficient: false });
 
-        const {
-            weaponList, armorList, calculatedAC, attackList,
-            toggleWeapon, toggleWeaponProficiency, setArmor, toggleShield,
-            checkProficiencyRule, addCustomWeaponToInventory 
-        } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
+        const { weaponList, armorList, calculatedAC, attackList, toggleWeapon, toggleWeaponProficiency, setArmor, toggleShield, checkProficiencyRule, addCustomWeaponToInventory } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
 
         const saveCustomWeapon = () => {
             if (!customWeaponForm.value.name) { alert("İsim girin."); return; }
@@ -340,15 +317,7 @@ const app = createApp({
         watch(activeSheetTab, (newTab) => {
             if (newTab === 'spells') {
                 setTimeout(() => {
-                    if (typeof window.renderSpellTab === 'function') {
-                        console.log("🔮 Büyü İstatistikleri Güncelleniyor...");
-                        
-                        // KRİTİK NOKTA: Hesaplanan son puanları ve seviyeyi gönderiyoruz!
-                        // finalAbilityScores.value -> { str: 16, int: 18 ... } (Irk+Bonus dahil)
-                        // targetLevel.value -> Karakterin seviyesi
-                        
-                        window.renderSpellTab(finalAbilityScores.value, targetLevel.value);
-                    }
+                    if (typeof window.renderSpellTab === 'function') window.renderSpellTab(finalAbilityScores.value, targetLevel.value);
                 }, 50);
             }
         });
@@ -410,7 +379,10 @@ const app = createApp({
             isInventoryOpen, calculatedAC, attackList, weaponList, armorList, toggleWeapon, setArmor, toggleShield,
             toggleWeaponProficiency, checkProficiencyRule, showWarningToast, isCustomWeaponFormOpen, customWeaponForm,
             saveCustomWeapon, isHpModalOpen, hpModalValue, maxHP, currentHP, hpStatusClass, setFullHp,
-            adjustHpModalValue, applyHpChange
+            adjustHpModalValue, applyHpChange,
+            
+            // Sürükle-Bırak İçin Eklenenler
+            sheetTabs, handleTabDragStart, handleTabDragEnd, handleTabDrop
         };
     }
 });
