@@ -1233,15 +1233,22 @@
                 <div class="dice-source">{{ diceResult.source }}</div>
 
                 <div class="dice-breakdown">
-                    <span class="d20-icon" :class="{ 'nat-20': diceResult.isCrit, 'nat-1': diceResult.isFail }">
-                        {{ diceResult.baseRoll }}
-                    </span>
+                    
+                    <div v-if="diceResult.details" 
+                         style="font-size: 1.4em; color: #e67e22; font-family: monospace; letter-spacing: 1px; margin-bottom:5px;" 
+                         v-html="diceResult.details">
+                    </div>
 
-                    <span style="font-size: 0.8em; color: #888;">
-                        ({{ diceResult.diceLabel || 'd20' }})
-                    </span>
-                
-                    <span>{{ diceResult.modifier >= 0 ? '+' : '' }}{{ diceResult.modifier }}</span>
+                    <template v-else>
+                        <span class="d20-icon" :class="{ 'nat-20': diceResult.isCrit, 'nat-1': diceResult.isFail }">
+                            {{ diceResult.baseRoll }}
+                        </span>
+                        <span style="font-size: 0.8em; color: #888;">
+                            ({{ diceResult.diceLabel || 'd20' }})
+                        </span>
+                        <span>{{ diceResult.modifier >= 0 ? '+' : '' }}{{ diceResult.modifier }}</span>
+                    </template>
+
                 </div>
 
                 <div class="dice-total" :class="{ 'crit-success': diceResult.isCrit, 'crit-fail': diceResult.isFail }">
@@ -1301,11 +1308,13 @@
                     <button class="close-modal" onclick="window.closeSpellModal()">✕</button>
                 </div>
                 <div class="modal-body">
-                    <div class="spell-filter-bar">
-                        <input type="text" id="modal-spell-search-input" placeholder="Büyü ara (Fireball, Şifa...)" class="search-input">
+                    <div class="spell-filter-bar" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        
+                        <input type="text" id="modal-spell-search-input" placeholder="Büyü ara (Fireball, Şifa...)" class="search-input" style="width: 100%;">
+                        
                         <select id="modal-spell-level-filter" class="filter-select">
                             <option value="all">Tüm Seviyeler</option>
-                            <option value="0">Cantrip</option>
+                            <option value="0">Cantrip (0)</option>
                             <option value="1">1. Seviye</option>
                             <option value="2">2. Seviye</option>
                             <option value="3">3. Seviye</option>
@@ -1316,10 +1325,19 @@
                             <option value="8">8. Seviye</option>
                             <option value="9">9. Seviye</option>
                         </select>
+                        
                         <select id="modal-spell-class-filter" class="filter-select">
                             <option value="all">Tüm Sınıflar</option>
                             </select>
+
+                        <select id="modal-spell-sort" class="filter-select">
+                            <option value="level_asc">Seviye (Artan)</option>
+                            <option value="level_desc">Seviye (Azalan)</option>
+                            <option value="name_asc">İsim (A-Z)</option>
+                        </select>
+
                     </div>
+                    
                     <div id="modal-spell-results" class="spell-results-grid">
                         </div>
                 </div>

@@ -14,22 +14,18 @@ import { useDiceLogic } from './src/logicDice.js';
 import { useInventoryLogic } from './src/logicInventory.js';
 import { useSpellLogic } from './src/logicSpells.js'; 
 
-
 const app = createApp({
     setup() {
         
-        // GLOBAL STORE ERİŞİMİ (Logic dosyaları için şart)
+        // GLOBAL STORE (Diğer dosyaların erişimi için şart)
         window.store = store;
 
         // ============================================================
         // 1. GENEL SAYFA MANTIĞI
         // ============================================================
         const { 
-            isSheetMode, 
-            activeSheetTab, 
-            finishCreation, 
-            hasCreatedSheet, 
-            activeFeatureSubTab 
+            isSheetMode, activeSheetTab, finishCreation, 
+            hasCreatedSheet, activeFeatureSubTab 
         } = useCharacterSheet();
 
         const activeInventoryTab = ref('owned'); 
@@ -38,12 +34,8 @@ const app = createApp({
         // 2. IRK MANTIĞI
         // ============================================================
         const { 
-            raceList, 
-            flatRaceList, 
-            selectedFlatOption, 
-            raceBonuses, 
-            activeRaceTraits, 
-            raceChoiceConfig 
+            raceList, flatRaceList, selectedFlatOption, 
+            raceBonuses, activeRaceTraits, raceChoiceConfig 
         } = useRaceLogic();
 
         const selectedRace = computed(() => store.race.selected);
@@ -52,63 +44,31 @@ const app = createApp({
         // 3. SINIF MANTIĞI
         // ============================================================
         const { 
-            classList, 
-            selectedClass, 
-            selectedSubclass, 
-            targetLevel, 
-            userChoices, 
-            subclassOptions, 
-            subclassUnlockLevel, 
-            activeFeatures, 
-            getHitDie, 
-            getAvailableOptions, 
-            getChoiceDetail,
-            classResources, 
+            classList, selectedClass, selectedSubclass, targetLevel, 
+            userChoices, subclassOptions, subclassUnlockLevel, 
+            activeFeatures, getHitDie, getAvailableOptions, 
+            getChoiceDetail, classResources, 
         } = useClassLogic();
 
         // ============================================================
-        // 4. PUANLAR (SCORE LOGIC)
+        // 4. PUANLAR
         // ============================================================
         const {
-            statLabels, 
-            selectableStats, 
-            scoreMethods, 
-            selectedScoreMethod, 
-            standardArrayValues,
-            rolledPool, 
-            hasRolled, 
-            isCapped20, 
-            isRolling,
-            pointBuyBudget, 
-            currentPbCost,
-            getFlexCost, 
-            changePointBuy, 
-            rollStats, 
-            isOptionDisabled,
-            statBonuses, 
-            finalAbilityScores, 
-            proficiencyBonus,
-            scoreAllocations, 
-            draggedItem, 
-            assignScore, 
-            unassignScore, 
-            syncAllocationsFromStore,
-            handleOrbClick 
+            statLabels, selectableStats, scoreMethods, selectedScoreMethod, 
+            standardArrayValues, rolledPool, hasRolled, isCapped20, isRolling,
+            pointBuyBudget, currentPbCost, getFlexCost, changePointBuy, 
+            rollStats, isOptionDisabled, statBonuses, finalAbilityScores, 
+            proficiencyBonus, scoreAllocations, draggedItem, assignScore, 
+            unassignScore, syncAllocationsFromStore, handleOrbClick 
         } = useScoreLogic(raceBonuses);
 
         // ============================================================
         // 5. YETENEKLER
         // ============================================================
         const {
-            SKILL_DEFINITIONS,
-            raceSkillInfo, 
-            classSkillInfo,
-            skillBudget, 
-            expertiseBudget,
-            toggleSkill, 
-            calculatedSkills,
-            currentProfCount, 
-            currentExpertCount
+            SKILL_DEFINITIONS, raceSkillInfo, classSkillInfo,
+            skillBudget, expertiseBudget, toggleSkill, calculatedSkills,
+            currentProfCount, currentExpertCount
         } = useSkillLogic(finalAbilityScores, proficiencyBonus);
 
         const isSkillsExpanded = ref(window.innerWidth > 860);
@@ -129,18 +89,10 @@ const app = createApp({
         const seedText = ref('');
 
         const avatarGallery = [
-            "../../img/avatars/default-avatar.png",
-            "../../img/avatars/barbarian.jpg",
-            "../../img/avatars/bard.jpg",
-            "../../img/avatars/cleric.jpg",
-            "../../img/avatars/druid.jpg",
-            "../../img/avatars/fighter.jpg",
-            "../../img/avatars/monk.jpg",
-            "../../img/avatars/paladin.jpg",
-            "../../img/avatars/ranger.jpg",
-            "../../img/avatars/rogue.jpg",
-            "../../img/avatars/sorcerer.jpg",
-            "../../img/avatars/warlock.jpg",
+            "../../img/avatars/default-avatar.png", "../../img/avatars/barbarian.jpg", "../../img/avatars/bard.jpg",
+            "../../img/avatars/cleric.jpg", "../../img/avatars/druid.jpg", "../../img/avatars/fighter.jpg",
+            "../../img/avatars/monk.jpg", "../../img/avatars/paladin.jpg", "../../img/avatars/ranger.jpg",
+            "../../img/avatars/rogue.jpg", "../../img/avatars/sorcerer.jpg", "../../img/avatars/warlock.jpg",
             "../../img/avatars/wizard.jpg"
         ];
 
@@ -168,8 +120,7 @@ const app = createApp({
         const galleryButton = ref(null);    
 
         const handleClickOutside = (event) => {
-            if (isGalleryExpanded.value && 
-                galleryContainer.value && !galleryContainer.value.contains(event.target) &&
+            if (isGalleryExpanded.value && galleryContainer.value && !galleryContainer.value.contains(event.target) &&
                 galleryButton.value && !galleryButton.value.contains(event.target)) {
                 isGalleryExpanded.value = false;
             }
@@ -196,7 +147,7 @@ const app = createApp({
         const handleRoll = () => { rollStats(showToast); };
 
         // ============================================================
-        // SEED (KAYIT/YÜKLEME) SİSTEMİ
+        // SEED (KAYIT/YÜKLEME)
         // ============================================================
         const characterSeed = computed(() => {
             const exportData = {
@@ -204,7 +155,8 @@ const app = createApp({
                 c: store.class.selected?.name, sc: store.class.subclass?.name, l: targetLevel.value,
                 b: store.abilities.base, asi: store.abilities.asi, bg: store.background.selected?.name,
                 p: store.skills.proficiencies, e: store.skills.expertises, ch: userChoices.value,
-                sm: selectedScoreMethod.value, rp: rolledPool.value, hp: store.hp, inv: store.inventory, av: store.meta.avatar 
+                sm: selectedScoreMethod.value, rp: rolledPool.value, hp: store.hp, inv: store.inventory, av: store.meta.avatar,
+                spl: store.spells?.known || [] 
             };      
             try {
                 const cleanData = cleanObject(JSON.parse(JSON.stringify(exportData)));
@@ -215,113 +167,111 @@ const app = createApp({
         const copySeed = () => { navigator.clipboard.writeText(characterSeed.value); showToast("Karakter kodu kopyalandı!"); };
         const copyLink = () => {
             const url = `${window.location.origin}${window.location.pathname}?seed=${characterSeed.value}`;
-            navigator.clipboard.writeText(url).then(() => { showToast("Link kopyalandı! Arkadaşına gönderebilirsin.", "🔗"); });
+            navigator.clipboard.writeText(url).then(() => { showToast("Link kopyalandı!", "🔗"); });
         };
 
         const loadFromSeed = () => {
             try {
-                if (!seedText.value) { showToast("Lütfen bir kod yapıştırın.", "⚠️"); return; }
+                if (!seedText.value) { showToast("Kod girin.", "⚠️"); return; }
                 let jsonStr = window.LZString.decompressFromEncodedURIComponent(seedText.value);
-                if (!jsonStr) { showToast("Geçersiz veya bozuk kod!", "❌"); return; }                
+                if (!jsonStr) { showToast("Geçersiz kod!", "❌"); return; }                
                 const data = JSON.parse(jsonStr);                
-
-                store.meta.name = data.n || "";
-                store.meta.avatar = data.av || "../../img/avatars/default-avatar.png";
+                store.meta.name = data.n || ""; store.meta.avatar = data.av || "../../img/avatars/default-avatar.png";
                 targetLevel.value = data.l || 1; 
                 
                 if (data.r) {
-                    const targetSubraceName = data.sr || "Standart";
-                    const foundFlatOption = flatRaceList.value.find(option => {
-                        const raceMatch = option.race.name === data.r;
-                        const optSubName = option.subrace ? (option.subrace.name || "Standart") : null;
-                        if (option.subrace) return raceMatch && (optSubName === targetSubraceName);
-                        return raceMatch;
-                    });
-                    if (foundFlatOption) {
-                        selectedFlatOption.value = foundFlatOption;
-                        if (data.ac) setTimeout(() => { store.race.abilityChoices = { ...data.ac }; }, 100);
-                    }
+                    const tSub = data.sr || "Standart";
+                    const fOpt = flatRaceList.value.find(o => o.race.name === data.r && (o.subrace ? (o.subrace.name||"Standart") : "Standart") === tSub);
+                    if (fOpt) { selectedFlatOption.value = fOpt; if (data.ac) setTimeout(() => { store.race.abilityChoices = { ...data.ac }; }, 100); }
                 }            
-
                 if (data.c) {
-                    const foundClass = classList.value.find(x => x.name === data.c);
-                    if (foundClass) {
-                        selectedClass.value = foundClass;
-                        setTimeout(() => { if (data.sc) selectedSubclass.value = foundClass.subclasses?.find(s => s.name === data.sc); }, 100);
-                    }
+                    const fCls = classList.value.find(x => x.name === data.c);
+                    if (fCls) { selectedClass.value = fCls; setTimeout(() => { if (data.sc) selectedSubclass.value = fCls.subclasses?.find(s => s.name === data.sc); }, 100); }
                 }                
 
                 selectedScoreMethod.value = data.sm || 'manual';
                 if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
-                
-                store.abilities.base = { ...data.b };
-                store.abilities.asi = { ...data.asi };
+                store.abilities.base = { ...data.b }; store.abilities.asi = { ...data.asi };
                 if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
-                store.skills.proficiencies = [...(data.p || [])];
-                store.skills.expertises = [...(data.e || [])];
-                userChoices.value = { ...data.ch };    
-                if (data.hp) { store.hp = { ...store.hp, ...data.hp }; }
-                if (data.inv) { store.inventory = { ...store.inventory, ...data.inv }; }
+                store.skills.proficiencies = [...(data.p || [])]; store.skills.expertises = [...(data.e || [])];
+                userChoices.value = { ...data.ch }; if (data.hp) store.hp = { ...store.hp, ...data.hp };
+                if (data.inv) store.inventory = { ...store.inventory, ...data.inv };
+
+                if (data.hp) store.hp = { ...store.hp, ...data.hp };
+                if (data.inv) store.inventory = { ...store.inventory, ...data.inv };
+
+                // --- YENİ EKLENEN KISIM: BÜYÜLERİ YÜKLE ---
+                if (data.spl && Array.isArray(data.spl)) {
+                    // Store yapısını garantiye al
+                    if (!store.spells) store.spells = { known: [] };
+                    
+                    // Büyüleri aktar
+                    store.spells.known = [...data.spl];
+                    
+                    // Eğer o an büyü sekmesi açıksa listeyi yenilemesi için render'ı tetikle
+                    setTimeout(() => {
+                         if(typeof window.renderMySpellList === 'function') {
+                             // Seviyeyi de göndererek render et (hafızadaki level'ı kullanır)
+                             window.renderMySpellList(); 
+                         }
+                    }, 500);
+                }
 
                 setTimeout(() => { syncAllocationsFromStore(); }, 200); 
-                showToast("Karakter Başarıyla Yüklendi!", "🚀");
-                finishCreation(); 
-                seedText.value = ''; 
-            } catch (e) { console.error(e); showToast("Yükleme sırasında hata oluştu!", "❌"); }
+                showToast("Yüklendi!", "🚀"); finishCreation(); seedText.value = ''; 
+            } catch (e) { console.error(e); showToast("Hata!", "❌"); }
         };
 
         const updateResource = (id, delta, max) => {
             const current = store.resources[id] !== undefined ? store.resources[id] : max;
             let newVal = current + delta;
-            if (newVal > max) newVal = max;
-            if (newVal < 0) newVal = 0;
+            if (newVal > max) newVal = max; if (newVal < 0) newVal = 0;
             store.resources[id] = newVal;
         };
 
         const handleRest = (type) => {
             let msg = type === 'long' ? "Uzun dinlenme: HP, Büyüler ve Yetenekler yenilendi! 💤" : "Kısa dinlenme yapıldı. ☕";
-            classResources.value.forEach(res => {
-                if (type === 'long' || res.reset === 'short') store.resources[res.id] = res.max;
+            
+            // 1. Kaynakları Yenile (Mevcut Kod)
+            classResources.value.forEach(res => { 
+                if (type === 'long' || res.reset === 'short') store.resources[res.id] = res.max; 
             });
+
+            // 2. Büyü Yuvalarını Yenile (YENİ EKLENEN KISIM)
+            // logicSpells.js'deki fonksiyonu çağırıyoruz
+            if (typeof window.resetSpellSlots === 'function') {
+                window.resetSpellSlots(type);
+                // Warlock için özel mesaj bilgisi
+                // (Fonksiyon içerde kontrol ediyor ama kullanıcıya bilgi verelim)
+                const charClass = store.class.selected?.name;
+                if (type === 'short' && charClass === 'Warlock') {
+                    msg += " (Pact Büyüleri Yenilendi)";
+                }
+            }
+
             showToast(msg);
         };
 
         // ============================================================
-        // ZAR VE HASAR MANTIĞI (FİNAL ENTEGRASYON)
+        // ZAR VE HASAR MANTIĞI (TEMİZLENMİŞ)
         // ============================================================
         const { 
-            diceResult, 
-            rollD20,
-            rollDamage, 
-            closeDiceResult, 
-            diceHistory,
-            isHistoryOpen,
-            clearHistory,
-            toggleHistory
+            diceResult, rollD20, rollDamage, closeDiceResult, 
+            diceHistory, isHistoryOpen, clearHistory, toggleHistory
         } = useDiceLogic();
 
-        // --- GLOBAL ZAR KÖPRÜSÜ (window.globalRollDice) ---
-        // Bu fonksiyon logicSpells.js (Vanilla JS) tarafından çağrılır.
-        // Vue composable'ı olan rollDamage'i kullanarak ekrana basar.
+        // --- GLOBAL KÖPRÜ (TEK VE DOĞRU OLAN) ---
+        // Büyü zarı (logicSpells.js) tıklandığında burası çalışır.
+        // Bu da logicDice.js içindeki rollDamage fonksiyonunu çağırır.
         window.globalRollDice = (diceExpression) => {
-            console.log("🎲 Büyü Zarı Tetiklendi:", diceExpression);
-            // logicDice.js'deki mevcut, çalışan fonksiyonu kullanıyoruz.
-            // Bu sayede çift kod (duplicate) olmuyor ve aynı arayüzü kullanıyoruz.
+            console.log("🎲 Global Zar Tetiklendi:", diceExpression);
             rollDamage("Büyü Etkisi", diceExpression, 0, "Büyüsel");
         };
 
         const isSaveProficient = (key) => {
-            const cls = selectedClass.value;
-            if (!cls || !cls.proficiency) return false;
+            const cls = selectedClass.value; if (!cls || !cls.proficiency) return false;
             const profs = cls.proficiency.map(p => p.toLowerCase());
-            const map = {
-                str: ['str', 'strength', 'güç', 'kuv', 'kuvvet'],
-                dex: ['dex', 'dexterity', 'çev', 'çeviklik'],
-                con: ['con', 'constitution', 'day', 'dayanıklılık'],
-                int: ['int', 'intelligence', 'zek', 'zeka'],
-                wis: ['wis', 'wisdom', 'aki', 'akı', 'akıl', 'bilgelik', 'sezgi'], 
-                cha: ['cha', 'charisma', 'kar', 'karizma']
-            };
+            const map = { str: ['str','güç'], dex: ['dex','çev'], con: ['con','day'], int: ['int','zek'], wis: ['wis','akı'], cha: ['cha','kar'] };
             if (!map[key]) return false;
             return map[key].some(term => profs.some(p => p.includes(term)));
         };
@@ -329,7 +279,7 @@ const app = createApp({
         const isInventoryOpen = ref(false); 
 
         // ============================================================
-        // 6. ENVANTER (INVENTORY LOGIC)
+        // 6. ENVANTER
         // ============================================================
         const isCustomWeaponFormOpen = ref(false);
         const customWeaponForm = ref({ name: '', dmg: '1d6', type: 'Kesici', stat: 'str', bonusHit: 0, bonusDmg: 0, isProficient: false });
@@ -341,13 +291,13 @@ const app = createApp({
         } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
 
         const saveCustomWeapon = () => {
-            if (!customWeaponForm.value.name) { alert("Lütfen silaha bir isim verin."); return; }
+            if (!customWeaponForm.value.name) { alert("İsim girin."); return; }
             addCustomWeaponToInventory(customWeaponForm.value);
             customWeaponForm.value = { name: '', dmg: '1d6', type: 'Kesici', stat: 'str', bonusHit: 0, bonusDmg: 0, isProficient: false };
             isCustomWeaponFormOpen.value = false;
-            alert("Silah başarıyla eklendi! Çantam sekmesinden görebilirsiniz.");
+            alert("Silah eklendi!");
         };
-        const showWarningToast = (msg) => { alert("⚠️ DİKKAT: " + msg); };
+        const showWarningToast = (msg) => { alert("⚠️ " + msg); };
 
         // ============================================================
         // 7. CAN (HP) YÖNETİMİ
@@ -357,246 +307,110 @@ const app = createApp({
 
         const maxHP = computed(() => {
             if (!selectedClass.value) return 0;
-            const hitDie = parseInt(getHitDie(selectedClass.value)) || 8;
-            const conMod = Math.floor(((finalAbilityScores.value.con || 10) - 10) / 2);
-            const lvl = targetLevel.value;
-            return (hitDie + conMod) + ((hitDie / 2) + 1 + conMod) * (lvl - 1);
+            const hd = parseInt(getHitDie(selectedClass.value)) || 8;
+            const con = Math.floor(((finalAbilityScores.value.con || 10) - 10) / 2);
+            return (hd + con) + ((hd / 2) + 1 + con) * (targetLevel.value - 1);
         });
 
         const currentHP = computed({
             get: () => (store.hp.current === null || store.hp.current === undefined) ? maxHP.value : store.hp.current,
-            set: (val) => {
-                if (val > maxHP.value) val = maxHP.value;
-                if (val < 0) val = 0;
-                store.hp.current = val;
-            }
+            set: (val) => { if (val > maxHP.value) val = maxHP.value; if (val < 0) val = 0; store.hp.current = val; }
         });
 
         const hpStatusClass = computed(() => {
             if (maxHP.value === 0) return '';
-            const percent = (currentHP.value / maxHP.value) * 100;
-            if (percent <= 0) return 'hp-dead'; 
-            if (percent <= 10) return 'hp-critical'; 
-            if (percent <= 30) return 'hp-low'; 
-            return ''; 
+            const p = (currentHP.value / maxHP.value) * 100;
+            if (p <= 0) return 'hp-dead'; if (p <= 10) return 'hp-critical'; if (p <= 30) return 'hp-low'; return ''; 
         });
 
         const adjustHpModalValue = (amount) => { hpModalValue.value += amount; };
         const applyHpChange = () => {
-            const val = hpModalValue.value;
-            if (val === 0) return;
+            const val = hpModalValue.value; if (val === 0) return;
             currentHP.value += val;
-            if (val > 0) showToast(`${val} İyileşildi!`, "💚");
-            else showToast(`${Math.abs(val)} Hasar Alındı!`, "🩸");
-            hpModalValue.value = 0;
-            isHpModalOpen.value = false;
+            if (val > 0) showToast(`${val} İyileşildi!`, "💚"); else showToast(`${Math.abs(val)} Hasar!`, "🩸");
+            hpModalValue.value = 0; isHpModalOpen.value = false;
         };
-        const setFullHp = () => { currentHP.value = maxHP.value; showToast("Can tamamen yenilendi!", "✨"); };
+        const setFullHp = () => { currentHP.value = maxHP.value; showToast("Can yenilendi!", "✨"); };
 
         // ============================================================
-        // 8. BÜYÜ SİSTEMİ (YENİ - HİBRİT ENTEGRASYON)
+        // 8. BÜYÜ SİSTEMİ
         // ============================================================
-        
-        // Sadece import edilmesi yeterli, logicSpells.js window'a fonksiyonları atar.
         useSpellLogic();
 
-        // Büyü sekmesine geçildiğinde DOM'un oluşmasını bekleyip render fonksiyonunu tetikler
         watch(activeSheetTab, (newTab) => {
             if (newTab === 'spells') {
                 setTimeout(() => {
                     if (typeof window.renderSpellTab === 'function') {
-                        console.log("Büyü sekmesi aktif, render başlatılıyor...");
-                        window.renderSpellTab();
+                        console.log("🔮 Büyü İstatistikleri Güncelleniyor...");
+                        
+                        // KRİTİK NOKTA: Hesaplanan son puanları ve seviyeyi gönderiyoruz!
+                        // finalAbilityScores.value -> { str: 16, int: 18 ... } (Irk+Bonus dahil)
+                        // targetLevel.value -> Karakterin seviyesi
+                        
+                        window.renderSpellTab(finalAbilityScores.value, targetLevel.value);
                     }
                 }, 50);
             }
         });
 
         // ============================================================
-        // LIFE CYCLE (ON MOUNTED)
+        // LIFE CYCLE
         // ============================================================
         onMounted(async () => {
             document.addEventListener('click', handleClickOutside);
-            if (!store.meta.avatar || typeof store.meta.avatar !== 'string') {
-                store.meta.avatar = "../../img/avatars/default-avatar.png";
-            }
+            if (!store.meta.avatar || typeof store.meta.avatar !== 'string') store.meta.avatar = "../../img/avatars/default-avatar.png";
 
             try {
                 const [classRes, raceRes, bgRes] = await Promise.all([
-                    fetch('../../Data/classes.json').catch(e => null),
-                    fetch('../../Data/races.json').catch(e => null),
-                    fetch('../../Data/backgrounds.json').catch(e => null)
+                    fetch('../../Data/classes.json').catch(()=>null), fetch('../../Data/races.json').catch(()=>null), fetch('../../Data/backgrounds.json').catch(()=>null)
                 ]);
-            
-                if (!classRes || !classRes.ok) throw new Error("Sınıf verisi yüklenemedi.");
-                const classData = await classRes.json();
+                const classData = classRes ? await classRes.json() : { class: [] };
                 classList.value = classData.class || [];
-            
-                if (raceRes && raceRes.ok) {
-                    const rawRaceData = await raceRes.json();
-                    raceList.value = Array.isArray(rawRaceData) ? rawRaceData : (rawRaceData.race || []);
-                }
-            
-                if (bgRes && bgRes.ok) {
-                    const bgData = await bgRes.json();
-                    backgroundList.value = bgData.background || [];
-                }
+                const raceData = raceRes ? await raceRes.json() : { race: [] };
+                raceList.value = Array.isArray(raceData) ? raceData : (raceData.race || []);
+                const bgData = bgRes ? await bgRes.json() : { background: [] };
+                backgroundList.value = bgData.background || [];
                 
                 loading.value = false;
                 const loader = document.getElementById('initial-loader');
-                if(loader) {
-                    loader.classList.add('fade-out');
-                    setTimeout(() => loader.remove(), 500);
-                }
+                if(loader) { loader.classList.add('fade-out'); setTimeout(() => loader.remove(), 500); }
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const urlSeed = urlParams.get('seed');
-                if (urlSeed) {
-                    seedText.value = urlSeed;
-                    setTimeout(() => loadFromSeed(), 500);
-                }
-            } catch (err) {
-                error.value = "Veri yükleme hatası: " + err.message;
-                loading.value = false;
-                const loader = document.getElementById('initial-loader');
-                if(loader) loader.remove();
-            }
+                if (urlSeed) { seedText.value = urlSeed; setTimeout(() => loadFromSeed(), 500); }
+            } catch (err) { error.value = "Veri hatası"; loading.value = false; document.getElementById('initial-loader')?.remove(); }
         
             window.addEventListener('resize', () => {
-                const isDesktop = window.innerWidth > 860;
-                if (isDesktop) { if (!isSkillsExpanded.value) isSkillsExpanded.value = true; } 
-                else { if (isSkillsExpanded.value) isSkillsExpanded.value = false; }
+                isSkillsExpanded.value = window.innerWidth > 860;
             });
         });
 
-        onUnmounted(() => {
-            document.removeEventListener('click', handleClickOutside);
-        });
+        onUnmounted(() => { document.removeEventListener('click', handleClickOutside); });
 
         // ============================================================
         // RETURN OBJECT
         // ============================================================
         return {
-            store, 
-            currentStep, 
-            steps, 
-            nextStep, 
-            prevStep, 
-            loading, 
-            error,
-            isMobileMenuOpen, 
-            toggleMobileMenu, 
-            isMobileSheetOpen, 
-            toggleMobileSheet,
-            copyLink, 
-            showToast, 
-            backgroundList, 
-            featList, 
-            seedText, 
-            characterSeed, 
-            loadFromSeed, 
-            copySeed,
-            formatEntry, 
-            parseTags, 
-            dndIcons, 
-            isSheetMode, 
-            activeSheetTab, 
-            activeInventoryTab, // YENİ EKLENDİ
-            isSkillsExpanded, // <--- EKLENDİ
-            finishCreation: handleFinish,
-            hasCreatedSheet, 
-            activeFeatureSubTab, 
-            raceList, 
-            flatRaceList, 
-            selectedFlatOption, 
-            raceBonuses, 
-            activeRaceTraits, 
-            raceChoiceConfig,
-            classList, 
-            selectedClass, 
-            selectedSubclass, 
-            targetLevel, 
-            userChoices, 
-            subclassOptions, 
-            subclassUnlockLevel, 
-            activeFeatures, 
-            getHitDie, 
-            getAvailableOptions, 
-            getChoiceDetail,
-            statLabels, 
-            selectableStats, 
-            scoreMethods, 
-            selectedScoreMethod, 
-            isOptionDisabled, 
-            getFlexCost, 
-            pointBuyBudget, 
-            currentPbCost, 
-            changePointBuy, 
-            standardArrayValues, 
-            rolledPool, 
-            hasRolled, 
-            isCapped20, 
-            isRolling,
-            rollStats: handleRoll, 
-            statBonuses, 
-            finalAbilityScores, 
-            proficiencyBonus,
-            handleOrbClick, 
-            scoreAllocations, 
-            draggedItem, 
-            assignScore, 
-            unassignScore, 
-            syncAllocationsFromStore,
-            SKILL_DEFINITIONS, 
-            calculatedSkills, 
-            toggleSkill, 
-            skillBudget, 
-            expertiseBudget, 
-            raceSkillInfo, 
-            classSkillInfo, 
-            currentProfCount, 
-            currentExpertCount, 
-            avatarGallery, 
-            avatarList, 
-            showCustomAvatarInput, 
-            isGalleryExpanded,
-            toggleGallery,
-            galleryContainer,
-            galleryButton,
-            classResources,   
-            updateResource,   
-            handleRest,
-            diceResult, 
-            rollD20,
-            rollDamage, // YENİ EKLENDİ
-            closeDiceResult, 
-            isSaveProficient,
-            diceHistory, 
-            isHistoryOpen, 
-            clearHistory, 
-            toggleHistory,
-            isInventoryOpen,
-            calculatedAC,
-            attackList,
-            weaponList, armorList,
-            toggleWeapon, setArmor, toggleShield,
-            toggleWeaponProficiency,
-            checkProficiencyRule,
-            showWarningToast,
-
-            isCustomWeaponFormOpen,
-            customWeaponForm,
-            saveCustomWeapon,
-
-            isHpModalOpen,
-            hpModalValue,
-            maxHP,
-            currentHP,
-            hpStatusClass,
-            setFullHp,
-            adjustHpModalValue, // <--- Bunu ekle
-            applyHpChange, // <--- Bunu ekle
-
+            store, currentStep, steps, nextStep, prevStep, loading, error,
+            isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
+            copyLink, showToast, backgroundList, featList, seedText, characterSeed, loadFromSeed, copySeed,
+            formatEntry, parseTags, dndIcons, isSheetMode, activeSheetTab, activeInventoryTab, isSkillsExpanded,
+            finishCreation: handleFinish, hasCreatedSheet, activeFeatureSubTab, raceList, flatRaceList,
+            selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig, classList, selectedClass,
+            selectedSubclass, targetLevel, userChoices, subclassOptions, subclassUnlockLevel, activeFeatures,
+            getHitDie, getAvailableOptions, getChoiceDetail, statLabels, selectableStats, scoreMethods,
+            selectedScoreMethod, isOptionDisabled, getFlexCost, pointBuyBudget, currentPbCost, changePointBuy,
+            standardArrayValues, rolledPool, hasRolled, isCapped20, isRolling, rollStats: handleRoll,
+            statBonuses, finalAbilityScores, proficiencyBonus, handleOrbClick, scoreAllocations, draggedItem,
+            assignScore, unassignScore, syncAllocationsFromStore, SKILL_DEFINITIONS, calculatedSkills, toggleSkill,
+            skillBudget, expertiseBudget, raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount,
+            avatarGallery, avatarList, showCustomAvatarInput, isGalleryExpanded, toggleGallery, galleryContainer,
+            galleryButton, classResources, updateResource, handleRest, diceResult, rollD20, rollDamage,
+            closeDiceResult, isSaveProficient, diceHistory, isHistoryOpen, clearHistory, toggleHistory,
+            isInventoryOpen, calculatedAC, attackList, weaponList, armorList, toggleWeapon, setArmor, toggleShield,
+            toggleWeaponProficiency, checkProficiencyRule, showWarningToast, isCustomWeaponFormOpen, customWeaponForm,
+            saveCustomWeapon, isHpModalOpen, hpModalValue, maxHP, currentHP, hpStatusClass, setFullHp,
+            adjustHpModalValue, applyHpChange
         };
     }
 });
