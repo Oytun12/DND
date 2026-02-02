@@ -1,194 +1,258 @@
-import { ref, computed } from 'vue';
-import { store } from './store.js';
-import { useDiceLogic } from './logicDice.js';
+/* ============================================================
+   LOGICSPELLS.JS - FINAL FIXED VERSION
+   ============================================================ */
 
-export function useSpellLogic(targetLevel, selectedClass, finalAbilityScores) {
-    
-    const { rollD20, rollDamage } = useDiceLogic();
+if (typeof window.ALL_DATA === 'undefined') window.ALL_DATA = {};
+let modalDisplayLimit = 50;
+let isScrollListenerAttached = false;
 
-    // --- 1. VERİ YÖNETİMİ ---
-    const allSpells = ref([]);
-    const isLoadingSpells = ref(false);
+/* --- ANA RENDER --- */
+window.renderSpellTab = async function() {
+    updateSpellStats();
+    if (!window.ALL_DATA.spells || window.ALL_DATA.spells.length === 0) {
+        const container = document.getElementById('spell-list-container');
+        if(container) container.innerHTML = `<div style="text-align:center; padding:20px; color:#e67e22;">⏳ Büyü veritabanı yükleniyor...</div>`;
+        await loadSpellData();
+    }
+    renderMySpellList();
+};
 
-    // JSON verisini yükle (SADELEŞTİRİLMİŞ VE GARANTİ)
-    const loadSpellsData = async () => {
-        if (allSpells.value.length > 0) return; // Zaten yüklü, çık.
-        
-        isLoadingSpells.value = true;
-        
-        // HTML dosyan "KarakterYaratma" klasöründe.
-        // Data klasörü ise bir üstte "KarakterCreate/Data" içinde.
-        // Bu yüzden "../Data/..." yolu doğrudur.
-        const targetPath = '../../Data/spells/spells-phb.json';
-
-        try {
-            console.log("Büyü verisi isteniyor:", targetPath); // Konsola bilgi bas
-            const response = await fetch(targetPath);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP Hatası: ${response.status}`);
-            }
-
-            const data = await response.json();
-            
-            // Veri yapısını çöz
-            let rawList = [];
-            if (Array.isArray(data)) rawList = data;
-            else if (data.spell) rawList = data.spell;
-            
-            // OKUL İSİMLERİ SÖZLÜĞÜ (YENİ)
-            const schoolMap = {
-                'A': 'Abjuration',
-                'C': 'Conjuration',
-                'D': 'Divination',
-                'E': 'Enchantment',
-                'V': 'Evocation',
-                'I': 'Illusion',
-                'N': 'Necromancy',
-                'T': 'Transmutation'
-            };
-
-            // Veriyi işle ve hafızaya al
-            allSpells.value = rawList.map((s, index) => ({
-                ...s,
-                id: (s.name ? s.name.replace(/[\s\(\)]/g, '_').toLowerCase() : 'spell') + '_' + index,
-                
-                // OKUL İSMİNİ DÜZELT (YENİ)
-                // Eğer harita içinde varsa uzun halini al, yoksa olduğu gibi bırak
-                school: schoolMap[s.school] || s.school,
-
-                searchString: (
-                    (s.name || '') + ' ' + 
-                    (schoolMap[s.school] || s.school) + ' ' + // Aramaya da uzun halini ekle
-                    (s.level || '')
-                ).toLocaleLowerCase('tr')
-            }));
-
-            console.log(`Toplam ${allSpells.value.length} büyü işlendi.`);
-
-        } catch (e) {
-            console.error("KRİTİK HATA:", e);
-            alert(`Büyü verisi yüklenemedi!\nDosya Yolu: ${targetPath}\nHata: ${e.message}`);
-        } finally {
-            isLoadingSpells.value = false;
-        }
-    };
-
-    // --- 2. KİTAP VE SLOT YÖNETİMİ ---
-    
-    // Kullanıcının bildiği büyüler
-    const knownSpellsList = computed(() => {
-        return store.spells.known.map(kId => {
-            return allSpells.value.find(s => s.id === kId) || null;
-        }).filter(s => s !== null).sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
-    });
-
-    // Seviye bazlı gruplama
-    const groupedSpells = computed(() => {
-        const groups = {};
-        knownSpellsList.value.forEach(spell => {
-            const lvl = spell.level;
-            if (!groups[lvl]) groups[lvl] = [];
-            groups[lvl].push(spell);
-        });
-        return groups;
-    });
-
-    // Slot Maksimumlarını Hesapla
-    const maxSpellSlots = computed(() => {
-        const lvl = targetLevel.value || 1;
-        const clsName = selectedClass.value?.name || '';
-        
-        const slots = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0 };
-        let casterLevel = lvl;
-        
-        // Sınıf tipine göre çarpan
-        if (['Paladin', 'Kolcu', 'Ranger'].includes(clsName)) casterLevel = Math.floor(lvl / 2);
-        else if (['Warlock', 'Sihirbaz'].includes(clsName)) casterLevel = 0; // Warlock özel hesaplanır
-        else if (['Rogue', 'Fighter', 'Dövüşçü', 'Düzenbaz'].includes(clsName)) casterLevel = Math.floor(lvl / 3); // Arcane Trickster vb.
-
-        if (casterLevel >= 1) slots[1] = 2;
-        if (casterLevel >= 2) slots[1] = 3;
-        if (casterLevel >= 3) { slots[1] = 4; slots[2] = 2; }
-        if (casterLevel >= 4) { slots[2] = 3; }
-        if (casterLevel >= 5) { slots[3] = 2; }
-        if (casterLevel >= 6) { slots[3] = 3; }
-        if (casterLevel >= 7) { slots[4] = 1; }
-        if (casterLevel >= 8) { slots[4] = 2; }
-        if (casterLevel >= 9) { slots[4] = 3; slots[5] = 1; }
-        if (casterLevel >= 10) { slots[5] = 2; }
-        // ... (Tablo devam eder)
-
-        return slots;
-    });
-
-    const toggleSpellKnown = (spellId) => {
-        const idx = store.spells.known.indexOf(spellId);
-        if (idx > -1) store.spells.known.splice(idx, 1);
-        else store.spells.known.push(spellId);
-    };
-
-    // --- 3. BÜYÜ ATMA (CASTING) ---
-    const castSpell = (spell) => {
-        let diceString = null;
-        let modifier = 0;
-        let damageType = spell.damageInflict ? spell.damageInflict[0] : 'Büyü';
-
-        // JSON içeriğini metne çevirip içinde zar ara
-        const rawText = JSON.stringify(spell.entries);
-
-        // Gelişmiş Regex: {@dice 8d6} veya {@dice 1d4+1} veya {@damage ...} hepsini yakalar
-        const regex = /{@(?:dice|damage)\s+([0-9]+d[0-9]+)(?:\s*([+\-])\s*([0-9]+))?.*?}/i;
-        
-        const match = rawText.match(regex);
-
-        if (match) {
-            diceString = match[1]; // "8d6" veya "1d4"
-            
-            // Eğer +1 veya -2 gibi bonus varsa
-            if (match[2] && match[3]) {
-                const sign = match[2] === '-' ? -1 : 1;
-                modifier = sign * parseInt(match[3]);
-            }
-        }
-
-        if (diceString) {
-            console.log(`Büyü Atılıyor: ${spell.name}, Zar: ${diceString}, Bonus: ${modifier}`);
-            rollDamage(spell.name, diceString, modifier, damageType);
-        } else {
-            alert(`${spell.name} kullanıldı! (Otomatik hasar zarı bulunamadı)`);
-        }
-    };
-
-    // --- 4. PARSER ---
-    const renderEntry = (entry) => {
-        if (typeof entry === 'string') {
-            return entry.replace(/{@dice\s(.*?)}/g, '<b>$1</b>')
-                        .replace(/{@condition\s(.*?)}/g, '<u>$1</u>')
-                        .replace(/{@spell\s(.*?)}/g, '<i>$1</i>')
-                        .replace(/{@damage\s(.*?)}/g, '<b>$1</b>');
-        }
-        
-        if (entry.type === 'list') {
-            return `<ul>${entry.items.map(i => `<li>${renderEntry(i)}</li>`).join('')}</ul>`;
-        }
-
-        if (entry.type === 'entries') {
-            return `<div><strong>${entry.name}:</strong> ${entry.entries.map(renderEntry).join(' ')}</div>`;
-        }
-        
-        return '';
-    };
-
-    return {
-        allSpells,
-        isLoadingSpells,
-        loadSpellsData,
-        knownSpellsList,
-        groupedSpells,
-        maxSpellSlots,
-        toggleSpellKnown,
-        castSpell,
-        renderEntry
-    };
+async function loadSpellData() {
+    try {
+        const response = await fetch('../../Data/spells/spells-phb.json');
+        if (!response.ok) throw new Error(`HTTP Hata: ${response.status}`);
+        const json = await response.json();
+        window.ALL_DATA.spells = json.spell || json;
+    } catch (err) { console.error("Büyü hatası:", err); }
 }
+
+/* --- EKLEME İŞLEMİ (DOM MANIPULATION İLE ANLIK TEPKİ) --- */
+window.addSpellToCharacter = function(spellName, btnElement) {
+    const store = window.store;
+    if (!store) return;
+    if (!store.spells) store.spells = { known: [] };
+    if (!store.spells.known) store.spells.known = [];
+    
+    // Zaten ekli mi?
+    if (store.spells.known.includes(spellName)) {
+        if (btnElement) {
+            btnElement.innerText = "✓ Ekli";
+            btnElement.disabled = true;
+            btnElement.style.cssText = "background-color: #2a2a2a !important; color: #888 !important; border: 1px solid #444;";
+        }
+        return;
+    }
+    
+    store.spells.known.push(spellName);
+    renderMySpellList(); 
+    
+    // BUTONU GÜNCELLE
+    if (btnElement) {
+        btnElement.innerText = "✓ Eklendi";
+        btnElement.disabled = true;
+        // !important ile CSS'i ezdiğimizden emin oluyoruz
+        btnElement.style.cssText = "background-color: #2a2a2a !important; color: #888 !important; border: 1px solid #444;";
+    }
+};
+
+/* --- HTML OLUŞTURUCU (EVENT PARAMETRESİ İLE) --- */
+window.filterAndRenderModalSpells = function(keepScroll = false) {
+    const searchInput = document.getElementById('modal-spell-search-input');
+    const levelSelect = document.getElementById('modal-spell-level-filter');
+    const resultsContainer = document.getElementById('modal-spell-results');
+    const scrollContainer = document.querySelector('#modal-spell-search .modal-body');
+
+    if(!searchInput || !resultsContainer || !window.ALL_DATA.spells) return;
+
+    const currentScroll = scrollContainer ? scrollContainer.scrollTop : 0;
+    const searchText = searchInput.value.toLowerCase();
+    const levelVal = levelSelect ? levelSelect.value : "all";
+
+    if (!keepScroll) { modalDisplayLimit = 50; if(scrollContainer) scrollContainer.scrollTop = 0; }
+    
+    const filtered = window.ALL_DATA.spells.filter(spell => {
+        if (searchText && !spell.name.toLowerCase().includes(searchText)) return false;
+        if (levelVal !== "all" && spell.level.toString() !== levelVal) return false;
+        return true;
+    });
+
+    const visibleSpells = filtered.slice(0, modalDisplayLimit);
+    resultsContainer.innerHTML = "";
+
+    if(visibleSpells.length === 0) {
+        resultsContainer.innerHTML = "<div style='text-align:center; color:#888;'>Sonuç bulunamadı.</div>";
+        return;
+    }
+
+    visibleSpells.forEach(spell => {
+        const safeName = spell.name.replace(/'/g, "\\'");
+        const isAdded = window.store && window.store.spells && window.store.spells.known.includes(spell.name);
+        
+        let btnHTML = "";
+        if (isAdded) {
+            btnHTML = `<button class="btn-select-spell" disabled style="background:#2a2a2a; color:#888;">✓ Ekli</button>`;
+        } else {
+            // DİKKAT: 'this' parametresi tırnak içinde değil!
+            btnHTML = `<button class="btn-select-spell" onclick="window.addSpellToCharacter('${safeName}', this)">Ekle</button>`;
+        }
+
+        const div = document.createElement('div');
+        div.className = 'spell-result-card';
+        div.innerHTML = `
+            <div>
+                <strong>${spell.name}</strong> <small style="color:#888">(${spell.level}. Seviye)</small>
+            </div>
+            ${btnHTML}
+        `;
+        resultsContainer.appendChild(div);
+    });
+
+    if (keepScroll && scrollContainer) scrollContainer.scrollTop = currentScroll; // Değişken adı currentScroll olduğundan emin ol
+}
+
+/* --- DİĞER FONKSİYONLAR (AYNI KALACAK) --- */
+window.removeSpellFromCharacter = function(spellName) {
+    if (!confirm("Silinsin mi?")) return;
+    const store = window.store;
+    if (!store || !store.spells) return;
+    store.spells.known = store.spells.known.filter(s => s !== spellName);
+    renderMySpellList();
+};
+
+function updateSpellStats() {
+    const store = window.store || {};
+    const charClass = (store.class && store.class.selected) ? store.class.selected.name : "Wizard";
+    const scores = (store.abilities && store.abilities.base) ? store.abilities.base : { int: 10, wis: 10, cha: 10 };
+    const SPELL_ABILITY_MAP = { "Wizard": "int", "Rogue": "int", "Fighter": "int", "Cleric": "wis", "Druid": "wis", "Ranger": "wis", "Monk": "wis", "Bard": "cha", "Paladin": "cha", "Sorcerer": "cha", "Warlock": "cha", "Barbarian": "cha" };
+    const abilityKey = SPELL_ABILITY_MAP[charClass] || "int";
+    const score = scores[abilityKey] || 10;
+    const mod = Math.floor((score - 10) / 2);
+    const level = 1; 
+    const prof = Math.ceil(level / 4) + 1;
+    
+    const elName = document.getElementById('spell-ability-name');
+    if(elName) {
+        elName.innerText = abilityKey.toUpperCase();
+        document.getElementById('spell-ability-mod').innerText = (mod >= 0 ? "+" : "") + mod;
+        document.getElementById('spell-save-dc').innerText = 8 + prof + mod;
+        document.getElementById('spell-attack-bonus').innerText = "+" + (prof + mod);
+    }
+}
+
+function renderMySpellList() {
+    const container = document.getElementById('spell-list-container');
+    if(!container) return;
+    container.innerHTML = "";
+    const store = window.store || { spells: { known: [] } };
+    if (!store.spells) store.spells = { known: [] };
+    const mySpells = (store.spells.known || []).map(name => window.ALL_DATA.spells.find(s => s.name === name) || { name: name, level: 0, school: "U", entries: ["Veri yok"] });
+
+    for (let i = 0; i <= 9; i++) {
+        const spellsOfLevel = mySpells.filter(s => s.level === i);
+        if (spellsOfLevel.length > 0 || i <= 5) {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'spell-level-group';
+            const levelTitle = i === 0 ? "Cantrips (0. Seviye)" : `${i}. Seviye`;
+            let slotsHTML = "";
+            if (i > 0) {
+                const maxSlots = i === 1 ? 4 : (i < 6 ? 3 : 1); 
+                slotsHTML = `<div class="spell-slots"><span class="slot-label">Slotlar:</span>`;
+                for(let s=0; s<maxSlots; s++) slotsHTML += `<input type="checkbox" class="slot-checkbox">`;
+                slotsHTML += `</div>`;
+            }
+            groupDiv.innerHTML = `<div class="level-header"><span class="level-title">${levelTitle}</span>${slotsHTML}</div><div class="spell-list-items"></div>`;
+            const listDiv = groupDiv.querySelector('.spell-list-items');
+            
+            if (spellsOfLevel.length === 0) listDiv.innerHTML = `<div style="padding:10px; color:#666;">-</div>`;
+            else {
+                spellsOfLevel.forEach(spell => {
+                    const safeName = spell.name.replace(/'/g, "\\'");
+                    const detailsHTML = renderEntries(spell.entries);
+                    const row = document.createElement('div');
+                    row.className = 'spell-row';
+                    row.innerHTML = `
+                        <div class="spell-row-header">
+                            <div class="spell-info" onclick="window.toggleSpellDetail(this)">
+                                <span class="spell-name">${spell.name} <span class="arrow-icon">▼</span></span>
+                                <span class="spell-meta">${formatSchool(spell.school)} • ${formatComponents(spell.components)}</span>
+                            </div>
+                            <button class="btn-remove-spell" onclick="window.removeSpellFromCharacter('${safeName}')">🗑</button>
+                        </div>
+                        <div class="spell-detail-content">${detailsHTML}</div>
+                    `;
+                    listDiv.appendChild(row);
+                });
+            }
+            container.appendChild(groupDiv);
+        }
+    }
+}
+
+window.toggleSpellDetail = function(el) {
+    el.closest('.spell-row').classList.toggle('expanded');
+};
+
+function renderEntries(entries) {
+    if (!entries) return "";
+    let html = "";
+    if (!Array.isArray(entries)) entries = [entries];
+    entries.forEach(e => {
+        if (typeof e === 'string') html += `<p>${format5eText(e)}</p>`;
+        else if (e.entries) html += `<p><strong>${e.name}.</strong> ${renderEntries(e.entries)}</p>`;
+    });
+    return html;
+}
+
+function format5eText(text) {
+    if (!text || typeof text !== 'string') return text || "";
+    
+    // ZAR: onclick="window.globalRollDice('1d6')"
+    // Not: event.stopPropagation() ekledik ki satır kapanmasın.
+    
+    // {@damage 8d6} -> ✨ 8d6
+    text = text.replace(/{@damage ([^}]+)}/g, (m, d) => 
+        `<span class="spell-text-damage clickable" onclick="event.stopPropagation(); window.globalRollDice('${d}')">✨ ${d}</span>`
+    );
+    
+    // {@dice 1d20} -> ✨ 1d20
+    text = text.replace(/{@dice ([^}]+)}/g, (m, d) => 
+        `<span class="spell-text-damage clickable" onclick="event.stopPropagation(); window.globalRollDice('${d}')">✨ ${d}</span>`
+    );
+    
+    // Diğerleri
+    text = text.replace(/{@save (\w+)}/g, '<span class="spell-text-save">$1 Save</span>');
+    text = text.replace(/{@dc ([^}]+)}/g, '<span class="spell-text-save">DC $1</span>');
+    text = text.replace(/{@\w+ ([^}|]+)(?:\|[^}]+)?}/g, '<span class="spell-text-link">$1</span>');
+    
+    return text;
+}
+
+window.openSpellModal = async function() {
+    document.getElementById('modal-spell-search').classList.remove('hidden');
+    if (!window.ALL_DATA.spells) await loadSpellData();
+    // Scroll listener
+    const body = document.querySelector('#modal-spell-search .modal-body');
+    if(body && !isScrollListenerAttached) {
+        body.addEventListener('scroll', () => {
+            if (body.scrollTop + body.clientHeight >= body.scrollHeight - 50) {
+                modalDisplayLimit += 50;
+                filterAndRenderModalSpells(true);
+            }
+        });
+        isScrollListenerAttached = true;
+    }
+    filterAndRenderModalSpells();
+};
+window.closeSpellModal = function() { document.getElementById('modal-spell-search').classList.add('hidden'); };
+
+document.addEventListener("DOMContentLoaded", () => {
+    const sInput = document.getElementById('modal-spell-search-input');
+    if(sInput) sInput.addEventListener('input', () => { modalDisplayLimit=50; window.filterAndRenderModalSpells(); });
+    const lSelect = document.getElementById('modal-spell-level-filter');
+    if(lSelect) lSelect.addEventListener('change', () => { modalDisplayLimit=50; window.filterAndRenderModalSpells(); });
+});
+
+function formatSchool(code) { const map = { "E": "Evoc", "C": "Conj", "N": "Necro", "I": "Illu", "A": "Abjur", "T": "Trans", "D": "Div", "EN": "Ench" }; return map[code] || code; }
+function formatComponents(comp) { if (!comp) return ""; let res = []; if(comp.v) res.push("V"); if(comp.s) res.push("S"); if(comp.m) res.push("M"); return res.join(", "); }
+
+export function useSpellLogic() { return {}; }

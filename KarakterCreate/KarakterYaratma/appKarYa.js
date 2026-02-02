@@ -12,12 +12,15 @@ import { useSkillLogic } from './src/logicSkills.js';
 import { avatarList } from './src/data/avatarList.js';
 import { useDiceLogic } from './src/logicDice.js';
 import { useInventoryLogic } from './src/logicInventory.js';
-import { useSpellLogic } from './src/logicSpells.js'; // En tepeye import olarak ekle
+import { useSpellLogic } from './src/logicSpells.js'; 
 
 
 const app = createApp({
     setup() {
         
+        // GLOBAL STORE ERİŞİMİ (Logic dosyaları için şart)
+        window.store = store;
+
         // ============================================================
         // 1. GENEL SAYFA MANTIĞI
         // ============================================================
@@ -29,8 +32,7 @@ const app = createApp({
             activeFeatureSubTab 
         } = useCharacterSheet();
 
-        // Envanter Alt Sekmesi için Değişken (YENİ)
-        const activeInventoryTab = ref('owned'); // 'owned' veya 'all'
+        const activeInventoryTab = ref('owned'); 
         
         // ============================================================
         // 2. IRK MANTIĞI
@@ -44,7 +46,6 @@ const app = createApp({
             raceChoiceConfig 
         } = useRaceLogic();
 
-        // Seçili ırkı dinleyen computed (Envanter mantığı için gerekli)
         const selectedRace = computed(() => store.race.selected);
 
         // ============================================================
@@ -110,9 +111,7 @@ const app = createApp({
             currentExpertCount
         } = useSkillLogic(finalAbilityScores, proficiencyBonus);
 
-        // Yetenek Paneli Durumu (Başlangıçta ekran genişliğine göre karar ver)
         const isSkillsExpanded = ref(window.innerWidth > 860);
-
 
         // ============================================================
         // UI & SİSTEM DEĞİŞKENLERİ
@@ -129,7 +128,6 @@ const app = createApp({
         const featList = ref([ "Alert", "Actor", "Athlete", "Lucky", "Tough", "War Caster" ]);
         const seedText = ref('');
 
-        // --- HIZLI AVATAR GALERİSİ ---
         const avatarGallery = [
             "../../img/avatars/default-avatar.png",
             "../../img/avatars/barbarian.jpg",
@@ -146,8 +144,6 @@ const app = createApp({
             "../../img/avatars/wizard.jpg"
         ];
 
-        
-
         const showCustomAvatarInput = ref(false);
         const isGalleryExpanded = ref(false); 
         const isMobileMenuOpen = ref(false);
@@ -157,24 +153,17 @@ const app = createApp({
 
         const toggleGallery = () => {
             isGalleryExpanded.value = !isGalleryExpanded.value;
-                
             if (isGalleryExpanded.value) {
-                // 1. Vue'nun DOM'u güncellemesini bekle
                 nextTick(() => {
-                    // 2. Mobil tarayıcıların animasyonu algılaması için küçük bir gecikme ekle (300ms)
                     setTimeout(() => {
                         if (galleryContainer.value) {
-                            galleryContainer.value.scrollIntoView({ 
-                                behavior: 'smooth', 
-                                block: 'start' // Mobilde en üste hizalamak en iyisidir
-                            });
+                            galleryContainer.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }
-                    }, 300); // 300ms, animasyonun başladığından emin olmak için yeterlidir
+                    }, 300);
                 });
             }
         };
 
-        // --- DIŞARI TIKLAMA İLE GALERİYİ KAPATMA ---
         const galleryContainer = ref(null); 
         const galleryButton = ref(null);    
 
@@ -186,7 +175,6 @@ const app = createApp({
             }
         };
 
-        // --- TOAST BİLDİRİMİ ---
         const showToast = (message, icon = '✅') => {
             const existing = document.querySelector('.toast-notification');
             if(existing) existing.remove();     
@@ -203,15 +191,7 @@ const app = createApp({
 
         const handleFinish = () => { 
             finishCreation(showToast);
-
-            // Sayfa yapısı tamamen değiştiği için DOM güncellemesini bekle
-            nextTick(() => {
-                // Sayfanın en tepesine (0, 0) noktasına kaydır
-                window.scrollTo({ 
-                    top: 0, 
-                    behavior: 'smooth' 
-                });
-            });
+            nextTick(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
         };
         const handleRoll = () => { rollStats(showToast); };
 
@@ -220,24 +200,11 @@ const app = createApp({
         // ============================================================
         const characterSeed = computed(() => {
             const exportData = {
-                n: store.meta.name, 
-                r: store.race.selected?.name, 
-                sr: store.race.subrace?.name, 
-                ac: store.race.abilityChoices,
-                c: store.class.selected?.name, 
-                sc: store.class.subclass?.name, 
-                l: targetLevel.value,
-                b: store.abilities.base, 
-                asi: store.abilities.asi, 
-                bg: store.background.selected?.name,
-                p: store.skills.proficiencies, 
-                e: store.skills.expertises, 
-                ch: userChoices.value,
-                sm: selectedScoreMethod.value, 
-                rp: rolledPool.value,
-                hp: store.hp,
-                inv: store.inventory, 
-                av: store.meta.avatar 
+                n: store.meta.name, r: store.race.selected?.name, sr: store.race.subrace?.name, ac: store.race.abilityChoices,
+                c: store.class.selected?.name, sc: store.class.subclass?.name, l: targetLevel.value,
+                b: store.abilities.base, asi: store.abilities.asi, bg: store.background.selected?.name,
+                p: store.skills.proficiencies, e: store.skills.expertises, ch: userChoices.value,
+                sm: selectedScoreMethod.value, rp: rolledPool.value, hp: store.hp, inv: store.inventory, av: store.meta.avatar 
             };      
             try {
                 const cleanData = cleanObject(JSON.parse(JSON.stringify(exportData)));
@@ -245,16 +212,10 @@ const app = createApp({
             } catch (e) { return ""; }
         });
 
-        const copySeed = () => {
-            navigator.clipboard.writeText(characterSeed.value);
-            showToast("Karakter kodu kopyalandı!");
-        };
-
+        const copySeed = () => { navigator.clipboard.writeText(characterSeed.value); showToast("Karakter kodu kopyalandı!"); };
         const copyLink = () => {
             const url = `${window.location.origin}${window.location.pathname}?seed=${characterSeed.value}`;
-            navigator.clipboard.writeText(url).then(() => {
-                showToast("Link kopyalandı! Arkadaşına gönderebilirsin.", "🔗");
-            });
+            navigator.clipboard.writeText(url).then(() => { showToast("Link kopyalandı! Arkadaşına gönderebilirsin.", "🔗"); });
         };
 
         const loadFromSeed = () => {
@@ -265,12 +226,9 @@ const app = createApp({
                 const data = JSON.parse(jsonStr);                
 
                 store.meta.name = data.n || "";
-                if(data.av) { store.meta.avatar = data.av; } 
-                else { store.meta.avatar = "../../img/avatars/default-avatar.png"; }
-
+                store.meta.avatar = data.av || "../../img/avatars/default-avatar.png";
                 targetLevel.value = data.l || 1; 
                 
-                // Irk Yükleme
                 if (data.r) {
                     const targetSubraceName = data.sr || "Standart";
                     const foundFlatOption = flatRaceList.value.find(option => {
@@ -285,7 +243,6 @@ const app = createApp({
                     }
                 }            
 
-                // Sınıf Yükleme
                 if (data.c) {
                     const foundClass = classList.value.find(x => x.name === data.c);
                     if (foundClass) {
@@ -294,7 +251,6 @@ const app = createApp({
                     }
                 }                
 
-                // Puanlar ve Diğerleri
                 selectedScoreMethod.value = data.sm || 'manual';
                 if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
                 
@@ -304,29 +260,16 @@ const app = createApp({
                 store.skills.proficiencies = [...(data.p || [])];
                 store.skills.expertises = [...(data.e || [])];
                 userChoices.value = { ...data.ch };    
-                
-                // Can Yükleme
                 if (data.hp) { store.hp = { ...store.hp, ...data.hp }; }
+                if (data.inv) { store.inventory = { ...store.inventory, ...data.inv }; }
 
-                // Envanter Yükleme
-                if (data.inv) {
-                    store.inventory = { ...store.inventory, ...data.inv };
-                }
-
-                // Havuzu güncelle
                 setTimeout(() => { syncAllocationsFromStore(); }, 200); 
-
                 showToast("Karakter Başarıyla Yüklendi!", "🚀");
                 finishCreation(); 
                 seedText.value = ''; 
-
-            } catch (e) { 
-                console.error(e);
-                showToast("Yükleme sırasında hata oluştu!", "❌");
-            }
+            } catch (e) { console.error(e); showToast("Yükleme sırasında hata oluştu!", "❌"); }
         };
 
-        // Kaynak Yönetimi
         const updateResource = (id, delta, max) => {
             const current = store.resources[id] !== undefined ? store.resources[id] : max;
             let newVal = current + delta;
@@ -335,29 +278,21 @@ const app = createApp({
             store.resources[id] = newVal;
         };
 
-        // Dinlenme
         const handleRest = (type) => {
-            let msg = "";
-            if (type === 'long') {
-                msg = "Uzun dinlenme: HP, Büyüler ve Yetenekler yenilendi! 💤";
-            } else {
-                msg = "Kısa dinlenme yapıldı. (Warlock büyüleri ve bazı yetenekler yenilendi) ☕";
-            }
+            let msg = type === 'long' ? "Uzun dinlenme: HP, Büyüler ve Yetenekler yenilendi! 💤" : "Kısa dinlenme yapıldı. ☕";
             classResources.value.forEach(res => {
-                if (type === 'long' || res.reset === 'short') {
-                    store.resources[res.id] = res.max;
-                }
+                if (type === 'long' || res.reset === 'short') store.resources[res.id] = res.max;
             });
             showToast(msg);
         };
 
         // ============================================================
-        // ZAR VE HASAR MANTIĞI
+        // ZAR VE HASAR MANTIĞI (FİNAL ENTEGRASYON)
         // ============================================================
         const { 
             diceResult, 
             rollD20,
-            rollDamage, // <--- useDiceLogic'ten otomatik geliyor
+            rollDamage, 
             closeDiceResult, 
             diceHistory,
             isHistoryOpen,
@@ -365,15 +300,20 @@ const app = createApp({
             toggleHistory
         } = useDiceLogic();
 
-        
+        // --- GLOBAL ZAR KÖPRÜSÜ (window.globalRollDice) ---
+        // Bu fonksiyon logicSpells.js (Vanilla JS) tarafından çağrılır.
+        // Vue composable'ı olan rollDamage'i kullanarak ekrana basar.
+        window.globalRollDice = (diceExpression) => {
+            console.log("🎲 Büyü Zarı Tetiklendi:", diceExpression);
+            // logicDice.js'deki mevcut, çalışan fonksiyonu kullanıyoruz.
+            // Bu sayede çift kod (duplicate) olmuyor ve aynı arayüzü kullanıyoruz.
+            rollDamage("Büyü Etkisi", diceExpression, 0, "Büyüsel");
+        };
 
         const isSaveProficient = (key) => {
             const cls = selectedClass.value;
             if (!cls || !cls.proficiency) return false;
-            
             const profs = cls.proficiency.map(p => p.toLowerCase());
-
-            // GENİŞLETİLMİŞ HARİTA (Hem TR, Hem ENG, Hem Kısaltma)
             const map = {
                 str: ['str', 'strength', 'güç', 'kuv', 'kuvvet'],
                 dex: ['dex', 'dexterity', 'çev', 'çeviklik'],
@@ -382,10 +322,7 @@ const app = createApp({
                 wis: ['wis', 'wisdom', 'aki', 'akı', 'akıl', 'bilgelik', 'sezgi'], 
                 cha: ['cha', 'charisma', 'kar', 'karizma']
             };
-
-            // key (örn: 'str') haritada var mı bak
             if (!map[key]) return false;
-
             return map[key].some(term => profs.some(p => p.includes(term)));
         };
 
@@ -394,207 +331,86 @@ const app = createApp({
         // ============================================================
         // 6. ENVANTER (INVENTORY LOGIC)
         // ============================================================
-
-        // ÖZEL SİLAH FORM DEĞİŞKENLERİ
         const isCustomWeaponFormOpen = ref(false);
-        const customWeaponForm = ref({
-            name: '',
-            dmg: '1d6',
-            type: 'Kesici',
-            stat: 'str',
-            bonusHit: 0, // YENİ: Ayrı Tutturma
-            bonusDmg: 0, // YENİ: Ayrı Hasar
-            isProficient: false
-        });
+        const customWeaponForm = ref({ name: '', dmg: '1d6', type: 'Kesici', stat: 'str', bonusHit: 0, bonusDmg: 0, isProficient: false });
 
         const {
-            weaponList, armorList,
-            calculatedAC, attackList,
-            toggleWeapon, toggleWeaponProficiency, 
-            setArmor, toggleShield,
-            checkProficiencyRule,
-            addCustomWeaponToInventory 
+            weaponList, armorList, calculatedAC, attackList,
+            toggleWeapon, toggleWeaponProficiency, setArmor, toggleShield,
+            checkProficiencyRule, addCustomWeaponToInventory 
         } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
 
-        // FORMU KAYDET VE SIFIRLA
         const saveCustomWeapon = () => {
-            if (!customWeaponForm.value.name) {
-                alert("Lütfen silaha bir isim verin.");
-                return;
-            }
-            
+            if (!customWeaponForm.value.name) { alert("Lütfen silaha bir isim verin."); return; }
             addCustomWeaponToInventory(customWeaponForm.value);
-            
-            // Formu Sıfırla
-            customWeaponForm.value = {
-                name: '', 
-                dmg: '1d6', 
-                type: 'Kesici', 
-                stat: 'str', 
-                bonusHit: 0, 
-                bonusDmg: 0, 
-                isProficient: false
-            };
+            customWeaponForm.value = { name: '', dmg: '1d6', type: 'Kesici', stat: 'str', bonusHit: 0, bonusDmg: 0, isProficient: false };
             isCustomWeaponFormOpen.value = false;
-            
             alert("Silah başarıyla eklendi! Çantam sekmesinden görebilirsiniz.");
         };
-
-        // Toast Fonksiyonu
         const showWarningToast = (msg) => { alert("⚠️ DİKKAT: " + msg); };
 
-
-
-   
-
-            // ============================================================
-        // 8. BÜYÜ SİSTEMİ (GARANTİLİ VERSİYON)
         // ============================================================
-        const {
-            allSpells,
-            isLoadingSpells,
-            loadSpellsData,
-            knownSpellsList,
-            groupedSpells,
-            maxSpellSlots,
-            toggleSpellKnown,
-            castSpell,
-            renderEntry
-        } = useSpellLogic(targetLevel, selectedClass, finalAbilityScores);
-
-        // UI Değişkenleri
-        const isSpellBrowserOpen = ref(false);
-        const spellSearchQuery = ref("");
-        
-        // KRİTİK: Başlangıçta 50 büyü göster. Bu değişken eksikse liste boş gelir!
-        const browserDisplayLimit = ref(50); 
-
-        // Pencere açılınca veriyi yüklemeyi ZORLA
-        watch(isSpellBrowserOpen, (newValue) => {
-            if (newValue === true) {
-                console.log("Büyü kütüphanesi açıldı, veri kontrol ediliyor...");
-                loadSpellsData(); // Veri yoksa çeker, varsa pas geçer
-                browserDisplayLimit.value = 50; // Scroll'u başa sar
-            }
-        });
-
-        // Filtreli Liste (Sıralı ve Limitli)
-        const filteredSpells = computed(() => {
-            if (!allSpells.value || allSpells.value.length === 0) return [];
-
-            const q = spellSearchQuery.value.toLowerCase();
-            
-            // 1. Filtrele
-            let result = allSpells.value.filter(s => s.searchString && s.searchString.includes(q));
-
-            // 2. SIRALA (Önce Seviye, Sonra İsim)
-            result.sort((a, b) => {
-                // Seviye farkı varsa ona göre sırala (Küçükten büyüğe)
-                if (a.level !== b.level) {
-                    return a.level - b.level;
-                }
-                // Seviyeler aynıysa isme göre sırala (Alfabetik)
-                return a.name.localeCompare(b.name);
-            });
-
-            // 3. Limitle (Sonsuz Kaydırma için)
-            return result.slice(0, browserDisplayLimit.value);
-        });
-
-        // Sonsuz Kaydırma (Infinite Scroll)
-        const onSpellBrowserScroll = (e) => {
-            const { scrollTop, clientHeight, scrollHeight } = e.target;
-            // Listenin sonuna yaklaşıldı mı?
-            if (scrollTop + clientHeight >= scrollHeight - 100) {
-                // Eğer daha fazla veri varsa, limiti 50 artır
-                if (filteredSpells.value.length >= browserDisplayLimit.value) {
-                    browserDisplayLimit.value += 50;
-                }
-            }
-        };
-
+        // 7. CAN (HP) YÖNETİMİ
         // ============================================================
-        // 7. CAN (HP) YÖNETİMİ SİSTEMİ (YENİ)
-        // ============================================================
-        
         const isHpModalOpen = ref(false);
-        const hpModalValue = ref(0); // Inputtaki değer
+        const hpModalValue = ref(0); 
 
-        // 1. Maksimum Can Hesabı (Tekrar kullanılabilir hale getirdik)
         const maxHP = computed(() => {
             if (!selectedClass.value) return 0;
-            
             const hitDie = parseInt(getHitDie(selectedClass.value)) || 8;
             const conMod = Math.floor(((finalAbilityScores.value.con || 10) - 10) / 2);
             const lvl = targetLevel.value;
-
-            // Seviye 1: Full Zar + Con
-            // Sonraki Seviyeler: (Zar/2 + 1) + Con
-            const firstLevel = hitDie + conMod;
-            const nextLevels = ((hitDie / 2) + 1 + conMod) * (lvl - 1);
-
-            return firstLevel + nextLevels;
+            return (hitDie + conMod) + ((hitDie / 2) + 1 + conMod) * (lvl - 1);
         });
 
-        // 2. Mevcut Can (Store ile senkronize)
         const currentHP = computed({
-            get: () => {
-                // Eğer store'da değer yoksa (null), karakter full candadır.
-                if (store.hp.current === null || store.hp.current === undefined) {
-                    return maxHP.value;
-                }
-                return store.hp.current;
-            },
+            get: () => (store.hp.current === null || store.hp.current === undefined) ? maxHP.value : store.hp.current,
             set: (val) => {
-                // Sınırları koru (0 ile Max arası)
                 if (val > maxHP.value) val = maxHP.value;
                 if (val < 0) val = 0;
                 store.hp.current = val;
             }
         });
 
-        // 3. Renk Sınıfı Belirleyici (%30 ve %10 kuralı)
         const hpStatusClass = computed(() => {
             if (maxHP.value === 0) return '';
             const percent = (currentHP.value / maxHP.value) * 100;
-
-            if (percent <= 0) return 'hp-dead'; // Ölü (Gri/Siyah)
-            if (percent <= 10) return 'hp-critical'; // Kritik (Kırmızı Yanıp Sönen)
-            if (percent <= 30) return 'hp-low'; // Düşük (Turuncu)
-            return ''; // Normal (Beyaz/Yeşil)
+            if (percent <= 0) return 'hp-dead'; 
+            if (percent <= 10) return 'hp-critical'; 
+            if (percent <= 30) return 'hp-low'; 
+            return ''; 
         });
 
-        // 4. İşlemler (SADELEŞTİRİLDİ & BİRLEŞTİRİLDİ)
-        
-        // Değeri değiştir (Artık eksiye de düşebilir)
-        const adjustHpModalValue = (amount) => {
-            hpModalValue.value += amount;
-        };
-
-        // Tek Buton Mantığı: Artıysa iyileş, eksiyse hasar al
+        const adjustHpModalValue = (amount) => { hpModalValue.value += amount; };
         const applyHpChange = () => {
             const val = hpModalValue.value;
             if (val === 0) return;
-
-            // currentHP computed özelliği zaten sınırları (0 ve Max) koruyor
-            // Bu yüzden direkt topluyoruz. (Hasar ise val negatiftir, toplamak çıkartmak demektir)
             currentHP.value += val;
-
-            // Mesaj ver
             if (val > 0) showToast(`${val} İyileşildi!`, "💚");
             else showToast(`${Math.abs(val)} Hasar Alındı!`, "🩸");
-
-            // Sıfırla ve kapat
             hpModalValue.value = 0;
             isHpModalOpen.value = false;
         };
+        const setFullHp = () => { currentHP.value = maxHP.value; showToast("Can tamamen yenilendi!", "✨"); };
 
-        const setFullHp = () => {
-            currentHP.value = maxHP.value;
-            showToast("Can tamamen yenilendi!", "✨");
-            // isHpModalOpen.value = false; // İsteğe bağlı: Resetleyince pencere kapanmasın, oyuncu görsün
-        };
+        // ============================================================
+        // 8. BÜYÜ SİSTEMİ (YENİ - HİBRİT ENTEGRASYON)
+        // ============================================================
+        
+        // Sadece import edilmesi yeterli, logicSpells.js window'a fonksiyonları atar.
+        useSpellLogic();
 
+        // Büyü sekmesine geçildiğinde DOM'un oluşmasını bekleyip render fonksiyonunu tetikler
+        watch(activeSheetTab, (newTab) => {
+            if (newTab === 'spells') {
+                setTimeout(() => {
+                    if (typeof window.renderSpellTab === 'function') {
+                        console.log("Büyü sekmesi aktif, render başlatılıyor...");
+                        window.renderSpellTab();
+                    }
+                }, 50);
+            }
+        });
 
         // ============================================================
         // LIFE CYCLE (ON MOUNTED)
@@ -633,7 +449,6 @@ const app = createApp({
                     setTimeout(() => loader.remove(), 500);
                 }
 
-                // URL'den Seed Okuma
                 const urlParams = new URLSearchParams(window.location.search);
                 const urlSeed = urlParams.get('seed');
                 if (urlSeed) {
@@ -647,17 +462,10 @@ const app = createApp({
                 if(loader) loader.remove();
             }
         
-            // --- PENCERE BOYUTU DİNLEYİCİSİ (ÇİFT TARAFLI) ---
             window.addEventListener('resize', () => {
                 const isDesktop = window.innerWidth > 860;
-
-                if (isDesktop) {
-                    // Geniş ekran: Eğer kapalıysa AÇ
-                    if (!isSkillsExpanded.value) isSkillsExpanded.value = true;
-                } else {
-                    // Dar ekran: Eğer açıksa KAPAT
-                    if (isSkillsExpanded.value) isSkillsExpanded.value = false;
-                }
+                if (isDesktop) { if (!isSkillsExpanded.value) isSkillsExpanded.value = true; } 
+                else { if (isSkillsExpanded.value) isSkillsExpanded.value = false; }
             });
         });
 
@@ -789,18 +597,6 @@ const app = createApp({
             adjustHpModalValue, // <--- Bunu ekle
             applyHpChange, // <--- Bunu ekle
 
-            // Sihir Sistemi
-            isSpellBrowserOpen,
-            spellSearchQuery,
-            filteredSpells,
-            knownSpellsList,
-            groupedSpells,
-            maxSpellSlots,
-            toggleSpellKnown,
-            castSpell,
-            renderEntry,
-            isLoadingSpells,
-            onSpellBrowserScroll,
         };
     }
 });

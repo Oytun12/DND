@@ -426,6 +426,259 @@
     border-top: none;
 }
 
+
+
+/* ============================================================
+   BÜYÜ SAYFASI (SPELL SHEET) - PROFESYONEL
+   ============================================================ */
+
+/* --- İstatistik Başlığı --- */
+.spell-stats-header {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #2b2b2b;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 10px 20px;
+    min-width: 80px;
+}
+
+.stat-box.main-stat {
+    border-color: #b52b2b;
+    background: linear-gradient(180deg, #2b2b2b 0%, #3a2222 100%);
+}
+
+.stat-label { font-size: 0.75em; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+.stat-value { font-size: 1.5em; font-weight: bold; color: #fff; margin: 2px 0; }
+.stat-sub { font-size: 0.8em; color: #888; }
+
+.btn-add-spell {
+    background-color: #2a2a2a;
+    border: 1px dashed #666;
+    color: #4dabf7; /* Mavi ton */
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+    height: 100%;
+}
+.btn-add-spell:hover { background-color: #333; border-color: #4dabf7; }
+
+/* --- Büyü Seviye Grupları --- */
+.spell-level-group {
+    margin-bottom: 25px;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.level-header {
+    background-color: #252525;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.level-title { font-weight: bold; color: #b52b2b; font-size: 1.1em; }
+
+/* Büyü Slotları (Slots) */
+.spell-slots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.slot-label { font-size: 0.8em; color: #888; margin-right: 5px; }
+
+.slot-checkbox {
+    appearance: none;
+    width: 16px; height: 16px;
+    border: 1px solid #555;
+    border-radius: 50%; /* Yuvarlak slot */
+    background-color: #222;
+    cursor: pointer;
+    position: relative;
+}
+.slot-checkbox:checked {
+    background-color: #b52b2b;
+    border-color: #b52b2b;
+    box-shadow: 0 0 5px rgba(181, 43, 43, 0.5);
+}
+
+/* --- Büyü Listesi --- */
+.spell-list-items {
+    padding: 0;
+}
+
+.spell-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #2a2a2a;
+    transition: background 0.2s;
+}
+.spell-row:last-child { border-bottom: none; }
+.spell-row:hover { background-color: #252525; }
+
+.spell-info { flex: 1; cursor: pointer; }
+.spell-name { display: block; font-weight: bold; color: #eee; }
+.spell-meta { font-size: 0.85em; color: #888; }
+.ritual-tag { color: #fcc419; margin-left: 5px; font-size: 0.8em; border:1px solid #fcc419; padding:0 3px; border-radius:3px;}
+.conc-tag { color: #4dabf7; margin-left: 5px; font-size: 0.8em; border:1px solid #4dabf7; padding:0 3px; border-radius:3px;}
+
+.btn-remove-spell {
+    background: none; border: none; color: #666; font-size: 1.2em; cursor: pointer;
+}
+.btn-remove-spell:hover { color: #e03131; }
+
+/* --- MODAL TASARIMI --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+}
+.modal-content.large-modal {
+    width: 90%; max-width: 800px; height: 80vh;
+    background: #1a1a1a; border: 1px solid #444; border-radius: 8px;
+    display: flex; flex-direction: column;
+}
+.modal-header {
+    padding: 15px 20px; background: #222; border-bottom: 1px solid #444;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.modal-body {
+    padding: 20px; overflow-y: auto; flex: 1;
+}
+
+.spell-filter-bar {
+    display: flex; gap: 10px; margin-bottom: 20px;
+}
+.search-input { flex: 2; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; }
+.filter-select { flex: 1; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; }
+
+.spell-result-card {
+    background: #252525; padding: 10px 15px; border-radius: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px; border: 1px solid #333;
+}
+.spell-result-card:hover { border-color: #b52b2b; }
+.btn-select-spell {
+    background: #b52b2b; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;
+}
+
+
+/* ============================================================
+   BÜYÜ DETAYLARI & ETKİLEŞİM (FİNAL DÜZELTME)
+   ============================================================ */
+
+/* 1. Satır Yapısı */
+.spell-row {
+    flex-direction: column;
+    align-items: stretch;
+    border-bottom: 1px solid #2a2a2a;
+    transition: background 0.2s;
+}
+/* Sadece başlık kısmı tıklanabilir olsun (imleç el işareti) */
+.spell-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 12px 15px;
+    cursor: pointer; /* Tıklanabilir alan burası */
+}
+.spell-row-header:hover {
+    background-color: #252525;
+}
+
+/* 2. Detay Kutusu (Metin imleci normal olsun) */
+.spell-detail-content {
+    display: none;
+    padding: 15px;
+    background-color: #1a1a1a; /* Daha koyu zemin */
+    border-top: 1px dashed #333;
+    color: #ccc;
+    font-size: 0.95em;
+    line-height: 1.7;
+    cursor: text; /* Metin üzerinde normal imleç */
+}
+
+/* Açık Durum */
+.spell-row.expanded .spell-detail-content {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+.spell-row.expanded {
+    border-left: 3px solid #b52b2b;
+}
+
+/* 3. TIKLANABİLİR ZARLAR (✨ 1d6) */
+.spell-text-damage.clickable {
+    display: inline-block; /* Her zaman blok davranmalı (Hover için şart) */
+    position: relative;
+    z-index: 10; /* Diğer yazıların üzerine çık */
+    cursor: pointer !important; /* İmleci zorla el yap */
+    pointer-events: auto; /* Tıklamayı kesinlikle kabul et */
+    
+    /* Görsel Stil */
+    color: #a855f7;
+    font-weight: bold;
+    border-bottom: 1px dotted #a855f7;
+    padding: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hover Efekti */
+.spell-text-damage.clickable:hover {
+    background-color: rgba(168, 85, 247, 0.2); /* Mor şeffaf zemin */
+    transform: scale(1.15) translateY(-1px); /* Hafif büyüme */
+    color: #fff;
+    border-bottom-style: solid;
+    box-shadow: 0 2px 5px rgba(168, 85, 247, 0.4);
+}
+
+/* Diğer Etiketler */
+.spell-text-save { color: #fcc419; font-weight: bold; text-transform: uppercase; font-size: 0.9em; }
+.spell-text-link { color: #4dabf7; text-decoration: none; border-bottom: 1px solid #4dabf7; }
+
+/* Ok İkonu */
+.arrow-icon {
+    display: inline-block;
+    transition: transform 0.3s;
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 8px;
+}
+.spell-row.expanded .arrow-icon { transform: rotate(180deg); color: #b52b2b; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Z-INDEX DÜZELTMELERİ */
+#modal-spell-search { z-index: 2000 !important; }
+.dice-result-overlay { z-index: 3000 !important; }
+.toast-notification { z-index: 3500 !important; }
+
+
+
 /* ============================================================
    9. RESPONSIVE (MOBİL UYUMLULUK)
    ============================================================ */
