@@ -173,9 +173,13 @@ const app = createApp({
                 let jsonStr = window.LZString.decompressFromEncodedURIComponent(seedText.value);
                 if (!jsonStr) { showToast("Geçersiz kod!", "❌"); return; }                
                 const data = JSON.parse(jsonStr);                
-                store.meta.name = data.n || ""; store.meta.avatar = data.av || "../../img/avatars/default-avatar.png";
+                
+                // Temel Veriler
+                store.meta.name = data.n || ""; 
+                store.meta.avatar = data.av || "../../img/avatars/default-avatar.png";
                 targetLevel.value = data.l || 1; 
                 
+                // Irk ve Sınıf Seçimleri
                 if (data.r) {
                     const tSub = data.sr || "Standart";
                     const fOpt = flatRaceList.value.find(o => o.race.name === data.r && (o.subrace ? (o.subrace.name||"Standart") : "Standart") === tSub);
@@ -186,14 +190,34 @@ const app = createApp({
                     if (fCls) { selectedClass.value = fCls; setTimeout(() => { if (data.sc) selectedSubclass.value = fCls.subclasses?.find(s => s.name === data.sc); }, 100); }
                 }                
 
+                // Skorlar ve Seçimler
                 selectedScoreMethod.value = data.sm || 'manual';
                 if (data.rp) { rolledPool.value = [...data.rp]; hasRolled.value = true; }
-                store.abilities.base = { ...data.b }; store.abilities.asi = { ...data.asi };
+                store.abilities.base = { ...data.b }; 
+                store.abilities.asi = { ...data.asi };
                 if (data.bg) store.background.selected = backgroundList.value.find(x => x.name === data.bg);
-                store.skills.proficiencies = [...(data.p || [])]; store.skills.expertises = [...(data.e || [])];
+                store.skills.proficiencies = [...(data.p || [])]; 
+                store.skills.expertises = [...(data.e || [])];
                 userChoices.value = { ...data.ch }; 
+                
+                // HP
                 if (data.hp) store.hp = { ...store.hp, ...data.hp };
-                if (data.inv) store.inventory = { ...store.inventory, ...data.inv };
+
+                // --- GÜVENLİ ENVANTER YÜKLEME (HATAYI ÇÖZEN KISIM) ---
+                if (data.inv) {
+                    if (!store.inventory) store.inventory = {};
+                    
+                    // Dizilerin gerçekten dizi olduğundan emin ol
+                    store.inventory.weapons = Array.isArray(data.inv.weapons) ? data.inv.weapons : [];
+                    store.inventory.armor = Array.isArray(data.inv.armor) ? data.inv.armor : [];
+                    store.inventory.gear = Array.isArray(data.inv.gear) ? data.inv.gear : [];
+                    
+                    // Para birimi kontrolü
+                    store.inventory.currency = data.inv.currency || { cp:0, sp:0, ep:0, gp:0, pp:0 };
+                } else {
+                    // Veri yoksa sıfırla
+                    store.inventory = { weapons: [], armor: [], gear: [], currency: { cp:0, sp:0, ep:0, gp:0, pp:0 } };
+                }
 
                 // Büyüleri Yükle
                 if (data.spl && Array.isArray(data.spl)) {
@@ -217,7 +241,10 @@ const app = createApp({
 
                 setTimeout(() => { syncAllocationsFromStore(); }, 200); 
                 showToast("Yüklendi!", "🚀"); finishCreation(); seedText.value = ''; 
-            } catch (e) { console.error(e); showToast("Hata!", "❌"); }
+            } catch (e) { 
+                console.error("Yükleme Hatası:", e); 
+                showToast("Hata! Kod bozuk.", "❌"); 
+            }
         };
 
         const updateResource = (id, delta, max) => {
@@ -260,21 +287,42 @@ const app = createApp({
         const isInventoryOpen = ref(false); 
 
         // ============================================================
-        // 6. ENVANTER
+        // 6. ENVANTER (MODERN SİSTEM)
         // ============================================================
-        const isCustomWeaponFormOpen = ref(false);
-        const customWeaponForm = ref({ name: '', dmg: '1d6', type: 'Kesici', stat: 'str', bonusHit: 0, bonusDmg: 0, isProficient: false });
+        const isCustomItemModalOpen = ref(false);
+        const newItemType = ref('weapon'); // Modal tipi: weapon, armor, gear
+        
+        // Geçici Form Verileri
+        const newWeapon = ref({ name: '', dmg: '1d6', type: 'Kesici', stat: 'str', weight: 2, bonusHit: 0, bonusDmg: 0, isProficient: true });
+        const newArmor = ref({ name: '', ac: 11, type: 'Hafif', weight: 8 });
+        const newGear = ref({ name: '', qty: 1, weight: 0.5 });
 
-        const { weaponList, armorList, calculatedAC, attackList, toggleWeapon, toggleWeaponProficiency, setArmor, toggleShield, checkProficiencyRule, addCustomWeaponToInventory } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
+        // Logic Dosyasından Verileri Çek
+        const { 
+            activeInvTab, currentWeight, carryCapacity, encumbrancePct,
+            weapons, armors, gear, currency,
+            addWeapon, addArmor, addGear, removeItem, attackList, calculatedAC
+        } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
 
-        const saveCustomWeapon = () => {
-            if (!customWeaponForm.value.name) { alert("İsim girin."); return; }
-            addCustomWeaponToInventory(customWeaponForm.value);
-            customWeaponForm.value = { name: '', dmg: '1d6', type: 'Kesici', stat: 'str', bonusHit: 0, bonusDmg: 0, isProficient: false };
-            isCustomWeaponFormOpen.value = false;
-            alert("Silah eklendi!");
+        const openItemModal = (type) => { 
+            newItemType.value = type; 
+            isCustomItemModalOpen.value = true; 
         };
-        const showWarningToast = (msg) => { alert("⚠️ " + msg); };
+
+        const handleAddItem = () => {
+            if (newItemType.value === 'weapon') {
+                if(!newWeapon.value.name) return alert("İsim girin.");
+                addWeapon(newWeapon.value);
+            } else if (newItemType.value === 'armor') {
+                if(!newArmor.value.name) return alert("İsim girin.");
+                addArmor(newArmor.value);
+            } else {
+                if(!newGear.value.name) return alert("İsim girin.");
+                addGear(newGear.value);
+            }
+            showToast("Eşya Eklendi!", "🎒");
+            isCustomItemModalOpen.value = false;
+        };
 
         // ============================================================
         // 7. CAN (HP) YÖNETİMİ
@@ -357,9 +405,10 @@ const app = createApp({
         onUnmounted(() => { document.removeEventListener('click', handleClickOutside); });
 
         // ============================================================
-        // RETURN OBJECT
+        // RETURN OBJECT (TEMİZLENMİŞ HALİ)
         // ============================================================
         return {
+            // GENEL
             store, currentStep, steps, nextStep, prevStep, loading, error,
             isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
             copyLink, showToast, backgroundList, featList, seedText, characterSeed, loadFromSeed, copySeed,
@@ -376,12 +425,18 @@ const app = createApp({
             avatarGallery, avatarList, showCustomAvatarInput, isGalleryExpanded, toggleGallery, galleryContainer,
             galleryButton, classResources, updateResource, handleRest, diceResult, rollD20, rollDamage,
             closeDiceResult, isSaveProficient, diceHistory, isHistoryOpen, clearHistory, toggleHistory,
-            isInventoryOpen, calculatedAC, attackList, weaponList, armorList, toggleWeapon, setArmor, toggleShield,
-            toggleWeaponProficiency, checkProficiencyRule, showWarningToast, isCustomWeaponFormOpen, customWeaponForm,
-            saveCustomWeapon, isHpModalOpen, hpModalValue, maxHP, currentHP, hpStatusClass, setFullHp,
+            isInventoryOpen, isHpModalOpen, hpModalValue, maxHP, currentHP, hpStatusClass, setFullHp,
             adjustHpModalValue, applyHpChange,
             
-            // Sürükle-Bırak İçin Eklenenler
+            // ENVANTER
+            isCustomItemModalOpen, newItemType, 
+            newWeapon, newArmor, newGear, 
+            handleAddItem, openItemModal, 
+            activeInvTab, currentWeight, carryCapacity, encumbrancePct, 
+            weapons, armors, gear, currency, removeItem, 
+            calculatedAC, attackList,
+            
+            // --- TAB SÜRÜKLEME ---
             sheetTabs, handleTabDragStart, handleTabDragEnd, handleTabDrop
         };
     }

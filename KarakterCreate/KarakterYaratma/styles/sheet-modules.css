@@ -748,7 +748,24 @@
     margin: 0 20px 0 20px;
 }
 
+/* ENVANTER MODERN STİL */
+.inventory-dashboard { background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333; }
+.currency-display { display: flex; gap: 10px; margin-top: 10px; }
+.coin-box { display: flex; align-items: center; background: #222; padding: 5px 10px; border-radius: 20px; border: 1px solid #444; }
+.coin-box span { font-weight: bold; margin-right: 5px; font-size: 0.8em; }
+.gp span { color: #ffd43b; } .sp span { color: #ced4da; } .cp span { color: #d9480f; }
+.coin-box input { background: transparent; border: none; color: #fff; width: 50px; text-align: right; font-weight: bold; }
 
+.inv-subtabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+.inv-subtabs button { background: none; border: none; color: #666; padding: 5px 10px; cursor: pointer; font-size: 1em; }
+.inv-subtabs button.active { color: #fff; border-bottom: 2px solid #e67e22; }
+
+.inv-item-card { display: flex; justify-content: space-between; align-items: center; background: #252525; padding: 10px; margin-bottom: 8px; border-radius: 6px; border: 1px solid #333; }
+.gear-grid { display: flex; flex-direction: column; gap: 5px; }
+.gear-row { display: flex; align-items: center; background: #222; padding: 5px; border-radius: 4px; }
+.qty-input { width: 40px; background: #111; border: 1px solid #444; color: #fff; text-align: center; margin-right: 10px; border-radius: 4px; }
+.gear-name { flex: 1; }
+.gear-weight { color: #666; font-size: 0.9em; margin-right: 10px; }
 
 /* ============================================================
    9. RESPONSIVE (MOBİL UYUMLULUK)

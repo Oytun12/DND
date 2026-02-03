@@ -1,184 +1,99 @@
-// src/logicInventory.js
-import { computed } from 'vue';
-import { store } from './store.js';
-import { weaponList, armorList } from './data/items.js';
+import { ref, computed } from 'vue';
 
 export function useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace) {
+    
+    const activeInvTab = ref('weapons'); 
+    const store = window.store;
+    
+    // Başlangıç Güvenlik Kontrolü
+    if (!store.inventory) store.inventory = {};
+    if (!Array.isArray(store.inventory.weapons)) store.inventory.weapons = [];
+    if (!Array.isArray(store.inventory.armor)) store.inventory.armor = [];
+    if (!Array.isArray(store.inventory.gear)) store.inventory.gear = [];
+    if (!store.inventory.currency) store.inventory.currency = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
 
-    // --- DEDEKTİF: USTALIK KONTROLÜ (Aynı Kalıyor) ---
-    const checkProficiencyRule = (item) => {
-        const knownProfs = [];
-        if (selectedClass.value && selectedClass.value.proficiency) {
-            selectedClass.value.proficiency.forEach(p => knownProfs.push(p.toLowerCase()));
-        }
-        if (selectedRace.value && selectedRace.value.proficiency) {
-            selectedRace.value.proficiency.forEach(p => knownProfs.push(p.toLowerCase()));
-        }
+    const carryCapacity = computed(() => (finalAbilityScores.value.str || 10) * 15);
 
-        let isProficient = false;
-        let warning = null;
-
-        if (item.category === 'simple') {
-            if (knownProfs.some(p => p.includes('simple') || p.includes('basit'))) isProficient = true;
-        } else if (item.category === 'martial') {
-            if (knownProfs.some(p => p.includes('martial') || p.includes('savaş'))) isProficient = true;
-        }
-
-        if (!isProficient) {
-            if (knownProfs.some(p => item.name.toLowerCase().includes(p) || p.includes(item.id))) {
-                isProficient = true;
-            }
-        }
-
-        if (item.strReq) {
-            const currentStr = finalAbilityScores.value.str || 10;
-            if (currentStr < item.strReq) {
-                warning = `⚠️ Yetersiz Güç! (Gereken: ${item.strReq}, Sizde: ${currentStr})`;
-            }
-        }
-
-        return { isProficient, warning };
-    };
-
-    // --- HESAPLAMALAR ---
-
-    // 1. Zırh Sınıfı (AC) (Aynı Kalıyor)
-    const calculatedAC = computed(() => {
-        const dexMod = Math.floor(((finalAbilityScores.value.dex || 10) - 10) / 2);
-        const equippedArmorId = store.inventory.armor || 'none';
-        const armorData = armorList.find(a => a.id === equippedArmorId) || armorList[0];
-        const hasShield = store.inventory.shield;
-
-        let baseAC = armorData.ac;
-
-        if (armorData.type === 'light') baseAC += dexMod;
-        else if (armorData.type === 'medium') baseAC += Math.min(dexMod, 2);
-        // Heavy: Dex yok
-
-        if (hasShield) baseAC += 2;
-        return baseAC;
+    const currentWeight = computed(() => {
+        let total = 0;
+        store.inventory.weapons?.forEach(w => total += (parseFloat(w.weight) || 0)); 
+        store.inventory.armor?.forEach(a => total += (parseFloat(a.weight) || 0));
+        store.inventory.gear?.forEach(g => total += (parseFloat(g.weight) || 0) * (g.qty || 1));
+        const totalCoins = Object.values(store.inventory.currency || {}).reduce((a, b) => a + b, 0);
+        total += totalCoins / 50;
+        return Math.floor(total * 10) / 10; 
     });
 
-    // 2. Saldırı Listesi (GÜNCELLENDİ: TÜM STATLAR & AYRIK BONUSLAR)
+    const encumbrancePct = computed(() => {
+        if (carryCapacity.value === 0) return 0;
+        return Math.min((currentWeight.value / carryCapacity.value) * 100, 100);
+    });
+
+    const addWeapon = (w) => {
+        store.inventory.weapons.push({
+            id: Date.now(),
+            name: w.name, dmg: w.dmg||'1d4', type: w.type||'Basit', stat: w.stat||'str',
+            weight: parseFloat(w.weight)||2, bonusHit: parseInt(w.bonusHit)||0, bonusDmg: parseInt(w.bonusDmg)||0,
+            isProficient: w.isProficient||false, equipped: true
+        });
+    };
+
+    const addArmor = (a) => {
+        store.inventory.armor.push({
+            id: Date.now(),
+            name: a.name, ac: parseInt(a.ac)||11, type: a.type||'Hafif',
+            weight: parseFloat(a.weight)||5, equipped: false
+        });
+    };
+
+    const addGear = (g) => {
+        store.inventory.gear.push({
+            id: Date.now(), name: g.name, qty: parseInt(g.qty)||1, weight: parseFloat(g.weight)||0
+        });
+    };
+
+    const removeItem = (cat, idx) => { if(confirm("Silinsin mi?")) store.inventory[cat].splice(idx, 1); };
+
     const attackList = computed(() => {
-        // Tüm modları hazırla
-        const mods = {
-            str: Math.floor(((finalAbilityScores.value.str || 10) - 10) / 2),
-            dex: Math.floor(((finalAbilityScores.value.dex || 10) - 10) / 2),
-            con: Math.floor(((finalAbilityScores.value.con || 10) - 10) / 2),
-            int: Math.floor(((finalAbilityScores.value.int || 10) - 10) / 2),
-            wis: Math.floor(((finalAbilityScores.value.wis || 10) - 10) / 2),
-            cha: Math.floor(((finalAbilityScores.value.cha || 10) - 10) / 2)
-        };
-        const pb = proficiencyBonus.value;
-
-        const weaponInventory = store.inventory.weapons.map(w => 
-            (typeof w === 'string') ? { id: w, custom: null } : w
-        );
-
-        return weaponInventory.map(wItem => {
-            let wData;
-            
-            // Veriyi Al
-            if (wItem.isCustomWeapon) {
-                wData = wItem; 
-            } else {
-                wData = weaponList.find(i => i.id === wItem.id);
-            }
-
-            if (!wData) return null;
-
-            // --- STAT SEÇİMİ (GÜNCELLENDİ) ---
-            let selectedStatKey = wData.stat || 'str'; // Varsayılan STR
-            let usedMod = mods.str;
-
-            if (selectedStatKey === 'finesse') {
-                // Finesse ise STR ve DEX'ten büyük olanı al
-                usedMod = Math.max(mods.str, mods.dex);
-            } else if (mods[selectedStatKey] !== undefined) {
-                // Hexblade (Cha), Shillelagh (Wis), Artificer (Int) desteği
-                usedMod = mods[selectedStatKey];
-            }
-
-            // --- BONUSLAR (GÜNCELLENDİ) ---
-            // Özel silahsa kendi içindeki ayrı bonusları al, yoksa (standartsa) genel bonus yoktur (0)
-            const extraHit = wItem.isCustomWeapon ? (wItem.bonusHit || 0) : 0;
-            const extraDmg = wItem.isCustomWeapon ? (wItem.bonusDmg || 0) : 0;
-
-            // --- USTALIK ---
-            let isProficient = false;
-            if (wItem.isCustomWeapon) {
-                isProficient = wItem.customProficient; 
-            } else {
-                const ruleCheck = checkProficiencyRule(wData);
-                isProficient = ruleCheck.isProficient;
-                if (wItem.custom === true) isProficient = true;
-                if (wItem.custom === false) isProficient = false;
-            }
-
-            // --- NİHAİ HESAP ---
-            const hitBonus = usedMod + (isProficient ? pb : 0) + extraHit;
-            const dmgBonus = usedMod + extraDmg;
-
+        if (!Array.isArray(store.inventory.weapons)) return [];
+        return store.inventory.weapons.filter(w => w.equipped).map(w => {
+            const statKey = w.stat || 'str';
+            const mod = Math.floor(((finalAbilityScores.value[statKey] || 10) - 10) / 2);
+            const prof = w.isProficient ? proficiencyBonus.value : 0;
             return {
-                id: wData.id,
-                name: wData.name,
-                hit: (hitBonus >= 0 ? '+' : '') + hitBonus,
-                dmg: wData.dmg,
-                dmgType: wData.type,
-                bonus: dmgBonus,
-                totalBonusDisplay: (dmgBonus >= 0 ? '+' : '') + dmgBonus,
-                isProficient: isProficient
+                ...w,
+                hitBonus: mod + prof + (w.bonusHit || 0),
+                dmgBonus: mod + (w.bonusDmg || 0),
+                totalDmg: `${w.dmg} ${mod + (w.bonusDmg||0) >= 0 ? '+' : ''}${mod + (w.bonusDmg||0)}`
             };
-        }).filter(x => x !== null);
+        });
     });
 
-    // --- YÖNETİM FONKSİYONLARI ---
+    const calculatedAC = computed(() => {
+        let base = 10;
+        const dex = finalAbilityScores.value.dex || 10;
+        const dexMod = Math.floor((dex - 10) / 2);
+        
+        // HATA ÖNLEYİCİ KONTROL
+        if (!Array.isArray(store.inventory.armor)) return base + dexMod;
 
-    const toggleWeapon = (id) => {
-        const index = store.inventory.weapons.findIndex(w => (typeof w === 'string' ? w : w.id) === id);
-        if (index > -1) store.inventory.weapons.splice(index, 1);
-        else store.inventory.weapons.push({ id: id, custom: null });
-    };
-
-    // GÜNCELLENDİ: Yeni formatta veri ekleme
-    const addCustomWeaponToInventory = (formData) => {
-        const newWeapon = {
-            id: 'custom_' + Date.now(),
-            isCustomWeapon: true,
-            name: formData.name || 'İsimsiz Silah',
-            dmg: formData.dmg || '1d4',
-            type: formData.type || 'Kesici',
-            stat: formData.stat || 'str',
-            // YENİ: Ayrı bonusları kaydet
-            bonusHit: formData.bonusHit || 0,
-            bonusDmg: formData.bonusDmg || 0,
-            customProficient: formData.isProficient
-        };
-        store.inventory.weapons.push(newWeapon);
-    };
-
-    const toggleWeaponProficiency = (id, forceState) => {
-        const item = store.inventory.weapons.find(w => (typeof w === 'string' ? w : w.id) === id);
-        if (item) {
-            if (typeof item === 'string') {
-                const idx = store.inventory.weapons.indexOf(item);
-                store.inventory.weapons[idx] = { id: item, custom: forceState };
-            } else {
-                item.custom = forceState;
-            }
+        const armor = store.inventory.armor.find(a => a.equipped);
+        if (armor) {
+            base = armor.ac;
+            if (armor.type === 'Hafif') base += dexMod;
+            else if (armor.type === 'Orta') base += Math.min(dexMod, 2);
+        } else {
+            base += dexMod;
         }
-    };
-
-    const setArmor = (id) => { store.inventory.armor = id; };
-    const toggleShield = () => { store.inventory.shield = !store.inventory.shield; };
+        return base;
+    });
 
     return {
-        weaponList, armorList,
-        calculatedAC, attackList,
-        toggleWeapon, toggleWeaponProficiency,
-        setArmor, toggleShield,
-        checkProficiencyRule,
-        addCustomWeaponToInventory
+        activeInvTab, currentWeight, carryCapacity, encumbrancePct,
+        weapons: computed(() => store.inventory.weapons),
+        armors: computed(() => store.inventory.armor),
+        gear: computed(() => store.inventory.gear),
+        currency: computed(() => store.inventory.currency),
+        addWeapon, addArmor, addGear, removeItem, attackList, calculatedAC
     };
 }
