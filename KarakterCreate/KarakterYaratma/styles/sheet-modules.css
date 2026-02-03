@@ -555,7 +555,18 @@
     .item-select-row .btn-select-spell { padding: 6px 10px; font-size: 1em; text-align: center; background: #2b2b2b; border: 1px solid #555; }
     .modal-body { padding: 5px; overflow-y: auto; flex: 1; }
 
-
+    /* --- YENİ EKLENEN KISIM: ÖZEL EŞYA FORMU MOBİL DÜZENİ --- */
+    .form-grid {
+        grid-template-columns: 1fr; /* 2 sütun yerine tek sütun yap */
+        gap: 10px;
+    }
+    
+    .form-group input, 
+    .form-group select {
+        font-size: 16px; /* Mobilde otomatik zoom'u engeller ve okumayı kolaylaştırır */
+        padding: 10px;
+    }
+    
     /* Envanter Kartları */
     /*
     .inv-item-card { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -575,64 +586,5 @@
     .st-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ============================================================
-   9. RESPONSIVE (MOBİL UYUMLULUK)
-   ============================================================ */
-@media (max-width: 860px) {
-    /* ... Mevcut Ayarlar ... */
-    .ability-scores-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .ability-score-card { padding: 15px 5px; background: #202020; }
-    .score-modifier { font-size: 2em; }
-    
-    .combat-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .c-stat-box { min-height: 90px; }
-    .hp-box { grid-column: 1 / -1; order: -1; }
-    
-    .sheet-tabs { width: 100%; display: flex; padding-bottom: 5px; border-bottom: 1px solid #444; }
-    .sheet-tabs button { flex: 1; padding: 15px 10px; font-size: 0.95em; justify-content: center; }
-    
-    .sheet-tab-content { padding: 15px; border: none; margin-bottom: 100px; }
-    
-    .st-grid { grid-template-columns: repeat(3, 1fr); }
-    .st-row { flex-direction: row; justify-content: space-between; padding: 8px 12px; }
-    .st-info { flex-direction: row; gap: 8px; }
-    .st-label { font-size: 0.9em; margin-bottom: 0; }
 
-    /* Mobil Envanter Düzeni */
-    .filter-sort-bar { flex-direction: column; gap: 10px; }
-    .filter-group { width: 100%; }
-    
-    /* Eşya Seçim Kartları */
-    .item-select-row { align-items: flex-start; gap: 10px; position: relative; display: flex; align-items: center;}
-    .item-info { width: 100%; margin-bottom: 5px; }
-    .item-select-row .btn-select-spell { padding: 6px 10px; font-size: 1em; text-align: center; background: #2b2b2b; border: 1px solid #555; }
-    .modal-body { padding: 5px; overflow-y: auto; flex: 1; }
 
-    /* Envanter Kartları */
-    .inv-item-card { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .inv-item-card .item-details { width: 100%; }
-    .inv-item-card .item-actions { width: 100%; display: flex; justify-content: space-between; border-top: 1px solid #333; padding-top: 8px; margin-top: 5px; }
-    
-    /* Silme butonunu daha belirgin yap */
-    .btn-icon-delete { background: rgba(181, 43, 43, 0.1); border: 1px solid rgba(181, 43, 43, 0.3); border-radius: 6px; padding: 10px; margin-left: 5px; }
-    .btn-icon-delete svg { pointer-events: none; } /* Tıklama sorununu çözer */
-
-    .gear-row { flex-wrap: wrap; }
-    .gear-name { min-width: 120px; }
-
-    /* --- YENİ EKLENEN KISIM: ÖZEL EŞYA FORMU MOBİL DÜZENİ --- */
-    .form-grid {
-        grid-template-columns: 1fr; /* 2 sütun yerine tek sütun yap */
-        gap: 10px;
-    }
-    
-    .form-group input, 
-    .form-group select {
-        font-size: 16px; /* Mobilde otomatik zoom'u engeller ve okumayı kolaylaştırır */
-        padding: 10px;
-    }
-}
-
-@media (max-width: 500px) {
-    .st-grid { grid-template-columns: repeat(2, 1fr); }
-}
