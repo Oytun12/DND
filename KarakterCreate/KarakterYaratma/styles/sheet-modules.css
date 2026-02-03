@@ -749,23 +749,320 @@
 }
 
 /* ENVANTER MODERN STİL */
-.inventory-dashboard { background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333; }
+.inventory-dashboard { background-color: #222; box-shadow: 0 4px 10px rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333; }
+
 .currency-display { display: flex; gap: 10px; margin-top: 10px; }
 .coin-box { display: flex; align-items: center; background: #222; padding: 5px 10px; border-radius: 20px; border: 1px solid #444; }
 .coin-box span { font-weight: bold; margin-right: 5px; font-size: 0.8em; }
 .gp span { color: #ffd43b; } .sp span { color: #ced4da; } .cp span { color: #d9480f; }
 .coin-box input { background: transparent; border: none; color: #fff; width: 50px; text-align: right; font-weight: bold; }
 
-.inv-subtabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+.inv-subtabs { display: flex; gap: 10px; }
 .inv-subtabs button { background: none; border: none; color: #666; padding: 5px 10px; cursor: pointer; font-size: 1em; }
 .inv-subtabs button.active { color: #fff; border-bottom: 2px solid #e67e22; }
 
 .inv-item-card { display: flex; justify-content: space-between; align-items: center; background: #252525; padding: 10px; margin-bottom: 8px; border-radius: 6px; border: 1px solid #333; }
 .gear-grid { display: flex; flex-direction: column; gap: 5px; }
-.gear-row { display: flex; align-items: center; background: #222; padding: 5px; border-radius: 4px; }
+.gear-row { display: flex; align-items: center; background: #252525; padding: 5px; border-radius: 6px; border: 1px solid #333; margin-bottom: 4px;}
 .qty-input { width: 40px; background: #111; border: 1px solid #444; color: #fff; text-align: center; margin-right: 10px; border-radius: 4px; }
 .gear-name { flex: 1; }
 .gear-weight { color: #666; font-size: 0.9em; margin-right: 10px; }
+
+
+/* ============================================================
+   8. Inventory & Item Selection Styles
+   ============================================================ */
+
+   /* Eşya Seçim Listesi */
+.item-select-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #252525;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    transition: background 0.2s;
+}
+.item-select-row:hover {
+    background: #2a2a2a;
+    border-color: #555;
+}
+.item-info {
+    display: flex;
+    flex-direction: column;
+}
+.item-info strong { color: #eee; }
+.item-info small { color: #888; font-size: 0.85em; }
+
+/* --- MODERN ENVANTER STİLLERİ --- */
+
+/* Kontrol Çubuğu: Sekmeler solda, Ekle butonu sağda */
+.inv-controls-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+/* Sekmeler */
+.inv-subtabs {
+    display: flex;
+    gap: 5px;
+}
+.inv-subtabs button {
+    background: none;
+    border: none;
+    color: #666;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.95em;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+.inv-subtabs button:hover {
+    color: #ccc;
+    background: rgba(255,255,255,0.05);
+}
+.inv-subtabs button.active {
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+    border-bottom: 2px solid #e67e22; /* Turuncu vurgu, karakter kağıdıyla uyumlu */
+}
+
+/* Şık Ekleme Butonu (Compact) */
+.btn-compact-add {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: #4caf50; /* Yeşilimsi bir ekle tonu veya temaya göre değişebilir */
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+}
+.btn-compact-add:hover {
+    background: #4caf50;
+    color: #000;
+    border-color: #4caf50;
+}
+.plus-icon { font-weight: bold; font-size: 1.1em; }
+
+/* Liste Kartları */
+ehehe
+.inv-item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1e1e1e;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    border: 1px solid #2a2a2a;
+    transition: border-color 0.2s;
+}
+.inv-item-card:hover {
+    border-color: #444;
+}
+
+/* Mekanik Rozet (AC bilgisi vb.) */
+.mechanic-badge {
+    background: #111;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    color: #4dabf7;
+    margin-left: 5px;
+    border: 1px solid #333;
+}
+
+/* Sağ Taraf Aksiyonları */
+.item-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Kuşan Checkbox Stili */
+.equip-check {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8em;
+    color: #888;
+    transition: color 0.2s;
+}
+.equip-check:hover { color: #ccc; }
+.equip-check input { cursor: pointer; }
+
+/* KIZIL X İKONU (Silme Butonu) */
+.btn-icon-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.btn-icon-delete svg {
+    width: 18px;
+    height: 18px;
+    fill: #8a2a2a; /* Koyu Kızıl */
+    transition: fill 0.2s;
+}
+.btn-icon-delete:hover {
+    background: rgba(181, 43, 43, 0.1);
+}
+.btn-icon-delete:hover svg {
+    fill: #e03131; /* Parlak Kırmızı */
+}
+
+/* Boş Liste Mesajı */
+.empty-list-msg {
+    text-align: center;
+    color: #555;
+    padding: 30px;
+    font-style: italic;
+    border: 1px dashed #333;
+    border-radius: 8px;
+}
+
+/* --- FİLTRE VE SIRALAMA PANELİ --- */
+.filter-sort-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    background: #222;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #333;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.filter-group label {
+    font-size: 0.85em;
+    color: #888;
+    white-space: nowrap;
+}
+
+.filter-select {
+    width: 100%;
+    background: #151515;
+    border: 1px solid #444;
+    color: #ddd;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    outline: none;
+}
+
+.filter-select:focus {
+    border-color: #e67e22;
+}
+
+/* --- MODAL SEKMELERİ (Tab) --- */
+.modal-tabs {
+    display: flex;
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+}
+.modal-tabs button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px;
+    color: #888;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+}
+.modal-tabs button:hover {
+    color: #ccc;
+    background: rgba(255,255,255,0.05);
+}
+.modal-tabs button.active {
+    color: #fff;
+    background: #222;
+    border-bottom-color: #e67e22; /* Turuncu Vurgu */
+    font-weight: bold;
+}
+
+/* --- ÖZEL EŞYA FORMU --- */
+.custom-item-form {
+    padding: 10px;
+    background: #222;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.form-group.full {
+    grid-column: 1 / -1; /* Tam genişlik */
+}
+.form-group label {
+    font-size: 0.85em;
+    color: #888;
+    font-weight: bold;
+}
+.form-group input, .form-group select {
+    background: #151515;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.95em;
+}
+.form-group input:focus, .form-group select:focus {
+    border-color: #e67e22;
+    outline: none;
+}
+
+/* Yarat Butonu */
+.btn-create-custom {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-create-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(230, 126, 34, 0.5);
+}
+.btn-create-custom:active {
+    transform: translateY(0);
+}
 
 /* ============================================================
    9. RESPONSIVE (MOBİL UYUMLULUK)

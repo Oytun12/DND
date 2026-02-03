@@ -843,14 +843,14 @@
                                 <div v-for="atk in attackList" :key="atk.id" class="attack-card-split">
                                     
                                     <div class="atk-btn-top" 
-                                         @click="rollD20(atk.name + ' Saldırısı', parseInt(atk.hit))"
+                                         @click="rollD20(atk.name + ' Saldırısı', atk.hitVal)"
                                          title="Saldırı Zarı At (d20 + Bonus)">
                                         <span class="atk-name">{{ atk.name }}</span>
                                         <span class="atk-hit-badge">HIT: {{ atk.hit }}</span>
                                     </div>
 
                                     <div class="atk-btn-bottom" 
-                                         @click="rollDamage(atk.name, atk.dmg, atk.bonus, atk.dmgType)">
+                                         @click="rollDamage(atk.name, atk.dmg, atk.dmgBonus, atk.dmgType)">
                                         <span class="atk-dmg-val">{{ atk.dmg }} {{ atk.totalBonusDisplay }}</span>
                                         <span class="atk-dmg-type">{{ atk.dmgType }}</span>
                                     </div>
@@ -894,9 +894,7 @@
                             </div>
                         </div>
 
-                
-
-                        <div v-if="activeSheetTab === 'inventory'" class="sheet-tab-content">
+                        <div v-if="activeSheetTab === 'inventory'">
                 
                             <div class="inventory-dashboard">
                                 <div style="margin-bottom:10px;">
@@ -915,58 +913,73 @@
                                 </div>
                             </div>
                         
-                            <div class="inv-subtabs">
-                                <button :class="{active: activeInvTab === 'weapons'}" @click="activeInvTab = 'weapons'">⚔️ Silahlar</button>
-                                <button :class="{active: activeInvTab === 'armor'}" @click="activeInvTab = 'armor'">🛡️ Zırhlar</button>
-                                <button :class="{active: activeInvTab === 'gear'}" @click="activeInvTab = 'gear'">🎒 Eşyalar</button>
+                            <div class="inv-controls-bar">
+                                <div class="inv-subtabs">
+                                    <button :class="{active: activeInvTab === 'weapons'}" @click="activeInvTab = 'weapons'">⚔️ Silahlar</button>
+                                    <button :class="{active: activeInvTab === 'armor'}" @click="activeInvTab = 'armor'">🛡️ Zırhlar</button>
+                                    <button :class="{active: activeInvTab === 'gear'}" @click="activeInvTab = 'gear'">🎒 Eşyalar</button>
+                                </div>
+                                
+                                <button class="btn-compact-add" @click="openItemModal(activeInvTab === 'weapons' ? 'weapon' : (activeInvTab === 'armor' ? 'armor' : 'gear'))">
+                                    <span class="plus-icon">+</span> 
+                                    <span class="btn-text">
+                                        {{ activeInvTab === 'weapons' ? 'Silah' : (activeInvTab === 'armor' ? 'Zırh' : 'Eşya') }} Ekle
+                                    </span>
+                                </button>
                             </div>
                         
                             <div v-if="activeInvTab === 'weapons'">
-                                <button class="btn-add-item" @click="openItemModal('weapon')">+ Silah Ekle</button>
-
-                                <div v-if="weapons.length === 0" style="padding:20px; text-align:center; color:#666;">Henüz silahın yok.</div>
+                                <div v-if="weapons.length === 0" class="empty-list-msg">Henüz silahın yok.</div>
                             
                                 <div v-for="(w, idx) in weapons" :key="w.id" class="inv-item-card">
-                                    <div>
+                                    <div class="item-details">
                                         <strong>{{ w.name }}</strong> <small style="color:#888">({{ w.dmg }})</small>
                                         <div style="font-size:0.8em; color:#666;">{{ w.weight }} lbs • {{ w.type }}</div>
                                     </div>
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:5px; font-size:0.8em; color:#ccc;">
-                                            <input type="checkbox" v-model="w.equipped"> Kuşan
+                                    <div class="item-actions">
+                                        <label class="equip-check">
+                                            <input type="checkbox" v-model="w.equipped"> 
+                                            <span>Kuşan</span>
                                         </label>
-                                        <button @click="removeItem('weapons', idx)" style="background:none; border:none; color:#666; cursor:pointer;">🗑</button>
+                                        <button @click="removeItem('weapons', idx)" class="btn-icon-delete" title="Sil">
+                                            <svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         
                             <div v-if="activeInvTab === 'armor'">
-                                <button class="btn-add-item" @click="openItemModal('armor')">+ Zırh Ekle</button>
-
-                                <div v-if="armors.length === 0" style="padding:20px; text-align:center; color:#666;">Zırhın yok. (Mevcut AC: {{ calculatedAC }})</div>
+                                <div v-if="armors.length === 0" class="empty-list-msg">Zırhın yok. (AC: {{ calculatedAC }})</div>
                             
                                 <div v-for="(a, idx) in armors" :key="a.id" class="inv-item-card">
-                                    <div>
-                                        <strong>{{ a.name }}</strong> <span style="background:#333; padding:2px 6px; border-radius:4px; font-size:0.8em; color:#4dabf7;">AC {{ a.ac }}</span>
+                                    <div class="item-details">
+                                        <strong>{{ a.name }}</strong> 
+                                        <span class="mechanic-badge">{{ getArmorMechanicText(a) }}</span>
                                         <div style="font-size:0.8em; color:#666;">{{ a.weight }} lbs • {{ a.type }}</div>
                                     </div>
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:5px; font-size:0.8em; color:#ccc;">
-                                            <input type="checkbox" v-model="a.equipped" @change="armors.forEach((o, i) => { if(i!==idx) o.equipped=false })"> Giy
+                                    <div class="item-actions">
+                                        <label class="equip-check">
+                                            <input type="checkbox" :checked="a.equipped" @click="handleArmorEquip(a)"> 
+                                            <span>{{ a.type === 'Kalkan' ? 'Kuşan' : 'Giy' }}</span>
                                         </label>
-                                        <button @click="removeItem('armor', idx)" style="background:none; border:none; color:#666; cursor:pointer;">🗑</button>
+                                        <button @click="removeItem('armor', idx)" class="btn-icon-delete" title="Sil">
+                                            <svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <div v-if="activeInvTab === 'gear'">
-                                <button class="btn-add-item" @click="openItemModal('gear')">+ Eşya Ekle</button>
+                                <div v-if="gear.length === 0" class="empty-list-msg">Çantanız boş.</div>
+
                                 <div class="gear-grid">
                                     <div v-for="(g, idx) in gear" :key="g.id" class="gear-row">
-                                        <input type="number" v-model.number="g.qty" class="qty-input">
+                                        <input type="number" v-model.number="g.qty" class="qty-input" min="0">
                                         <div class="gear-name">{{ g.name }}</div>
                                         <div class="gear-weight">{{ g.weight }} lbs</div>
-                                        <button @click="removeItem('gear', idx)" style="background:none; border:none; color:#666; cursor:pointer;">✕</button>
+                                        <button @click="removeItem('gear', idx)" class="btn-icon-delete" title="Sil">
+                                            <svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1143,42 +1156,178 @@
         </div>
 
         <!-- Inventory Modal -->
-        <div v-if="isCustomItemModalOpen" class="modal-overlay">
-            <div class="modal-content">
-                <h3>{{ newItemType === 'weapon' ? 'Silah Ekle' : (newItemType === 'armor' ? 'Zırh Ekle' : 'Eşya Ekle') }}</h3>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>İsim</label>
-                        <input v-if="newItemType === 'weapon'" v-model="newWeapon.name">
-                        <input v-else-if="newItemType === 'armor'" v-model="newArmor.name">
-                        <input v-else v-model="newGear.name">
-                    </div>
-
-                    <template v-if="newItemType === 'weapon'">
-                        <div class="form-group"><label>Hasar</label><input v-model="newWeapon.dmg" placeholder="1d8"></div>
-                        <div class="form-group"><label>Tip</label><input v-model="newWeapon.type" placeholder="Kesici"></div>
-                        <div class="form-group"><label>Stat</label>
-                            <select v-model="newWeapon.stat"><option value="str">Güç (STR)</option><option value="dex">Çeviklik (DEX)</option></select>
-                        </div>
-                        <div class="form-group"><label>Ağırlık</label><input type="number" v-model="newWeapon.weight"></div>
-                    </template>
-
-                    <template v-if="newItemType === 'armor'">
-                        <div class="form-group"><label>AC</label><input type="number" v-model="newArmor.ac"></div>
-                        <div class="form-group"><label>Tip</label><select v-model="newArmor.type"><option>Hafif</option><option>Orta</option><option>Ağır</option></select></div>
-                        <div class="form-group"><label>Ağırlık</label><input type="number" v-model="newArmor.weight"></div>
-                    </template>
-
-                    <template v-if="newItemType === 'gear'">
-                        <div class="form-group"><label>Adet</label><input type="number" v-model="newGear.qty"></div>
-                        <div class="form-group"><label>Ağırlık</label><input type="number" v-model="newGear.weight"></div>
-                    </template>
+        <div v-if="isCustomItemModalOpen" class="modal-overlay" @click.self="isCustomItemModalOpen = false">
+            <div class="modal-content large-modal" style="max-width: 600px;">
+                
+                <div class="modal-header">
+                    <h3>
+                        {{ newItemType === 'weapon' ? '⚔️ Silah' : (newItemType === 'armor' ? '🛡️ Zırh' : '🎒 Eşya') }} Yönetimi
+                    </h3>
+                    <button class="close-modal" @click="isCustomItemModalOpen = false">✕</button>
                 </div>
 
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" @click="isCustomItemModalOpen = false">İptal</button>
-                    <button class="btn btn-primary" @click="handleAddItem">Ekle</button>
+                <div class="modal-tabs">
+                    <button :class="{active: activeModalTab === 'list'}" @click="activeModalTab = 'list'">📜 Listeden Seç</button>
+                    <button :class="{active: activeModalTab === 'custom'}" @click="activeModalTab = 'custom'">✨ Özel Yarat</button>
+                </div>
+
+                <div class="modal-body">
+                    
+                    <div v-if="activeModalTab === 'list'">
+                        <div style="margin-bottom: 15px;">
+                            <input type="text" v-model="itemSearchTerm" placeholder="Listede ara..." class="search-input" style="width: 100%; padding: 10px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 6px;">
+                        </div>
+
+                        <div class="filter-sort-bar">
+                            <div class="filter-group" v-if="newItemType !== 'gear'">
+                                <label>Tür:</label>
+                                <select v-model="activeFilter" class="filter-select">
+                                    <option value="all">Tümü</option>
+                                    <option v-if="newItemType === 'weapon'" value="Basit">Basit Silahlar</option>
+                                    <option v-if="newItemType === 'weapon'" value="Savaş">Savaş Silahları</option>
+                                    <option v-if="newItemType === 'armor'" value="Hafif">Hafif Zırh</option>
+                                    <option v-if="newItemType === 'armor'" value="Orta">Orta Zırh</option>
+                                    <option v-if="newItemType === 'armor'" value="Ağır">Ağır Zırh</option>
+                                    <option v-if="newItemType === 'armor'" value="Kalkan">Kalkan</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Sırala:</label>
+                                <select v-model="activeSort" class="filter-select">
+                                    <option value="az">İsim (A-Z)</option>
+                                    <option value="za">İsim (Z-A)</option>
+                                    <option v-if="newItemType === 'armor'" value="ac_desc">AC (Yüksekten Düşüğe)</option>
+                                    <option v-if="newItemType === 'armor'" value="ac_asc">AC (Düşükten Yükseğe)</option>
+                                    <option value="weight_asc">Ağırlık (Hafiften)</option>
+                                    <option value="weight_desc">Ağırlık (Ağırdan)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div v-if="newItemType === 'weapon'" class="item-selection-list">
+                            <div v-for="item in filteredDbWeapons" :key="item.id" class="item-select-row">
+                                <div class="item-info">
+                                    <strong style="color:#eee;">{{ item.name }}</strong>
+                                    <div style="font-size:0.8em; color:#888;">{{ item.dmg }} {{ item.type }} • {{ item.category }}</div>
+                                </div>
+                                <button class="btn-select-spell" @click="selectItem(item)">Ekle</button>
+                            </div>
+                        </div>
+
+                        <div v-if="newItemType === 'armor'" class="item-selection-list">
+                            <div v-for="item in filteredDbArmors" :key="item.id" class="item-select-row">
+                                <div class="item-info">
+                                    <strong style="color:#eee;">{{ item.name }}</strong>
+                                    <div style="font-size:0.8em; color:#888;">
+                                        <span style="color:#e67e22;">{{ getArmorMechanicText(item) }}</span> • {{ item.type }}
+                                    </div>
+                                </div>
+                                <button class="btn-select-spell" @click="selectItem(item)">Ekle</button>
+                            </div>
+                        </div>
+
+                        <div v-if="newItemType === 'gear'" class="item-selection-list">
+                            <div v-for="item in filteredDbGear" :key="item.id" class="item-select-row">
+                                <div class="item-info">
+                                    <strong style="color:#eee;">{{ item.name }}</strong>
+                                    <div style="font-size:0.8em; color:#888;">{{ item.weight }} lbs</div>
+                                </div>
+                                <button class="btn-select-spell" @click="selectItem(item)">Ekle</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="activeModalTab === 'custom'" class="custom-item-form">
+                        
+                        <div v-if="newItemType === 'weapon'" class="form-grid">
+                            <div class="form-group full">
+                                <label>Silah İsmi</label>
+                                <input type="text" v-model="newWeapon.name" placeholder="Örn: Ejderha Dişi Hançeri">
+                            </div>
+                            <div class="form-group">
+                                <label>Hasar Zarı</label>
+                                <input type="text" v-model="newWeapon.dmg" placeholder="1d8">
+                            </div>
+                            <div class="form-group">
+                                <label>Hasar Tipi</label>
+                                <select v-model="newWeapon.type">
+                                    <option value="Kesici">Kesici</option>
+                                    <option value="Delici">Delici</option>
+                                    <option value="Ezici">Ezici</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Kullanılan Stat</label>
+                                <select v-model="newWeapon.stat">
+                                    <option value="str">Güç (STR)</option>
+                                    <option value="dex">Çeviklik (DEX)</option>
+                                    <option value="con">Dayanıklılık (CON)</option>
+                                    <option value="int">Zeka (INT)</option>
+                                    <option value="wis">Bilgelik (WIS)</option>
+                                    <option value="cha">Karizma (CHA)</option>
+                                    <option value="finesse">Finesse (STR veya DEX)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ağırlık (lbs)</label>
+                                <input type="number" v-model.number="newWeapon.weight">
+                            </div>
+                            <div class="form-group">
+                                <label>Sihirli Bonus (Tutturma)</label>
+                                <input type="number" v-model.number="newWeapon.bonusHit" placeholder="+1">
+                            </div>
+                            <div class="form-group">
+                                <label>Sihirli Bonus (Hasar)</label>
+                                <input type="number" v-model.number="newWeapon.bonusDmg" placeholder="+1">
+                            </div>
+                        </div>
+
+                        <div v-if="newItemType === 'armor'" class="form-grid">
+                            <div class="form-group full">
+                                <label>Zırh İsmi</label>
+                                <input type="text" v-model="newArmor.name" placeholder="Örn: Mithril Zırh">
+                            </div>
+                            <div class="form-group">
+                                <label>Zırh Sınıfı (AC)</label>
+                                <input type="number" v-model.number="newArmor.ac">
+                            </div>
+                            <div class="form-group">
+                                <label>Zırh Tipi</label>
+                                <select v-model="newArmor.type">
+                                    <option value="Hafif">Hafif (AC + Dex)</option>
+                                    <option value="Orta">Orta (AC + Dex Max 2)</option>
+                                    <option value="Ağır">Ağır (Sabit AC)</option>
+                                    <option value="Kalkan">Kalkan (+2 AC)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ağırlık (lbs)</label>
+                                <input type="number" v-model.number="newArmor.weight">
+                            </div>
+                        </div>
+
+                        <div v-if="newItemType === 'gear'" class="form-grid">
+                            <div class="form-group full">
+                                <label>Eşya İsmi</label>
+                                <input type="text" v-model="newGear.name" placeholder="Örn: Büyülü Yüzük">
+                            </div>
+                            <div class="form-group">
+                                <label>Adet</label>
+                                <input type="number" v-model.number="newGear.qty">
+                            </div>
+                            <div class="form-group">
+                                <label>Ağırlık (Tane Başı)</label>
+                                <input type="number" v-model.number="newGear.weight">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; text-align: right;">
+                            <button class="btn-create-custom" @click="handleAddItem">
+                                ✨ {{ newItemType === 'weapon' ? 'Silahı' : (newItemType === 'armor' ? 'Zırhı' : 'Eşyayı') }} Yarat ve Ekle
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

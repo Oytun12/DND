@@ -10,6 +10,7 @@ import { useClassLogic } from './src/logicClass.js';
 import { useScoreLogic } from './src/logicScores.js';
 import { useSkillLogic } from './src/logicSkills.js';
 import { avatarList } from './src/data/avatarList.js';
+import { weaponList as dbWeapons, armorList as dbArmors, gearList as dbGear } from './src/data/items.js';
 import { useDiceLogic } from './src/logicDice.js';
 import { useInventoryLogic } from './src/logicInventory.js';
 import { useSpellLogic } from './src/logicSpells.js'; 
@@ -277,52 +278,190 @@ const app = createApp({
         };
 
         const isSaveProficient = (key) => {
-            const cls = selectedClass.value; if (!cls || !cls.proficiency) return false;
-            const profs = cls.proficiency.map(p => p.toLowerCase());
-            const map = { str: ['str','güç'], dex: ['dex','çev'], con: ['con','day'], int: ['int','zek'], wis: ['wis','akı'], cha: ['cha','kar'] };
+            const cls = selectedClass.value; 
+            if (!cls || !cls.proficiency) return false;
+            
+            // Veri temizliği: Küçük harfe çevir ve boşlukları temizle
+            const profs = cls.proficiency.map(p => p.toLowerCase().trim());
+            
+            // GENİŞLETİLMİŞ EŞLEŞTİRME HARİTASI
+            // Veri paketindeki "kuv", "day", "akı" gibi kısaltmalar eklendi.
+            const map = { 
+                str: ['str', 'güç', 'strength', 'kuvvet', 'kuv', 'saving throw: str'], 
+                dex: ['dex', 'çev', 'dexterity', 'agility', 'ceviklik', 'çeviklik'], 
+                con: ['con', 'day', 'constitution', 'bünye', 'dayaniklilik', 'dayanıklılık'], 
+                int: ['int', 'zek', 'intelligence', 'zeka'], 
+                wis: ['wis', 'akı', 'wisdom', 'bilgelik', 'sezgi', 'akil', 'akıl', 'aki'], 
+                cha: ['cha', 'kar', 'charisma', 'karizma'] 
+            };
+            
+            // Eğer stat anahtarı (str, dex vb.) haritada yoksa false dön
             if (!map[key]) return false;
-            return map[key].some(term => profs.some(p => p.includes(term)));
+            
+            // Eşleşme kontrolü: Listede geçen herhangi bir kelimeyi içeriyor mu?
+            // "kuv" kelimesi "kuvvet" içinde de geçtiği için .some ve .includes kullanımı güvenlidir.
+            const isProf = map[key].some(term => profs.some(p => p.includes(term)));
+            
+            return isProf;
         };
 
         const isInventoryOpen = ref(false); 
 
         // ============================================================
-        // 6. ENVANTER (MODERN SİSTEM)
+        // 6. ENVANTER (LİSTE SEÇİMLİ)
         // ============================================================
         const isCustomItemModalOpen = ref(false);
-        const newItemType = ref('weapon'); // Modal tipi: weapon, armor, gear
-        
-        // Geçici Form Verileri
-        const newWeapon = ref({ name: '', dmg: '1d6', type: 'Kesici', stat: 'str', weight: 2, bonusHit: 0, bonusDmg: 0, isProficient: true });
+        const newItemType = ref('weapon'); 
+        const itemSearchTerm = ref(""); 
+
+        // Filtreleme ve Sıralama Değişkenleri
+        const activeSort = ref('az'); // 'az', 'za', 'ac_desc', 'weight_asc' vb.
+        const activeFilter = ref('all'); // 'all', 'light', 'medium', 'heavy', 'simple', 'martial'
+
+        // Manuel ekleme için form verileri (Yedek olarak kalsın)
+        const newWeapon = ref({ name: '', dmg: '1d6', type: 'Kesici', stat: 'str', weight: 2, bonusHit: 0, bonusDmg: 0 });
         const newArmor = ref({ name: '', ac: 11, type: 'Hafif', weight: 8 });
         const newGear = ref({ name: '', qty: 1, weight: 0.5 });
 
-        // Logic Dosyasından Verileri Çek
         const { 
             activeInvTab, currentWeight, carryCapacity, encumbrancePct,
             weapons, armors, gear, currency,
-            addWeapon, addArmor, addGear, removeItem, attackList, calculatedAC
+            addWeapon, addArmor, addGear, removeItem, attackList, calculatedAC,
+            handleArmorEquip, getArmorMechanicText 
         } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
+
+        // Modal Aç
+        const activeModalTab = ref('list'); // 'list' veya 'custom'
 
         const openItemModal = (type) => { 
             newItemType.value = type; 
+            itemSearchTerm.value = ""; 
+            activeSort.value = 'az'; 
+            activeFilter.value = 'all'; 
+            activeModalTab.value = 'list'; // Her açılışta listeyi göster
+            
+            // Formları Sıfırla
+            newWeapon.value = { name: '', dmg: '1d6', type: 'Kesici', stat: 'str', weight: 2, bonusHit: 0, bonusDmg: 0 };
+            newArmor.value = { name: '', ac: 11, type: 'Hafif', weight: 8 };
+            newGear.value = { name: '', qty: 1, weight: 0.5 };
+            
             isCustomItemModalOpen.value = true; 
         };
 
+        // --- MANUEL (ÖZEL) EŞYA EKLEME ---
         const handleAddItem = () => {
             if (newItemType.value === 'weapon') {
-                if(!newWeapon.value.name) return alert("İsim girin.");
-                addWeapon(newWeapon.value);
-            } else if (newItemType.value === 'armor') {
-                if(!newArmor.value.name) return alert("İsim girin.");
-                addArmor(newArmor.value);
-            } else {
-                if(!newGear.value.name) return alert("İsim girin.");
-                addGear(newGear.value);
+                // Silah Ekle
+                if (!newWeapon.value.name) { showToast("Silah ismi girin!", "⚠️"); return; }
+                addWeapon({
+                    ...newWeapon.value,
+                    isProficient: true // Özel silahlarda varsayılan usta kabul edelim
+                });
+                showToast(`${newWeapon.value.name} Eklendi!`, "⚔️");
+            } 
+            else if (newItemType.value === 'armor') {
+                // Zırh Ekle
+                if (!newArmor.value.name) { showToast("Zırh ismi girin!", "⚠️"); return; }
+                addArmor({ ...newArmor.value });
+                showToast(`${newArmor.value.name} Eklendi!`, "🛡️");
+            } 
+            else {
+                // Eşya Ekle
+                if (!newGear.value.name) { showToast("Eşya ismi girin!", "⚠️"); return; }
+                addGear({ ...newGear.value });
+                showToast(`${newGear.value.name} Eklendi!`, "🎒");
             }
-            showToast("Eşya Eklendi!", "🎒");
+            // İşlem bitince modalı kapat
             isCustomItemModalOpen.value = false;
         };
+        
+        const selectItem = (item) => {
+            if (newItemType.value === 'weapon') {
+                addWeapon({
+                    name: item.name, 
+                    dmg: item.dmg, 
+                    type: item.type, 
+                    stat: item.stat, 
+                    weight: item.weight,
+                    isProficient: true // Seçilen silahlarda varsayılan ustalık
+                });
+                showToast(`${item.name} Eklendi!`, "⚔️");
+            } 
+            else if (newItemType.value === 'armor') {
+                addArmor({ 
+                    name: item.name, 
+                    ac: item.ac, 
+                    type: item.type, 
+                    weight: item.weight 
+                });
+                showToast(`${item.name} Eklendi!`, "🛡️");
+            } 
+            else {
+                addGear({ 
+                    name: item.name, 
+                    qty: 1, 
+                    weight: item.weight 
+                });
+                showToast(`${item.name} Eklendi!`, "🎒");
+            }
+        };
+
+        // --- GELİŞMİŞ FİLTRELEME VE SIRALAMA ---
+
+        // 1. SİLAHLAR
+        const filteredDbWeapons = computed(() => {
+            // (dbWeapons || []) diyerek boş gelme durumunda çökmesini engelliyoruz
+            let list = (dbWeapons || []).filter(i => i.name.toLowerCase().includes(itemSearchTerm.value.toLowerCase()));
+
+            // Kategoriye göre filtrele
+            if (activeFilter.value !== 'all') {
+                list = list.filter(i => i.category === activeFilter.value);
+            }
+
+            // Sıralama
+            return list.sort((a, b) => {
+                if (activeSort.value === 'az') return a.name.localeCompare(b.name);
+                if (activeSort.value === 'za') return b.name.localeCompare(a.name);
+                if (activeSort.value === 'weight_asc') return a.weight - b.weight;
+                if (activeSort.value === 'weight_desc') return b.weight - a.weight;
+                return 0;
+            });
+        });
+
+        // 2. ZIRHLAR
+        const filteredDbArmors = computed(() => {
+            let list = (dbArmors || []).filter(i => i.name.toLowerCase().includes(itemSearchTerm.value.toLowerCase()));
+
+            // Tipe göre filtrele
+            if (activeFilter.value !== 'all') {
+                list = list.filter(i => i.type === activeFilter.value);
+            }
+
+            // Sıralama (AC dahil)
+            return list.sort((a, b) => {
+                if (activeSort.value === 'az') return a.name.localeCompare(b.name);
+                if (activeSort.value === 'za') return b.name.localeCompare(a.name);
+                if (activeSort.value === 'ac_asc') return a.ac - b.ac; 
+                if (activeSort.value === 'ac_desc') return b.ac - a.ac; 
+                if (activeSort.value === 'weight_asc') return a.weight - b.weight;
+                if (activeSort.value === 'weight_desc') return b.weight - a.weight;
+                return 0;
+            });
+        });
+
+        // 3. EŞYALAR
+        const filteredDbGear = computed(() => {
+            let list = (dbGear || []).filter(i => i.name.toLowerCase().includes(itemSearchTerm.value.toLowerCase()));
+            
+            // Sıralama
+            return list.sort((a, b) => {
+                if (activeSort.value === 'az') return a.name.localeCompare(b.name);
+                if (activeSort.value === 'za') return b.name.localeCompare(a.name);
+                if (activeSort.value === 'weight_asc') return a.weight - b.weight;
+                if (activeSort.value === 'weight_desc') return b.weight - a.weight;
+                return 0;
+            });
+        });
 
         // ============================================================
         // 7. CAN (HP) YÖNETİMİ
@@ -429,12 +568,16 @@ const app = createApp({
             adjustHpModalValue, applyHpChange,
             
             // ENVANTER
-            isCustomItemModalOpen, newItemType, 
-            newWeapon, newArmor, newGear, 
-            handleAddItem, openItemModal, 
+            isCustomItemModalOpen, newItemType, itemSearchTerm,
+            filteredDbWeapons, filteredDbArmors, filteredDbGear, selectItem,
+            openItemModal, 
+            activeSort, activeFilter,
             activeInvTab, currentWeight, carryCapacity, encumbrancePct, 
             weapons, armors, gear, currency, removeItem, 
             calculatedAC, attackList,
+            handleArmorEquip, getArmorMechanicText,
+            activeModalTab, handleAddItem, newWeapon, newArmor, newGear,
+            
             
             // --- TAB SÜRÜKLEME ---
             sheetTabs, handleTabDragStart, handleTabDragEnd, handleTabDrop

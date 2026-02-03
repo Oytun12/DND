@@ -1,45 +1,59 @@
-// src/data/items.js
-
 export const weaponList = [
-    // BASİT SİLAHLAR (Simple Weapons)
-    { id: 'club', name: 'Sopa', dmg: '1d4', type: 'ezici', category: 'simple', props: ['light'], stat: 'str' },
-    { id: 'dagger', name: 'Hançer', dmg: '1d4', type: 'delici', category: 'simple', props: ['finesse', 'light', 'thrown'], stat: 'finesse' },
-    { id: 'greatclub', name: 'Balyoz', dmg: '1d8', type: 'ezici', category: 'simple', props: ['two_handed'], stat: 'str' },
-    { id: 'handaxe', name: 'El Baltası', dmg: '1d6', type: 'kesici', category: 'simple', props: ['light', 'thrown'], stat: 'str' },
-    { id: 'javelin', name: 'Cirit', dmg: '1d6', type: 'delici', category: 'simple', props: ['thrown'], stat: 'str' },
-    { id: 'light_hammer', name: 'Hafif Çekiç', dmg: '1d4', type: 'ezici', category: 'simple', props: ['light', 'thrown'], stat: 'str' },
-    { id: 'mace', name: 'Gürz', dmg: '1d6', type: 'ezici', category: 'simple', props: [], stat: 'str' },
-    { id: 'quarterstaff', name: 'Değnek', dmg: '1d6', type: 'ezici', category: 'simple', props: ['versatile'], stat: 'str' },
-    { id: 'spear', name: 'Mızrak', dmg: '1d6', type: 'delici', category: 'simple', props: ['thrown', 'versatile'], stat: 'str' },
-    { id: 'crossbow_light', name: 'Hafif Arbalet', dmg: '1d8', type: 'delici', category: 'simple', props: ['ranged', 'two_handed'], stat: 'dex' },
-    { id: 'shortbow', name: 'Kısa Yay', dmg: '1d6', type: 'delici', category: 'simple', props: ['ranged', 'two_handed'], stat: 'dex' },
+    // BASİT SİLAHLAR
+    { id: 'club', name: 'Sopa', dmg: '1d4', type: 'Ezici', category: 'Basit', props: ['Hafif'], stat: 'str', weight: 2 },
+    { id: 'dagger', name: 'Hançer', dmg: '1d4', type: 'Delici', category: 'Basit', props: ['Finesse', 'Hafif', 'Fırlatmalı'], stat: 'finesse', weight: 1 },
+    { id: 'greatclub', name: 'Balyoz', dmg: '1d8', type: 'Ezici', category: 'Basit', props: ['Çift Elli'], stat: 'str', weight: 10 },
+    { id: 'handaxe', name: 'El Baltası', dmg: '1d6', type: 'Kesici', category: 'Basit', props: ['Hafif', 'Fırlatmalı'], stat: 'str', weight: 2 },
+    { id: 'javelin', name: 'Cirit', dmg: '1d6', type: 'Delici', category: 'Basit', props: ['Fırlatmalı'], stat: 'str', weight: 2 },
+    { id: 'light_hammer', name: 'Hafif Çekiç', dmg: '1d4', type: 'Ezici', category: 'Basit', props: ['Hafif', 'Fırlatmalı'], stat: 'str', weight: 2 },
+    { id: 'mace', name: 'Gürz', dmg: '1d6', type: 'Ezici', category: 'Basit', props: [], stat: 'str', weight: 4 },
+    { id: 'quarterstaff', name: 'Değnek', dmg: '1d6', type: 'Ezici', category: 'Basit', props: ['Çok Yönlü (1d8)'], stat: 'str', weight: 4 },
+    { id: 'spear', name: 'Mızrak', dmg: '1d6', type: 'Delici', category: 'Basit', props: ['Fırlatmalı', 'Çok Yönlü (1d8)'], stat: 'str', weight: 3 },
+    { id: 'crossbow_light', name: 'Hafif Arbalet', dmg: '1d8', type: 'Delici', category: 'Basit', props: ['Menzilli', 'Çift Elli'], stat: 'dex', weight: 5 },
+    { id: 'shortbow', name: 'Kısa Yay', dmg: '1d6', type: 'Delici', category: 'Basit', props: ['Menzilli', 'Çift Elli'], stat: 'dex', weight: 2 },
 
-    // SAVAŞ SİLAHLARI (Martial Weapons)
-    { id: 'battleaxe', name: 'Savaş Baltası', dmg: '1d8', type: 'kesici', category: 'martial', props: ['versatile'], stat: 'str' },
-    { id: 'greataxe', name: 'Çift Ağızlı Balta', dmg: '1d12', type: 'kesici', category: 'martial', props: ['two_handed', 'heavy'], stat: 'str' },
-    { id: 'greatsword', name: 'Büyük Kılıç', dmg: '2d6', type: 'kesici', category: 'martial', props: ['two_handed', 'heavy'], stat: 'str' },
-    { id: 'longsword', name: 'Uzun Kılıç', dmg: '1d8', type: 'kesici', category: 'martial', props: ['versatile'], stat: 'str' },
-    { id: 'maul', name: 'Tokmak', dmg: '2d6', type: 'ezici', category: 'martial', props: ['two_handed', 'heavy'], stat: 'str' },
-    { id: 'morningstar', name: 'Seher Yıldızı', dmg: '1d8', type: 'delici', category: 'martial', props: [], stat: 'str' },
-    { id: 'rapier', name: 'Meç (Rapier)', dmg: '1d8', type: 'delici', category: 'martial', props: ['finesse'], stat: 'finesse' },
-    { id: 'scimitar', name: 'Pala', dmg: '1d6', type: 'kesici', category: 'martial', props: ['finesse', 'light'], stat: 'finesse' },
-    { id: 'shortsword', name: 'Kısa Kılıç', dmg: '1d6', type: 'delici', category: 'martial', props: ['finesse', 'light'], stat: 'finesse' },
-    { id: 'longbow', name: 'Uzun Yay', dmg: '1d8', type: 'delici', category: 'martial', props: ['ranged', 'two_handed', 'heavy'], stat: 'dex' }
+    // SAVAŞ SİLAHLARI
+    { id: 'battleaxe', name: 'Savaş Baltası', dmg: '1d8', type: 'Kesici', category: 'Savaş', props: ['Çok Yönlü (1d10)'], stat: 'str', weight: 4 },
+    { id: 'greataxe', name: 'Çift Ağızlı Balta', dmg: '1d12', type: 'Kesici', category: 'Savaş', props: ['Çift Elli', 'Ağır'], stat: 'str', weight: 7 },
+    { id: 'greatsword', name: 'Büyük Kılıç', dmg: '2d6', type: 'Kesici', category: 'Savaş', props: ['Çift Elli', 'Ağır'], stat: 'str', weight: 6 },
+    { id: 'longsword', name: 'Uzun Kılıç', dmg: '1d8', type: 'Kesici', category: 'Savaş', props: ['Çok Yönlü (1d10)'], stat: 'str', weight: 3 },
+    { id: 'maul', name: 'Tokmak', dmg: '2d6', type: 'Ezici', category: 'Savaş', props: ['Çift Elli', 'Ağır'], stat: 'str', weight: 10 },
+    { id: 'morningstar', name: 'Seher Yıldızı', dmg: '1d8', type: 'Delici', category: 'Savaş', props: [], stat: 'str', weight: 4 },
+    { id: 'rapier', name: 'Meç (Rapier)', dmg: '1d8', type: 'Delici', category: 'Savaş', props: ['Finesse'], stat: 'finesse', weight: 2 },
+    { id: 'scimitar', name: 'Pala', dmg: '1d6', type: 'Kesici', category: 'Savaş', props: ['Finesse', 'Hafif'], stat: 'finesse', weight: 3 },
+    { id: 'shortsword', name: 'Kısa Kılıç', dmg: '1d6', type: 'Delici', category: 'Savaş', props: ['Finesse', 'Hafif'], stat: 'finesse', weight: 2 },
+    { id: 'longbow', name: 'Uzun Yay', dmg: '1d8', type: 'Delici', category: 'Savaş', props: ['Menzilli', 'Çift Elli', 'Ağır'], stat: 'dex', weight: 2 }
 ];
 
-// Zırh listesi aynı kalabilir, sadece 'strReq' alanlarının dolu olduğundan emin ol (Heavy zırhlar için).
 export const armorList = [
-    { id: 'none', name: 'Zırhsız (Kumaş)', ac: 10, type: 'none', stealthDis: false },
-    { id: 'padded', name: 'Dolgulu Zırh', ac: 11, type: 'light', stealthDis: true },
-    { id: 'leather', name: 'Deri Zırh', ac: 11, type: 'light', stealthDis: false },
-    { id: 'studded', name: 'Zımbalı Deri', ac: 12, type: 'light', stealthDis: false },
-    { id: 'hide', name: 'Post Zırh', ac: 12, type: 'medium', stealthDis: false, maxDex: 2 },
-    { id: 'chain_shirt', name: 'Zincir Gömlek', ac: 13, type: 'medium', stealthDis: false, maxDex: 2 },
-    { id: 'scale_mail', name: 'Pullu Zırh', ac: 14, type: 'medium', stealthDis: true, maxDex: 2 },
-    { id: 'breastplate', name: 'Göğüs Zırhı', ac: 14, type: 'medium', stealthDis: false, maxDex: 2 },
-    { id: 'half_plate', name: 'Yarım Plaka', ac: 15, type: 'medium', stealthDis: true, maxDex: 2 },
-    { id: 'ring_mail', name: 'Halkalı Zırh', ac: 14, type: 'heavy', stealthDis: true },
-    { id: 'chain_mail', name: 'Zincir Zırh', ac: 16, type: 'heavy', stealthDis: true, strReq: 13 }, // STR ŞARTI
-    { id: 'splint', name: 'Şerit Zırh', ac: 17, type: 'heavy', stealthDis: true, strReq: 15 },    // STR ŞARTI
-    { id: 'plate', name: 'Plaka Zırh', ac: 18, type: 'heavy', stealthDis: true, strReq: 15 }      // STR ŞARTI
+    { id: 'padded', name: 'Dolgulu Zırh', ac: 11, type: 'Hafif', stealthDis: true, weight: 8 },
+    { id: 'leather', name: 'Deri Zırh', ac: 11, type: 'Hafif', stealthDis: false, weight: 10 },
+    { id: 'studded', name: 'Zımbalı Deri', ac: 12, type: 'Hafif', stealthDis: false, weight: 13 },
+    { id: 'hide', name: 'Post Zırh', ac: 12, type: 'Orta', stealthDis: false, weight: 12 },
+    { id: 'chain_shirt', name: 'Zincir Gömlek', ac: 13, type: 'Orta', stealthDis: false, weight: 20 },
+    { id: 'scale_mail', name: 'Pullu Zırh', ac: 14, type: 'Orta', stealthDis: true, weight: 45 },
+    { id: 'breastplate', name: 'Göğüs Zırhı', ac: 14, type: 'Orta', stealthDis: false, weight: 20 },
+    { id: 'half_plate', name: 'Yarım Plaka', ac: 15, type: 'Orta', stealthDis: true, weight: 40 },
+    { id: 'ring_mail', name: 'Halkalı Zırh', ac: 14, type: 'Ağır', stealthDis: true, weight: 40 },
+    { id: 'chain_mail', name: 'Zincir Zırh', ac: 16, type: 'Ağır', stealthDis: true, strReq: 13, weight: 55 },
+    { id: 'splint', name: 'Şerit Zırh', ac: 17, type: 'Ağır', stealthDis: true, strReq: 15, weight: 60 },
+    { id: 'plate', name: 'Plaka Zırh', ac: 18, type: 'Ağır', stealthDis: true, strReq: 15, weight: 65 },
+    { id: 'shield', name: 'Kalkan', ac: 2, type: 'Kalkan', stealthDis: false, weight: 6 }
+];
+
+export const gearList = [
+    { id: 'backpack', name: 'Sırt Çantası', weight: 5 },
+    { id: 'bedroll', name: 'Uyku Tulumu', weight: 7 },
+    { id: 'rope', name: 'İp (Kenevir, 15m)', weight: 10 },
+    { id: 'torch', name: 'Meşale', weight: 1 },
+    { id: 'rations', name: 'Erzak (1 Günlük)', weight: 2 },
+    { id: 'waterskin', name: 'Su Tulumu', weight: 5 },
+    { id: 'potion_healing', name: 'İyileştirme İksiri', weight: 0.5, desc: '2d4 + 2 Can doldurur.' },
+    { id: 'crowbar', name: 'Levye', weight: 5 },
+    { id: 'grappling_hook', name: 'Kanca', weight: 4 },
+    { id: 'hammer', name: 'Çekiç', weight: 3 },
+    { id: 'piton', name: 'Sikke (Tırmanış)', weight: 0.25 },
+    { id: 'lantern_hooded', name: 'Fener (Kapaklı)', weight: 2 },
+    { id: 'oil', name: 'Yağ (Şişe)', weight: 1 },
+    { id: 'tinderbox', name: 'Çakmak Taşı ve Kav', weight: 1 }
 ];
