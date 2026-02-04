@@ -648,7 +648,7 @@ a.dnd-link.spell-link:hover {
     background: #252525; padding: 15px; border-bottom: 1px solid #333;
     display: flex; justify-content: space-between; align-items: center;
 }
-.modal-content { padding: 20px; max-height: 70vh; overflow-y: auto; }
+.modal-content { max-height: 70vh; overflow-y: auto; }
 
 /* Envanter Özel */
 .gold-pouch {

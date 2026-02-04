@@ -251,7 +251,7 @@
 .res-btn { width: 28px; height: 28px; border: none; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 1.1em; display: flex; align-items: center; justify-content: center; transition: all 0.2s; color: #fff; }
 .res-btn.minus { background: #333; color: #aaa; }
 .res-btn.minus:hover { background: #b52b2b; color: #fff; }
-.res-btn.plus { background: #333; color: #aaa; }
+.res-btn.plus { background: #1e1e1e; color: #aaa; }
 .res-btn.plus:hover { background: #4caf50; color: #fff; }
 
 .res-value { min-width: 40px; text-align: center; font-weight: bold; font-size: 1.1em; color: #fff; user-select: none; }
@@ -306,9 +306,9 @@
 
 .stat-box {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    background: #2b2b2b; border: 1px solid #444; border-radius: 6px; padding: 10px 20px; min-width: 80px;
+    background: #2b2b2b; border: 1px solid #444; border-radius: 6px; padding: 10px 20px; min-width: 70px;
 }
-.stat-box.main-stat { border-color: #b52b2b; background: linear-gradient(180deg, #2b2b2b 0%, #3a2222 100%); }
+.stat-box.main-stat { border-color: #b52b2b; background: linear-gradient(180deg, #2b2b2b 0%, #3a2222 100%); min-width: 80px; }
 .stat-label { font-size: 0.75em; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
 .stat-value { font-size: 1.5em; font-weight: bold; color: #fff; margin: 2px 0; }
 .stat-sub { font-size: 0.8em; color: #888; }
@@ -425,7 +425,7 @@
 .plus-icon { font-weight: bold; font-size: 1.1em; }
 
 /* Liste Kartları */
-.inv-item-card { display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 8px 12px; margin-bottom: 6px; border-radius: 6px; border: 1px solid #2a2a2a; transition: border-color 0.2s; }
+.inv-item-card { display: flex; justify-content: space-between; align-items: center; background: #252525; padding: 8px 12px; margin-bottom: 6px; border-radius: 6px; border: 1px solid #333; transition: border-color 0.2s; }
 .inv-item-card:hover { border-color: #444; }
 
 .mechanic-badge {
@@ -454,7 +454,7 @@
 
 /* Eşya Grid (Gear) */
 .gear-grid { display: flex; flex-direction: column; gap: 5px; }
-.gear-row { display: flex; align-items: center; background: #252525; padding: 5px; border-radius: 6px; border: 1px solid #333; margin-bottom: 4px;}
+.gear-row { display: flex; align-items: center; background: #252525; padding: 5px; border-radius: 6px; border: 1px solid #333; margin-bottom: 1px}
 .qty-input { width: 40px; background: #111; border: 1px solid #444; color: #fff; text-align: center; margin-right: 10px; border-radius: 4px; }
 .gear-name { flex: 1; }
 .gear-weight { color: #666; font-size: 0.9em; margin-right: 10px; }

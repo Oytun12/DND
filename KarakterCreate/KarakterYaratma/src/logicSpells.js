@@ -163,25 +163,85 @@ function renderMySpellList(level) {
             else {
                 spellsOfLevel.forEach(spell => {
                     const safeName = spell.name.replace(/'/g, "\\'");
+                    const schoolCode = spell.school || "U";
                     
-                    let detailsHTML = renderEntries(spell.entries);
-                    if (spell.entriesHigherLevel) {
-                        detailsHTML += `<div style="margin-top:12px; padding-top:8px; border-top:1px dashed #444; color:#ccc;">`;
-                        detailsHTML += renderEntries(spell.entriesHigherLevel);
-                        detailsHTML += `</div>`;
+                    // --- 1. MİNİMAL VERİ HAZIRLIĞI ---
+                    
+                    // Süre (Time) -> "1 Eylem"
+                    let timeStr = "";
+                    if (spell.time && spell.time[0]) {
+                        const t = spell.time[0];
+                        // Basit çeviriler
+                        let unit = t.unit === "action" ? "Eylem" : (t.unit === "bonus" ? "Bonus" : (t.unit === "reaction" ? "Tepki" : t.unit));
+                        timeStr = `${t.number} ${unit}`;
                     }
 
+                    // Menzil (Range) -> "60 ft" veya "Dokunma"
+                    let rangeStr = "";
+                    if (spell.range) {
+                        if (spell.range.distance) {
+                            rangeStr = `${spell.range.distance.amount || ''} ${spell.range.distance.type || ''}`;
+                        } else if (spell.range.type) {
+                            rangeStr = (spell.range.type === "touch") ? "Dokunma" : ((spell.range.type === "self") ? "Kendin" : spell.range.type);
+                        }
+                    }
+
+                    // Etki (Duration) -> "Anlık" veya "1 dk (C)"
+                    let durStr = "";
+                    if (spell.duration && spell.duration[0]) {
+                        const d = spell.duration[0];
+                        if (d.type === 'instant') durStr = "Anlık";
+                        else if (d.type === 'permanent') durStr = "Kalıcı";
+                        else if (d.type === 'timed') {
+                            const dUnit = (d.duration.type === "minute") ? "dk" : ((d.duration.type === "hour") ? "sa" : d.duration.type);
+                            durStr = `${d.duration.amount} ${dUnit}`;
+                        }
+                        // Konsantrasyon varsa (C) ekle ama meta etiketinde zaten renkli C var, 
+                        // o yüzden buraya metin olarak eklemeye gerek yok, sadece süreyi yazalım.
+                    }
+
+                    // --- 2. SATIR OLUŞTURMA ---
                     const row = document.createElement('div');
                     row.className = 'spell-row';
+
+                    // Eski sade açıklama formatı (renderEntries) kullanıyoruz
+                    // Eğer renderEntries fonksiyonu dosyanın altında tanımlı değilse, onu da eklememiz gerekebilir.
+                    // (Genelde "utils" veya dosyanın altında olur)
+                    let detailsHTML = "";
+                    if(typeof renderEntries === 'function') {
+                         detailsHTML = renderEntries(spell.entries);
+                    } else {
+                        // Yedek plan (Eğer fonksiyon yoksa basitçe yaz)
+                        detailsHTML = "<p>Detay yüklenemedi.</p>"; 
+                    }
+                    
+                    if (spell.entriesHigherLevel) {
+                         if(typeof renderEntries === 'function') {
+                            detailsHTML += `<div style="margin-top:10px; padding-top:10px; border-top:1px dashed #333; color:#aaa;"><strong>Üst Seviyelerde:</strong> ${renderEntries(spell.entriesHigherLevel)}</div>`;
+                         }
+                    }
+
                     row.innerHTML = `
-                        <div class="spell-row-header">
-                            <div class="spell-info" style="width: 100%; max-width: 1500px;" onclick="window.toggleSpellDetail(this)">
-                                <span class="spell-name">${spell.name} <span class="arrow-icon">▼</span></span>
-                                <span class="spell-meta">${formatSchool(spell.school)} • ${formatComponents(spell.components)}</span>
+                        <div class="spell-row-header" onclick="this.parentElement.classList.toggle('expanded')">
+                            <div style="flex:1;">
+                                <span class="spell-name">${spell.name}</span>
+                                <span class="spell-meta">
+                                    <span style="color:#ccc;">${formatSchool(schoolCode)}</span> • 
+                                    <span style="color:#aaa;">${formatComponents(spell.components)}</span>
+                                    
+                                    <span style="color:#666; margin-left:4px;">
+                                        • ${timeStr} • ${rangeStr} • ${durStr}
+                                    </span>
+                                    
+                                    ${spell.meta && spell.meta.rit ? '<span class="ritual-tag">R</span>' : ''}
+                                    ${(spell.duration && spell.duration[0] && spell.duration[0].concentration) ? '<span class="conc-tag">C</span>' : ''}
+                                </span>
                             </div>
-                            <button class="btn-icon-delete" title="Sil" onclick="window.removeSpellFromCharacter('${safeName}')"><svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></button>
+                            <button class="btn-remove-spell btn-icon-delete" onclick="event.stopPropagation(); removeSpellFromCharacter('${safeName}')"><svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></button>
                         </div>
-                        <div class="spell-detail-content">${detailsHTML}</div>
+                        <div class="spell-detail-content">
+                            ${detailsHTML}
+                        </div>
                     `;
                     listDiv.appendChild(row);
                 });
