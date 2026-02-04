@@ -15,6 +15,31 @@ import { useDiceLogic } from './src/logicDice.js';
 import { useInventoryLogic } from './src/logicInventory.js';
 import { useSpellLogic } from './src/logicSpells.js'; 
 
+// --- GLOBAL ONAY YÖNETİCİSİ ---
+window.customConfirm = (message, onConfirm) => {
+    const modal = document.getElementById('global-confirm-modal');
+    const textEl = document.getElementById('global-confirm-text');
+    const yesBtn = document.getElementById('btn-global-yes');
+
+    if (!modal || !textEl || !yesBtn) return;
+
+    // Mesajı Yaz
+    textEl.innerText = message || "Bu işlem geri alınamaz. Emin misiniz?";
+    
+    // Modalı Aç
+    modal.classList.remove('hidden');
+
+    // Evet Butonunu Ayarla (Önce eski olayları temizle)
+    yesBtn.onclick = () => {
+        onConfirm(); // İlgili işlemi yap
+        window.closeConfirmModal(); // Kapat
+    };
+};
+
+window.closeConfirmModal = () => {
+    document.getElementById('global-confirm-modal').classList.add('hidden');
+};
+
 const app = createApp({
     setup() {
         
@@ -305,6 +330,34 @@ const app = createApp({
             return isProf;
         };
 
+        // --- BÜYÜ SALDIRI BONUSU HESAPLAMA ---
+        const spellAttackMod = computed(() => {
+            if (!selectedClass.value) return 0;
+            
+            // Sınıfa göre büyü yeteneğini belirle
+            // (Veri dosyasında 'spellAbility' varsa onu kullan, yoksa isme göre varsay)
+            const clsName = selectedClass.value.name;
+            let attr = 'int'; // Varsayılan Zeka
+
+            const map = {
+                'Büyücü': 'int', 'Sihirbaz': 'int', 'Wizard': 'int', 'Rogue': 'int', 'Fighter': 'int', 'Artificer': 'int',
+                'Rahip': 'wis', 'Druid': 'wis', 'Korucu': 'wis', 'Keşiş': 'wis', 'Cleric': 'wis', 'Ranger': 'wis', 'Monk': 'wis',
+                'Ozan': 'cha', 'Paladin': 'cha', 'Sihirbaz (Sorcerer)': 'cha', 'Sorcerer': 'cha', 'Warlock': 'cha', 'Barbar': 'cha'
+            };
+
+            // Eğer veri dosyasında tanımlıysa onu al, yoksa haritadan bak
+            if (selectedClass.value.spellAbility) {
+                attr = selectedClass.value.spellAbility.toLowerCase();
+            } else if (map[clsName]) {
+                attr = map[clsName];
+            }
+
+            // Bonusu Hesapla: (Stat Modifikatörü) + (Uzmanlık Bonusu)
+            const score = finalAbilityScores.value[attr] || 10;
+            const mod = Math.floor((score - 10) / 2);
+            return mod + proficiencyBonus.value;
+        });
+
         const isInventoryOpen = ref(false); 
 
         // ============================================================
@@ -346,6 +399,91 @@ const app = createApp({
             newGear.value = { name: '', qty: 1, weight: 0.5 };
             
             isCustomItemModalOpen.value = true; 
+        };
+
+        const activeSpellModalTab = ref('list'); // 'list' veya 'custom'
+        
+        // Özel Büyü Form Verileri
+        const newCustomSpell = ref({
+            name: '',
+            level: 0,
+            school: 'E', // Evocation default
+            castingTime: '1 Aksiyon',
+            range: '60 ft',
+            components: 'V, S',
+            duration: 'Anlık',
+            description: '',
+            hasAttack: false, // Saldırı zarı var mı?
+            damageDice: '',   // Örn: 2d6
+            damageType: 'Ateş'
+        });
+
+        // Büyü Modalını Açarken Sıfırla
+        const openSpellModal = async () => {
+            document.getElementById('modal-spell-search').classList.remove('hidden');
+            activeSpellModalTab.value = 'list'; // Her açılışta listeyi göster
+            
+            // Formu sıfırla
+            newCustomSpell.value = { 
+                name: '', level: 0, school: 'E', castingTime: '1 Aksiyon', range: '60 ft', 
+                components: 'V, S', duration: 'Anlık', description: '', 
+                hasAttack: false, damageDice: '', damageType: 'Ateş' 
+            };
+
+            if (!window.ALL_DATA || !window.ALL_DATA.spells) await window.loadSpellData(); // Load fonksiyonunu logic'ten çağırdığına emin ol
+            // populateClassFilter ve setupListeners logicSpells.js içinde olduğu için globalden çağırıyoruz
+            if(window.populateClassFilter) window.populateClassFilter();
+            if(window.setupModalListeners) window.setupModalListeners();
+            if(window.filterAndRenderModalSpells) window.filterAndRenderModalSpells();
+        };
+
+        // ÖZEL BÜYÜ YARAT VE EKLE
+        const createCustomSpell = () => {
+            const s = newCustomSpell.value;
+            if(!s.name) { showToast("Büyü ismi gerekli!", "⚠️"); return; }
+
+            // Açıklamayı Formatla (Hasar zarlarını tıklanabilir yap)
+            let finalEntries = [s.description];
+            
+            // Saldırı ve Hasar Bilgilerini Açıklamaya Ekle
+            let mechanicText = "";
+            if (s.hasAttack) {
+                mechanicText += `Make a spell attack. `;
+            }
+            if (s.damageDice) {
+                // {@damage 2d6} formatı logicSpells.js tarafından otomatik algılanır ve tıklanabilir yapılır
+                mechanicText += `Hit: {@damage ${s.damageDice}} ${s.damageType} damage.`;
+            }
+            
+            if (mechanicText) {
+                finalEntries.push(mechanicText);
+            }
+
+            // Büyü Objesi Oluştur (D&D JSON Formatına Uygun)
+            const spellObj = {
+                name: s.name,
+                level: s.level,
+                school: s.school,
+                time: [{ number: 1, unit: s.castingTime }], // Basit tutuyoruz
+                range: { type: "point", distance: { type: "ft", amount: parseInt(s.range) || 0 } },
+                components: { v: s.components.includes('V'), s: s.components.includes('S'), m: s.components.includes('M') },
+                duration: [{ type: "timed", duration: { type: "minute", amount: 1 } }], // Gösterimlik
+                entries: finalEntries,
+                isCustom: true // Özel olduğunu belirtelim
+            };
+
+            // Store'a Ekle
+            if (!store.spells.known) store.spells.known = [];
+            store.spells.known.push(spellObj);
+
+            showToast(`${s.name} Büyü Kitabına Yazıldı!`, "✨");
+            
+            // Listeyi Yenile
+            if(window.renderSpellTab) window.renderSpellTab(finalAbilityScores.value, targetLevel.value);
+            
+            // Modalı Kapatma (İsteğe bağlı, seri ekleme için açık kalabilir)
+            // document.getElementById('modal-spell-search').classList.add('hidden');
+            activeSpellModalTab.value = 'list'; // Listeye geri dön
         };
 
         // --- MANUEL (ÖZEL) EŞYA EKLEME ---
@@ -566,6 +704,9 @@ const app = createApp({
             closeDiceResult, isSaveProficient, diceHistory, isHistoryOpen, clearHistory, toggleHistory,
             isInventoryOpen, isHpModalOpen, hpModalValue, maxHP, currentHP, hpStatusClass, setFullHp,
             adjustHpModalValue, applyHpChange,
+            spellAttackMod,
+
+            activeSpellModalTab, newCustomSpell, createCustomSpell, openSpellModal, // Mevcut openSpellModal'ı override ediyoruz
             
             // ENVANTER
             isCustomItemModalOpen, newItemType, itemSearchTerm,

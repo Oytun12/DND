@@ -329,7 +329,7 @@
 }
 
 /* Büyü Listesi Satırları */
-.spell-list-items { padding: 0; }
+.spell-list-items { padding: 0; width: 100%; max-width: 1500px;}
 
 .spell-row {
     flex-direction: column; align-items: stretch; border-bottom: 1px solid #2a2a2a; transition: background 0.2s;
@@ -469,7 +469,7 @@
 .filter-group { display: flex; align-items: center; gap: 8px; flex: 1; }
 .filter-group label { font-size: 0.85em; color: #888; white-space: nowrap; }
 .filter-select {
-    width: 100%; background: #151515; border: 1px solid #444; color: #ddd; padding: 6px 10px; border-radius: 4px; font-size: 0.9em; cursor: pointer; outline: none;
+    width: 100%; background: #151515; border: 1px solid #444; color: #ddd; padding: 6px 10px; margin-top: 6px; border-radius: 4px; font-size: 0.9em; cursor: pointer; outline: none;
 }
 .filter-select:focus { border-color: #e67e22; }
 
@@ -566,7 +566,7 @@
         font-size: 16px; /* Mobilde otomatik zoom'u engeller ve okumayı kolaylaştırır */
         padding: 10px;
     }
-    
+
     /* Envanter Kartları */
     /*
     .inv-item-card { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -587,4 +587,175 @@
 }
 
 
+/* Tıklanabilir Büyü İstatistiği */
+.stat-box.clickable-stat {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
+.stat-box.clickable-stat:hover {
+    border-color: #e67e22; /* Turuncu vurgu */
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.stat-box.clickable-stat:active {
+    transform: translateY(0);
+    background: #222;
+}
+
+/* ============================================================
+   EKSİK OLAN BÜYÜ ARAMA MODALI STİLLERİ (RESTORED)
+   ============================================================ */
+
+/* Sonuç Listesi Grid Yapısı */
+.spell-results-grid {
+    display: grid;
+    /*grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive kolonlar */
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+/* Tekil Büyü Kartı (Arama Sonucu) */
+.spell-result-card {
+    background: #252525;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.spell-result-card:hover {
+    border-color: #b52b2b;
+    background: #2a2a2a;
+    transform: translateY(-1px);
+}
+
+/* Kart İçindeki Metinler */
+.spell-result-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.spell-result-name {
+    font-weight: bold;
+    color: #eee;
+    font-size: 0.95em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.spell-result-meta {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* Seviye Rozeti */
+.spell-meta-badge {
+    display: inline-block;
+    background: #111;
+    border: 1px solid #444;
+    color: #e67e22;
+    font-size: 0.75em;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 8px;
+    font-weight: bold;
+}
+
+/* Ritual Tag (R) */
+.meta-rit {
+    color: #ffd43b;
+    border: 1px solid #ffd43b;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7em;
+    margin-left: 5px;
+    cursor: help;
+}
+
+/* Ekle/Çıkar Butonları (Modal İçi) */
+.spell-result-card .btn-select-spell {
+    padding: 5px 12px;
+    font-size: 0.85em;
+    min-width: 60px;
+    margin-left: 10px;
+}
+
+/* ============================================================
+   GLOBAL ONAY PENCERESİ (CONFIRM MODAL)
+   ============================================================ */
+
+/* Kart Tasarımı (Toast Stilinde) */
+.confirm-card {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-left: 4px solid #b52b2b; /* Kızıl uyarı çizgisi */
+    border-radius: 8px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    text-align: center;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Buton Grubu */
+.confirm-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* İptal Butonu */
+.btn-confirm-cancel {
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-confirm-cancel:hover {
+    border-color: #666;
+    color: #fff;
+    background: rgba(255,255,255,0.05);
+}
+
+/* Onay Butonu (Kızıl) */
+.btn-confirm-yes {
+    background: linear-gradient(135deg, #b52b2b, #8a1c1c);
+    color: #fff;
+    border: none;
+    padding: 8px 25px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(181, 43, 43, 0.3);
+    transition: transform 0.2s;
+}
+.btn-confirm-yes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(181, 43, 43, 0.5);
+}

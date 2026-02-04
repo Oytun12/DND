@@ -874,9 +874,15 @@
                                         <span class="stat-label">Save DC</span>
                                         <span class="stat-value" id="spell-save-dc">10</span>
                                     </div>
-                                    <div class="stat-box main-stat">
-                                        <span class="stat-label">Attack Bonus</span>
-                                        <span class="stat-value" id="spell-attack-bonus">+2</span>
+                                    <div class="stat-box main-stat clickable-stat" 
+                                         @click="rollD20('Büyü Saldırısı', spellAttackMod)"
+                                         title="Büyü Saldırısı Yap (d20 + Bonus)">
+                                        
+                                        <span class="stat-label">Saldırı Bonusu</span>
+                                        
+                                        <span class="stat-value">
+                                            {{ spellAttackMod >= 0 ? '+' : '' }}{{ spellAttackMod }}
+                                        </span>
                                     </div>
                                     <div class="stat-box action-box">
                                         <button class="btn-add-spell" onclick="window.openSpellModal()">
@@ -1333,20 +1339,27 @@
         </div>
 
         <!-- Spell Modal -->
-        <div id="modal-spell-search" class="modal-overlay hidden">
-            <div class="modal-content large-modal">
-                <div class="modal-header">
-                    <h3>Büyü Kitabına Ekle</h3>
-                    <button class="close-modal" onclick="window.closeSpellModal()">✕</button>
-                </div>
-                <div class="modal-body">
-                    <div class="spell-filter-bar" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-                        
-                        <input type="text" id="modal-spell-search-input" placeholder="Büyü ara (Fireball, Şifa...)" class="search-input" style="width: 100%;">
-                        
+        <div id="modal-spell-search" class="modal-overlay hidden" style="z-index: 2000; overflow-y: auto; flex: 1;">
+        <div class="modal-content large-modal" style="max-width: 800px; height: 85vh;">
+            
+            <div class="modal-header">
+                <h3>✨ Büyü Kütüphanesi & Grimoire</h3>
+                <button class="close-modal" onclick="window.closeSpellModal()">✕</button>
+            </div>
+
+            <div class="modal-tabs">
+                <button :class="{active: activeSpellModalTab === 'list'}" @click="activeSpellModalTab = 'list'">📜 Kütüphane</button>
+                <button :class="{active: activeSpellModalTab === 'custom'}" @click="activeSpellModalTab = 'custom'">✍️ Özel Büyü Yaz</button>
+            </div>
+
+            <div class="modal-body" style="padding: 0;">
+                
+                <div v-show="activeSpellModalTab === 'list'" style="padding: 20px; height: 100%; display: flex; flex-direction: column;">
+                    <div class="spell-filter-bar" style="margin-bottom: 15px;">
+                        <input type="text" id="modal-spell-search-input" class="search-input" placeholder="Büyü ara..." autofocus>
                         <select id="modal-spell-level-filter" class="filter-select">
                             <option value="all">Tüm Seviyeler</option>
-                            <option value="0">Cantrip (0)</option>
+                            <option value="0">Cantrip</option>
                             <option value="1">1. Seviye</option>
                             <option value="2">2. Seviye</option>
                             <option value="3">3. Seviye</option>
@@ -1357,24 +1370,108 @@
                             <option value="8">8. Seviye</option>
                             <option value="9">9. Seviye</option>
                         </select>
-                        
                         <select id="modal-spell-class-filter" class="filter-select">
                             <option value="all">Tüm Sınıflar</option>
                             </select>
-
                         <select id="modal-spell-sort" class="filter-select">
                             <option value="level_asc">Seviye (Artan)</option>
                             <option value="level_desc">Seviye (Azalan)</option>
                             <option value="name_asc">İsim (A-Z)</option>
                         </select>
-
                     </div>
                     
                     <div id="modal-spell-results" class="spell-results-grid">
                         </div>
                 </div>
+
+                <div v-show="activeSpellModalTab === 'custom'" style="padding: 20px;">
+                    <div class="custom-item-form">
+                        <div class="form-grid">
+                            
+                            <div class="form-group full">
+                                <label>Büyü İsmi</label>
+                                <input type="text" v-model="newCustomSpell.name" placeholder="Örn: Kadim Alev Topu">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Seviye (0 = Cantrip)</label>
+                                <select v-model.number="newCustomSpell.level">
+                                    <option value="0">Cantrip</option>
+                                    <option v-for="i in 9" :value="i">{{i}}. Seviye</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Okul (School)</label>
+                                <select v-model="newCustomSpell.school">
+                                    <option value="E">Evocation (Yıkım)</option>
+                                    <option value="C">Conjuration (Çağırma)</option>
+                                    <option value="N">Necromancy (Ölüm)</option>
+                                    <option value="I">Illusion (İlüzyon)</option>
+                                    <option value="A">Abjuration (Koruma)</option>
+                                    <option value="T">Transmutation (Dönüşüm)</option>
+                                    <option value="D">Divination (Kehanet)</option>
+                                    <option value="EN">Enchantment (Efsun)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Yapılma Süresi</label>
+                                <input type="text" v-model="newCustomSpell.castingTime" placeholder="1 Action">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Menzil</label>
+                                <input type="text" v-model="newCustomSpell.range" placeholder="60 ft">
+                            </div>
+
+                            <div class="form-group full" style="border-top: 1px dashed #444;"></div>
+
+                            <div class="form-group" style="margin-top: 10px; padding-top: 10px;">
+                                <label style="color: #e67e22;">⚡ Savaş Mekaniği</label>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 10px; padding-top: 10px; flex-direction: row; align-items: center; gap: 10px;">
+                                <input type="checkbox" id="chk-attack" v-model="newCustomSpell.hasAttack" style="width: auto;">
+                                <label for="chk-attack" style="margin:0; cursor:pointer;">Saldırı Zarı Gerektirir mi? (Spell Attack)</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Hasar Zarı (Opsiyonel)</label>
+                                <input type="text" v-model="newCustomSpell.damageDice" placeholder="Örn: 4d6">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Hasar Tipi</label>
+                                <select v-model="newCustomSpell.damageType">
+                                    <option value="Ateş">Ateş (Fire)</option>
+                                    <option value="Soğuk">Soğuk (Cold)</option>
+                                    <option value="Yıldırım">Yıldırım (Lightning)</option>
+                                    <option value="Nekrotik">Nekrotik (Necrotic)</option>
+                                    <option value="Radyant">Radyant (Radiant)</option>
+                                    <option value="Kesici">Kesici (Slashing)</option>
+                                    <option value="Güç">Güç (Force)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full">
+                                <label>Açıklama</label>
+                                <textarea v-model="newCustomSpell.description" rows="4" style="background:#151515; border:1px solid #444; color:#fff; width:100%; padding:10px; border-radius:4px;" placeholder="Büyünün etkilerini buraya yazın..."></textarea>
+                            </div>
+
+                            <div class="form-group full" style="text-align: right; margin-top: 10px;">
+                                <button class="btn-create-custom" @click="createCustomSpell">
+                                    ✨ Büyüyü Kitaba Yaz
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+    </div>
 
         <!-- Inventory Modal -->
         
@@ -1433,6 +1530,17 @@
                         </span>
                     </button>
 
+                </div>
+            </div>
+        </div>
+        <div id="global-confirm-modal" class="modal-overlay hidden" style="z-index: 9999;">
+            <div class="confirm-card">
+                <h3 style="margin:0 0 10px 0; color:#b52b2b;">⚠️ Dikkat ⚠️</h3>
+                <p id="global-confirm-text" style="color:#ccc; margin-bottom: 20px;">Bu işlem geri alınamaz. Emin misiniz?</p>
+
+                <div class="confirm-actions">
+                    <button class="btn-confirm-cancel" onclick="window.closeConfirmModal()">İptal</button>
+                    <button id="btn-global-yes" class="btn-confirm-yes">Evet</button>
                 </div>
             </div>
         </div>

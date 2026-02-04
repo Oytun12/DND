@@ -61,9 +61,12 @@ export function useInventoryLogic(finalAbilityScores, proficiencyBonus, selected
     };
 
     const removeItem = (cat, idx) => { 
-        if(confirm("Silinsin mi?")) {
-            if(Array.isArray(store.inventory[cat])) store.inventory[cat].splice(idx, 1);
-        }
+        // YENİ SİSTEM:
+        window.customConfirm(`${store.inventory[cat][idx].name} çıkarılsın mı?`, () => {
+            if(Array.isArray(store.inventory[cat])) {
+                store.inventory[cat].splice(idx, 1);
+            }
+        });
     };
 
     // --- ZIRH DETAY METNİ (Listede Göstermek İçin) ---

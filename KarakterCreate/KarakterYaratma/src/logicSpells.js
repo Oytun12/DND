@@ -89,13 +89,20 @@ function updateSpellStats(scores, level) {
     const lvl = level || 1;
     const prof = Math.ceil(lvl / 4) + 1;
 
+    // Elementlerin varlığını kontrol ederek işlem yap (Hata vermeyi engeller)
     const elName = document.getElementById('spell-ability-name');
-    if(elName) {
-        elName.innerText = abilityKey.toUpperCase();
-        document.getElementById('spell-ability-mod').innerText = (mod >= 0 ? "+" : "") + mod;
-        document.getElementById('spell-save-dc').innerText = 8 + prof + mod;
-        document.getElementById('spell-attack-bonus').innerText = (prof + mod >= 0 ? "+" : "") + (prof + mod);
-    }
+    if (elName) elName.innerText = abilityKey.toUpperCase();
+
+    const elMod = document.getElementById('spell-ability-mod');
+    if (elMod) elMod.innerText = (mod >= 0 ? "+" : "") + mod;
+
+    const elDC = document.getElementById('spell-save-dc');
+    if (elDC) elDC.innerText = 8 + prof + mod;
+
+    // Bu eleman Vue tarafında handle edildiği için HTML'de ID'si olmayabilir.
+    // Varsa günceller, yoksa hata vermeden devam eder.
+    const elAtk = document.getElementById('spell-attack-bonus');
+    if (elAtk) elAtk.innerText = (prof + mod >= 0 ? "+" : "") + (prof + mod);
 }
 
 /* --- LİSTE RENDER --- */
@@ -107,7 +114,16 @@ function renderMySpellList(level) {
     const effectiveLevel = level || cachedLevel;
     const store = window.store || { spells: { known: [] } };
     if (!store.spells) store.spells = { known: [] };
-    const mySpells = (store.spells.known || []).map(name => window.ALL_DATA.spells.find(s => s.name === name) || { name: name, level: 0, school: "U", entries: ["Veri yok"] });
+
+    // KRİTİK GÜNCELLEME: Hem String (Listeden) hem Object (Özel) büyüleri tanı
+    const mySpells = (store.spells.known || []).map(item => {
+        // Eğer öğe bir string ise (eski kayıtlar veya listeden seçilenler), veritabanından bul
+        if (typeof item === 'string') {
+            return window.ALL_DATA.spells.find(s => s.name === item) || { name: item, level: 0, school: "U", entries: ["Veri yok"] };
+        }
+        // Eğer öğe bir obje ise (bizim yarattığımız özel büyü), direkt kullan
+        return item;
+    });
 
     const charClass = (store.class && store.class.selected) ? store.class.selected.name : "Büyücü";
     const config = SPELL_CASTING_CONFIG[charClass] || { type: "full" };
@@ -159,11 +175,11 @@ function renderMySpellList(level) {
                     row.className = 'spell-row';
                     row.innerHTML = `
                         <div class="spell-row-header">
-                            <div class="spell-info" onclick="window.toggleSpellDetail(this)">
+                            <div class="spell-info" style="width: 100%; max-width: 1500px;" onclick="window.toggleSpellDetail(this)">
                                 <span class="spell-name">${spell.name} <span class="arrow-icon">▼</span></span>
                                 <span class="spell-meta">${formatSchool(spell.school)} • ${formatComponents(spell.components)}</span>
                             </div>
-                            <button class="btn-remove-spell" onclick="window.removeSpellFromCharacter('${safeName}')">🗑</button>
+                            <button class="btn-icon-delete" title="Sil" onclick="window.removeSpellFromCharacter('${safeName}')"><svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></button>
                         </div>
                         <div class="spell-detail-content">${detailsHTML}</div>
                     `;
@@ -366,11 +382,13 @@ function toggleSpellFromModal(spellName, btnElement) {
 }
 
 function removeSpellFromCharacter(spellName) { 
-    if (!confirm("Silinsin mi?")) return;
-    const store = window.store;
-    if (!store || !store.spells) return;
-    store.spells.known = store.spells.known.filter(s => s !== spellName);
-    renderMySpellList(cachedLevel);
+    // YENİ SİSTEM:
+    window.customConfirm(`${spellName} büyü kitabından çıkarılsın mı?`, () => {
+        const store = window.store;
+        if (!store || !store.spells) return;
+        store.spells.known = store.spells.known.filter(s => s !== spellName);
+        renderMySpellList(cachedLevel); // Listeyi yenile
+    });
 }
 
 function formatSchool(code) { const map = { "E": "Evoc", "C": "Conj", "N": "Necro", "I": "Illu", "A": "Abjur", "T": "Trans", "D": "Div", "EN": "Ench" }; return map[code] || code; }
