@@ -665,6 +665,54 @@ const app = createApp({
         const setFullHp = () => { currentHP.value = maxHP.value; showToast("Can yenilendi!", "✨"); };
 
         // ============================================================
+        // ÖLÜM ZARLARI (DEATH SAVES) MANTIĞI
+        // ============================================================
+        const deathSaves = ref({ successes: 0, failures: 0 });
+
+        // HP değişimini izle
+        watch(currentHP, (newVal) => {
+            if (newVal > 0) {
+                // Eğer karakter iyileşirse zarları sıfırla
+                deathSaves.value.successes = 0;
+                deathSaves.value.failures = 0;
+            }
+        });
+
+        const addDeathSave = (type) => {
+            if (type === 'success') {
+                if (deathSaves.value.successes < 3) deathSaves.value.successes++;
+                
+                // 3 BAŞARI KURALI: 1 HP ile ayağa kalk
+                if (deathSaves.value.successes === 3) {
+                    showToast("3 Başarı! Hayata döndün! ✨", "💖");
+                    setTimeout(() => {
+                        currentHP.value = 1; // HP'yi 1 yap (Bu otomatik olarak paneli normale çevirir)
+                    }, 500);
+                }
+            } else {
+                if (deathSaves.value.failures < 3) deathSaves.value.failures++;
+                if (deathSaves.value.failures === 3) {
+                    showToast("Karakter Öldü... 💀", "❌");
+                }
+            }
+        };
+
+        const toggleDeathSave = (type, index) => {
+            // Tıklanan slot zaten doluysa sil, boşsa oraya kadar doldur
+            const currentVal = type === 'success' ? deathSaves.value.successes : deathSaves.value.failures;
+            
+            // Basit toggle mantığı: Sırayla doldur
+            if (index < currentVal) {
+                // Geri alma işlemi (Silme)
+                if (type === 'success') deathSaves.value.successes = index;
+                else deathSaves.value.failures = index;
+            } else {
+                // Ekleme işlemi
+                addDeathSave(type);
+            }
+        };
+
+        // ============================================================
         // 8. BÜYÜ SİSTEMİ
         // ============================================================
         useSpellLogic();
@@ -737,6 +785,9 @@ const app = createApp({
             spellAttackMod,
 
             activeSpellModalTab, newCustomSpell, createCustomSpell, openSpellModal, // Mevcut openSpellModal'ı override ediyoruz
+
+            // ÖLÜM KURALLARI
+            deathSaves, toggleDeathSave, addDeathSave,
             
             // ENVANTER
             isCustomItemModalOpen, newItemType, itemSearchTerm,

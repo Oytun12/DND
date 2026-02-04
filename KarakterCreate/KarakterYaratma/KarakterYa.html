@@ -634,6 +634,9 @@
         </div>
 
         <div v-if="isSheetMode" class="character-sheet-layout" v-cloak>
+            <div class="low-hp-vignette" 
+             :class="{ active: currentHP <= 0, dead: deathSaves && deathSaves.failures >= 3 }">
+        </div>
             
             <header class="sheet-header-main">
     
@@ -790,18 +793,35 @@
                             <span class="label">Hız</span>
                             <span class="value" style="padding-bottom: 13px;">{{ store.race.selected?.speed || 30 }} ft.</span>
                         </div>
-                        <div class="c-stat-box hp-box clickable-stat" 
-                             @click="isHpModalOpen = true"
-                             title="Canı Düzenlemek İçin Tıkla">
+                        <div class="c-stat-box hp-box" :class="hpStatusClass">
                             
-                            <div style="display:flex; flex-direction:column; align-items:flex-start;">
-                                <span class="label">Can Puanı (HP)</span>
-                                <span class="sub-label" style="padding-top: 7px; font-size:0.7em; color:#666;">Maksimum: {{ maxHP }}</span>
+                            <div v-if="currentHP > 0" @click="isHpModalOpen = true" class="clickable-stat" title="Canı Düzenle" style="width:100%; height:100%; display:flex; flex-direction:column; justify-content:center;">
+                                <div style="display:flex; flex-direction:column; align-items:flex-start;">
+                                    <span class="label">Can Puanı</span>
+                                    <span class="sub-label" style="font-size:0.7em; color:#666; padding-top: 7px;">Max: {{ maxHP }}</span>
+                                </div>
+                                <span class="value">{{ currentHP }}</span>
                             </div>
 
-                            <span class="value" :class="hpStatusClass">
-                                {{ currentHP }}
-                            </span>
+                            <div v-else class="death-saves-container">
+                                <span class="label" style="color:#ff4444; margin-bottom:5px;">ÖLÜM ZARLARI</span>
+                                
+                                <div class="ds-row">
+                                    <span class="ds-label">BAŞARI</span>
+                                    <div class="ds-slot success" :class="{ filled: deathSaves.successes >= 1 }" @click="toggleDeathSave('success', 0)"></div>
+                                    <div class="ds-slot success" :class="{ filled: deathSaves.successes >= 2 }" @click="toggleDeathSave('success', 1)"></div>
+                                    <div class="ds-slot success" :class="{ filled: deathSaves.successes >= 3 }" @click="toggleDeathSave('success', 2)"></div>
+                                </div>
+
+                                <div class="ds-row">
+                                    <span class="ds-label">HATA</span>
+                                    <div class="ds-slot fail" :class="{ filled: deathSaves.failures >= 1 }" @click="toggleDeathSave('fail', 0)"></div>
+                                    <div class="ds-slot fail" :class="{ filled: deathSaves.failures >= 2 }" @click="toggleDeathSave('fail', 1)"></div>
+                                    <div class="ds-slot fail" :class="{ filled: deathSaves.failures >= 3 }" @click="toggleDeathSave('fail', 2)"></div>
+                                </div>
+
+                                <button class="btn-emergency-heal" @click="isHpModalOpen = true">Müdahale Et (HP)</button>
+                            </div>
                         </div>
 
                         

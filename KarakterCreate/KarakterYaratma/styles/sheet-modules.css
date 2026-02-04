@@ -138,7 +138,10 @@
 /* HP Animasyonları */
 .hp-low { color: #ff9800 !important; text-shadow: 0 0 5px rgba(255, 152, 0, 0.4); animation: pulse-orange 2s infinite; }
 .hp-critical { color: #ff4444 !important; text-shadow: 0 0 8px rgba(255, 68, 68, 0.6); animation: pulse-red 1s infinite; }
-.hp-dead { color: #555 !important; text-decoration: line-through; }
+.hp-dead { 
+    color: #555 !important; 
+    /* text-decoration: line-through;  <-- BU SATIRI SİLDİK, SORUN BUYDU */ 
+}
 
 @keyframes pulse-orange { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.1); color: #ff0000; } 100% { transform: scale(1); } }
@@ -544,6 +547,102 @@
 
 .mini-reset-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #444; background: transparent; color: #666; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .mini-reset-btn:hover { border-color: #b52b2b; color: #b52b2b; transform: rotate(180deg); }
+
+/* ============================================================
+   GERİLİM EFEKTİ (RESPONSIVE - EKRANA ORANTILI)
+   ============================================================ */
+.low-hp-vignette {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 9500 !important; 
+    opacity: 0;
+    background: transparent;
+    transition: opacity 0.5s ease-in-out;
+
+    /* Başlangıç (Hafif Çerçeve) */
+    /* Blur: 15vmin (%15 yumuşaklık), Spread: 5vmin (%5 kalınlık) */
+    box-shadow: inset 0 0 15vmin 5vmin rgba(220, 20, 20, 0.8);
+}
+
+.low-hp-vignette.active {
+    opacity: 1; 
+    animation: danger-pulse 4s infinite ease-in-out;
+}
+
+/* vmin = Ekranın kısa kenarının %1'i.
+   Örn: 25vmin = Ekranın %25'i kadar içeri gir demek.
+*/
+@keyframes danger-pulse {
+    0% { 
+        opacity: 0.4;
+        /* Sakin: Kenarlarda ince (%5) bir çerçeve */
+        box-shadow: inset 0 0 15vmin 5vmin rgba(220, 20, 20, 0.7);
+    }
+    50% { 
+        opacity: 0.6;
+        /* Boğulma Anı: Ekranın neredeyse %30'u içeri giriyor (Toplam %60 kapalı) */
+        /* Blur arttı (25vmin), Kalınlık çok arttı (25vmin) */
+        box-shadow: inset 0 0 25vmin 20vmin rgba(220, 20, 20, 0.9);
+    }
+    100% { 
+        opacity: 0.4;
+        /* Tekrar Sakin */
+        box-shadow: inset 0 0 15vmin 5vmin rgba(220, 20, 20, 0.7);
+    }
+}
+
+/* ============================================================
+   ÖLÜM ANI (DONMA EFEKTİ - RESPONSIVE)
+   ============================================================ */
+.low-hp-vignette.dead {
+    animation: none !important; 
+    
+    /* Öldüğünde o en yoğun (%50) ana sabitleniyor */
+    opacity: 0.6 !important; /* Biraz karartarak donduruyoruz */
+    
+    /* %50 anındaki değerlerin aynısı */
+    box-shadow: inset 0 0 25vmin 25vmin rgba(220, 20, 20, 0.9) !important;
+    
+    transition: all 3s ease-out;
+    filter: brightness(0.6) grayscale(0.8) contrast(1.2); /* Ölüm soğukluğu */
+}
+
+/* 2. ÖLÜM ZARLARI PANELİ */
+.death-saves-container {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+}
+
+.ds-row {
+    display: flex; align-items: center; gap: 5px; margin-bottom: 4px;
+}
+
+.ds-label {
+    font-size: 0.65em; color: #888; font-weight: bold; width: 40px; text-align: right;
+}
+
+.ds-slot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 1px solid #555;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #222;
+}
+
+.ds-slot:hover { transform: scale(1.2); border-color: #fff; }
+
+/* Başarı Yuvası (Yeşil) */
+.ds-slot.success.filled { background: #4caf50; box-shadow: 0 0 5px #4caf50; border-color: #4caf50; }
+
+/* Başarısızlık Yuvası (Kırmızı) */
+.ds-slot.fail.filled { background: #d32f2f; box-shadow: 0 0 5px #d32f2f; border-color: #d32f2f; }
+
+/* İyileşme Butonu (Acil Durum) */
+.btn-emergency-heal {
+    font-size: 0.7em; margin-top: 5px; background: #333; border: 1px solid #444; color: #ccc; 
+    padding: 2px 8px; border-radius: 4px; cursor: pointer;
+}
+.btn-emergency-heal:hover { background: #2e7d32; color: #fff; border-color: #4caf50; }
 
 /* ============================================================
    10. RESPONSIVE (MOBİL UYUMLULUK)
