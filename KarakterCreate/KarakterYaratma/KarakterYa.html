@@ -769,18 +769,26 @@
                     <div class="combat-stats-row">
                         <div class="c-stat-box">
                             <span class="label">Zırh Sınıfı</span>
-                            <span class="value shield-shape" :style="store.inventory.shield ? 'border-color:#4caf50' : ''">
-                                {{ calculatedAC }}
-                            </span>
+                            <div class="shield-container">
+                                <svg viewBox="0 0 24 24" class="shield-svg" preserveAspectRatio="none">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" 
+                                          fill="#222" 
+                                          :stroke="store.inventory.shield ? '#4caf50' : '#b52b2b'" 
+                                          stroke-width="1" 
+                                          stroke-linecap="round" 
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <span class="shield-text">{{ calculatedAC }}</span>
+                            </div>
                         </div>
                         <div class="c-stat-box clickable-stat" 
                              @click="rollD20('İnisiyatif', Math.floor((finalAbilityScores.dex - 10) / 2))">
                             <span class="label">İnisiyatif</span>
-                            <span class="value">{{ Math.floor((finalAbilityScores.dex - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((finalAbilityScores.dex - 10) / 2) }}</span>
+                            <span class="value" style="padding-bottom: 13px;">{{ Math.floor((finalAbilityScores.dex - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((finalAbilityScores.dex - 10) / 2) }}</span>
                         </div>
                         <div class="c-stat-box">
                             <span class="label">Hız</span>
-                            <span class="value">{{ store.race.selected?.speed || 30 }} ft.</span>
+                            <span class="value" style="padding-bottom: 13px;">{{ store.race.selected?.speed || 30 }} ft.</span>
                         </div>
                         <div class="c-stat-box hp-box clickable-stat" 
                              @click="isHpModalOpen = true"
@@ -788,7 +796,7 @@
                             
                             <div style="display:flex; flex-direction:column; align-items:flex-start;">
                                 <span class="label">Can Puanı (HP)</span>
-                                <span class="sub-label" style="font-size:0.7em; color:#666;">Maksimum: {{ maxHP }}</span>
+                                <span class="sub-label" style="padding-top: 7px; font-size:0.7em; color:#666;">Maksimum: {{ maxHP }}</span>
                             </div>
 
                             <span class="value" :class="hpStatusClass">
@@ -1096,7 +1104,7 @@
                 <div class="dice-breakdown">
                     
                     <div v-if="diceResult.details" 
-                         style="font-size: 1.4em; color: #e67e22; font-family: monospace; letter-spacing: 1px; margin-bottom:5px;" 
+                         style="font-size: 1.2em; color: #e67e22; font-family: monospace; letter-spacing: 1px; margin-bottom:5px;" 
                          v-html="diceResult.details">
                     </div>
 

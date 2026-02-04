@@ -386,7 +386,20 @@ function removeSpellFromCharacter(spellName) {
     window.customConfirm(`${spellName} büyü kitabından çıkarılsın mı?`, () => {
         const store = window.store;
         if (!store || !store.spells) return;
-        store.spells.known = store.spells.known.filter(s => s !== spellName);
+
+        // DÜZELTME: Hem string (liste büyüsü) hem obje (özel büyü) kontrolü yapıyoruz
+        store.spells.known = store.spells.known.filter(s => {
+            // Eğer kayıt sadece bir isimse (String), direkt karşılaştır
+            if (typeof s === 'string') {
+                return s !== spellName;
+            }
+            // Eğer kayıt bir objeyse (Özel Büyü), ismine bak
+            else if (typeof s === 'object' && s.name) {
+                return s.name !== spellName;
+            }
+            return true; // Ne olduğu belirsizse silme
+        });
+
         renderMySpellList(cachedLevel); // Listeyi yenile
     });
 }

@@ -69,7 +69,7 @@
     border-radius: 8px;
     display: flex; 
     flex-direction: column; 
-    justify-content: center; 
+    justify-content: flex-start; 
     min-height: 80px;
 }
 
@@ -77,7 +77,7 @@
     font-size: 0.75em; 
     color: #888; 
     text-transform: uppercase; 
-    margin-bottom: 8px; 
+    margin-bottom: auto; /* Altına otomatik boşluk vererek değeri aşağı iter */
     font-weight: bold; 
 }
 
@@ -85,17 +85,39 @@
     font-size: 1.8em; 
     font-weight: bold; 
     color: #fff; 
+    /* Değer kısmı aşağıda kalsın */
+    margin-top: 5px;
 }
 
-.shield-shape { 
-    border: 3px solid #b52b2b; 
-    border-radius: 50% 50% 50% 50%; 
-    width: 60px; 
-    height: 60px; 
-    line-height: 54px; 
-    margin: 0 auto; 
-    display: block; 
-    background: #222; 
+/* --- ZIRH SINIFI (SVG KALKAN) STİLLERİ --- */
+.shield-container {
+    position: relative;
+    width: 75px;
+    height: 65px;
+    margin: 5px auto 0 auto; /* Üstten biraz boşluk */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shield-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); /* Hafif gölge */
+}
+
+.shield-text {
+    position: relative;
+    z-index: 1;
+    font-size: 1.6em; /* Kalkan içine sığması için ideal boy */
+    font-weight: bold;
+    color: #fff;
+    margin-top: -3px; /* Optik olarak tam ortaya hizalamak için */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
 /* --- Can Puanı (HP) --- */
@@ -531,9 +553,14 @@
     .ability-score-card { padding: 15px 5px; background: #202020; }
     .score-modifier { font-size: 2em; }
     
-    .combat-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .c-stat-box { min-height: 90px; }
-    .hp-box { grid-column: 1 / -1; order: -1; }
+    /* --- KOMBAT STATLARI (DÜZELTME BURADA) --- */
+    .combat-stats-row { display: grid;grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+    .c-stat-box { min-height: 90px; padding: 10px 5px; /* Mobilde biraz daha sıkışık padding */}
+    
+
+
+    .hp-box { /* 1. sütundan başla, sonuncuya kadar git (Yani tüm satırı kapla) */ grid-column: 1 / -1; /* Görsel olarak en başa (üste) al */ order: -1; }
     
     .sheet-tabs { width: 100%; display: flex; padding-bottom: 5px; border-bottom: 1px solid #444; }
     .sheet-tabs button { flex: 1; padding: 15px 10px; font-size: 0.95em; justify-content: center; }

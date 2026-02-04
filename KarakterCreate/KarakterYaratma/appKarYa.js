@@ -16,6 +16,10 @@ import { useInventoryLogic } from './src/logicInventory.js';
 import { useSpellLogic } from './src/logicSpells.js'; 
 
 // --- GLOBAL ONAY YÖNETİCİSİ ---
+
+// Listener'ı hafızada tutmak için değişken (Kapatırken silmek şart)
+let activeConfirmListener = null;
+
 window.customConfirm = (message, onConfirm) => {
     const modal = document.getElementById('global-confirm-modal');
     const textEl = document.getElementById('global-confirm-text');
@@ -29,7 +33,27 @@ window.customConfirm = (message, onConfirm) => {
     // Modalı Aç
     modal.classList.remove('hidden');
 
-    // Evet Butonunu Ayarla (Önce eski olayları temizle)
+    // 1. Butona Odaklan (Bu sayede Enter ve Space varsayılan olarak çalışır)
+    yesBtn.focus();
+
+    // 2. Klavye Kontrolü (Garanti Yöntem)
+    // Eğer daha önce kalmış bir listener varsa temizle
+    if (activeConfirmListener) document.removeEventListener('keydown', activeConfirmListener);
+
+    activeConfirmListener = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Sayfanın başka yerini tetiklemesin
+            yesBtn.click();     // Evet'e basılmış gibi yap
+        }
+        if (e.key === 'Escape') {
+            window.closeConfirmModal(); // ESC ile iptal et
+        }
+    };
+
+    // Dinleyiciyi belgeye ekle
+    document.addEventListener('keydown', activeConfirmListener);
+
+    // Evet Butonunu Ayarla
     yesBtn.onclick = () => {
         onConfirm(); // İlgili işlemi yap
         window.closeConfirmModal(); // Kapat
@@ -38,6 +62,12 @@ window.customConfirm = (message, onConfirm) => {
 
 window.closeConfirmModal = () => {
     document.getElementById('global-confirm-modal').classList.add('hidden');
+    
+    // Dinleyiciyi Temizle (Çok Önemli!)
+    if (activeConfirmListener) {
+        document.removeEventListener('keydown', activeConfirmListener);
+        activeConfirmListener = null;
+    }
 };
 
 const app = createApp({
