@@ -340,7 +340,6 @@ const app = createApp({
             const profs = cls.proficiency.map(p => p.toLowerCase().trim());
             
             // GENİŞLETİLMİŞ EŞLEŞTİRME HARİTASI
-            // Veri paketindeki "kuv", "day", "akı" gibi kısaltmalar eklendi.
             const map = { 
                 str: ['str', 'güç', 'strength', 'kuvvet', 'kuv', 'saving throw: str'], 
                 dex: ['dex', 'çev', 'dexterity', 'agility', 'ceviklik', 'çeviklik'], 
@@ -350,13 +349,8 @@ const app = createApp({
                 cha: ['cha', 'kar', 'charisma', 'karizma'] 
             };
             
-            // Eğer stat anahtarı (str, dex vb.) haritada yoksa false dön
             if (!map[key]) return false;
-            
-            // Eşleşme kontrolü: Listede geçen herhangi bir kelimeyi içeriyor mu?
-            // "kuv" kelimesi "kuvvet" içinde de geçtiği için .some ve .includes kullanımı güvenlidir.
             const isProf = map[key].some(term => profs.some(p => p.includes(term)));
-            
             return isProf;
         };
 
@@ -364,8 +358,6 @@ const app = createApp({
         const spellAttackMod = computed(() => {
             if (!selectedClass.value) return 0;
             
-            // Sınıfa göre büyü yeteneğini belirle
-            // (Veri dosyasında 'spellAbility' varsa onu kullan, yoksa isme göre varsay)
             const clsName = selectedClass.value.name;
             let attr = 'int'; // Varsayılan Zeka
 
@@ -375,14 +367,12 @@ const app = createApp({
                 'Ozan': 'cha', 'Paladin': 'cha', 'Sihirbaz (Sorcerer)': 'cha', 'Sorcerer': 'cha', 'Warlock': 'cha', 'Barbar': 'cha'
             };
 
-            // Eğer veri dosyasında tanımlıysa onu al, yoksa haritadan bak
             if (selectedClass.value.spellAbility) {
                 attr = selectedClass.value.spellAbility.toLowerCase();
             } else if (map[clsName]) {
                 attr = map[clsName];
             }
 
-            // Bonusu Hesapla: (Stat Modifikatörü) + (Uzmanlık Bonusu)
             const score = finalAbilityScores.value[attr] || 10;
             const mod = Math.floor((score - 10) / 2);
             return mod + proficiencyBonus.value;
@@ -397,11 +387,9 @@ const app = createApp({
         const newItemType = ref('weapon'); 
         const itemSearchTerm = ref(""); 
 
-        // Filtreleme ve Sıralama Değişkenleri
-        const activeSort = ref('az'); // 'az', 'za', 'ac_desc', 'weight_asc' vb.
-        const activeFilter = ref('all'); // 'all', 'light', 'medium', 'heavy', 'simple', 'martial'
+        const activeSort = ref('az'); 
+        const activeFilter = ref('all'); 
 
-        // Manuel ekleme için form verileri (Yedek olarak kalsın)
         const newWeapon = ref({ name: '', dmg: '1d6', type: 'Kesici', stat: 'str', weight: 2, bonusHit: 0, bonusDmg: 0 });
         const newArmor = ref({ name: '', ac: 11, type: 'Hafif', weight: 8 });
         const newGear = ref({ name: '', qty: 1, weight: 0.5 });
@@ -413,17 +401,15 @@ const app = createApp({
             handleArmorEquip, getArmorMechanicText 
         } = useInventoryLogic(finalAbilityScores, proficiencyBonus, selectedClass, selectedRace);
 
-        // Modal Aç
-        const activeModalTab = ref('list'); // 'list' veya 'custom'
+        const activeModalTab = ref('list'); 
 
         const openItemModal = (type) => { 
             newItemType.value = type; 
             itemSearchTerm.value = ""; 
             activeSort.value = 'az'; 
             activeFilter.value = 'all'; 
-            activeModalTab.value = 'list'; // Her açılışta listeyi göster
+            activeModalTab.value = 'list'; 
             
-            // Formları Sıfırla
             newWeapon.value = { name: '', dmg: '1d6', type: 'Kesici', stat: 'str', weight: 2, bonusHit: 0, bonusDmg: 0 };
             newArmor.value = { name: '', ac: 11, type: 'Hafif', weight: 8 };
             newGear.value = { name: '', qty: 1, weight: 0.5 };
@@ -431,162 +417,87 @@ const app = createApp({
             isCustomItemModalOpen.value = true; 
         };
 
-        const activeSpellModalTab = ref('list'); // 'list' veya 'custom'
+        const activeSpellModalTab = ref('list'); 
         
-        // Özel Büyü Form Verileri
         const newCustomSpell = ref({
-            name: '',
-            level: 0,
-            school: 'E', // Evocation default
-            castingTime: '1 Aksiyon',
-            range: '60 ft',
-            components: 'V, S',
-            duration: 'Anlık',
-            description: '',
-            hasAttack: false, // Saldırı zarı var mı?
-            damageDice: '',   // Örn: 2d6
-            damageType: 'Ateş'
+            name: '', level: 0, school: 'E', castingTime: '1 Aksiyon', range: '60 ft',
+            components: 'V, S', duration: 'Anlık', description: '', hasAttack: false, damageDice: '', damageType: 'Ateş'
         });
 
-        // Büyü Modalını Açarken Sıfırla
         const openSpellModal = async () => {
             document.getElementById('modal-spell-search').classList.remove('hidden');
-            activeSpellModalTab.value = 'list'; // Her açılışta listeyi göster
-            
-            // Formu sıfırla
+            activeSpellModalTab.value = 'list'; 
             newCustomSpell.value = { 
                 name: '', level: 0, school: 'E', castingTime: '1 Aksiyon', range: '60 ft', 
                 components: 'V, S', duration: 'Anlık', description: '', 
                 hasAttack: false, damageDice: '', damageType: 'Ateş' 
             };
-
-            if (!window.ALL_DATA || !window.ALL_DATA.spells) await window.loadSpellData(); // Load fonksiyonunu logic'ten çağırdığına emin ol
-            // populateClassFilter ve setupListeners logicSpells.js içinde olduğu için globalden çağırıyoruz
+            if (!window.ALL_DATA || !window.ALL_DATA.spells) await window.loadSpellData(); 
             if(window.populateClassFilter) window.populateClassFilter();
             if(window.setupModalListeners) window.setupModalListeners();
             if(window.filterAndRenderModalSpells) window.filterAndRenderModalSpells();
         };
 
-        // ÖZEL BÜYÜ YARAT VE EKLE
         const createCustomSpell = () => {
             const s = newCustomSpell.value;
             if(!s.name) { showToast("Büyü ismi gerekli!", "⚠️"); return; }
-
-            // Açıklamayı Formatla (Hasar zarlarını tıklanabilir yap)
             let finalEntries = [s.description];
-            
-            // Saldırı ve Hasar Bilgilerini Açıklamaya Ekle
             let mechanicText = "";
-            if (s.hasAttack) {
-                mechanicText += `Make a spell attack. `;
-            }
-            if (s.damageDice) {
-                // {@damage 2d6} formatı logicSpells.js tarafından otomatik algılanır ve tıklanabilir yapılır
-                mechanicText += `Hit: {@damage ${s.damageDice}} ${s.damageType} damage.`;
-            }
-            
-            if (mechanicText) {
-                finalEntries.push(mechanicText);
-            }
-
-            // Büyü Objesi Oluştur (D&D JSON Formatına Uygun)
+            if (s.hasAttack) { mechanicText += `Make a spell attack. `; }
+            if (s.damageDice) { mechanicText += `Hit: {@damage ${s.damageDice}} ${s.damageType} damage.`; }
+            if (mechanicText) { finalEntries.push(mechanicText); }
             const spellObj = {
-                name: s.name,
-                level: s.level,
-                school: s.school,
-                time: [{ number: 1, unit: s.castingTime }], // Basit tutuyoruz
+                name: s.name, level: s.level, school: s.school,
+                time: [{ number: 1, unit: s.castingTime }],
                 range: { type: "point", distance: { type: "ft", amount: parseInt(s.range) || 0 } },
                 components: { v: s.components.includes('V'), s: s.components.includes('S'), m: s.components.includes('M') },
-                duration: [{ type: "timed", duration: { type: "minute", amount: 1 } }], // Gösterimlik
-                entries: finalEntries,
-                isCustom: true // Özel olduğunu belirtelim
+                duration: [{ type: "timed", duration: { type: "minute", amount: 1 } }],
+                entries: finalEntries, isCustom: true
             };
-
-            // Store'a Ekle
             if (!store.spells.known) store.spells.known = [];
             store.spells.known.push(spellObj);
-
             showToast(`${s.name} Büyü Kitabına Yazıldı!`, "✨");
-            
-            // Listeyi Yenile
             if(window.renderSpellTab) window.renderSpellTab(finalAbilityScores.value, targetLevel.value);
-            
-            // Modalı Kapatma (İsteğe bağlı, seri ekleme için açık kalabilir)
-            // document.getElementById('modal-spell-search').classList.add('hidden');
-            activeSpellModalTab.value = 'list'; // Listeye geri dön
+            activeSpellModalTab.value = 'list';
         };
 
-        // --- MANUEL (ÖZEL) EŞYA EKLEME ---
         const handleAddItem = () => {
             if (newItemType.value === 'weapon') {
-                // Silah Ekle
                 if (!newWeapon.value.name) { showToast("Silah ismi girin!", "⚠️"); return; }
-                addWeapon({
-                    ...newWeapon.value,
-                    isProficient: true // Özel silahlarda varsayılan usta kabul edelim
-                });
+                addWeapon({ ...newWeapon.value, isProficient: true });
                 showToast(`${newWeapon.value.name} Eklendi!`, "⚔️");
             } 
             else if (newItemType.value === 'armor') {
-                // Zırh Ekle
                 if (!newArmor.value.name) { showToast("Zırh ismi girin!", "⚠️"); return; }
                 addArmor({ ...newArmor.value });
                 showToast(`${newArmor.value.name} Eklendi!`, "🛡️");
             } 
             else {
-                // Eşya Ekle
                 if (!newGear.value.name) { showToast("Eşya ismi girin!", "⚠️"); return; }
                 addGear({ ...newGear.value });
                 showToast(`${newGear.value.name} Eklendi!`, "🎒");
             }
-            // İşlem bitince modalı kapat
             isCustomItemModalOpen.value = false;
         };
         
         const selectItem = (item) => {
             if (newItemType.value === 'weapon') {
-                addWeapon({
-                    name: item.name, 
-                    dmg: item.dmg, 
-                    type: item.type, 
-                    stat: item.stat, 
-                    weight: item.weight,
-                    isProficient: true // Seçilen silahlarda varsayılan ustalık
-                });
+                addWeapon({ name: item.name, dmg: item.dmg, type: item.type, stat: item.stat, weight: item.weight, isProficient: true });
                 showToast(`${item.name} Eklendi!`, "⚔️");
             } 
             else if (newItemType.value === 'armor') {
-                addArmor({ 
-                    name: item.name, 
-                    ac: item.ac, 
-                    type: item.type, 
-                    weight: item.weight 
-                });
+                addArmor({ name: item.name, ac: item.ac, type: item.type, weight: item.weight });
                 showToast(`${item.name} Eklendi!`, "🛡️");
             } 
             else {
-                addGear({ 
-                    name: item.name, 
-                    qty: 1, 
-                    weight: item.weight 
-                });
+                addGear({ name: item.name, qty: 1, weight: item.weight });
                 showToast(`${item.name} Eklendi!`, "🎒");
             }
         };
 
-        // --- GELİŞMİŞ FİLTRELEME VE SIRALAMA ---
-
-        // 1. SİLAHLAR
         const filteredDbWeapons = computed(() => {
-            // (dbWeapons || []) diyerek boş gelme durumunda çökmesini engelliyoruz
             let list = (dbWeapons || []).filter(i => i.name.toLowerCase().includes(itemSearchTerm.value.toLowerCase()));
-
-            // Kategoriye göre filtrele
-            if (activeFilter.value !== 'all') {
-                list = list.filter(i => i.category === activeFilter.value);
-            }
-
-            // Sıralama
+            if (activeFilter.value !== 'all') { list = list.filter(i => i.category === activeFilter.value); }
             return list.sort((a, b) => {
                 if (activeSort.value === 'az') return a.name.localeCompare(b.name);
                 if (activeSort.value === 'za') return b.name.localeCompare(a.name);
@@ -596,16 +507,9 @@ const app = createApp({
             });
         });
 
-        // 2. ZIRHLAR
         const filteredDbArmors = computed(() => {
             let list = (dbArmors || []).filter(i => i.name.toLowerCase().includes(itemSearchTerm.value.toLowerCase()));
-
-            // Tipe göre filtrele
-            if (activeFilter.value !== 'all') {
-                list = list.filter(i => i.type === activeFilter.value);
-            }
-
-            // Sıralama (AC dahil)
+            if (activeFilter.value !== 'all') { list = list.filter(i => i.type === activeFilter.value); }
             return list.sort((a, b) => {
                 if (activeSort.value === 'az') return a.name.localeCompare(b.name);
                 if (activeSort.value === 'za') return b.name.localeCompare(a.name);
@@ -617,11 +521,8 @@ const app = createApp({
             });
         });
 
-        // 3. EŞYALAR
         const filteredDbGear = computed(() => {
             let list = (dbGear || []).filter(i => i.name.toLowerCase().includes(itemSearchTerm.value.toLowerCase()));
-            
-            // Sıralama
             return list.sort((a, b) => {
                 if (activeSort.value === 'az') return a.name.localeCompare(b.name);
                 if (activeSort.value === 'za') return b.name.localeCompare(a.name);
@@ -664,52 +565,30 @@ const app = createApp({
         };
         const setFullHp = () => { currentHP.value = maxHP.value; showToast("Can yenilendi!", "✨"); };
 
-        // ============================================================
-        // ÖLÜM ZARLARI (DEATH SAVES) MANTIĞI
-        // ============================================================
         const deathSaves = ref({ successes: 0, failures: 0 });
-
-        // HP değişimini izle
         watch(currentHP, (newVal) => {
-            if (newVal > 0) {
-                // Eğer karakter iyileşirse zarları sıfırla
-                deathSaves.value.successes = 0;
-                deathSaves.value.failures = 0;
-            }
+            if (newVal > 0) { deathSaves.value.successes = 0; deathSaves.value.failures = 0; }
         });
 
         const addDeathSave = (type) => {
             if (type === 'success') {
                 if (deathSaves.value.successes < 3) deathSaves.value.successes++;
-                
-                // 3 BAŞARI KURALI: 1 HP ile ayağa kalk
                 if (deathSaves.value.successes === 3) {
                     showToast("3 Başarı! Hayata döndün! ✨", "💖");
-                    setTimeout(() => {
-                        currentHP.value = 1; // HP'yi 1 yap (Bu otomatik olarak paneli normale çevirir)
-                    }, 500);
+                    setTimeout(() => { currentHP.value = 1; }, 500);
                 }
             } else {
                 if (deathSaves.value.failures < 3) deathSaves.value.failures++;
-                if (deathSaves.value.failures === 3) {
-                    showToast("Karakter Öldü... 💀", "❌");
-                }
+                if (deathSaves.value.failures === 3) { showToast("Karakter Öldü... 💀", "❌"); }
             }
         };
 
         const toggleDeathSave = (type, index) => {
-            // Tıklanan slot zaten doluysa sil, boşsa oraya kadar doldur
             const currentVal = type === 'success' ? deathSaves.value.successes : deathSaves.value.failures;
-            
-            // Basit toggle mantığı: Sırayla doldur
             if (index < currentVal) {
-                // Geri alma işlemi (Silme)
                 if (type === 'success') deathSaves.value.successes = index;
                 else deathSaves.value.failures = index;
-            } else {
-                // Ekleme işlemi
-                addDeathSave(type);
-            }
+            } else { addDeathSave(type); }
         };
 
         // ============================================================
@@ -723,6 +602,35 @@ const app = createApp({
                     if (typeof window.renderSpellTab === 'function') window.renderSpellTab(finalAbilityScores.value, targetLevel.value);
                 }, 50);
             }
+        });
+
+        // ============================================================
+        // YENİ EKLENEN KISIM: Background Feature Hesaplama
+        // ============================================================
+        const currentBgFeature = computed(() => {
+            const bg = store.background.selected;
+            if (!bg || !bg.entries) return null;
+
+            const featureEntry = bg.entries.find(entry => 
+                (entry.data && entry.data.isFeature === true) || 
+                (entry.name && entry.name.startsWith("Özellik"))
+            );
+
+            if (!featureEntry) return null;
+
+            let description = "";
+            if (Array.isArray(featureEntry.entries)) {
+                description = featureEntry.entries
+                    .filter(e => typeof e === 'string') 
+                    .join('<br><br>'); 
+            } else {
+                description = featureEntry.entries || "";
+            }
+
+            return {
+                name: featureEntry.name,
+                description: description
+            };
         });
 
         // ============================================================
@@ -763,7 +671,6 @@ const app = createApp({
         // RETURN OBJECT (TEMİZLENMİŞ HALİ)
         // ============================================================
         return {
-            // GENEL
             store, currentStep, steps, nextStep, prevStep, loading, error,
             isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
             copyLink, showToast, backgroundList, featList, seedText, characterSeed, loadFromSeed, copySeed,
@@ -781,28 +688,20 @@ const app = createApp({
             galleryButton, classResources, updateResource, handleRest, diceResult, rollD20, rollDamage,
             closeDiceResult, isSaveProficient, diceHistory, isHistoryOpen, clearHistory, toggleHistory,
             isInventoryOpen, isHpModalOpen, hpModalValue, maxHP, currentHP, hpStatusClass, setFullHp,
-            adjustHpModalValue, applyHpChange,
-            spellAttackMod,
-
-            activeSpellModalTab, newCustomSpell, createCustomSpell, openSpellModal, // Mevcut openSpellModal'ı override ediyoruz
-
-            // ÖLÜM KURALLARI
+            adjustHpModalValue, applyHpChange, spellAttackMod,
+            activeSpellModalTab, newCustomSpell, createCustomSpell, openSpellModal,
             deathSaves, toggleDeathSave, addDeathSave,
-            
-            // ENVANTER
             isCustomItemModalOpen, newItemType, itemSearchTerm,
             filteredDbWeapons, filteredDbArmors, filteredDbGear, selectItem,
-            openItemModal, 
-            activeSort, activeFilter,
+            openItemModal, activeSort, activeFilter,
             activeInvTab, currentWeight, carryCapacity, encumbrancePct, 
             weapons, armors, gear, currency, removeItem, 
-            calculatedAC, attackList,
-            handleArmorEquip, getArmorMechanicText,
+            calculatedAC, attackList, handleArmorEquip, getArmorMechanicText,
             activeModalTab, handleAddItem, newWeapon, newArmor, newGear,
-            
-            
-            // --- TAB SÜRÜKLEME ---
-            sheetTabs, handleTabDragStart, handleTabDragEnd, handleTabDrop
+            sheetTabs, handleTabDragStart, handleTabDragEnd, handleTabDrop,
+
+            // --- YENİ EKLENEN ---
+            currentBgFeature
         };
     }
 });

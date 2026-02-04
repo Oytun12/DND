@@ -2,16 +2,25 @@ import { ref } from 'vue';
 
 export function useCharacterSheet() {
     
+    // Karakter yaratma ekranı mı yoksa Kağıt modu mu?
     const isSheetMode = ref(false); 
+    
+    // Aktif ana sekme (Aksiyonlar, Büyüler, Envanter vb.)
     const activeSheetTab = ref('actions');
+    
+    // Karakter yaratma işlemi bitti mi?
     const hasCreatedSheet = ref(false); 
     
-    // YENİ: Özellikler alt sekmesi (Varsayılan: 'class')
+    // Özellikler sekmesinin altındaki aktif tab (Irk, Sınıf, Geçmiş)
+    // Varsayılan olarak 'class' açılır.
     const activeFeatureSubTab = ref('class'); 
 
+    // Yaratma işlemini bitiren fonksiyon
     const finishCreation = (toastCallback) => {
         isSheetMode.value = true;
         hasCreatedSheet.value = true; 
+        
+        // Eğer bir bildirim fonksiyonu gönderildiyse çalıştır
         if(toastCallback) toastCallback("Karakter Kağıdı Oluşturuldu!", "📜");
     };
 
@@ -19,7 +28,7 @@ export function useCharacterSheet() {
         isSheetMode,
         activeSheetTab,
         hasCreatedSheet,
-        activeFeatureSubTab, // Bunu dışarı aktarmayı unutma!
+        activeFeatureSubTab, 
         finishCreation
     };
 }

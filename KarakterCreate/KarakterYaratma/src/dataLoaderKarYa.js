@@ -19,3 +19,22 @@ export const DataLoader = {
         return data; // { class: [...], classFeature: [...], subclass: [...] }
     }
 };
+
+
+export async function loadBackgroundData() {
+    try {
+        const response = await fetch('Data/backgrounds.json');
+        if (!response.ok) {
+            throw new Error(`HTTP hatası! Durum: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        // JSON yapın { "background": [...] } şeklinde olduğu için
+        // doğrudan data.background dizisini döndürüyoruz.
+        console.log("Geçmişler yüklendi:", data.background);
+        return data.background; 
+    } catch (error) {
+        console.error("Background verisi yüklenemedi:", error);
+        return [];
+    }
+}

@@ -265,8 +265,7 @@
 .sheet-feature-item { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
 .sheet-feature-item h4 { margin: 0 0 8px 0; color: #b52b2b; font-size: 1.1em; font-weight: bold; letter-spacing: 0.5px; border-bottom: 1px solid rgba(181, 43, 43, 0.2); padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
 .source-tag { font-size: 0.6em; background: #222; border: 1px solid #444; padding: 2px 6px; border-radius: 4px; color: #888; font-weight: normal; }
-.feat-text p { color: #aaa; line-height: 1.6; font-size: 0.95em; margin-bottom: 10px; }
-
+.feat-text { color: #aaa; line-height: 1.6; font-size: 0.95em; margin-bottom: 10px; }
 /* ============================================================
    6. SALDIRI KARTLARI (ATTACK)
    ============================================================ */
@@ -643,6 +642,63 @@
     padding: 2px 8px; border-radius: 4px; cursor: pointer;
 }
 .btn-emergency-heal:hover { background: #2e7d32; color: #fff; border-color: #4caf50; }
+
+
+/* --- GENEL KUTU YAPISI --- */
+.sheet-feature-item {
+    background-color: rgba(30, 30, 30, 0.6); /* Hafif koyu transparan zemin */
+    border: 1px solid #444;
+    border-radius: 8px; /* Köşeleri yuvarla */
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Hafif gölge */
+}
+
+/* --- BAŞLIK (Örn: Mürit) --- */
+.sheet-feature-item h4 { margin: 0 0 8px 0; color: #b52b2b; font-size: 1.1em; font-weight: bold; 
+    letter-spacing: 0.5px; border-bottom: 1px solid rgba(181, 43, 43, 0.2); padding-bottom: 4px; 
+    display: flex; justify-content: space-between; align-items: center; }   
+
+/* --- GENEL METİN / AÇIKLAMALAR --- */
+
+
+.feature-box { color: #aaa; line-height: 1.6; font-size: 0.95em; margin-bottom: 10px; }
+
+
+/* --- BECERİLER VURGUSU --- */
+.skill-list {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    font-style: italic;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* --- ÖZEL YETENEK KUTUSU (Feature Box) --- */
+/* Burası özelliğin mekaniğinin yazdığı yer */
+.feature-box-highlight {
+    border-top: solid 1px #333;
+    padding-top: 15px;
+
+}
+
+.feature-box-highlight strong {
+    color: #b52b2b;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1em;
+    letter-spacing: 0.5px;
+}
+
+
+/*
+.sheet-feature-item { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
+
+.sheet-feature-item h4 { margin: 0 0 8px 0; color: #b52b2b; font-size: 1.1em; font-weight: bold; 
+    letter-spacing: 0.5px; border-bottom: 1px solid rgba(181, 43, 43, 0.2); padding-bottom: 4px; 
+    display: flex; justify-content: space-between; align-items: center; }    */
 
 /* ============================================================
    10. RESPONSIVE (MOBİL UYUMLULUK)
