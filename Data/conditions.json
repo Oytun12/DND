@@ -1,0 +1,258 @@
+{
+	"condition": [
+		{
+			"name": "Körlük",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Kör olan bir varlık göremez ve otomatik olarak görüş gerektiren tüm beceri zarlarında başarısız olur.",
+						"Varlığa karşı yapılan saldırılar avantajlı olur ve varlığın saldırıları dezavantajlı olur."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 290
+		},
+		{
+			"name": "Cezbedilme",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Cezbedilmiş bir varlık cezbedene saldıramaz yada zararlı etkiler ve büyüler ile hedef alamaz.",
+						"Cezbeden, cezbedilmiş varlık ile yapacağı tüm sosyal iletişim zarlarında avantajlı olur."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 290
+		},
+		{
+			"name": "Sağırlık",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Sağır bir varlık duyamaz ve otomatik olarak duyma gerektiren tüm beceri zarlarında başarısız olur."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 290
+		},
+		{
+			"name": "Bitkinlik",
+			"entries": [
+				"Bazı özel yetenekler ve açlık yada çok soğuk ve sıcak havanın uzun süreli etkileri gibi çevresel tehlikeler bitkinlik denilen özel duruma yol açar. Bitkinlik altı seviye ile ölçülür. Bir etki, tanımında belirtileceği üzere varlığa bir yada daha fazla bitkinlik seviyesi verebilir.",
+				{
+					"type": "table",
+					"colLabels": [
+						"Seviye",
+						"Etki"
+					],
+					"colStyles": [
+						"col-xs-1 text-align-center",
+						"col-xs-11"
+					],
+					"rows": [
+						[
+							"1",
+							"Beceri zarlarında dezavantaj"
+						],
+						[
+							"2",
+							"Hız yarılanır"
+						],
+						[
+							"3",
+							"Saldırı ve kurtulma zarlarında dezavantaj"
+						],
+						[
+							"4",
+							"HP maksimumu yarılanır"
+						],
+						[
+							"5",
+							"Hız 0'a düşer"
+						],
+						[
+							"6",
+							"Ölüm"
+						]
+					]
+				},
+				"Eğer zaten bitkin olan bir varlık başka bitkinlik veren bir etkiye maruz kalırsa, mevcut bitkinlik seviyesi yeni etkinin tanımında gösterilen seviye kadar artar.",
+				"Bir varlık o anki bitkinlik seviyesinin etkisine maruz kaldığı gibi tüm düşük seviyelerin etkilerine de maruz kalır. Örneğin, 2. seviye bitkinliği olan bir varlığın hem hızı yarılanır hemde beceri zarlarında dezavantajı olur.",
+				"Bitkinlik seviyesi azaltan bir etki, etkinin tanımında belirtilen seviye kadar düşürür ve eğer varlığın bitkinlik seviyesi 1'in altına düşerse tüm etkiler sona erer.",
+				"Uzun dinlenme bitirme bitkinlik seviyesini 1 azaltır. Varlık bu dinlenme süresince yeterli yiyecek ve içecek tüketmelidir."
+			],
+			"source": "PHB",
+			"page": 291
+		},
+		{
+			"name": "Korkma",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Korkmuş bir varlık korku kaynağı görüşünde olduğu sürece saldırı ve beceri zarlarında dezavantajlı olur.",
+						"Korkmuş bir varlık korku kaynağına kendi isteği ile yaklaşamaz."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 290
+		},
+		{
+			"name": "Yakalanma",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Yakalanmış bir varlığın hızı 0'a düşer ve hıza bonus veren etkilerden faydalanamaz.",
+						"Bu durum eğer yakalayan varlık etkisiz hale gelirse sona erer.",
+						"Durum eğer yakalanmış varlık yakalayan varlığın yada etkinin erişiminden bir etki ile uzaklaştırılırsa da biter. Örneğin bir varlığın {@spell thunderwave} ile savrulması gibi."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 290
+		},
+		{
+			"name": "Etkisiz Hal",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Etkisiz hale gelmiş bir varlık eylem yada reaksiyon kullanamaz."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 290
+		},
+		{
+			"name": "Görünmezlik",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Görünmez bir varlığı büyü yada özel bir duyu yardımı olmadan görmek imkansızdır. Saklanma amacı için varlık ağır bir şekilde örtülüdür. Varlığın yeri çıkardığı ses yada bıraktığı iz sayesinde tespit edilebilir.",
+						"Varlığa karşı saldırı zarları dezavantajlı olur ve varlığın saldırıları avantajlıdır."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 291
+		},
+		{
+			"name": "Felç",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Felçli bir varlık Etkisiz Hal durumundadır ve hareket edemez yada konuşamaz.",
+						"Varlık otomatik olarak Kuvvet ve Çeviklik kurtulma zarlarında başarısız olur. Varlığa karşı saldırılar avantajlıdır.",
+						"Eğer saldırı 5 feet yakından yapılırsa, tüm vuran saldırılar kritiktir."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 291
+		},
+		{
+			"name": "Taşa Dönme",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Taşa dönmüş bir varlık, tüm büyüsüz eşyaları ile birlikte katı cansız bir maddeye (genellikle taş) dönüşmüştür. Ağırlığı 10'a katlanır ve yaşlanmaz.",
+						"Varlık Etkisiz Hal durumundadır, hareket edemez, konuşamaz ve çevresinden habersizdir.",
+						"Varlığa karşı saldırılar avantajlıdır.",
+						"Varlık Kuvvet ve Çeviklik kurtulma zarlarında otomatik olarak başarısız olur.",
+						"Varlık tüm hasar tiplerine karşı direnç kazanır.",
+						"Varlık zehir ve hastalığa karşı bağışıklık kazanır. Ama taşa dönmeden önce bir zehir yada hastalık etkisi altındaysa bu etki ortadan kalkmaz sadece askıya alınır."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 291
+		},
+		{
+			"name": "Zehirlenme",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Zehirlenen bir varlık saldırı ve beceri zarlarında dezavantajlıdır."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 292
+		},
+		{
+			"name": "Yere Düşme",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Yere düşmüş bir varlık ayağa kalkıp durumu sonlandırmadığı sürece tek hareket seçeneği sürünmektir.",
+						"Varlık saldırı zarlarında dezavantajlıdır.",
+						"Eğer saldırgan yerdeki varlığın 5 feet yakınındaysa avantajla saldırır, ama değilse saldırı dezavantajlıdır."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 292
+		},
+		{
+			"name": "Kısıtlanma",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Kısıtlanmış bir varlığın hızı 0 olur ve hızına bonus veren etkilerden faydalanamaz.",
+						"Varlığa karşı yapılan saldırılar avantajlı olur ve varlığın yapacağı saldırılar dezavantajlıdır.",
+						"Varlık Çeviklik kurtulma zarlarında dezavantajlıdır."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 292
+		},
+		{
+			"name": "Sersemleme",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Sersemlemiş bir varlık Etkisiz Hal durumundadır, hareket edemez ve sadece zorlukla konuşabilir.",
+						"Varlık otomatik olarak Kuvvet ve Çeviklik kurtulma zarlarında başarısız olur.",
+						"Varlığa karşı yapılan saldırılar avantajlıdır."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 292
+		},
+		{
+			"name": "Bilinçsizlik",
+			"entries": [
+				{
+					"type": "list",
+					"items": [
+						"Bilinçsiz bir varlık Etkisiz Hal durumundadır, hareket edemez, konuşamaz ve çevresinden habersizdir.",
+						"Varlık tuttuğu herşeyi bırakır ve yere düşer.",
+						"Varlık otomatik olarak Kuvvet ve Çeviklik kurtulma zarlarında başarısız olur.",
+						"Varlığa karşı yapılan saldırılar avantajlıdır.",
+						"Eğer saldırı 5 feet yakından yapılırsa, tüm vuran saldırılar kritiktir."
+					]
+				}
+			],
+			"source": "PHB",
+			"page": 292
+		}
+	]
+}

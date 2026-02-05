@@ -217,7 +217,7 @@ function renderMySpellList(level) {
                     
                     if (spell.entriesHigherLevel) {
                          if(typeof renderEntries === 'function') {
-                            detailsHTML += `<div style="margin-top:10px; padding-top:10px; border-top:1px dashed #333; color:#aaa;"><strong>Üst Seviyelerde:</strong> ${renderEntries(spell.entriesHigherLevel)}</div>`;
+                            detailsHTML += `<div style="margin-top:10px; padding-top:10px; border-top:1px dashed #333; color:#aaa;"> ${renderEntries(spell.entriesHigherLevel)}</div>`;
                          }
                     }
 
@@ -464,7 +464,7 @@ function removeSpellFromCharacter(spellName) {
     });
 }
 
-function formatSchool(code) { const map = { "E": "Evoc", "C": "Conj", "N": "Necro", "I": "Illu", "A": "Abjur", "T": "Trans", "D": "Div", "EN": "Ench" }; return map[code] || code; }
+function formatSchool(code) { const map = { "V": "Evoc", "C": "Conj", "N": "Necro", "I": "Illu", "A": "Abjur", "T": "Trans", "D": "Div", "E": "Ench" }; return map[code] || code; }
 function formatComponents(comp) { if (!comp) return ""; let res = []; if(comp.v) res.push("V"); if(comp.s) res.push("S"); if(comp.m) res.push("M"); return res.join(", "); }
 
 /* ============================================================

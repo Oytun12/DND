@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hünerler (Feats) | D&D 5e Türkçe</title>
+    <link rel="icon" href="../../../favicon.png" type="image/png">
+    <link rel="stylesheet" href="stylesFeats.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <a href="../../../index.html" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../../../img/SariZar.svg" alt="Logo" class="logo-img">
+                    <div class="titles">
+                        <h1 class="main-title">D&D 5e Türkçe</h1>
+                        <span class="sub-title">Hünerler</span>
+                    </div>
+                </a>
+            </div>
+        
+            <nav class="desktop-nav">
+                <a href="../../Race/race.html" class="nav-link">Irklar</a>
+                <a href="../../Class/class.html" class="nav-link">Sınıflar</a>
+                <a href="../../BackGround/back.html" class="nav-link">Geçmişler</a>
+                <a href="../../Envanter/envanter.html" class="nav-link">Ekipmanlar</a>
+                <a href="../../Spells/spells.html" class="nav-link">Büyüler</a>
+                <a href="../ekbilgi.html" class="nav-link" style="color: #b52b2b;">Ek Bilgiler</a>
+                <a>|</a>
+                <a href="../../../KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
+            </nav>
+        
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        </div>
+    
+        <nav id="mobile-menu" class="mobile-nav">
+            <ul>
+                <li><a href="../../Race/race.html">Irklar</a></li>
+                <li><a href="../../Class/class.html">Sınıflar</a></li>
+                <li><a href="../../Envanter/envanter.html">Ekipmanlar</a></li>
+                <li><a href="../../Spells/spells.html">Büyüler</a></li>
+                <li style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                    <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" style="color: #b52b2b;">✨ Karakter Yaratıcısı</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="search-section">
+            <input type="text" id="search-input" class="search-input" placeholder="Hüner ara... (Örn: Sharpshooter, Aktör)">
+        </div>
+
+        <div id="feat-list" class="feat-grid">
+            <div class="loading-msg">Hünerler Yükleniyor...</div>
+        </div>
+    </main>
+
+    <script src="scriptFeats.js"></script>
+</body>
+</html>

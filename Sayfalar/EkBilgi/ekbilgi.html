@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <title>D&D 5e Ek Bilgiler | 5e Türkçe</title>
+    
+    <link rel="icon" href="../../favicon.png" type="image/png">
+    <link rel="stylesheet" href="stylesEkBilgi.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <a href="../../index.html" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
+                    <div class="titles">
+                        <h1 class="main-title">D&D 5e Türkçe</h1>
+                        <span class="sub-title">Ek Bilgiler</span>
+                    </div>
+                </a>
+            </div>
+        
+            <nav class="desktop-nav"> 
+                <a href="../Race/race.html" class="nav-link">Irklar</a>
+                <a href="../Class/class.html" class="nav-link">Sınıflar</a>
+                <a href="../BackGround/back.html" class="nav-link">Geçmişler</a>
+                <a href="../Envanter/envanter.html" class="nav-link">Ekipmanlar</a>
+                <a href="../Spells/spells.html" class="nav-link">Büyüler</a>
+                <a href="ekbilgi.html" class="nav-link" style="color: #b52b2b;">Ek Bilgiler</a>
+                <a>|</a>
+                <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
+            </nav>
+        
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        </div>
+    
+        <nav id="mobile-menu" class="mobile-nav">
+            <ul>
+                <li><a href="../Race/race.html">Irklar</a></li>
+                <li><a href="../Class/class.html">Sınıflar</a></li>
+                <li><a href="../BackGround/back.html">Geçmişler</a></li>
+                <li><a href="../Envanter/envanter.html">Ekipmanlar</a></li>
+                <li><a href="../Spells/spells.html">Büyüler</a></li>
+                <li style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                    <a href="../../KarakterCreate/KarakterYaratma/KarakterYa.html" style="color: #b52b2b;">✨ Karakter Yaratıcısı</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <section class="intro-section">
+            <h2>Rehber ve Ek Kaynaklar</h2>
+            <p>Oyun kuralları, özel yetenekler ve daha fazlası için kategorilerden birini seçin.</p>
+        </section>
+
+        <div class="hub-grid">
+            
+            <a href="Kurallar/kurallar.html" class="hub-card">
+                <div class="card-icon">📜</div>
+                <div class="card-content">
+                    <h3>Oynanış ve Kurallar</h3>
+                    <p>Savaş mekanikleri, aksiyon türleri, dinlenme ve temel oyun kuralları.</p>
+                </div>
+            </a>
+
+            <a href="Durumlar/durumlar.html" class="hub-card">
+                <div class="card-icon">💀</div>
+                <div class="card-content">
+                    <h3>Durumlar (Conditions)</h3>
+                    <p>Kör, Sağır, Zehirlenmiş gibi durumların etkileri ve detayları.</p>
+                </div>
+            </a>
+
+            <a href="Feats/feats.html" class="hub-card">
+                <div class="card-icon">🎖️</div>
+                <div class="card-content">
+                    <h3>Hünerler (Feats)</h3>
+                    <p>Karakterinizi özelleştiren ileri düzey yetenekler ve uzmanlıklar.</p>
+                </div>
+            </a>
+
+            <a href="Yakarislar/yakarislar.html" class="hub-card">
+                <div class="card-icon">🔮</div>
+                <div class="card-content">
+                    <h3>Warlock Yakarışları</h3>
+                    <p>Warlock sınıfına özel büyülü yetenekler ve geliştirmeler.</p>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

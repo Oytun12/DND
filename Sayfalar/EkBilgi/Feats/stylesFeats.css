@@ -1,0 +1,117 @@
+/* ============================================================
+   STYLESFEATS.CSS - Hünerler Teması
+   ============================================================ */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+/* --- HEADER --- */
+.main-header {
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; height: 70px;
+    display: flex; align-items: center; 
+    position: relative; z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+.header-container { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+.menu-icon { display: none; font-size: 28px; cursor: pointer; color: #fff; }
+
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 99; display: none; 
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+
+/* --- İÇERİK --- */
+.main-container { max-width: 1000px; margin: 30px auto; padding: 20px; }
+
+/* Arama */
+.search-section { margin-bottom: 30px; }
+.search-input {
+    width: 100%; padding: 15px;
+    background-color: #222; border: 1px solid #444; border-radius: 8px;
+    color: #fff; font-size: 1.1em; transition: border-color 0.3s;
+}
+.search-input:focus { outline: none; border-color: #b52b2b; }
+
+/* Liste ve Kartlar */
+.feat-grid { display: flex; flex-direction: column; gap: 15px; }
+
+.feat-card {
+    background-color: #2a2a2a;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.feat-header {
+    background-color: #333;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    border-left: 5px solid #b52b2b; 
+    transition: background 0.2s;
+}
+.feat-header:hover { background-color: #3a3a3a; }
+
+/* Başlık Grubu */
+.feat-title-group { display: flex; flex-direction: column; }
+.feat-name { font-size: 1.1em; font-weight: bold; color: #fff; }
+.feat-prereq { font-size: 0.85em; color: #aaa; font-style: italic; margin-top: 4px; }
+.prereq-label { color: #b52b2b; font-weight: bold; font-style: normal; }
+
+.arrow-icon { transition: transform 0.3s ease; color: #888; }
+
+.feat-content {
+    background-color: #252525;
+    padding: 20px;
+    display: none;
+    border-top: 1px solid #3b3b3b;
+    color: #ccc; line-height: 1.6; font-size: 0.95em;
+}
+
+/* Stat Bonusu Kutusu */
+.ability-box {
+    background-color: #1a1a1a;
+    border-left: 3px solid #4caf50; /* Yeşil çizgi */
+    padding: 10px;
+    margin-bottom: 15px;
+    color: #fff;
+    font-size: 0.9em;
+}
+
+.loading-msg { text-align: center; color: #888; margin-top: 50px; }
+ul { list-style: disc; padding-left: 20px; margin: 10px 0; }
+li { margin-bottom: 5px; }
+
+/* Responsive */
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    .main-container { padding: 15px; }
+}

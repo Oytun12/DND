@@ -1,0 +1,246 @@
+/* ============================================================
+   STYLESKURALLAR.CSS - Kurallar Sayfası Teması
+   ============================================================ */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
+    line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+/* --- HEADER --- */
+.main-header {
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; height: 70px;
+    display: flex; align-items: center; 
+    position: relative; z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+.header-container { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+.menu-icon { display: none; font-size: 28px; cursor: pointer; color: #fff; }
+
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 999; display: none; 
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+
+/* --- DÜZEN (LAYOUT) --- */
+.layout-container {
+    max-width: 1300px;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: 280px 1fr; /* Sol: Sidebar, Sağ: İçerik */
+    gap: 30px;
+    padding: 0 20px;
+}
+
+/* --- SIDEBAR (İÇİNDEKİLER) --- */
+.sidebar {
+    position: sticky;
+    top: 30px; /* Header yüksekliğine göre ayarlanabilir */
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    background-color: #222;
+    border-radius: 8px;
+    border: 1px solid #3b3b3b;
+    padding: 15px;
+}
+
+.sidebar-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #b52b2b;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.toc-nav a {
+    display: block;
+    padding: 6px 10px;
+    color: #aaa;
+    font-size: 0.9em;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.toc-nav a:hover {
+    background-color: #333;
+    color: #fff;
+    padding-left: 15px;
+}
+
+.toc-nav a.toc-sub {
+    margin-left: 15px;
+    font-size: 0.85em;
+    border-left: 1px solid #444;
+}
+
+/* --- İÇERİK ALANI --- */
+.content-area {
+    background-color: #222;
+    padding: 40px;
+    border-radius: 8px;
+    border: 1px solid #3b3b3b;
+    min-height: 80vh;
+}
+
+/* Tipografi */
+.rule-section h2 { color: #b52b2b; border-bottom: 2px solid #b52b2b; padding-bottom: 10px; margin-top: 40px; }
+.rule-section h3 { color: #ddd; border-bottom: 1px solid #444; padding-bottom: 5px; margin-top: 30px; }
+.rule-section h4 { color: #b52b2b; font-size: 1.1em; margin-top: 20px; margin-bottom: 10px; }
+.rule-section p { margin-bottom: 15px; color: #ccc; }
+
+/* Inset (Özel Kutular) */
+.rule-inset {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-left: 4px solid #b52b2b;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+.rule-inset h3, .rule-inset h4 { margin-top: 0; color: #eee; border-color: #555; }
+
+/* Tablolar */
+.table-wrapper { overflow-x: auto; margin: 20px 0; }
+.rule-table { width: 100%; border-collapse: collapse; background-color: #252525; }
+.rule-table th { background-color: #333; color: #b52b2b; padding: 10px; text-align: left; border-bottom: 2px solid #444; }
+.rule-table td { padding: 10px; border-bottom: 1px solid #333; color: #ccc; }
+.rule-table tr:nth-child(even) { background-color: #2a2a2a; }
+
+/* Listeler */
+.rule-list { list-style: disc; padding-left: 20px; margin-bottom: 15px; }
+.rule-list li { margin-bottom: 5px; color: #ccc; }
+
+/* Linkler */
+.dnd-link {
+    color: #8ab4f8; border-bottom: 1px dotted #8ab4f8; transition: all 0.2s;
+}
+.dnd-link.spell-link { color: #a855f7; border-color: #a855f7; }
+.dnd-link.spell-link:hover { color: #d8b4fe; background-color: rgba(168, 85, 247, 0.15); }
+
+/* Yukarı Çık Butonu */
+#back-to-top {
+    position: fixed; bottom: 20px; right: 20px;
+    background-color: #b52b2b; color: white;
+    border: none; border-radius: 50%; width: 50px; height: 50px;
+    font-size: 20px; cursor: pointer; display: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 100;
+}
+
+.loading-msg { text-align: center; font-size: 1.2em; color: #888; margin-top: 50px; }
+
+/* --- RESPONSIVE --- */
+/* --- MOBİL İÇİNDEKİLER BUTONU (Başlangıçta Gizli) --- */
+#toc-toggle-btn {
+    display: none; /* Masaüstünde görünmesin */
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #222;
+    color: #b52b2b;
+    border: 2px solid #b52b2b;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 1100; /* Menüden daha üstte */
+    transition: all 0.3s ease;
+}
+
+#toc-toggle-btn:hover {
+    background-color: #b52b2b;
+    color: #fff;
+}
+
+/* Sidebar Kapatma Butonu (X) */
+.sidebar-close-btn {
+    display: none; /* Sadece mobilde görünür */
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* --- RESPONSIVE (MOBİL) --- */
+@media (max-width: 900px) {
+    .layout-container { grid-template-columns: 1fr; padding: 10px; }
+    .content-area { padding: 20px 15px; }
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+
+    /* Butonu Göster */
+    #toc-toggle-btn { display: block; }
+
+    /* Sidebar'ı Kayan Menüye Dönüştür */
+    .sidebar {
+        display: block; /* Tekrar görünür yap ama pozisyonu değiştir */
+        position: fixed;
+        top: 0;
+        left: -300px; /* Ekran dışına it */
+        width: 280px;
+        height: 100vh;
+        z-index: 2000; /* En üstte */
+        transition: left 0.3s ease-in-out;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+        border-radius: 0;
+        border: none;
+        border-right: 1px solid #333;
+    }
+
+    /* Menü Açıkken */
+    .sidebar.active {
+        left: 0; /* İçeri kaydır */
+    }
+
+    /* Kapatma Butonunu Göster */
+    .sidebar-close-btn { display: block; }
+
+    /* Menü Açıldığında Arka Planı Karart (Overlay) */
+    .overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 1500; /* Sidebar'ın altında, içeriğin üstünde */
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .overlay.active {
+        display: block;
+        opacity: 1;
+    }
+}

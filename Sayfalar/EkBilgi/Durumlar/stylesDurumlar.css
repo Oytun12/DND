@@ -1,0 +1,109 @@
+/* ============================================================
+   STYLESDURUMLAR.CSS - Durumlar Teması
+   ============================================================ */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+/* --- HEADER (Standart) --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; height: 70px;
+    display: flex; align-items: center; 
+    position: relative; z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+.header-container { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Menü */
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+.menu-icon { display: none; font-size: 28px; cursor: pointer; color: #fff; }
+
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 99; display: none; 
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+
+/* --- İÇERİK --- */
+.main-container { max-width: 900px; margin: 30px auto; padding: 20px; }
+
+/* Arama */
+.search-section { margin-bottom: 30px; }
+.search-input {
+    width: 100%; padding: 15px;
+    background-color: #222; border: 1px solid #444; border-radius: 8px;
+    color: #fff; font-size: 1.1em; transition: border-color 0.3s;
+}
+.search-input:focus { outline: none; border-color: #b52b2b; }
+
+/* Liste */
+.condition-grid { display: flex; flex-direction: column; gap: 15px; }
+
+/* Durum Kartı */
+.condition-card {
+    background-color: #2a2a2a;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.condition-header {
+    background-color: #333;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    border-left: 5px solid #b52b2b; /* Kırmızı uyarı rengi */
+    transition: background 0.2s;
+}
+.condition-header:hover { background-color: #3a3a3a; }
+
+.cond-title { font-size: 1.2em; font-weight: bold; color: #fff; display: flex; align-items: center; gap: 10px; }
+.cond-icon { font-size: 1.2em; opacity: 0.7; }
+
+.arrow-icon { transition: transform 0.3s ease; color: #888; }
+
+.condition-content {
+    background-color: #252525;
+    padding: 20px;
+    display: none; /* JS ile açılır */
+    border-top: 1px solid #3b3b3b;
+    color: #ccc; line-height: 1.6;
+}
+
+.condition-content ul { list-style: disc; padding-left: 20px; margin-top: 10px; }
+.condition-content li { margin-bottom: 8px; }
+
+.loading-msg { text-align: center; color: #888; margin-top: 50px; }
+
+/* Responsive */
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    .main-container { padding: 15px; }
+}
