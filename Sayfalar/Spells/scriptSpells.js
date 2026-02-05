@@ -1,5 +1,5 @@
 /* ============================================================
-   SCRIPTSPELLS.JS - Final Sürüm (Multi-Open + Auto Close)
+   SCRIPTSPELLS.JS - Final Sürüm (İsim Etiketleri Düzeldi)
    ============================================================ */
 
 let ALL_SPELLS = [];
@@ -11,7 +11,7 @@ let ACTIVE_FILTERS = {
     sort: "name-asc" 
 };
 
-// SINIF EŞLEŞTİRME SÖZLÜĞÜ (Önceki düzeltme korundu)
+// SINIF EŞLEŞTİRME SÖZLÜĞÜ
 const CLASS_MAPPING = {
     "Bard":     ["Bard", "Ozan"],
     "Cleric":   ["Cleric", "Rahip"],
@@ -30,37 +30,27 @@ function toggleMenu(event) {
     if(menu) menu.classList.toggle('open');
 }
 
-// GLOBAL TIKLAMA YÖNETİCİSİ (GÜNCELLENDİ)
 document.addEventListener('click', (event) => {
     const menu = document.getElementById('mobile-menu');
     const menuIcon = document.querySelector('.menu-icon');
 
-    // 1. Menü Kapatma Kontrolü
     if (menu && menu.classList.contains('open')) {
         if (!menu.contains(event.target) && !menuIcon.contains(event.target)) {
             menu.classList.remove('open');
         }
     }
 
-    // 2. Büyüleri Kapatma Kontrolü (Click Outside)
-    // Eğer tıklanan yer bir 'Büyü Kartı' DEĞİLSE -> Hepsini Kapat
     const isClickInsideCard = event.target.closest('.spell-card');
-    
-    // Filtre alanına tıklayınca kapanmasın istiyorsan buraya '&& !event.target.closest('.filter-section')' ekleyebilirsin.
-    // Ama genelde boşluğa tıklayınca kapanması istenir.
     if (!isClickInsideCard) {
         closeAllSpells();
     }
 });
 
-// Tüm büyüleri kapatan yardımcı fonksiyon
 function closeAllSpells() {
-    // İçerikleri gizle
     document.querySelectorAll('.spell-content').forEach(content => {
         content.style.display = 'none';
     });
     
-    // Başlık stillerini (renk ve ok) sıfırla
     document.querySelectorAll('.spell-header').forEach(header => {
         header.style.backgroundColor = ''; 
         const arrow = header.querySelector('.arrow-icon');
@@ -97,13 +87,11 @@ async function loadSpells() {
 
 /* --- FİLTRELEME VE SIRALAMA AYARLARI --- */
 function setupFilters() {
-    // 1. Arama
     document.getElementById('search-input').addEventListener('input', (e) => {
         ACTIVE_FILTERS.search = e.target.value.toLowerCase();
         sortAndRender();
     });
 
-    // 2. Seviye
     const lvlBtns = document.querySelectorAll('.level-filters .filter-btn');
     lvlBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -114,19 +102,16 @@ function setupFilters() {
         });
     });
 
-    // 3. Okul
     document.getElementById('school-select').addEventListener('change', (e) => {
         ACTIVE_FILTERS.school = e.target.value;
         sortAndRender();
     });
 
-    // 4. Sınıf
     document.getElementById('class-select').addEventListener('change', (e) => {
         ACTIVE_FILTERS.class = e.target.value;
         sortAndRender();
     });
 
-    // 5. Sıralama
     const sortSelect = document.getElementById('sort-select');
     if(sortSelect) {
         sortSelect.addEventListener('change', (e) => {
@@ -136,9 +121,8 @@ function setupFilters() {
     }
 }
 
-/* --- ANA MANTIK: FİLTRELE & SIRALA & GÖSTER --- */
+/* --- ANA MANTIK --- */
 function sortAndRender() {
-    // 1. Filtreleme
     let filtered = ALL_SPELLS.filter(spell => {
         if (ACTIVE_FILTERS.search) {
             const nameMatch = spell.name.toLowerCase().includes(ACTIVE_FILTERS.search);
@@ -165,7 +149,6 @@ function sortAndRender() {
         return true;
     });
 
-    // 2. Sıralama
     filtered.sort((a, b) => {
         switch (ACTIVE_FILTERS.sort) {
             case "name-desc": return b.name.localeCompare(a.name);
@@ -176,7 +159,6 @@ function sortAndRender() {
         }
     });
 
-    // 3. Ekrana Bas
     renderSpells(filtered);
 }
 
@@ -200,8 +182,6 @@ function createSpellCard(spell) {
     card.className = `spell-card`;
 
     const schoolCode = spell.school || "U";
-    
-    // Header
     const header = document.createElement('div');
     header.className = `spell-header school-${schoolCode}`;
     
@@ -216,7 +196,6 @@ function createSpellCard(spell) {
         <span class="arrow-icon">▼</span>
     `;
 
-    // İçerik
     const content = document.createElement('div');
     content.className = 'spell-content';
 
@@ -235,6 +214,14 @@ function createSpellCard(spell) {
         <div class="spell-description">${renderEntries(spell.entries)}</div>
     `;
 
+    if (spell.entriesHigherLevel) {
+        // Burada zaten istediğin formatı manuel olarak sağlıyoruz.
+        html += `<div">
+                    <strong style="color:#b52b2b;">Üst Seviyelerde:</strong>
+                    ${renderEntries(spell.entriesHigherLevel[0].entries)}
+                 </div>`;
+    }
+
     if (spell.classes && spell.classes.fromClassList) {
         html += `<div class="spell-classes">`;
         spell.classes.fromClassList.forEach(cls => {
@@ -243,40 +230,33 @@ function createSpellCard(spell) {
         html += `</div>`;
     }
 
-    if (spell.entriesHigherLevel) {
-        html += `<div style="margin-top:15px; border-top:1px dashed #444; padding-top:10px;">
-                    <strong style="color:#b52b2b;">Üst Seviyelerde:</strong>
-                    ${renderEntries(spell.entriesHigherLevel[0].entries)}
-                 </div>`;
-    }
 
     content.innerHTML = html;
 
-    // TIKLAMA OLAYI (KARŞILAŞTIRMA MODU)
-    // Sadece tıklandığında kendi durumunu değiştirir (toggle).
-    // Diğerlerini kapatmaz (bunu global click listener yapar).
     header.addEventListener('click', () => {
         const isOpen = content.style.display === 'block';
-        
         content.style.display = isOpen ? 'none' : 'block';
         header.style.backgroundColor = isOpen ? '' : '#3a3a3a';
-        
         const arrow = header.querySelector('.arrow-icon');
         arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
     });
 
     card.appendChild(header);
     card.appendChild(content);
-
     return card;
 }
 
-/* --- YARDIMCI FORMAT FONKSİYONLARI --- */
+/* --- YARDIMCI FONKSİYONLAR --- */
 function getSchoolName(code) {
     const schools = {
-        'A': 'Abjuration', 'C': 'Conjuration', 'D': 'Divination', 
-        'E': 'Evocation', 'EN': 'Enchantment', 'I': 'Illusion', 
-        'N': 'Necromancy', 'T': 'Transmutation'
+        'A': 'Abjuration', 
+        'C': 'Conjuration', 
+        'D': 'Divination', 
+        'E': 'Enchantment',  // Düzeltildi
+        'V': 'Evocation',    // Düzeltildi
+        'I': 'Illusion', 
+        'N': 'Necromancy', 
+        'T': 'Transmutation'
     };
     return schools[code] || code;
 }
@@ -317,6 +297,7 @@ function formatComponents(comp) {
     return text.join(", ");
 }
 
+/* --- METİN İŞLEYİCİ (GÜNCELLENDİ) --- */
 function renderEntries(entries) {
     if (!entries) return "";
     let html = "";
@@ -329,9 +310,15 @@ function renderEntries(entries) {
             if (e.type === 'list') {
                 html += `<ul>${e.items.map(i => `<li>${formatText(i)}</li>`).join('')}</ul>`;
             } else if (e.entries) {
-                if (e.name) html += `<p><strong>${e.name}.</strong> `;
-                html += renderEntries(e.entries);
-                if (e.name) html += `</p>`;
+                
+                if (e.name) {
+                    html += `<div style="margin-bottom:10px;">
+                                <strong>${e.name}:</strong>
+                                ${renderEntries(e.entries)}
+                             </div>`;
+                } else {
+                    html += renderEntries(e.entries);
+                }
             }
         }
     });

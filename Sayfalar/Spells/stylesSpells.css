@@ -200,8 +200,8 @@ ul { list-style: none; padding: 0; margin: 0; }
 .school-A { border-left-color: #f0f0f0; } /* Abjuration - Beyaz */
 .school-C { border-left-color: #eab308; } /* Conjuration - Sarı */
 .school-D { border-left-color: #a8a29e; } /* Divination - Gri */
-.school-E { border-left-color: #ef4444; } /* Evocation - Kırmızı */
-.school-EN { border-left-color: #ec4899; } /* Enchantment - Pembe */
+.school-V { border-left-color: #ef4444; } /* Evocation - Kırmızı */
+.school-E { border-left-color: #ec4899; } /* Enchantment - Pembe */
 .school-I { border-left-color: #3b82f6; } /* Illusion - Mavi */
 .school-N { border-left-color: #22c55e; } /* Necromancy - Yeşil */
 .school-T { border-left-color: #f97316; } /* Transmutation - Turuncu */
@@ -226,6 +226,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     padding-bottom: 15px;
     border-bottom: 1px solid #444;
 }
+.spell-description strong { display: block; color: #b52b2b; font-size: 0.85em; text-transform: uppercase; }
 .detail-item strong { display: block; color: #b52b2b; font-size: 0.85em; text-transform: uppercase; }
 .detail-item span { color: #eee; }
 
