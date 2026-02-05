@@ -65,24 +65,164 @@ export function useClassLogic() {
         return 0;
     };
 
-    // Özelliği işleyip ekrana hazır hale getirir
+    // =================================================
+    // --- GÖRÜNÜM VE İÇERİK İŞLEME MANTIĞI (FİNAL) ---
+    // =================================================
+
+    // Stat Kısaltmalarını Türkçeye Çeviren Sözlük
+    const attrMap = {
+        "str": "Kuvvet", "dex": "Çeviklik", "con": "Dayanıklılık",
+        "int": "Zeka", "wis": "Akıl", "cha": "Karizma",
+        "akı": "Akıl", "kuv": "Kuvvet", "çev": "Çeviklik", "day": "Dayanıklılık", "zek": "Zeka", "kar": "Karizma"
+    };
+
+    // 1. TABLO OLUŞTURUCU
+    const renderTable = (entry) => {
+        if (!entry || entry.type !== 'table') return null;
+
+        let html = '<div class="table-responsive"><table class="feature-table">';
+        
+        if (entry.caption) html += `<caption>${entry.caption}</caption>`;
+
+        if (entry.colLabels && entry.colLabels.length > 0) {
+            html += '<thead><tr>';
+            entry.colLabels.forEach((lbl, index) => {
+                let content = "";
+                try { content = (typeof lbl === 'string') ? formatEntry(lbl) : String(lbl); } catch(e) { content = String(lbl); }
+                content = content.replace(/<p>|<\/p>/g, '');
+
+                let style = "";
+                if (entry.colStyles && entry.colStyles[index] && entry.colStyles[index].includes("text-align-center")) {
+                    style = 'style="text-align: center;"';
+                } else if (entry.colStyles && entry.colStyles[index] && entry.colStyles[index].includes("text-align-right")) {
+                    style = 'style="text-align: right;"';
+                }
+
+                html += `<th ${style}>${content}</th>`;
+            });
+            html += '</tr></thead>';
+        }
+
+        html += '<tbody>';
+        if (entry.rows && entry.rows.length > 0) {
+            entry.rows.forEach(row => {
+                html += '<tr>';
+                row.forEach(cell => {
+                    let cellContent = "";
+                    if (cell === null || cell === undefined) {
+                        cellContent = "-";
+                    } else if (typeof cell === 'number') {
+                        cellContent = String(cell);
+                    } else if (typeof cell === 'object') {
+                         if(cell.roll) {
+                             cellContent = cell.roll.exact ? String(cell.roll.exact) : (cell.roll.min + "-" + cell.roll.max);
+                         } else if (cell.entry) {
+                             try { cellContent = formatEntry(cell.entry); } catch(e) { cellContent = "Detay"; }
+                         } else {
+                             cellContent = JSON.stringify(cell);
+                         }
+                    } else {
+                        try { cellContent = formatEntry(cell); } catch (e) { cellContent = String(cell); }
+                    }
+
+                    if(typeof cellContent === 'string' && !cellContent.includes('<br>') && !cellContent.includes('<ul')) {
+                        cellContent = cellContent.replace(/^<p>(.*)<\/p>$/s, '$1');
+                    }
+                    html += `<td>${cellContent}</td>`;
+                });
+                html += '</tr>';
+            });
+        }
+        html += '</tbody></table></div>';
+        return html;
+    };
+
+    // 2. RECURSIVE İÇERİK OLUŞTURUCU (Recursive Render)
+    const renderEntry = (e) => {
+        // Güvenlik: Null ise boş dön
+        if (e === null || e === undefined) return "";
+
+        // Tablo Kontrolü
+        if (typeof e === 'object' && e.type === 'table') return renderTable(e);
+        
+        // Liste Kontrolü
+        if (typeof e === 'object' && e.type === 'list') {
+            let listHtml = `<ul style="margin: 5px 0 10px 20px; list-style-type: disc;">`;
+            if (e.items) listHtml += e.items.map(item => `<li>${formatEntry(item)}</li>`).join('');
+            listHtml += `</ul>`;
+            return listHtml;
+        }
+
+        // Formül Kutuları (Flexbox Uyumlu)
+        if (typeof e === 'object' && (e.type === 'abilityDc' || e.type === 'abilityAttackMod')) {
+            let attrKey = (e.attributes && e.attributes[0]) ? e.attributes[0].toLowerCase() : 'int';
+            let attrName = attrMap[attrKey] || attrKey.toUpperCase();
+            
+            let title = e.type === 'abilityDc' ? (e.name || 'Büyü') + ' Kurtulma DC' : (e.name || 'Büyü') + ' Saldırı Bonusu';
+            let formula = e.type === 'abilityDc' ? `8 + Uzmanlık + ${attrName}` : `Uzmanlık + ${attrName}`;
+            
+            return `
+            <div class="mechanic-formula-box">
+                <strong>${title}:</strong>
+                <span>${formula}</span>
+            </div>`;
+        }
+
+        // Alt Başlıklar / Named Entries (Recursive Çağrı)
+        if (typeof e === 'object' && e.name && (e.type === 'entries' || !e.type)) { 
+            let subHtml = `<div class="feature-subsection">`;
+            subHtml += `<h5 class="feature-sub-title">${e.name}</h5>`;
+            
+            if (e.entries) {
+                let subEntries = Array.isArray(e.entries) ? e.entries : [e.entries];
+                // Recursive çağrı ile alt içerikleri işle
+                subHtml += subEntries.map(sub => renderEntry(sub)).join(''); 
+            }
+            
+            subHtml += `</div>`;
+            return subHtml;
+        }
+
+        // Standart Metin
+        let textContent = (typeof e !== 'string' && !e.type) ? formatEntry(String(e)) : formatEntry(e);
+        return textContent;
+    };
+
+    // 3. ANA ÖZELLİK İŞLEYİCİ (PROCESS FEATURE)
     const processFeature = (feat, isSub) => {
+        // Ana veri güvenliği
+        if (!feat) return { name: "Bilinmeyen", entries: [], isSubclass: isSub };
+
         try {
             let opts = extractOptions(feat);
             if(!opts && optionSourceMap[feat.name]) opts = findOptionsByName(optionSourceMap[feat.name]);
             let cleanOpts = opts ? opts.map(normalizeOption) : [];
             let count = detectSelectionCount(feat);
             if(cleanOpts.length > 0 && count === 0) count = 1;
+
+            let processedEntries = [];
+            if (feat.entries) {
+                // Tüm girdileri renderEntry fonksiyonuna gönder
+                processedEntries = feat.entries.map(e => renderEntry(e)).filter(t => t);
+            } else {
+                processedEntries = ["Detay yok"];
+            }
+
             return { 
                 name: feat.name, 
-                entries: feat.entries ? feat.entries.map(formatEntry).filter(t=>t) : ["Detay yok"], 
+                entries: processedEntries, 
                 isSubclass: isSub, 
                 hasOptions: !!cleanOpts.length, 
                 options: cleanOpts, 
                 selectionCount: count 
             };
-        } catch(e) { return {name: feat.name, entries:[], isSubclass:false}; }
+        } catch(e) { 
+            console.error("Feature işleme hatası:", feat.name, e);
+            // Hata durumunda boş dönerek çökmesini engelle
+            return {name: feat.name || "Hata", entries:["Veri hatası"], isSubclass:false}; 
+        }
     };
+    // =================================================
 
     const subclassUnlockLevel = computed(() => selectedClass.value?.classFeatures?.findIndex(grp => grp.some(f => f.gainSubclassFeature)) + 1 || -1);
     const subclassOptions = computed(() => selectedClass.value?.subclasses || []);
@@ -264,6 +404,6 @@ export function useClassLogic() {
         getHitDie,
         getAvailableOptions,
         getChoiceDetail,
-        classResources
+        classResources,
     };
 }

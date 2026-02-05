@@ -210,7 +210,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 
 h4 { 
-    color: #fff; 
+    color: #f52b2b; 
     border-bottom: 1px solid #444; 
     padding-bottom: 5px; 
     margin-top: 30px; 
@@ -283,6 +283,100 @@ p, li { color: #ccc; line-height: 1.6; }
 
 .progression-table tr:nth-child(even) { background-color: #2a2a2a; }
 .progression-table tr:hover { background-color: #333; }
+
+
+/* --- YENİ EKLENEN MODERN STİLLER (Data Görünümü İçin) --- */
+
+/* 1. Modern Tablolar (Özelliklerin içindeki tablolar için) */
+.feature-table-wrapper {
+    overflow-x: auto;
+    margin: 15px 0;
+    border-radius: 6px;
+    border: 1px solid #444;
+}
+
+.feature-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+}
+
+.feature-table th {
+    background-color: #2b2b2b;
+    color: #b52b2b;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #444;
+    font-weight: 600;
+}
+
+.feature-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #333;
+    vertical-align: top;
+}
+
+.feature-table tr:nth-child(even) { background-color: #252525; }
+.feature-table caption {
+    caption-side: top;
+    font-weight: bold;
+    padding: 8px;
+    color: #b52b2b;
+    text-align: left;
+    border-bottom: 1px solid #b52b2b;
+}
+
+/* 2. Alt Başlıklar */
+.feature-subsection {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 2px solid #555;
+}
+
+.feature-sub-title {
+    color: #e67e22; /* Turuncu vurgu */
+    font-weight: bold;
+    font-size: 1.05em;
+    margin: 0 0 5px 0;
+    display: block;
+}
+
+/* 3. Formül Kutuları (Flexbox & Responsive) */
+.mechanic-formula-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+    
+    background: rgba(255, 255, 255, 0.03); 
+    padding: 10px 15px;
+    border-radius: 6px; 
+    margin: 15px 0; 
+    text-align: center; 
+    font-size: 0.95em; 
+    color: #ccc; 
+    border: 1px dashed #555;
+}
+
+.mechanic-formula-box strong {
+    display: inline;
+    margin: 0;
+    font-size: 1.1em;
+    white-space: nowrap;
+}
+
+/* Listeler */
+.feature-list {
+    margin: 5px 0 10px 20px; 
+    list-style-type: disc; 
+    color: #ccc;
+}
+.feature-list li { margin-bottom: 4px; }
+
 
 
 /* ============================================================

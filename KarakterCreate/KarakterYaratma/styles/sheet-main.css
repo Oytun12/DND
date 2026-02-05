@@ -101,6 +101,112 @@
     cursor: grabbing; /* Tutarken sıkılmış el ikonu */
 }
 
+
+/* --- MODERN TABLO STİLLERİ --- */
+.table-responsive {
+    overflow-x: auto;
+    margin: 15px 0;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.feature-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.feature-table caption {
+    caption-side: top;
+    font-weight: bold;
+    padding: 10px;
+    color: #b52b2b; /* Sitenin kırmızı vurgusu */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: #111;
+    border-bottom: 2px solid #b52b2b;
+}
+
+.feature-table th {
+    background-color: #252525;
+    color: #fff;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+    font-weight: 600;
+}
+
+.feature-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #333;
+    vertical-align: top;
+}
+
+/* Satır renklendirmesi (Zebra Striping) */
+.feature-table tr:nth-child(even) {
+    background-color: #222;
+}
+
+.feature-table tr:hover {
+    background-color: #2a2a2a; /* Üzerine gelince hafif aydınlat */
+}
+
+/* Mobilde tablo bozulmasın */
+.feature-table td p {
+    margin: 0; 
+}
+
+
+
+/* --- ALT BAŞLIK STİLLERİ --- */
+.feature-subsection {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    border-left: 2px solid #444; /* Sol tarafa ince bir çizgi */
+}
+
+.feature-sub-title {
+    color: #e67e22; /* Turuncu vurgu (veya #b52b2b kırmızı yapabilirsin) */
+    font-weight: bold;
+    font-size: 1em; /* Normal yazıdan çok az büyük */
+    margin: 0 0 5px 0;
+    display: block;
+    text-transform: capitalize;
+}
+
+.feature-subsection p {
+    margin-bottom: 8px;
+}
+
+/* --- FORMÜL KUTUSU STİLİ (Flexbox / Responsive) --- */
+.mechanic-formula-box {
+    display: flex;             /* Esnek kutu modeli */
+    flex-wrap: wrap;           /* Sığmazsa aşağı kaydır */
+    justify-content: center;   /* Yatayda ortala */
+    align-items: baseline;     /* Metin taban çizgisine göre hizala */
+    gap: 8px;                  /* Başlık ve içerik arası boşluk */
+    
+    background: rgba(0,0,0,0.05); 
+    padding: 8px 12px;         /* Kenarlardan biraz daha boşluk */
+    border-radius: 4px; 
+    margin: 5px 0;             /* Kutular arası dikey boşluk */
+    text-align: center; 
+    font-size: 0.9em; 
+    color: #ccc; 
+    border: 1px dashed #ccc;
+}
+
+.mechanic-formula-box strong {
+    display: inline;           /* Artık blok değil, yan yana gelebilir */
+    margin: 0;                 /* Margin'i sıfırladık, boşluğu 'gap' hallediyor */
+    font-size: 1.1em;
+    white-space: nowrap;       /* Başlığın kendi içinde kırılmasını engelle */
+}
+
+
 /* ============================================================
    MOBİL İÇİN ÖZEL YERLEŞİM (SONUÇ KAĞIDI DÜZENİ)
    ============================================================ */
