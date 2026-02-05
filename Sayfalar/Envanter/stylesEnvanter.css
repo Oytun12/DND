@@ -1,8 +1,8 @@
 /* ============================================================
-   STYLESENVANTER.CSS - Modern Ekipmanlar Teması
+   STYLESENVANTER.CSS - Modern Ekipmanlar Teması (Revize + Sıralama)
    ============================================================ */
 
-/* --- TEMEL AYARLAR (BASE) --- */
+/* --- TEMEL AYARLAR --- */
 * { box-sizing: border-box; }
 
 body {
@@ -10,6 +10,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #1a1a1a; 
     color: #eee;
+    overflow-x: hidden;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -78,123 +79,13 @@ ul { list-style: none; padding: 0; margin: 0; }
 .intro-section h2 { color: #b52b2b; font-size: 2em; margin-bottom: 10px; }
 .intro-section p { color: #aaa; font-size: 1.1em; }
 
-/* --- ANA KUTU (WRAPPER) --- */
-.main-content-box {
-    background-color: #222;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-/* --- KATEGORİ KARTLARI (ACCORDION) --- */
-.category-card {
-    background-color: #2a2a2a;
-    border: 1px solid #3b3b3b;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-.category-card:hover { border-color: #555; }
-
-.collapsible-header {
-    background-color: #333;
-    padding: 15px 25px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 4px solid #b52b2b;
-    transition: background 0.2s;
-}
-.collapsible-header:hover { background-color: #444; }
-.collapsible-header h3 { margin: 0; font-size: 1.3em; color: #eee; font-weight: 600; }
-
-.arrow-icon { transition: transform 0.3s ease; color: #888; }
-.category-card.active .arrow-icon { transform: rotate(180deg); color: #b52b2b; }
-
-.category-content {
-    background-color: #252525;
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out, padding 0.4s ease;
-}
-.category-card.active .category-content {
-    max-height: 5000px; /* İçerik uzun olabilir */
-    border-top: 1px solid #3b3b3b;
-}
-
-/* --- TABLO STİLLERİ --- */
-.item-table-wrapper {
-    overflow-x: auto;
-    width: 100%;
-}
-
-.item-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 600px;
-    font-size: 0.95em;
-}
-
-.item-table th, .item-table td {
-    padding: 12px 20px;
-    text-align: left;
-    border-bottom: 1px solid #333;
-}
-
-.item-table th {
-    background-color: #2e2e2e;
-    color: #b52b2b;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.85em;
-    letter-spacing: 1px;
-    position: sticky;
-    top: 0;
-}
-
-.item-table tr:nth-child(even) { background-color: #292929; }
-.item-table tr:hover { background-color: #333; }
-
-/* Hücre Özelleştirmeleri */
-.col-name { font-weight: bold; color: #eee; width: 30%; }
-.col-cost, .col-weight { color: #aaa; width: 15%; }
-.col-props { color: #ccc; font-style: italic; }
-
-/* Detay Satırı (Gizli) */
-.item-detail-row { display: none; background-color: #222 !important; }
-.item-detail-row.active { display: table-row; }
-.item-desc { padding: 15px 25px; color: #bbb; line-height: 1.6; border-left: 3px solid #555; margin: 10px 0; }
-
-/* Linkler */
-.dnd-link { color: #8ab4f8; cursor: pointer; border-bottom: 1px dotted #8ab4f8; }
-a.dnd-link.spell-link { color: #a855f7; text-decoration: none; border-bottom: 1px dotted #a855f7; padding: 0 2px; }
-a.dnd-link.spell-link:hover { color: #d8b4fe; background-color: rgba(168, 85, 247, 0.15); border-radius: 4px; }
-
-/* Responsive */
-@media (max-width: 800px) {
-    .desktop-nav { display: none; }
-    .menu-icon { display: block; }
-    .main-container { padding: 15px; margin: 0; }
-    .main-content-box { background: transparent; border: none; padding: 0; box-shadow: none; border-radius: 0; }
-    .category-card { border-radius: 0; border-left: none; border-right: none; }
-    .item-table th, .item-table td { padding: 10px; }
-    .col-cost, .col-weight { font-size: 0.85em; }
-}
-
-/* ============================================================
-   STYLESENVANTER.CSS - Güncelleme (Tab Stilleri)
-   ============================================================ */
-
-/* --- SEKME (TAB) YAPISI --- */
+/* --- TAB BUTONLARI --- */
 .tabs-container {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-bottom: 25px;
+    flex-wrap: wrap;
 }
 
 .tab-btn {
@@ -210,29 +101,159 @@ a.dnd-link.spell-link:hover { color: #d8b4fe; background-color: rgba(168, 85, 24
     letter-spacing: 0.5px;
 }
 
-.tab-btn:hover {
-    background-color: #2a2a2a;
-    color: #ccc;
-    border-color: #444;
-}
-
-/* Aktif Sekme Stili */
+.tab-btn:hover { background-color: #2a2a2a; color: #ccc; border-color: #444; }
 .tab-btn.active {
-    background-color: #b52b2b; /* Tema Rengi */
-    color: #fff;
-    border-color: #b52b2b;
+    background-color: #b52b2b; color: #fff; border-color: #b52b2b;
     box-shadow: 0 4px 10px rgba(181, 43, 43, 0.4);
 }
 
-/* Mobilde Sekmeler Alt Alta Dursun */
-@media (max-width: 600px) {
-    .tabs-container {
-        flex-direction: column;
-    }
-    .tab-btn {
-        width: 100%;
-        text-align: center;
-    }
+/* --- ANA KUTU --- */
+.main-content-box {
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* ... Diğer stiller aynen kalıyor ... */
+@media (min-width: 768px) { .main-content-box { padding: 40px; } }
+
+/* --- KATEGORİ KARTLARI --- */
+.category-card {
+    background-color: #2a2a2a;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+}
+.category-card:hover { border-color: #555; }
+
+.collapsible-header {
+    background-color: #333;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    border-left: 4px solid #b52b2b;
+    transition: background 0.2s;
+}
+.collapsible-header:hover { background-color: #444; }
+.collapsible-header h3 { margin: 0; font-size: 1.2em; color: #eee; font-weight: 600; }
+
+.arrow-icon { transition: transform 0.3s ease; color: #888; }
+.category-card.active .arrow-icon { transform: rotate(180deg); color: #b52b2b; }
+
+.category-content {
+    background-color: #252525;
+    display: none;
+    border-top: 1px solid #3b3b3b;
+}
+.category-card.active .category-content { display: block; animation: fadeIn 0.3s ease-in; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- TABLO STİLLERİ --- */
+.item-table-wrapper { width: 100%; overflow: hidden; }
+
+.item-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Sütun genişliklerini sabitle */
+}
+
+.item-table th, .item-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    vertical-align: top;
+    font-size: 0.95em;
+}
+
+/* Sıralanabilir Başlıklar */
+.item-table th.sortable {
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    user-select: none; /* Metin seçimini engelle */
+}
+
+.item-table th.sortable:hover {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+/* Sıralama İkonu (Ok) */
+.sort-icon {
+    font-size: 0.8em;
+    margin-left: 5px;
+    opacity: 0.5;
+}
+.item-table th.sortable:hover .sort-icon { opacity: 1; }
+
+
+.item-table th {
+    background-color: #2e2e2e;
+    color: #b52b2b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 1px;
+}
+
+.item-table tr:nth-child(even) { background-color: #292929; }
+.item-table tr:hover { background-color: #333; }
+
+/* --- SÜTUN GENİŞLİKLERİ (DESKTOP) --- */
+/* Toplam %100 olmalı */
+.col-name { width: 30%; font-weight: bold; color: #eee; }
+.col-cost { width: 15%; color: #aaa; }
+.col-weight { width: 15%; color: #aaa; }
+.col-props { width: 40%; color: #ccc; font-style: italic; }
+
+/* Detay Satırı */
+.item-detail-row { display: none; background-color: #222 !important; }
+.item-detail-row.active { display: table-row; }
+.item-desc { 
+    padding: 10px 15px; color: #bbb; line-height: 1.6; 
+    border-left: 3px solid #555; margin: 5px 0;
+}
+
+/* Linkler */
+.dnd-link { color: #8ab4f8; cursor: pointer; border-bottom: 1px dotted #8ab4f8; }
+a.dnd-link.spell-link { color: #a855f7; text-decoration: none; border-bottom: 1px dotted #a855f7; }
+a.dnd-link.spell-link:hover { color: #d8b4fe; background-color: rgba(168, 85, 247, 0.15); border-radius: 4px; }
+
+/* --- RESPONSIVE (MOBİL) AYARLARI --- */
+@media (max-width: 768px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    
+    .main-container { padding: 10px; margin: 0; }
+    .main-content-box { padding: 10px; background: transparent; border: none; box-shadow: none; }
+
+    .item-table th, .item-table td { padding: 10px 8px; font-size: 0.85em; }
+
+    
+    
+    .tabs-container { flex-direction: column; }
+    .tab-btn { width: 100%; text-align: center; }
+}
+@media (max-width: 600px) {
+
+    /* Mobilde Ağırlık Sütununu GİZLE */
+    .col-weight { display: none; }
+
+    /* --- MOBİL SÜTUN DAĞILIMI (ÖNEMLİ) --- */
+    /* Ağırlık (%15) gitti, kalan %85'i diğerlerine dağıtıyoruz */
+    .col-name { width: 40%; }   /* 30 -> 40 */
+    .col-cost { width: 30%; }   /* 15 -> 20 */
+    .col-props { width: 30%; }  /* 40 -> 40 (Aynı kalabilir veya artabilir) */
+
+}
+
+
+@media (max-width: 450px) {
+    .item-table th { font-size: 0.7em; }
+}

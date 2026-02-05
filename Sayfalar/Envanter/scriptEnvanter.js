@@ -1,5 +1,5 @@
 /* ============================================================
-   SCRIPTENVANTER.JS - Akıllı Birleştirici ve Filtreleyici
+   SCRIPTENVANTER.JS - Akıllı Birleştirici, Filtreleyici ve Sıralayıcı (v2.0)
    ============================================================ */
 
 /* --- GLOBAL DEĞİŞKENLER --- */
@@ -17,7 +17,6 @@ async function initializeInventory() {
     container.innerHTML = `<div style="text-align: center; color: #888; padding: 20px;"><p>Tüm veriler taranıyor ve birleştiriliyor...</p></div>`;
 
     try {
-        // İki dosyayı da paralel olarak çekiyoruz
         const [basicRes, magicRes] = await Promise.allSettled([
             fetch('../../Data/basicitems.json'),
             fetch('../../Data/items.json')
@@ -25,27 +24,21 @@ async function initializeInventory() {
 
         let combinedItems = [];
 
-        // 1. Basic Dosyasını İşle
         if (basicRes.status === 'fulfilled') {
             const data = await basicRes.value.json();
-            // Dosya yapısındaki olası tüm dizileri tara ve birleştir
             const list = data.basicitem || data.basicitems || data.item || data.items || [];
             if(Array.isArray(list)) combinedItems = combinedItems.concat(list);
         }
 
-        // 2. Magic/Items Dosyasını İşle
         if (magicRes.status === 'fulfilled') {
             const data = await magicRes.value.json();
             const list = data.item || data.items || data.basicitem || [];
             if(Array.isArray(list)) combinedItems = combinedItems.concat(list);
         }
 
-        // 3. Verileri Temizle (Tekrarları ve bozukları kaldır)
         allItems = cleanData(combinedItems);
-
         console.log(`Toplam ${allItems.length} eşya yüklendi.`);
 
-        // İlk sekmeyi render et
         renderTab('basic');
 
     } catch (error) {
@@ -54,20 +47,14 @@ async function initializeInventory() {
     }
 }
 
-// Veri Temizleme ve Düzenleme
 function cleanData(items) {
     const uniqueItems = new Map();
-
     items.forEach(item => {
-        // İsmi olmayan veya "Hatalı Girdi" olanları atla
         if (!item.name || item.name === "Hatalı Girdi") return;
-
-        // Kopya kontrolü (İsim bazlı)
         if (!uniqueItems.has(item.name)) {
             uniqueItems.set(item.name, item);
         }
     });
-
     return Array.from(uniqueItems.values());
 }
 
@@ -76,7 +63,6 @@ window.switchTab = function(type) {
     if (currentTab === type) return;
     currentTab = type;
 
-    // Buton stillerini güncelle
     document.querySelectorAll('.tab-btn').forEach(btn => {
         if (btn.innerText.toLowerCase().includes(type === 'basic' ? 'temel' : 'sihirli')) {
             btn.classList.add('active');
@@ -96,13 +82,11 @@ function renderTab(type) {
     let filteredItems = [];
 
     if (type === 'basic') {
-        // TEMEL EŞYALAR: Rarity (Nadirlik) özelliği olmayanlar veya "none" olanlar
         filteredItems = allItems.filter(item => {
             const r = (item.rarity || "").toLowerCase();
             return !r || r === "none" || r === "unknown";
         });
     } else {
-        // SİHİRLİ EŞYALAR: Rarity özelliği olanlar (Common, Rare vb.)
         filteredItems = allItems.filter(item => {
             const r = (item.rarity || "").toLowerCase();
             return r && r !== "none" && r !== "unknown";
@@ -110,50 +94,56 @@ function renderTab(type) {
     }
 
     if (filteredItems.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">
-            Bu kategoride görüntülenecek eşya bulunamadı.<br>
-            <small>(items.json dosyasında veri olduğundan emin olun)</small>
-        </div>`;
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">Bu kategoride eşya bulunamadı.</div>`;
         return;
     }
 
-    // Kategorilere Ayır
     const armorList = filteredItems.filter(i => isArmor(i));
     const weaponList = filteredItems.filter(i => isWeapon(i));
-    // Diğerleri (Ne zırh ne silah olanlar)
     const gearList = filteredItems.filter(i => !isArmor(i) && !isWeapon(i) && !i._isSubItem);
 
-    // Listeleri Oluştur
     const prefix = type === 'magic' ? 'Sihirli ' : '';
     
-    createCategorySection(`${prefix}Zırhlar ve Kalkanlar`, armorList, container, renderArmorRow);
-    createCategorySection(`${prefix}Silahlar`, weaponList, container, renderWeaponRow);
+    // Zırhlar ve Silahlar için "Özellikler" sıralamasını da aktif edeceğiz.
+    createCategorySection(`${prefix}Zırhlar ve Kalkanlar`, armorList, container, renderArmorRow, 'armor');
+    createCategorySection(`${prefix}Silahlar`, weaponList, container, renderWeaponRow, 'weapon');
     
     const gearTitle = type === 'magic' ? "Yüzükler, Asalar ve Diğerleri" : "Macera Ekipmanları";
-    createCategorySection(gearTitle, gearList, container, renderGearRow);
+    createCategorySection(gearTitle, gearList, container, renderGearRow, 'gear');
 
-    // Accordion olaylarını yeniden bağla
     attachAccordionEvents();
 }
 
-/* --- FİLTRELEME YARDIMCILARI --- */
 function isArmor(item) {
     const t = item.type;
-    return t === 'LA' || t === 'MA' || t === 'HA' || t === 'S'; // Hafif, Orta, Ağır, Kalkan
+    return t === 'LA' || t === 'MA' || t === 'HA' || t === 'S'; 
 }
 
 function isWeapon(item) {
     const t = item.type;
-    return t === 'M' || t === 'R' || t === 'A'; // Yakın, Menzilli, Cephane
+    return t === 'M' || t === 'R' || t === 'A'; 
 }
 
-/* --- HTML OLUŞTURUCULAR --- */
-function createCategorySection(title, itemList, parent, rowRenderer) {
+/* --- KATEGORİ OLUŞTURMA VE SIRALAMA --- */
+function createCategorySection(title, itemList, parent, rowRenderer, categoryType) {
     if (itemList.length === 0) return;
+
+    // Varsayılan sıralama: Zırhlar AC'ye göre, Silahlar Hasara göre, Diğerleri İsme göre
+    let currentSort = 'name';
+    if(categoryType === 'armor') currentSort = 'props'; // Varsayılan AC sıralaması
+    if(categoryType === 'weapon') currentSort = 'props'; // Varsayılan Hasar sıralaması
+
+    let sortDirection = 1; // 1: Artan (A-Z, Düşük-Yüksek)
+
+    // Başlangıç sıralaması (Silah ve Zırhlar için varsayılan olarak en güçlü en üstte olsun diye -1 yapıyoruz)
+    if (categoryType === 'armor' || categoryType === 'weapon') sortDirection = -1;
+
+    sortList(itemList, currentSort, sortDirection, categoryType);
 
     const card = document.createElement('div');
     card.className = 'category-card';
 
+    // HTML Yapısı - 4. Sütuna da 'sortable' ekledik
     card.innerHTML = `
         <div class="collapsible-header">
             <h3>${title} (${itemList.length})</h3>
@@ -164,10 +154,10 @@ function createCategorySection(title, itemList, parent, rowRenderer) {
                 <table class="item-table">
                     <thead>
                         <tr>
-                            <th class="col-name">Eşya Adı</th>
-                            <th class="col-cost">Bedel / Nadirlik</th>
-                            <th class="col-weight">Ağırlık</th>
-                            <th class="col-props">Özellikler</th>
+                            <th class="col-name sortable" data-sort="name">Eşya Adı <span class="sort-icon">⇅</span></th>
+                            <th class="col-cost sortable" data-sort="cost">Bedel / Nadirlik <span class="sort-icon">⇅</span></th>
+                            <th class="col-weight sortable" data-sort="weight">Ağırlık <span class="sort-icon">⇅</span></th>
+                            <th class="col-props sortable" data-sort="props">Özellikler <span class="sort-icon">⇅</span></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -177,40 +167,158 @@ function createCategorySection(title, itemList, parent, rowRenderer) {
     `;
 
     const tbody = card.querySelector('tbody');
-    
-    // İsme göre sırala
-    itemList.sort((a, b) => a.name.localeCompare(b.name));
+    const headers = card.querySelectorAll('th.sortable');
 
-    itemList.forEach(item => {
-        const row = rowRenderer(item);
-        tbody.appendChild(row);
-        
-        // Detay Satırı
-        if (item.entries && item.entries.length > 0) {
-            const detailRow = document.createElement('tr');
-            detailRow.className = 'item-detail-row';
-            detailRow.innerHTML = `
-                <td colspan="4">
-                    <div class="item-desc">${renderEntries(item.entries)}</div>
-                </td>
-            `;
-            tbody.appendChild(detailRow);
+    function updateTable() {
+        tbody.innerHTML = '';
+        itemList.forEach(item => {
+            const row = rowRenderer(item);
+            tbody.appendChild(row);
             
-            row.style.cursor = "pointer";
-            row.addEventListener('click', () => {
-                detailRow.classList.toggle('active');
-            });
-        }
+            if (item.entries && item.entries.length > 0) {
+                const detailRow = document.createElement('tr');
+                detailRow.className = 'item-detail-row';
+                detailRow.innerHTML = `
+                    <td colspan="4">
+                        <div class="item-desc">${renderEntries(item.entries)}</div>
+                    </td>
+                `;
+                tbody.appendChild(detailRow);
+                row.style.cursor = "pointer";
+                row.addEventListener('click', () => { detailRow.classList.toggle('active'); });
+            }
+        });
+        
+        // İkonları güncelle
+        headers.forEach(h => {
+            const icon = h.querySelector('.sort-icon');
+            if (h.getAttribute('data-sort') === currentSort) {
+                icon.textContent = sortDirection === 1 ? '▲' : '▼'; // Artan / Azalan
+                icon.style.opacity = '1';
+                icon.style.color = '#b52b2b';
+            } else {
+                icon.textContent = '⇅';
+                icon.style.opacity = '0.3';
+                icon.style.color = 'inherit';
+            }
+        });
+    }
+
+    updateTable();
+
+    // Tıklama Olayları
+    headers.forEach(th => {
+        th.addEventListener('click', () => {
+            const sortBy = th.getAttribute('data-sort');
+            
+            if (currentSort === sortBy) {
+                sortDirection *= -1;
+            } else {
+                currentSort = sortBy;
+                // Yeni sütuna geçince; özellikler veya bedel ise genelde yüksekten düşüğe isteriz
+                if (sortBy === 'props' || sortBy === 'cost') sortDirection = -1;
+                else sortDirection = 1;
+            }
+
+            sortList(itemList, sortBy, sortDirection, categoryType);
+            updateTable();
+        });
     });
 
     parent.appendChild(card);
 }
 
-/* --- SATIR FORMATLAMA --- */
+/* --- GELİŞMİŞ SIRALAMA MANTIĞI --- */
+function sortList(list, criteria, direction, type) {
+    list.sort((a, b) => {
+        let valA, valB;
+
+        // 1. İSİM SIRALAMASI
+        if (criteria === 'name') {
+            valA = (a.name || "").toLowerCase();
+            valB = (b.name || "").toLowerCase();
+            return valA.localeCompare(valB) * direction;
+        } 
+        // 2. AĞIRLIK SIRALAMASI
+        else if (criteria === 'weight') {
+            valA = parseFloat(a.weight) || 0;
+            valB = parseFloat(b.weight) || 0;
+            return (valA - valB) * direction;
+        } 
+        // 3. BEDEL / NADİRLİK SIRALAMASI
+        else if (criteria === 'cost') {
+            valA = parseCost(a);
+            valB = parseCost(b);
+            return (valA - valB) * direction;
+        }
+        // 4. ÖZELLİKLER (Zırh AC / Silah Hasarı)
+        else if (criteria === 'props') {
+            if (type === 'armor') {
+                // AC'ye göre hesapla
+                valA = (a.ac || 0) + (a.bonusAc || 0);
+                valB = (b.ac || 0) + (b.bonusAc || 0);
+            } 
+            else if (type === 'weapon') {
+                // Ortalama Hasara göre hesapla
+                valA = calculateAverageDamage(a.dmg1);
+                valB = calculateAverageDamage(b.dmg1);
+            } 
+            else {
+                // Diğerleri için yazı uzunluğu veya alfabetik (fallback)
+                valA = (a.name || "").length;
+                valB = (b.name || "").length;
+            }
+            return (valA - valB) * direction;
+        }
+        return 0;
+    });
+}
+
+// Zar hasarını puana çevirir (Örn: "2d6" -> 7, "1d12" -> 6.5)
+function calculateAverageDamage(dmgStr) {
+    if (!dmgStr) return 0;
+    // Format: "2d6" veya "1d4"
+    const parts = dmgStr.split('d');
+    if (parts.length !== 2) return 0;
+
+    const count = parseInt(parts[0]) || 0; // Zar adedi
+    const faces = parseInt(parts[1]) || 0; // Zar yüzü
+
+    // Ortalama hasar formülü: Adet * ((Yüz + 1) / 2)
+    return count * ((faces + 1) / 2);
+}
+
+// Bedeli sayısal değere (Bakır cinsinden) çevirir
+function parseCost(item) {
+    if (item.rarity && item.rarity !== 'none' && item.rarity !== 'unknown') {
+        const rarityMap = { 'common': 100, 'uncommon': 500, 'rare': 5000, 'very rare': 50000, 'legendary': 200000, 'artifact': 999999 };
+        return (rarityMap[item.rarity.toLowerCase()] || 0) * 100;
+    }
+
+    if (!item.value) return 0;
+    
+    // items.json'da value bazen sayı (cp), bazen string olmayabilir.
+    // 5eTools verisinde genelde sayı (cp) gelir. Örn: 500 (= 5gp)
+    if (typeof item.value === 'number') return item.value;
+
+    let str = String(item.value).toLowerCase().trim();
+    let multiplier = 1;
+    if (str.includes('pp')) multiplier = 1000;
+    else if (str.includes('gp')) multiplier = 100;
+    else if (str.includes('sp')) multiplier = 10;
+    else if (str.includes('cp')) multiplier = 1;
+
+    let num = parseFloat(str.replace(/[^0-9.]/g, '')) || 0;
+    return num * multiplier;
+}
+
+/* --- HTML FORMATLAYICILAR (AYNI) --- */
 function renderArmorRow(item) {
     const tr = document.createElement('tr');
     let acText = item.ac ? `${item.ac} AC` : "";
     if (item.bonusAc) acText += ` (+${item.bonusAc})`;
+    
+    // Sıralama mantığını görselleştirmek için gerekirse buraya ekleme yapılabilir
     const props = [acText, item.stealth ? "Gizlilik Dez." : ""].filter(Boolean).join(", ");
 
     tr.innerHTML = `
@@ -253,12 +361,20 @@ function formatCostOrRarity(item) {
         'common': 'Yaygın', 'uncommon': 'Yaygın Olmayan', 'rare': 'Nadir',
         'very rare': 'Çok Nadir', 'legendary': 'Efsanevi', 'artifact': 'Artifakt'
     };
-    // Nadirlik varsa onu yaz
     if (item.rarity && item.rarity !== 'none' && item.rarity !== 'unknown') {
         return rarityMap[item.rarity.toLowerCase()] || item.rarity;
     }
-    // Yoksa bedeli yaz
-    return item.value || "-";
+    // Para birimi formatlama
+    if (item.value) {
+        if(typeof item.value === 'number') {
+            // Sadece basit bir çeviri (cp -> gp)
+            if(item.value >= 100 && item.value % 100 === 0) return (item.value / 100) + " gp";
+            if(item.value >= 10 && item.value % 10 === 0) return (item.value / 10) + " sp";
+            return item.value + " cp";
+        }
+        return item.value;
+    }
+    return "-";
 }
 
 function translateDamage(type) {
@@ -275,11 +391,9 @@ function renderEntries(entries) {
     if (!entries) return "";
     let html = "";
     entries.forEach(entry => {
-        if (typeof entry === 'string') {
-            html += `<p>${parseTags(entry)}</p>`;
-        } else if (entry.type === 'list') {
-            html += '<ul>' + entry.items.map(i => `<li>${parseTags(i)}</li>`).join('') + '</ul>';
-        } else if (entry.entries) {
+        if (typeof entry === 'string') html += `<p>${parseTags(entry)}</p>`;
+        else if (entry.type === 'list') html += '<ul>' + entry.items.map(i => `<li>${parseTags(i)}</li>`).join('') + '</ul>';
+        else if (entry.entries) {
             if(entry.name) html += `<strong>${entry.name}: </strong>`;
             html += renderEntries(entry.entries);
         }
@@ -289,14 +403,11 @@ function renderEntries(entries) {
 
 function parseTags(text) {
     if (!text) return "";
-    // Spell Linkleri
     text = text.replace(/{@spell\s+([^}]+)}/gi, (match, content) => {
         const parts = content.split('|');
-        const displayText = parts[2] || parts[0];
         const link = `https://kanguen.github.io/spells.html#${encodeURIComponent(parts[0].toLowerCase())}_phb`;
-        return `<a href="${link}" target="_blank" class="dnd-link spell-link">${displayText}</a>`;
+        return `<a href="${link}" target="_blank" class="dnd-link spell-link">${parts[2] || parts[0]}</a>`;
     });
-    // Diğer etiketleri temizle
     text = text.replace(/{@\w+\s+([^}]+)}/g, (match, content) => content.split('|')[0]);
     return text;
 }
@@ -305,18 +416,9 @@ function attachAccordionEvents() {
     const headers = document.querySelectorAll(".collapsible-header");
     headers.forEach(header => {
         header.addEventListener("click", function() {
-            const card = this.parentElement;
-            card.classList.toggle("active");
+            this.parentElement.classList.toggle("active");
         });
     });
 }
 
-// Menü ve Dış Tıklama
-function toggleMenu() {
-    document.getElementById('mobile-menu').classList.toggle('open');
-}
-document.addEventListener('click', (event) => {
-    if (!event.target.closest('.category-card')) {
-        // Dışarı tıklayınca kapatma istenirse buraya eklenebilir
-    }
-});
+function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }

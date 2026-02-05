@@ -208,7 +208,7 @@ h4 {
     .desktop-nav { display: none; }
     .menu-icon { display: block; }
     .main-container { padding: 10px; margin: 0; }
-    .main-content-box { padding: 15px; background: transparent; border: none; box-shadow: none; }
+    .main-content-box { padding: 10px; background: transparent; border: none; box-shadow: none; }
 }
 
 /* ============================================================
@@ -269,17 +269,19 @@ p { color: #ccc; line-height: 1.6; margin-bottom: 15px; }
 
 /* --- TABLOLAR (Önemli Kısım) --- */
 .table-responsive {
-    overflow-x: auto;
+    /* overflow-x: auto;  <-- BU SATIRI SİL YA DA YORUMA AL */
+    width: 100%; /* Kapsayıcının genişliğini zorla */
     margin: 15px 0;
     border-radius: 6px;
     border: 1px solid #444;
+    overflow: hidden; /* Taşma olursa gizle veya sarmalamayı zorla */
 }
 
 .bg-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 500px; /* Mobilde taşarsa kaydırma açılır */
     background-color: #252525;
+    table-layout: fixed; /* Tablonun %100 genişliğe sadık kalmasını ve hücrelerin taşmamasını sağlar */
 }
 
 .bg-table th {
@@ -288,6 +290,10 @@ p { color: #ccc; line-height: 1.6; margin-bottom: 15px; }
     padding: 10px;
     text-align: left;
     border-bottom: 2px solid #444;
+
+    white-space: normal; 
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .bg-table td {
@@ -296,6 +302,10 @@ p { color: #ccc; line-height: 1.6; margin-bottom: 15px; }
     color: #ccc;
     font-size: 0.95em;
     vertical-align: top;
+
+    white-space: normal; 
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .bg-table tr:last-child td { border-bottom: none; }
@@ -308,3 +318,11 @@ p { color: #ccc; line-height: 1.6; margin-bottom: 15px; }
 /* Liste Stilleri */
 ul { padding-left: 20px; list-style: none; }
 li { margin-bottom: 5px; color: #bbb; }
+
+
+
+@media (max-width: 650px) {
+    .bg-table td {
+    font-size: 0.8em;
+}
+}
