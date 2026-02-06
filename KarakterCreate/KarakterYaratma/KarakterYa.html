@@ -1025,7 +1025,7 @@
                                 <button @click="activeFeatureSubTab = 'class'" :class="{ active: activeFeatureSubTab === 'class' }">Sınıf</button>
                                 <button @click="activeFeatureSubTab = 'background'" :class="{ active: activeFeatureSubTab === 'background' }">Geçmiş</button>
                             </div>
-
+                        
                             <div v-if="activeFeatureSubTab === 'race'">
                                 <div v-for="trait in activeRaceTraits" :key="trait.name" class="sheet-feature-item">
                                     <h4>{{ trait.name }}</h4>
@@ -1033,23 +1033,45 @@
                                 </div>
                                 <p v-if="activeRaceTraits.length === 0" style="color:#666; font-style:italic;">Bu ırk için özel bir yetenek bulunamadı.</p>
                             </div>
-                            
+
                             <div v-if="activeFeatureSubTab === 'class'">
                                 <div v-for="step in activeFeatures" :key="step.level">
                                     <template v-for="feat in step.features" :key="feat.name">
                                         <div v-if="feat && feat.name && !feat.name.includes('Yetenek Skoru')" class="sheet-feature-item">
+
                                             <h4>
                                                 {{ feat.name }} 
                                                 <span class="source-tag">Lv.{{step.level}}</span>
                                             </h4>
+
                                             <div class="feat-text">
                                                 <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt"></p>
                                             </div>
-                                        </div>
+                                        
+                                            <div v-if="feat.choices && feat.choices.length > 0" class="sheet-choice-wrapper">
+
+                                                <div v-for="(choiceItem, cIdx) in feat.choices" :key="cIdx" style="margin-bottom: 5px;">
+
+                                                    <div v-if="choiceItem.type === 'simple'" class="choice-entry simple">
+                                                        <span class="choice-icon">✔</span>
+                                                        <span class="choice-text">{{ choiceItem.name }}</span>
+                                                    </div>
+                                                
+                                                    <div v-else class="choice-entry card-style">
+                                                        <div class="choice-header">
+                                                            <span class="choice-icon">➤</span>
+                                                            <span class="choice-title">{{ choiceItem.name }}</span>
+                                                        </div>
+                                                        <div class="choice-body" v-html="choiceItem.desc"></div>
+                                                    </div>
+                                                
+                                                </div>
+                                            </div>
+                                            </div>
                                     </template>
                                 </div>
                             </div>
-
+                        
                             <div v-if="activeFeatureSubTab === 'background'">
                                 <div v-if="!store.background.selected" class="sheet-feature-item" style="text-align: center; color: #777;">
                                     <p>Henüz bir geçmiş seçilmedi.</p>
@@ -1057,7 +1079,7 @@
                             
                                 <div v-else class="sheet-feature-item">
                                     <h4>{{ store.background.selected.name }}</h4>
-                                    
+
                                     <div v-if="store.background.selected.skillProficiencies" class="skill-list">
                                         Beceriler: {{ store.background.selected.skillProficiencies }}
                                     </div>
@@ -1066,7 +1088,7 @@
                                         <strong>{{ currentBgFeature.name }}</strong>
                                         <span v-html="currentBgFeature.description" class="feature-box"></span>
                                     </div>
-                                    
+
                                     <p v-else style="color:#666; font-style: italic; margin-top: 10px;">
                                         Bu geçmişin özel bir mekanik yeteneği bulunmuyor.
                                     </p>

@@ -281,10 +281,10 @@ p, li { color: #ccc; line-height: 1.6; }
 /* 3. Formül Kutuları */
 .mechanic-formula-box {
     display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 8px;
-    background: rgba(255, 255, 255, 0.03); padding: 10px 15px; border-radius: 6px; 
-    margin: 15px 0; margin-right: 10px; text-align: center; font-size: 0.95em; color: #ccc; border: 1px dashed #555;
+    background: rgba(0,0,0,0.05); padding: 10px 15px; border-radius: 6px; 
+    margin: 15px 0; margin-right: 10px; text-align: center; font-size: 0.95em; color: #ccc; border: 1px dashed #ccc;;
 }
-.mechanic-formula-box strong { display: inline; margin: 0; font-size: 1.1em; white-space: nowrap; color: #b52b2b; }
+.mechanic-formula-box strong { display: inline; margin: 0; font-size: 1.1em; white-space: nowrap; color: #ffffff; }
 
 /* 4. Listeler ve Alıntılar */
 .feature-list { margin: 5px 0 10px 20px; list-style-type: disc; }
