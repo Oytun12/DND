@@ -195,7 +195,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 
 .feature-block h5 {
     color: #b52b2b;
-    font-size: 1.1em;
+    font-size: large;
     margin: 0 0 10px 0;
     text-transform: uppercase;
 }
@@ -272,8 +272,8 @@ p, li { color: #ccc; line-height: 1.6; }
 .feature-section { margin-bottom: 10px; }
 .feature-section.indented { background-color:  rgba(255, 255, 255, 0.03); margin-left: 5px; border: 2px solid #444; border-radius: 8px; padding-left: 10px; }
 
-.feature-title-main { color: #b52b2b; margin-bottom: 5px; font-size: 1em; font-weight: bold; }
-.feature-title-secondary { display: block;     color: #e67e22; margin-top: 10px; margin-bottom: 5px; font-weight: bold; }
+.feature-title-main { font-size: 1em !important; color: #e67e22 !important; margin-bottom: 5px; font-size: 1em; font-weight: bold; }
+.feature-title-secondary { display: block;     color: #e67e22 !important; margin-top: 10px; margin-bottom: 5px; font-weight: bold; }
 .feature-sub-title { color: #b52b2b; font-weight: bold; margin-bottom: 5px; display: block; }
 
 .feature-prerequisite { color: #888; font-style: italic; font-size: 0.9em; margin-bottom: 5px; }
@@ -334,6 +334,33 @@ p, li { color: #ccc; line-height: 1.6; }
 .options-content-wrapper.active { display: block; }
 .options-content-wrapper h4 { font-size: 1.1em; color: #a855f7; }
 .options-content-wrapper h5 { font-size: 1em; color: #ccc; }
+
+/* ============================================================
+   BÜYÜ VE EŞYA LİNKLERİ (Karakter Sihirbazı Stili)
+   ============================================================ */
+
+.dnd-link {
+    color: #8ab4f8;
+    cursor: pointer;
+    border-bottom: 1px dotted #8ab4f8;
+    transition: all 0.2s ease;
+}
+
+/* Büyü Linkleri için Özel Mor Stil */
+a.dnd-link.spell-link {
+    color: #a855f7; /* Mistik Mor */
+    text-decoration: none;
+    border-bottom: 1px dotted #a855f7;
+    padding: 0 2px; /* Hafif boşluk, hover arka planı için */
+}
+
+a.dnd-link.spell-link:hover {
+    color: #d8b4fe; /* Açık Lila */
+    border-bottom: 1px solid #d8b4fe;
+    background-color: rgba(168, 85, 247, 0.15); /* Arkaya hafif mor ışık */
+    border-radius: 4px;
+    text-decoration: none;
+}
 
 /* ============================================================
    RESPONSIVE / MOBİL AYARLAR

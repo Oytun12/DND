@@ -482,66 +482,72 @@
 										"entries": [
 											"3. seviyede bu yolu seçtiğinde bir totem ruhu seçip onun özelliğini kazanırsın. Totem hayvanının tüy, diş, pençe ya da kemiği gibi bedeninden bir parçası ile bir kolye ya da benzeri takı yapmalısın, bu senin totem nesnen olur. Senin seçimine bağlı olarak totem ruhuna benzer fiziksel özellikler kazanabilirsin. Örneğin, ayı totem ruhun varsa alışılmadık bir şekilde kıllı veya sert derili olabilirsin, ya da totemin kartalsa gözlerin parlak sarı renge dönebilir.",
 											"Totem hayvanın burada verilen seçeneklere yakın ama anavatanına daha uygun olabilir. Örneğin, kartal yerine şahin ya da akbaba seçebilirsin.",
+											
 											{
-												"type": "entries",
+												"type": "options",
 												"entries": [
 													{
 														"type": "entries",
-														"name": "Ayı",
 														"entries": [
-															"Öfkeliyken psişik hasar dışında tüm hasar tiplerine direncin olur. Ayının ruhu seni her türlü acıya karşı gelebilecek kadar güçlü kılar."
+															{
+																"type": "entries",
+																"name": "Ayı",
+																"entries": [
+																	"Öfkeliyken psişik hasar dışında tüm hasar tiplerine direncin olur. Ayının ruhu seni her türlü acıya karşı gelebilecek kadar güçlü kılar."
+																]
+															}
 														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
+													},
 													{
 														"type": "entries",
-														"name": "Kartal",
 														"entries": [
-															"Öfkeliyken ve ağır zırh giymiyorken diğer varlıklar sana karşı yaptıkları fırsat saldırılarında dezavantajlı olurlar ve sen Depar eylemini bonus eylem olarak kullanabilirsin. Kartalın ruhu seni sahada rahatlıkla hareket edebilen bir yırtıcıya çevirir."
+															{
+																"type": "entries",
+																"name": "Kartal",
+																"entries": [
+																	"Öfkeliyken ve ağır zırh giymiyorken diğer varlıklar sana karşı yaptıkları fırsat saldırılarında dezavantajlı olurlar ve sen Depar eylemini bonus eylem olarak kullanabilirsin. Kartalın ruhu seni sahada rahatlıkla hareket edebilen bir yırtıcıya çevirir."
+																]
+															}
 														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
+													},
 													{
 														"type": "entries",
-														"name": "Geyik",
 														"entries": [
-															"Öfkeliyken ve ağır zırh giymiyorken yürüme hızın 15 fit artar. Geyiğin ruhu sana sıradışı bir hız verir."
+															{
+																"type": "entries",
+																"name": "Geyik",
+																"entries": [
+																	"Öfkeliyken ve ağır zırh giymiyorken yürüme hızın 15 fit artar. Geyiğin ruhu sana sıradışı bir hız verir."
+																]
+															}
 														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
+													},
 													{
 														"type": "entries",
-														"name": "Kaplan",
 														"entries": [
-															"Öfkeliyken uzun atlama mesafene 10 fit, yüksek atlama mesafene 3 fit ekleyebilirsin. Kaplanın ruhu sıçrayışlarını güçlendirir."
+															{
+																"type": "entries",
+																"name": "Kaplan",
+																"entries": [
+																	"Öfkeliyken uzun atlama mesafene 10 fit, yüksek atlama mesafene 3 fit ekleyebilirsin. Kaplanın ruhu sıçrayışlarını güçlendirir."
+																]
+															}
 														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
+													},
 													{
 														"type": "entries",
-														"name": "Kurt",
 														"entries": [
-															"Öfkeliyken 5 fit yakınındaki düşmanlara karşı dostlarının yapacağı yakın dövüş saldırıları avantajlı olur. Kurdun ruhu seni avcıların lideri yapar."
+															{
+																"type": "entries",
+																"name": "Kurt",
+																"entries": [
+																	"Öfkeliyken 5 fit yakınındaki düşmanlara karşı dostlarının yapacağı yakın dövüş saldırıları avantajlı olur. Kurdun ruhu seni avcıların lideri yapar."
+																]
+															}
 														]
 													}
 												]
-											}
+											}	
 										]
 									}
 								]
@@ -555,66 +561,73 @@
 										"name": "Hayvan Yönü",
 										"entries": [
 											"6. seviyede seçtiğin bir totem hayvanının büyülü özelliğini kazanırsın. 3. seviyede seçtiğin aynı hayvanı ya da farklı bir hayvanı seçebilirsin.",
+											
 											{
-												"type": "entries",
+												"type": "options",
 												"entries": [
 													{
-														"type": "entries",
-														"name": "Ayı",
-														"entries": [
-															"Ayının gücünü kazanırsın. Taşıma kapasiten (maximum kaldırma ve yük de dahil) ikiye katlanır ve itme, çekme, kaldırma ve nesneleri kırmak için attığın Kuvvet zarlarında avantajın olur."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Kartal",
-														"entries": [
-															"Bir kartalın görüşüne sahip olursun. 1 mil uzaklığa kadar ve 100 fit uzaklıkta bir şeye bakıyormuş gibi küçük detayları sorunsuz görebilirsin. Ek olarak, loş ışık Akıl (Algı) zarlarında dezavantaj vermez."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Geyik",
-														"entries": [
-															"Binekli ya da ayakta farketmeksizin sen ve 60 fit yakınındaki 10 yoldaşının seyahat hızı ikiye katlanır. Geyik ruhu hızla uzakları keşfetmeni sağlar."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Kaplan",
-														"entries": [
-															"Atletizm, Akrobasi, Gizlenme ve Hayatta Kalma becerilerinden ikisinde uzmanlık kazanırsın. Kaplan ruhu hayatta kalma içgüdülerini geliştirir."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Kurt",
-														"entries": [
-															"Bir kurdun avlanma hislerini kazanırsın. Hızlı tempoda ilerlerken iz sürebilir, normal tempoda ilerlerken gizlenebilirsin."
-														]
-													}
-												]
-											}
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Ayı",
+															"entries": [
+																"Ayının gücünü kazanırsın. Taşıma kapasiten (maximum kaldırma ve yük de dahil) ikiye katlanır ve itme, çekme, kaldırma ve nesneleri kırmak için attığın Kuvvet zarlarında avantajın olur."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Kartal",
+															"entries": [
+																"Bir kartalın görüşüne sahip olursun. 1 mil uzaklığa kadar ve 100 fit uzaklıkta bir şeye bakıyormuş gibi küçük detayları sorunsuz görebilirsin. Ek olarak, loş ışık Akıl (Algı) zarlarında dezavantaj vermez."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Geyik",
+															"entries": [
+																"Binekli ya da ayakta farketmeksizin sen ve 60 fit yakınındaki 10 yoldaşının seyahat hızı ikiye katlanır. Geyik ruhu hızla uzakları keşfetmeni sağlar."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Kaplan",
+															"entries": [
+																"Atletizm, Akrobasi, Gizlenme ve Hayatta Kalma becerilerinden ikisinde uzmanlık kazanırsın. Kaplan ruhu hayatta kalma içgüdülerini geliştirir."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Kurt",
+															"entries": [
+																"Bir kurdun avlanma hislerini kazanırsın. Hızlı tempoda ilerlerken iz sürebilir, normal tempoda ilerlerken gizlenebilirsin."
+															]
+														}
+													]
+												}
+													
+											]}
+											
 										]
 									}
 								]
@@ -641,62 +654,68 @@
 										"name": "Totem Uyumu",
 										"entries": [
 											"14. seviyede seçtiğin bir totem hayvanının büyülü özelliğini kazanırsın. Daha önce seçtiğin aynı hayvanı ya da farklı birini seçebilirsin.",
+											
 											{
-												"type": "entries",
+												"type": "options",
 												"entries": [
 													{
 														"type": "entries",
-														"name": "Ayı",
 														"entries": [
-															"Öfkeliyken 5 fit yakınında olan bir düşman, sen ya da bu özelliğe sahip başka biri dışındaki tüm varlıklara yaptığı saldırılarda dezavantajlı olur. Eğer düşman seni göremiyor ya da duyamıyorsa, veya korkma durumuna bağışıklığı varsa bu özellikten etkilenmez."
+															{
+																"type": "entries",
+																"name": "Ayı",
+																"entries": [
+																	"Öfkeliyken 5 fit yakınında olan bir düşman, sen ya da bu özelliğe sahip başka biri dışındaki tüm varlıklara yaptığı saldırılarda dezavantajlı olur. Eğer düşman seni göremiyor ya da duyamıyorsa, veya korkma durumuna bağışıklığı varsa bu özellikten etkilenmez."
+																]
+															}
 														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
+													},
 													{
 														"type": "entries",
-														"name": "Kartal",
 														"entries": [
-															"Öfkeliyken yürüme hızına eşit uçma hızı kazanırsın. Bu özellik sadece kısa hamlelerde etkilidir; eğer sıranı seni başka bir şey havada tutmazken bitirirsen düşersin."
+															{
+																"type": "entries",
+																"name": "Kartal",
+																"entries": [
+																	"Öfkeliyken yürüme hızına eşit uçma hızı kazanırsın. Bu özellik sadece kısa hamlelerde etkilidir; eğer sıranı seni başka bir şey havada tutmazken bitirirsen düşersin."
+																]
+															}
 														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
+													},
 													{
 														"type": "entries",
-														"name": "Geyik",
 														"entries": [
-															"Öfkeliyken bonus eylemini kullanarak Büyük ya da daha küçük bir varlığın alanından geçebilirsin. O varlık Kuvvet kurtulma zarında (DC = 8 + Kuvvet bonusu + uzmanlık bonusu) başarılı olur ya da yere düşer ve 1d12 + Kuvvet bonusu ezici hasar alır."
+															{
+																"type": "entries",
+																"name": "Geyik",
+																"entries": [
+																	"Öfkeliyken bonus eylemini kullanarak Büyük ya da daha küçük bir varlığın alanından geçebilirsin. O varlık Kuvvet kurtulma zarında (DC = 8 + Kuvvet bonusu + uzmanlık bonusu) başarılı olur ya da yere düşer ve 1d12 + Kuvvet bonusu ezici hasar alır."
+																]
+															}
 														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
+													},
 													{
 														"type": "entries",
-														"name": "Kaplan",
 														"entries": [
-															"Öfkeliyken, eğer Büyük ya da daha küçük bir hedefe doğru düz bir hizada en az 20 fit gidip yakın dövüş saldırısı yaparsan, bonus eylem olarak bir tane daha yakın dövüş saldırısı yapabilirsin."
+															{
+																"type": "entries",
+																"name": "Kaplan",
+																"entries": [
+																	"Öfkeliyken, eğer Büyük ya da daha küçük bir hedefe doğru düz bir hizada en az 20 fit gidip yakın dövüş saldırısı yaparsan, bonus eylem olarak bir tane daha yakın dövüş saldırısı yapabilirsin."
+																]
+															}
 														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
+													},
 													{
 														"type": "entries",
-														"name": "Kurt",
 														"entries": [
-															"Öfkeliyken Büyük ya da daha küçük bir varlığa yakın dövüş saldırısı ile vurduğunda bonus eylemini kullanarak yere düşürebilirsin."
+															{
+																"type": "entries",
+																"name": "Kurt",
+																"entries": [
+																	"Öfkeliyken Büyük ya da daha küçük bir varlığa yakın dövüş saldırısı ile vurduğunda bonus eylemini kullanarak yere düşürebilirsin."
+																]
+															}
 														]
 													}
 												]
@@ -10145,217 +10164,225 @@
 											"Elemental büyüleri kullanma. Bazı elemental disiplinler büyü kullanmanı sağlar. Bu büyülerden birini kullanabilmek için onun kullanma zamanını ve diğer kurallarını kullanırsın ama materyal bileşenlere ihtiyaç duymazsın.",
 											"Bu sınıfta 5. seviyeye eriştiğinde fazladan ki puanı harcayıp disiplin büyüsünün seviyesini artırabilirsin. Büyünün üst seviyelerde gelişmiş etkisi olduğu varsayılır, {@spell burning hands (yanan eller)} büyüsünde olduğu gibi. Harcadığın her fazladan ki puanı için büyünün seviyesi 1 artar. Örneğin, eğer sen 5. seviye bir keşişsen ve Yayılan Kor Darbesi ile {@spell burning hands (yanan eller)} büyüsünü kullanırsan, 3 ki puanı (disiplinin temel 2 ki puanı + 1) harcayıp onu 2. seviye büyü olarak kullanabilirsin.",
 											"Bir büyüyü bu şekilde kullanırken kullanabileceğin maksimum ki puanı (temel ki puanı ve seviyesini artırmak için kullandığın fazlalık dahil) senin keşiş seviyen ile belirlenir. 5. seviyede 3 ki puanına kadar kullanabilirsin, bu 9. seviyede 4'e, 13. seviyede 5'e ve 17. seviyede 6'ya yükselir.",
+											
 											{
-												"type": "entries",
+												"type": "options",
 												"entries": [
+
 													{
 														"type": "entries",
-														"name": "Kış Nefesi (17. seviye gereklidir)",
 														"entries": [
-															"6 ki puanı harcayıp {@spell cone of cold (soğuk konisi)} büyüsünü kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Kuzey Rüzgarının Tutuşu (6. seviye gereklidir)",
-														"entries": [
-															"3 ki puanı harcayıp {@spell hold person (kişi zapt et)} büyüsünü kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Elemental Uyum",
-														"entries": [
-															"Eylemini kullanarak çevrendeki elemental güçleri kısa süreliğine kontrol edip şu etkilerden birini yaratırsın:",
 															{
-																"type": "list",
-																"items": [
-																	"Hava, su, toprak ya da ateş ile ilgili zararsız ve anlık bir duyusal etki yaratırsın. Bu etki parlayan kıvılcımlar, hafif rüzgar esintisi, bir sis spreyi ya da hafifçe taşların sarsılması gibi olabilir.",
-																	"Anında bir mumu, meşaleyi ya da küçük bir kamp ateşini yak ya da söndür.",
-																	"1 saate kadar, 1 poundluk yaşamayan materyali ısıt ya da soğut.",
-																	"1 dakikalığına 1 fitlik kübe sığacak kadar toprak, ateş, su veya sisi basit bir şekle sok."
+																"type": "entries",
+																"name": "Kış Nefesi (17. seviye gereklidir)",
+																"entries": [
+																	"6 ki puanı harcayıp {@spell cone of cold (soğuk konisi)} büyüsünü kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kuzey Rüzgarının Tutuşu (6. seviye gereklidir)",
+																"entries": [
+																	"3 ki puanı harcayıp {@spell hold person (kişi zapt et)} büyüsünü kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Elemental Uyum",
+																"entries": [
+																	"Eylemini kullanarak çevrendeki elemental güçleri kısa süreliğine kontrol edip şu etkilerden birini yaratırsın:",
+																	{
+																		"type": "list",
+																		"items": [
+																			"Hava, su, toprak ya da ateş ile ilgili zararsız ve anlık bir duyusal etki yaratırsın. Bu etki parlayan kıvılcımlar, hafif rüzgar esintisi, bir sis spreyi ya da hafifçe taşların sarsılması gibi olabilir.",
+																			"Anında bir mumu, meşaleyi ya da küçük bir kamp ateşini yak ya da söndür.",
+																			"1 saate kadar, 1 poundluk yaşamayan materyali ısıt ya da soğut.",
+																			"1 dakikalığına 1 fitlik kübe sığacak kadar toprak, ateş, su veya sisi basit bir şekle sok."
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Ebedi Dağ Savunması (17. seviye gereklidir)",
+																"entries": [
+																	"5 ki puanı harcayıp {@spell stoneskin (taşderi)} büyüsünü kendini hedef alarak kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Ateş Yılanının Dişleri",
+																"entries": [
+																	"Sıranda Saldırı eylemini kullandığında 1 ki puanı harcayıp ellerinden ve ayaklarından alev filizleri çıkmasını sağlayabilirsin. O eylem ve sıranın devamı için silahsız saldırılarla menzilin 10 fit artar. Bu tip bir saldırıyla verilen hasar ezici yerine ateş hasarı verir ve saldırı vurduğunda 1 ki puanı harcarsan fazladan 1d10 ateş hasarı verirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Dört Kasırga Yumruğu",
+																"entries": [
+																	"2 ki puanı harcayıp {@spell thunderwave (gürleyen dalga)} büyüsünü kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kırılmaz Hava",
+																"entries": [
+																	"Kuvvetli bir yumruk gibi vuran basınçlı bir hava patlaması yaratabilirsin. Eylem olarak 2 ki puanı harcayıp 30 fit yakınındaki bir varlığı seç. O varlık bir Kuvvet kurtulma zarı atmalı. Başarısız olursa varlık 3d10 ezici hasar alır (fazladan harcadığın her ki puanı için 1d10 ezici hasar eklenir) ve varlığı 20 fit'e kadar itip yere düşürebilirsin. Eğer kurtulma zarı başarılı olursa, varlık yarı hasar alır ve itme ya da düşürme gerçekleşmez."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Ankanın Alevleri (11. seviye gereklidir)",
+																"entries": [
+																	"4 ki puanı harcayıp {@spell fireball (alevtopu)} büyüsünü kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Zirvenin Çanı (6. seviye gereklidir)",
+																"entries": [
+																	"3 ki puanı harcayıp {@spell shatter (paramparça et)} büyüsünü kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Sis Duruşu (11. seviye gereklidir)",
+																"entries": [
+																	"4 ki puanı harcayıp {@spell gaseous form (gaz formu)} büyüsünü kendini hedef alarak kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Rüzgarı Sür (11. seviye gereklidir)",
+																"entries": [
+																	"4 ki puanı harcayıp {@spell fly (uç)} büyüsünü kendini hedef alarak kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Aç Alevin Nehri (17. seviye gereklidir)",
+																"entries": [
+																	"5 ki puanı harcayıp {@spell wall of fire (ateş duvarı)} büyüsünü kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Rüzgar Ruhlarının Akışı",
+																"entries": [
+																	"2 ki puanı harcayıp {@spell gust of wind (kuvvetli rüzgar)} büyüsünü kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Akan Nehrin Şekli",
+																"entries": [
+																	"Eylem olarak 1 ki puanı harcayıp, bir yanı 30 fit'i geçmeyen ve 120 fit yakınında olan bir buz ya da su alanını seç. Buzu suya çevirebilir ya da tam tersini yapabilirsin ve buza istediğin şekli verebilirsin. Buzun yüksekliğini indirip kaldırabilir, hendek yaratıp doldurabilir, duvar dikip yıkabilir ya da sütunlar yaratabilirsin. Bu değişiklikler alanın en uzun boyutunun yarısı kadar olabilir. Örneğin 30 fit'lik bir kareyi etkilersen, 15 fit yükseklikte bir sütun yaratabilirsin. Buzu alan içindeki bir varlığı hapsetmek ya da incitmek için şekillendiremezsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Yayılan Kor Darbesi",
+																"entries": [
+																	"2 ki puanı harcayıp {@spell burning hands (yanan eller)} büyüsünü kullanabilirsin."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Su Kırbacı",
+																"entries": [
+																	"Eylem olarak 2 ki puanı harcayıp bir varlığı itip çekerek dengesini bozan bir su kırbacı yaratırsın. 30 fit yakınında görebildiğin bir varlık Çeviklik kurtulma zarı atar. Başarısız olursa varlık 3d10 ezici hasar alır (fazladan harcadığın her ki puanı için 1d10 ezici hasar eklenir) ve onu yere düşürebilir ya da kendine 25 fit'e kadar çekebilirsin. Başarılı olursa hasar yarılanır ve düşme ya da çekme gerçekleşmez."
+																]
+															}
+														]
+													},
+													{
+														"type": "entries",
+														"entries": [
+															{
+																"type": "entries",
+																"name": "Kayan Toprak Dalgası (17. seviye gereklidir)",
+																"entries": [
+																	"6 ki puanı harcayıp {@spell wall of stone (taştan duvar)} büyüsünü kullanabilirsin."
 																]
 															}
 														]
 													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Ebedi Dağ Savunması (17. seviye gereklidir)",
-														"entries": [
-															"5 ki puanı harcayıp {@spell stoneskin (taşderi)} büyüsünü kendini hedef alarak kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Ateş Yılanının Dişleri",
-														"entries": [
-															"Sıranda Saldırı eylemini kullandığında 1 ki puanı harcayıp ellerinden ve ayaklarından alev filizleri çıkmasını sağlayabilirsin. O eylem ve sıranın devamı için silahsız saldırılarla menzilin 10 fit artar. Bu tip bir saldırıyla verilen hasar ezici yerine ateş hasarı verir ve saldırı vurduğunda 1 ki puanı harcarsan fazladan 1d10 ateş hasarı verirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Dört Kasırga Yumruğu",
-														"entries": [
-															"2 ki puanı harcayıp {@spell thunderwave (gürleyen dalga)} büyüsünü kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Kırılmaz Hava",
-														"entries": [
-															"Kuvvetli bir yumruk gibi vuran basınçlı bir hava patlaması yaratabilirsin. Eylem olarak 2 ki puanı harcayıp 30 fit yakınındaki bir varlığı seç. O varlık bir Kuvvet kurtulma zarı atmalı. Başarısız olursa varlık 3d10 ezici hasar alır (fazladan harcadığın her ki puanı için 1d10 ezici hasar eklenir) ve varlığı 20 fit'e kadar itip yere düşürebilirsin. Eğer kurtulma zarı başarılı olursa, varlık yarı hasar alır ve itme ya da düşürme gerçekleşmez."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Ankanın Alevleri (11. seviye gereklidir)",
-														"entries": [
-															"4 ki puanı harcayıp {@spell fireball (alevtopu)} büyüsünü kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Zirvenin Çanı (6. seviye gereklidir)",
-														"entries": [
-															"3 ki puanı harcayıp {@spell shatter (paramparça et)} büyüsünü kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Sis Duruşu (11. seviye gereklidir)",
-														"entries": [
-															"4 ki puanı harcayıp {@spell gaseous form (gaz formu)} büyüsünü kendini hedef alarak kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Rüzgarı Sür (11. seviye gereklidir)",
-														"entries": [
-															"4 ki puanı harcayıp {@spell fly (uç)} büyüsünü kendini hedef alarak kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Aç Alevin Nehri (17. seviye gereklidir)",
-														"entries": [
-															"5 ki puanı harcayıp {@spell wall of fire (ateş duvarı)} büyüsünü kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Rüzgar Ruhlarının Akışı",
-														"entries": [
-															"2 ki puanı harcayıp {@spell gust of wind (kuvvetli rüzgar)} büyüsünü kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Akan Nehrin Şekli",
-														"entries": [
-															"Eylem olarak 1 ki puanı harcayıp, bir yanı 30 fit'i geçmeyen ve 120 fit yakınında olan bir buz ya da su alanını seç. Buzu suya çevirebilir ya da tam tersini yapabilirsin ve buza istediğin şekli verebilirsin. Buzun yüksekliğini indirip kaldırabilir, hendek yaratıp doldurabilir, duvar dikip yıkabilir ya da sütunlar yaratabilirsin. Bu değişiklikler alanın en uzun boyutunun yarısı kadar olabilir. Örneğin 30 fit'lik bir kareyi etkilersen, 15 fit yükseklikte bir sütun yaratabilirsin. Buzu alan içindeki bir varlığı hapsetmek ya da incitmek için şekillendiremezsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Yayılan Kor Darbesi",
-														"entries": [
-															"2 ki puanı harcayıp {@spell burning hands (yanan eller)} büyüsünü kullanabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Su Kırbacı",
-														"entries": [
-															"Eylem olarak 2 ki puanı harcayıp bir varlığı itip çekerek dengesini bozan bir su kırbacı yaratırsın. 30 fit yakınında görebildiğin bir varlık Çeviklik kurtulma zarı atar. Başarısız olursa varlık 3d10 ezici hasar alır (fazladan harcadığın her ki puanı için 1d10 ezici hasar eklenir) ve onu yere düşürebilir ya da kendine 25 fit'e kadar çekebilirsin. Başarılı olursa hasar yarılanır ve düşme ya da çekme gerçekleşmez."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Kayan Toprak Dalgası (17. seviye gereklidir)",
-														"entries": [
-															"6 ki puanı harcayıp {@spell wall of stone (taştan duvar)} büyüsünü kullanabilirsin."
-														]
-													}
+
 												]
 											}
 										]
@@ -13360,41 +13387,47 @@
 										"entries": [
 											"3. seviyede şu özelliklerden birini kazanırsın: Cüsse Düşmanı, Dev Katili, ya da Ordu Kıran.",
 											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Cüsse Düşmanı",
-														"entries": [
-															"Kararlılığın en dayanıklı düşmanları bile yıpratabilir. Bir varlığa silahlı saldırı ile vurduğunda, varlık maksimum HP'sinin altındaysa 1d8 fazladan hasar alır. Bu hasarı her sıranda sadece bir kere verebilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Dev Katili",
-														"entries": [
-															"Büyük ya da daha büyük bir varlık 5 fit yakınındayken sana bir saldırı ile vurursa ya da ıskalarsa, reaksiyonunu kullanıp hemen o saldırının ardından varlığa bir saldırı yapabilirsin. Varlığı görebiliyorsan geçerlidir."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Ordu Kıran",
-														"entries": [
-															"Her sıranda bir kere olmak üzere silahlı saldırı yaptığında, silahının menzilinde ve hedefinin 5 fit yakınındaki başka bir varlığa da aynı silahla saldırı yapabilirsin."
-														]
-													}
-												]
-											}
+											"type": "options",
+											"entries": [
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Cüsse Düşmanı",
+															"entries": [
+																"Kararlılığın en dayanıklı düşmanları bile yıpratabilir. Bir varlığa silahlı saldırı ile vurduğunda, varlık maksimum HP'sinin altındaysa 1d8 fazladan hasar alır. Bu hasarı her sıranda sadece bir kere verebilirsin."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Dev Katili",
+															"entries": [
+																"Büyük ya da daha büyük bir varlık 5 fit yakınındayken sana bir saldırı ile vurursa ya da ıskalarsa, reaksiyonunu kullanıp hemen o saldırının ardından varlığa bir saldırı yapabilirsin. Varlığı görebiliyorsan geçerlidir."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Ordu Kıran",
+															"entries": [
+																"Her sıranda bir kere olmak üzere silahlı saldırı yaptığında, silahının menzilinde ve hedefinin 5 fit yakınındaki başka bir varlığa da aynı silahla saldırı yapabilirsin."
+															]
+														}
+													]
+												}
+
+											]}
+											
 										]
 									}
 								]
@@ -13409,41 +13442,48 @@
 										"entries": [
 											"7. seviyede şu özelliklerden birini kazanırsın: Ordudan Kaç, Çoklu Saldırı Savunması, ya da Çelik İrade",
 											{
+											"type": "options",
+											"selectionCount": 2,
+											"entries": [
+												{
 												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Ordudan Kaç",
-														"entries": [
-															"Sana yapılan fırsat saldırıları dezavantajlı olur."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Çoklu Saldırı Savunması",
-														"entries": [
-															"Bir varlık sana bir saldırı ile vurduğunda, o sıra boyunca aynı varlık tarafından yapılan diğer saldırılara karşı +4 AC kazanırsın."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Çelik İrade",
-														"entries": [
-															"Korkma durumuna karşı atacağın kurtulma zarlarında avantajın olur."
-														]
-													}
-												]
-											}
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Ordudan Kaç",
+															"entries": [
+																"Sana yapılan fırsat saldırıları dezavantajlı olur."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Çoklu Saldırı Savunması",
+															"entries": [
+																"Bir varlık sana bir saldırı ile vurduğunda, o sıra boyunca aynı varlık tarafından yapılan diğer saldırılara karşı +4 AC kazanırsın."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Çelik İrade",
+															"entries": [
+																"Korkma durumuna karşı atacağın kurtulma zarlarında avantajın olur."
+															]
+														}
+													]
+												}
+
+											]}
+										
 										]
 									}
 								]
@@ -13458,29 +13498,37 @@
 										"entries": [
 											"11. seviyede şu özelliklerden birini kazanırsın: Yaylım Ateşi ya da Kasırga Saldırısı",
 											{
-												"type": "entries",
+												"type": "options",
+												"selectionCount": 2,
 												"entries": [
+
 													{
-														"type": "entries",
-														"name": "Yaylım Ateşi",
-														"entries": [
-															"Eylem olarak, silahının menzilinde ve görebildiğin bir noktanın 10 fit çevresinde bulunan tüm varlıklara menzilli saldırı yapabilirsin. Her hedef için yeterli okun olmalı ve her hedef için ayrı saldırı zarı atmalısın."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Kasırga Saldırısı",
-														"entries": [
-															"Eylemini kullanarak 5 fit yakınındaki tüm varlıklara karşı yakın dövüş saldırısı yapabilirsin. Her hedef için ayrı saldırı zarı atmalısın."
-														]
-													}
-												]
-											}
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Yaylım Ateşi",
+															"entries": [
+																"Eylem olarak, silahının menzilinde ve görebildiğin bir noktanın 10 fit çevresinde bulunan tüm varlıklara menzilli saldırı yapabilirsin. Her hedef için yeterli okun olmalı ve her hedef için ayrı saldırı zarı atmalısın."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Kasırga Saldırısı",
+															"entries": [
+																"Eylemini kullanarak 5 fit yakınındaki tüm varlıklara karşı yakın dövüş saldırısı yapabilirsin. Her hedef için ayrı saldırı zarı atmalısın."
+															]
+														}
+													]
+												}
+
+											]}
+											
 										]
 									}
 								]
@@ -13495,41 +13543,46 @@
 										"entries": [
 											"15. seviyede şu özelliklerden birini kazanırsın: Sıyrılma, Akıntıya Karşı Dur, Olağanüstü Kaçınma",
 											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Sıyrılma",
-														"entries": [
-															"{@spell Lightning bolt (Yıldırım)} büyüsü ya da bir kırmızı ejderhanın nefesi gibi bazı alan saldırılarından çevik bir şekilde sıyrılırsın. Yarı hasarı almak için Çeviklik kurtulma zarı atmanı gerektiren bir etkiye maruz kaldığında, eğer başarılı olursan hiç hasar almazsın ve başarısız olursan sadece yarı hasarı alırsın."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Akıntıya Karşı Dur",
-														"entries": [
-															"Düşman bir varlık seni bir yakın dövüş saldırısıyla ıskaladığında, reaksiyonunu kullanıp varlığın aynı saldırıyı başkasına (kendisi dışında) yapmaya zorlayabilirsin."
-														]
-													}
-												]
-											},
-											{
-												"type": "entries",
-												"entries": [
-													{
-														"type": "entries",
-														"name": "Olağanüstü Kaçınma",
-														"entries": [
-															"Görebildiğin bir saldırgan sana bir saldırı ile vurduğunda, reaksiyonunu kullanarak saldırının hasarını yarılayabilirsin."
-														]
-													}
-												]
-											}
+											"type": "options",
+											"selectionCount": 2,
+											"entries": [
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Sıyrılma",
+															"entries": [
+																"{@spell Lightning bolt (Yıldırım)} büyüsü ya da bir kırmızı ejderhanın nefesi gibi bazı alan saldırılarından çevik bir şekilde sıyrılırsın. Yarı hasarı almak için Çeviklik kurtulma zarı atmanı gerektiren bir etkiye maruz kaldığında, eğer başarılı olursan hiç hasar almazsın ve başarısız olursan sadece yarı hasarı alırsın."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Akıntıya Karşı Dur",
+															"entries": [
+																"Düşman bir varlık seni bir yakın dövüş saldırısıyla ıskaladığında, reaksiyonunu kullanıp varlığın aynı saldırıyı başkasına (kendisi dışında) yapmaya zorlayabilirsin."
+															]
+														}
+													]
+												},
+												{
+													"type": "entries",
+													"entries": [
+														{
+															"type": "entries",
+															"name": "Olağanüstü Kaçınma",
+															"entries": [
+																"Görebildiğin bir saldırgan sana bir saldırı ile vurduğunda, reaksiyonunu kullanarak saldırının hasarını yarılayabilirsin."
+															]
+														}
+													]
+												}
+											]}
 										]
 									}
 								]
