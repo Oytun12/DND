@@ -1,5 +1,5 @@
 /* ============================================================
-   STYLESCLASS.CSS - Modern Dark Tema (Eski Fonksiyonel Yapı İçin)
+   STYLESCLASS.CSS - Modern Dark Tema (Orijinal + Yeni Özellikler)
    ============================================================ */
 
 /* --- TEMEL AYARLAR (BASE) --- */
@@ -31,7 +31,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     height: 70px;
     display: flex; align-items: center; 
     position: relative; 
-    z-index: 2001; /* GÜNCELLEME: En üstte olsun */
+    z-index: 2001; /* En üstte olsun */
     box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
@@ -54,18 +54,15 @@ ul { list-style: none; padding: 0; margin: 0; }
 
 .menu-icon { 
     display: none; 
-    font-size: 28px;        /* Biraz daha belirgin */
+    font-size: 28px;
     cursor: pointer; 
     color: #fff; 
     user-select: none;
-    
-    /* Tıklama Kolaylaştırma */
-    padding: 15px;          /* Parmak için geniş alan */
-    margin-right: -15px;    /* Hizayı korumak için */
-    
+    padding: 15px;
+    margin-right: -15px;
     position: relative; 
-    z-index: 10000;         /* HER ŞEYİN EN ÜSTÜNDE */
-    pointer-events: auto;   /* Tıklamayı zorla kabul et */
+    z-index: 10000;
+    pointer-events: auto;
 }
 
 /* Mobil Menü */
@@ -77,7 +74,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     background-color: #222; 
     border-bottom: 2px solid #b52b2b;
     padding: 20px; 
-    z-index: 2000; /* GÜNCELLEME: Sticky headerların (1000) üzerinde olsun */
+    z-index: 2000;
     box-shadow: 0 5px 10px rgba(0,0,0,0.5);
     display: none; 
 }
@@ -100,7 +97,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 .intro-section h2 { color: #b52b2b; font-size: 2em; margin-bottom: 10px; }
 .intro-section p { color: #aaa; font-size: 1.1em; }
 
-/* --- ANA KUTU (WRAPPER) --- */
+/* --- ANA KUTU (WRAPPER) - EKSİK OLAN KISIM BURASIYDI --- */
 .main-content-box {
     background-color: #222;
     border: 1px solid #333;
@@ -140,9 +137,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     box-shadow: 0 4px 10px rgba(181, 43, 43, 0.4);
 }
 
-/* --- ACCORDION (ESKİ SCRIPT UYUMLU) --- */
-/* Script 'class-wrapper' ve 'collapsible' sınıflarını kullanıyor */
-
+/* --- ACCORDION (SINIF KARTLARI) --- */
 .class-wrapper {
     margin-bottom: 15px;
     border: 1px solid #3b3b3b;
@@ -167,12 +162,10 @@ ul { list-style: none; padding: 0; margin: 0; }
     justify-content: space-between;
     align-items: center;
     border-left: 4px solid #b52b2b;
-    margin: 0; /* Eski stilden gelen margin'i sıfırla */
+    margin: 0;
 }
 
-.collapsible:hover, .collapsible.active {
-    background-color: #444;
-}
+.collapsible:hover, .collapsible.active { background-color: #444; }
 
 /* Ok işareti yerine +/- */
 .collapsible:after {
@@ -181,19 +174,17 @@ ul { list-style: none; padding: 0; margin: 0; }
     font-weight: bold;
     font-size: 1.5em;
 }
-.collapsible.active:after {
-    content: '-';
-}
+.collapsible.active:after { content: '-'; }
 
 /* İçerik */
 .class-content {
     padding: 20px;
     background-color: #252525;
-    display: none; /* JS ile açılacak */
+    display: none;
     border-top: 1px solid #3b3b3b;
 }
 
-/* --- REHBER İÇERİĞİ (ÖZELLİK KUTULARI) --- */
+/* --- REHBER İÇERİĞİ (ESKİ ÖZELLİK KUTULARI) --- */
 .feature-block {
     margin-bottom: 20px;
     padding: 15px;
@@ -244,318 +235,171 @@ p, li { color: #ccc; line-height: 1.6; }
 }
 
 .btn-subclass:hover { background-color: #444; }
-.btn-subclass.active {
-    background-color: #b52b2b;
-    color: #fff;
-    border-color: #b52b2b;
-}
+.btn-subclass.active { background-color: #b52b2b; color: #fff; border-color: #b52b2b; }
 
-/* --- TABLOLAR (GELİŞİM TABLOSU) --- */
+/* --- TABLOLAR (ESKİ) --- */
 .progression-table-wrapper {
-    overflow-x: auto;
-    margin-top: 10px;
-    border: 1px solid #444;
-    border-radius: 6px;
+    overflow-x: auto; margin-top: 10px; border: 1px solid #444; border-radius: 6px;
 }
-
-.progression-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 600px;
-    font-size: 0.9em;
-}
-
-.progression-table th {
-    background-color: #333;
-    color: #b52b2b;
-    padding: 12px;
-    text-align: center;
-    border-bottom: 2px solid #444;
-    white-space: nowrap;
-}
-
-.progression-table td {
-    padding: 10px;
-    border-bottom: 1px solid #333;
-    text-align: center;
-    color: #ccc;
-}
-
+.progression-table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.9em; }
+.progression-table th { background-color: #333; color: #b52b2b; padding: 12px; text-align: center; border-bottom: 2px solid #444; white-space: nowrap; }
+.progression-table td { padding: 10px; border-bottom: 1px solid #333; text-align: center; color: #ccc; }
 .progression-table tr:nth-child(even) { background-color: #2a2a2a; }
 .progression-table tr:hover { background-color: #333; }
 
-
-/* --- YENİ EKLENEN MODERN STİLLER (Data Görünümü İçin) --- */
-
-/* 1. Modern Tablolar (Özelliklerin içindeki tablolar için) */
-.feature-table-wrapper {
-    overflow-x: auto;
-    margin: 15px 0;
-    border-radius: 6px;
-    border: 1px solid #444;
-}
-
-.feature-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9em;
-    background-color: #1f1f1f;
-    color: #e0e0e0;
-}
-
-.feature-table th {
-    background-color: #2b2b2b;
-    color: #b52b2b;
-    padding: 10px;
-    text-align: left;
-    border-bottom: 2px solid #444;
-    font-weight: 600;
-}
-
-.feature-table td {
-    padding: 8px 10px;
-    border-bottom: 1px solid #333;
-    vertical-align: top;
-}
-
-.feature-table tr:nth-child(even) { background-color: #252525; }
-.feature-table caption {
-    caption-side: top;
-    font-weight: bold;
-    padding: 8px;
-    color: #b52b2b;
-    text-align: left;
-    border-bottom: 1px solid #b52b2b;
-}
-
-/* 2. Alt Başlıklar */
-.feature-subsection {
-    margin-top: 15px;
-    margin-bottom: 10px;
-    padding-left: 10px;
-    border-left: 2px solid #555;
-}
-
-.feature-sub-title {
-    color: #e67e22; /* Turuncu vurgu */
-    font-weight: bold;
-    font-size: 1.05em;
-    margin: 0 0 5px 0;
-    display: block;
-}
-
-/* 3. Formül Kutuları (Flexbox & Responsive) */
-.mechanic-formula-box {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: baseline;
-    gap: 8px;
-    
-    background: rgba(255, 255, 255, 0.03); 
-    padding: 10px 15px;
-    border-radius: 6px; 
-    margin: 15px 0; 
-    text-align: center; 
-    font-size: 0.95em; 
-    color: #ccc; 
-    border: 1px dashed #555;
-}
-
-.mechanic-formula-box strong {
-    display: inline;
-    margin: 0;
-    font-size: 1.1em;
-    white-space: nowrap;
-}
-
-/* Listeler */
-.feature-list {
-    margin: 5px 0 10px 20px; 
-    list-style-type: disc; 
-    color: #ccc;
-}
-.feature-list li { margin-bottom: 4px; }
-
-
-
 /* ============================================================
-   3. RESPONSIVE / MOBİL AYARLAR (HEPSİ BİR ARADA)
+   YENİ EKLENEN MODERN STİLLER (RECURSIVE RENDER İÇİN)
    ============================================================ */
 
-/* Kapat butonu varsayılan olarak HER ZAMAN gizli */
+/* 1. Feature Tabloları */
+.feature-table-wrapper {
+    overflow-x: auto; margin: 15px 0; border-radius: 6px; border: 1px solid #444;
+}
+.feature-table {
+    width: 100%; border-collapse: collapse; font-size: 0.9em; background-color: #1f1f1f; color: #e0e0e0;
+}
+.feature-table th {
+    background-color: #2b2b2b; color: #b52b2b; padding: 10px; text-align: left; border-bottom: 2px solid #444; font-weight: 600;
+}
+.feature-table td { padding: 8px 10px; border-bottom: 1px solid #333; vertical-align: top; }
+.feature-table tr:nth-child(even) { background-color: #252525; }
+.feature-table caption { caption-side: top; font-weight: bold; padding: 8px; color: #b52b2b; text-align: left; border-bottom: 1px solid #b52b2b; }
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* 2. Özellik Bölümleri ve Başlıklar */
+.feature-section { margin-bottom: 10px; }
+.feature-section.indented { background-color:  rgba(255, 255, 255, 0.03); margin-left: 5px; border: 2px solid #444; border-radius: 8px; padding-left: 10px; }
+
+.feature-title-main { color: #b52b2b; margin-bottom: 5px; font-size: 1em; font-weight: bold; }
+.feature-title-secondary { display: block;     color: #e67e22; margin-top: 10px; margin-bottom: 5px; font-weight: bold; }
+.feature-sub-title { color: #b52b2b; font-weight: bold; margin-bottom: 5px; display: block; }
+
+.feature-prerequisite { color: #888; font-style: italic; font-size: 0.9em; margin-bottom: 5px; }
+
+/* 3. Formül Kutuları */
+.mechanic-formula-box {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 8px;
+    background: rgba(255, 255, 255, 0.03); padding: 10px 15px; border-radius: 6px; 
+    margin: 15px 0; margin-right: 10px; text-align: center; font-size: 0.95em; color: #ccc; border: 1px dashed #555;
+}
+.mechanic-formula-box strong { display: inline; margin: 0; font-size: 1.1em; white-space: nowrap; color: #b52b2b; }
+
+/* 4. Listeler ve Alıntılar */
+.feature-list { margin: 5px 0 10px 20px; list-style-type: disc; }
+.feature-list li { margin-bottom: 4px; }
+
+.feature-quote { border-left: 4px solid #b52b2b; padding-left: 10px; font-style: italic; color: #aaa; margin: 10px 0; }
+.feature-inset { border: 1px solid #444; padding: 10px; background: #2a2a2a; margin: 10px 0; border-radius: 4px; }
+.feature-inset-title { color: #ccc; font-weight: bold; margin-bottom: 5px; margin-top: 0; }
+
+/* 5. Alt Sınıf Özellikleri (Mavi) */
+.subclass-feature-block { border-left: 3px solid #2b5a8e; background: #222; padding: 10px; margin-top: 10px; }
+.subclass-feature-title { color: #4dabf7 !important; margin: 0 0 5px 0; font-size: 1.05em; font-weight: bold; }
+
+/* --- OPTIONS (SEÇENEKLER) AKORDİYON SİSTEMİ --- */
+.options-toggle-btn {
+    width: 100%;
+    background-color: rgba(181, 43, 43, 0.05);
+    color: #ccc;
+    border: 1px solid #444;
+    padding: 12px 15px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 6px;
+    margin-top: 25px;
+    margin-bottom: 5px;
+    transition: all 0.2s ease;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.options-toggle-btn:hover { background-color: #333; border-color: #b52b2b; color: #fff; }
+.options-toggle-btn.active {
+    background-color: #333; border-color: #b52b2b; color: #b52b2b;
+    border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: 0;
+}
+.options-arrow { font-size: 0.8em; transition: transform 0.3s ease; }
+.options-toggle-btn.active .options-arrow { transform: rotate(180deg); }
+
+.options-content-wrapper {
+    display: none;
+    background-color: #222;
+    border: 1px solid #444; border-top: none;
+    padding: 20px;
+    border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;
+    margin-bottom: 15px;
+}
+.options-content-wrapper.active { display: block; }
+.options-content-wrapper h4 { font-size: 1.1em; color: #a855f7; }
+.options-content-wrapper h5 { font-size: 1em; color: #ccc; }
+
+/* ============================================================
+   RESPONSIVE / MOBİL AYARLAR
+   ============================================================ */
 .mobile-back-btn { display: none !important; }
 
-/* 800px altı (Tablet ve Telefon) */
 @media (max-width: 800px) {
-
-    /* --- A. GENEL MOBİL DÜZENİ (Menü Düzeltmesi) --- */
-    
-    /* 1. Masaüstü menüyü gizle, Hamburgeri göster */
     .desktop-nav { display: none !important; }
     .menu-icon { display: block !important; cursor: pointer; }
 
-    /* 2. Ana konteyner boşluklarını sıfırla (Mobilde geniş yer kalsın) */
-    .main-container {
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        padding: 10px; /* Kenarlardan hafif boşluk */
-    }
+    .main-container { width: 100%; max-width: 100%; margin: 0; padding: 10px; }
+    .main-content-box { background-color: transparent; border: none; box-shadow: none; padding: 0; border-radius: 0; }
 
-    /* 3. Kutuların çerçevesini kaldır (Mobilde düz görünüm) */
-    .main-content-box {
-        background-color: transparent;
-        border: none;
-        box-shadow: none;
-        padding: 0;
-        border-radius: 0;
-    }
+    /* ODAK MODU */
+    body.mobile-focus { overflow-x: hidden !important; padding: 0 !important; }
+    body.mobile-focus .main-header, body.mobile-focus .intro-section { display: none !important; }
+    body.mobile-focus .main-container { padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
 
-    /* --- B. ODAK MODU (SINIF AÇILDIĞINDA STICKY HEADER) --- */
-    
-    /* Body kaydırmasını kilitle (Sadece odak modunda) */
-    body.mobile-focus {
-        overflow-x: hidden !important;
-        padding: 0 !important;
-    }
-
-    /* 1. Header ve Intro'yu TAMAMEN GİZLE (Display: None) */
-    body.mobile-focus .main-header,
-    body.mobile-focus .intro-section {
-        display: none !important;
-    }
-
-    /* 2. Ana Konteynerin SADECE boşluklarını sıfırla (İçerik burada, gizleme!) */
-    body.mobile-focus .main-container {
-        padding: 0 !important; 
-        margin: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
-    /* KATMAN 1: TAB MENÜSÜ (EN ÜST) */
+    /* TAB MENÜSÜ */
     body.mobile-focus .tab-menu {
-        display: flex !important;
-        position: sticky;       
-        top: 0;                 
-        z-index: 1000;          
-        background-color: #1a1a1a; 
-        width: 100%;
-        margin: 0 !important;
-        padding: 0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        height: 50px;           
-        border-bottom: 1px solid #333;
+        display: flex !important; position: sticky; top: 0; z-index: 1000;
+        background-color: #1a1a1a; width: 100%; margin: 0 !important; padding: 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3); height: 50px; border-bottom: 1px solid #333;
     }
-
     body.mobile-focus .tab-link {
-        flex: 1;             
-        text-align: center;
-        padding: 0;
-        font-size: 0.95em;
-        border-radius: 0;    
-        border: none;
-        background-color: #222;
-        color: #888;
-        line-height: 50px;      
-        height: 50px;
+        flex: 1; text-align: center; padding: 0; font-size: 0.95em; border-radius: 0; border: none;
+        background-color: #222; color: #888; line-height: 50px; height: 50px;
     }
-    
-    body.mobile-focus .tab-link.active {
-        background-color: #b52b2b; 
-        color: #fff;
-    }
+    body.mobile-focus .tab-link.active { background-color: #b52b2b; color: #fff; }
 
-    /* SINIF KAPSAYICISI (Sticky için overflow visible olmalı) */
+    /* SINIF KAPSAYICISI */
     body.mobile-focus .class-wrapper.focus-active {
-        display: block !important;
-        overflow: visible !important;
-        border: none;
-        border-radius: 0;
-        margin: 0 !important;
-        min-height: 100vh;
-        background-color: #1a1a1a;
+        display: block !important; overflow: visible !important; border: none; border-radius: 0;
+        margin: 0 !important; min-height: 100vh; background-color: #1a1a1a;
     }
 
-    /* KATMAN 2: SINIF BAŞLIĞI */
+    /* BAŞLIK */
     body.mobile-focus .class-wrapper.focus-active .collapsible {
-        position: sticky;
-        top: 50px; /* Tabların hemen altına yapış */
-        z-index: 999;
-        
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        
-        margin: 0 !important;
-        border-radius: 0;
-        border: none;
-        border-bottom: 2px solid #b52b2b;
-        
-        background-color: #2a2a2a; 
-        color: #fff;
-        padding: 0 15px;
-        height: 60px;
+        position: sticky; top: 50px; z-index: 999;
+        display: flex; justify-content: space-between; align-items: center;
+        margin: 0 !important; border-radius: 0; border: none; border-bottom: 2px solid #b52b2b;
+        background-color: #2a2a2a; color: #fff; padding: 0 15px; height: 60px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
     }
-
-    /* İsim Alanı */
     body.mobile-focus .class-wrapper.focus-active .collapsible .cls-name {
-        font-size: 1.2em;
-        font-weight: bold;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        flex: 1;
-        text-align: left;
+        font-size: 1.2em; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; text-align: left;
     }
-    
-    /* Eski +/- işaretini kaldır */
-    body.mobile-focus .class-wrapper.focus-active .collapsible:after {
-        display: none;
-    }
+    body.mobile-focus .class-wrapper.focus-active .collapsible:after { display: none; }
 
-    /* KAPAT (X) BUTONU */
+    /* KAPAT BUTONU */
     body.mobile-focus .class-wrapper.focus-active .mobile-back-btn {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        
-        background-color: rgba(181, 43, 43, 0.2);
-        color: #b52b2b;
-        border: 1px solid #b52b2b;
-        
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        font-size: 1.2em;
-        line-height: 1;
-        cursor: pointer;
-        margin-left: 15px;
-        flex-shrink: 0;
+        display: flex !important; align-items: center; justify-content: center;
+        background-color: rgba(181, 43, 43, 0.2); color: #b52b2b; border: 1px solid #b52b2b;
+        width: 34px; height: 34px; border-radius: 50%; font-size: 1.2em; line-height: 1;
+        cursor: pointer; margin-left: 15px; flex-shrink: 0;
     }
 
     /* İÇERİK */
     body.mobile-focus .class-content {
-        display: block !important;
-        border: none !important;
-        padding: 20px !important;
-        margin: 0 !important;
-        background-color: #1a1a1a;
+        display: block !important; border: none !important; padding: 20px !important;
+        margin: 0 !important; background-color: #1a1a1a;
     }
-
-    /* Aktif olmayanları gizle */
-    body.mobile-focus .class-wrapper:not(.focus-active) {
-        display: none !important;
-    }
-    
-    /* Diğer elementleri gizle */
-    body.mobile-focus .main-content-box,
-    body.mobile-focus .tab-view {
+    body.mobile-focus .class-wrapper:not(.focus-active) { display: none !important; }
+    body.mobile-focus .main-content-box, body.mobile-focus .tab-view {
         padding: 0 !important; border: none !important; margin: 0 !important; background: transparent;
     }
 }
 
-.mobile-back-btn { display: none; } /* Masaüstünde gizli */
 @media (max-width: 800px) { .mobile-back-btn { display: inline-block; } }
