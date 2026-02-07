@@ -847,13 +847,22 @@
                     <div class="sheet-tabs">
                         <button v-for="tab in sheetTabs" 
                                 :key="tab.id"
+                                
+                                :data-tab-id="tab.id"
+
                                 @click="activeSheetTab = tab.id" 
                                 :class="{ active: activeSheetTab === tab.id }"
+                                
                                 draggable="true"
                                 @dragstart="handleTabDragStart($event, tab.id)"
                                 @dragend="handleTabDragEnd($event)"
                                 @dragover.prevent
                                 @drop="handleTabDrop($event, tab.id)"
+                                
+
+                                @touchstart.passive="handleTouchStart($event, tab.id)"
+                                @touchend="handleTouchEnd($event)"
+
                                 title="Sırasını değiştirmek için sürükleyin">
                             
                             <svg :viewBox="tab.icon.viewBox" 
@@ -1037,10 +1046,28 @@
                         </div>
 
                         <div v-if="activeSheetTab === 'features'">
+    
                             <div class="feature-sub-tabs">
-                                <button @click="activeFeatureSubTab = 'race'" :class="{ active: activeFeatureSubTab === 'race' }">Irk</button>
-                                <button @click="activeFeatureSubTab = 'class'" :class="{ active: activeFeatureSubTab === 'class' }">Sınıf</button>
-                                <button @click="activeFeatureSubTab = 'background'" :class="{ active: activeFeatureSubTab === 'background' }">Geçmiş</button>
+                                <button @click="activeFeatureSubTab = 'race'" :class="{ active: activeFeatureSubTab === 'race' }">
+                                    <span style="font-size: 1.4em; margin-bottom: 5px; display: block;">🧬</span>
+                                    Irk
+                                </button>
+                                <button @click="activeFeatureSubTab = 'class'" :class="{ active: activeFeatureSubTab === 'class' }">
+                                    <span style="font-size: 1.4em; margin-bottom: 5px; display: block;">⚔️</span>
+                                    Sınıf
+                                </button>
+                                <button @click="activeFeatureSubTab = 'background'" :class="{ active: activeFeatureSubTab === 'background' }">
+                                    <span style="font-size: 1.4em; margin-bottom: 5px; display: block;">📜</span>
+                                    Geçmiş
+                                </button>
+                                <button @click="activeFeatureSubTab = 'choices'" :class="{ active: activeFeatureSubTab === 'choices' }">
+                                    <span style="font-size: 1.4em; margin-bottom: 5px; display: block;">✨</span>
+                                    Özel Yetenekler
+                                </button>
+                                <button @click="activeFeatureSubTab = 'equipment'" :class="{ active: activeFeatureSubTab === 'equipment' }">
+                                    <span style="font-size: 1.4em; margin-bottom: 5px; display: block;">🎒</span>
+                                    Başlangıç Ekipmanı
+                                </button>
                             </div>
                         
                             <div v-if="activeFeatureSubTab === 'race'">
@@ -1048,14 +1075,13 @@
                                     <h4>{{ trait.name }}</h4>
                                     <div v-html="trait.text" class="feat-text"></div>
                                 </div>
-                                <p v-if="activeRaceTraits.length === 0" style="color:#666; font-style:italic;">Bu ırk için özel bir yetenek bulunamadı.</p>
+                                <p v-if="activeRaceTraits.length === 0" style="color:#666; font-style:italic; text-align: center; padding: 20px;">Bu ırk için özel bir yetenek bulunamadı.</p>
                             </div>
-
+                        
                             <div v-if="activeFeatureSubTab === 'class'">
                                 <div v-for="step in activeFeatures" :key="step.level">
                                     <template v-for="feat in step.features" :key="feat.name">
                                         <div v-if="feat && feat.name && (!feat.name.includes('Yetenek Skoru') || (feat.choices && feat.choices.length > 0))" class="sheet-feature-item">
-
                                             <h4>
                                                 {{ feat.name }} 
                                                 <span class="source-tag">Lv.{{step.level}}</span>
@@ -1066,14 +1092,11 @@
                                             </div>
                                         
                                             <div v-if="feat.choices && feat.choices.length > 0" class="sheet-choice-wrapper">
-
                                                 <div v-for="(choiceItem, cIdx) in feat.choices" :key="cIdx" style="margin-bottom: 5px;">
-
                                                     <div v-if="choiceItem.type === 'simple'" class="choice-entry simple">
                                                         <span class="choice-icon">✔</span>
                                                         <span class="choice-text">{{ choiceItem.name }}</span>
                                                     </div>
-                                                
                                                     <div v-else class="choice-entry card-style">
                                                         <div class="choice-header">
                                                             <span class="choice-icon">➤</span>
@@ -1081,67 +1104,103 @@
                                                         </div>
                                                         <div class="choice-body" v-html="choiceItem.desc"></div>
                                                     </div>
-                                                
                                                 </div>
                                             </div>
-                                            </div>
+                                        </div>
                                     </template>
                                 </div>
                             </div>
                         
                             <div v-if="activeFeatureSubTab === 'background'">
-    
                                 <div v-if="!store.background.selected" class="sheet-feature-item" style="text-align: center; color: #777;">
                                     <p>Henüz bir geçmiş seçilmedi.</p>
                                 </div>
-                            
                                 <div v-else class="background-detail-view">
-
-                                    <h2>{{ store.background.selected.name }}</h2>
                                     <div v-if="activeBackgroundContent" class="bg-full-content">
                                         <div v-html="activeBackgroundContent" class="feat-text"></div>
                                     </div>
-                                
                                 </div>
                             </div>
                         
-                        </div>
-                        <div v-if="activeSheetTab === 'description'">
-                             <div v-if="selectedClass" class="sheet-section">
-                                <h4 style="color: #b52b2b; border-bottom: 1px solid rgba(181, 43, 43, 0.3); padding-bottom: 5px; margin-bottom: 10px;">
-                                    Sınıf Donanımı ({{ selectedClass.name }})
-                                </h4>
-                                <div v-if="selectedClass.startingProficiencies" style="margin-bottom: 20px;">
-                                    <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🛡️ Zırh ve Silah Yetkinlikleri</strong>
-                                    <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: disc;">
-                                        <li v-if="selectedClass.startingProficiencies.armor && selectedClass.startingProficiencies.armor.length">
-                                            <strong style="color: #aaa;">Zırhlar:</strong> 
-                                            <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.armor.join(', ') }}</span>
-                                        </li>
-                                        <li v-if="selectedClass.startingProficiencies.weapons && selectedClass.startingProficiencies.weapons.length" style="margin-top: 5px;">
-                                            <strong style="color: #aaa;">Silahlar:</strong> 
-                                            <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.weapons.join(', ') }}</span>
-                                        </li>
-                                        <li v-if="selectedClass.startingProficiencies.tools && selectedClass.startingProficiencies.tools.length" style="margin-top: 5px;">
-                                            <strong style="color: #aaa;">Aletler:</strong> 
-                                            <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.tools.join(', ') }}</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div v-if="selectedClass.startingEquipment">
-                                    <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🎒 Standart Başlangıç Ekipmanları</strong>
-                                    <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: circle;">
-                                        <li v-for="(item, index) in selectedClass.startingEquipment.default" :key="index" style="margin-bottom: 5px;">
-                                            {{ item }}
-                                        </li>
-                                    </ul>
-                                    <div v-if="selectedClass.startingEquipment.goldAlternative" style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #333; font-size: 0.85em; color: #888;">
-                                        <span style="color: #e67e22;">💰 Alternatif Varlık:</span> 
-                                        Eğer ekipman almak yerine altın ile başlamayı seçerseniz: 
-                                        <strong>{{ selectedClass.startingEquipment.goldAlternative }} gp</strong>
+                            <div v-if="activeFeatureSubTab === 'choices'">
+                                <div class="sheet-section">
+                                
+                                    <div v-for="step in activeFeatures" :key="step.level">
+                                        <template v-for="feat in step.features" :key="feat.name">
+                                            <div v-if="feat.choices && feat.choices.length > 0" class=" sheet-feature-item" style="margin-bottom: 20px;">
+
+                                                <div style="font-size: 1em; font-weight: bold; color: #b52b2b; margin: 0 0 8px 0; padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                    {{ feat.name }} <span style="color: #555;">(Lv.{{ step.level }})</span>
+                                                </div>
+                                            
+                                                <div class="sheet-choice-wrapper">
+                                                    <div v-for="(choiceItem, cIdx) in feat.choices" :key="cIdx" style="margin-bottom: 8px;">
+                                                        <div v-if="choiceItem.type === 'simple'" class="choice-entry simple">
+                                                            <span class="choice-icon">✔</span>
+                                                            <span class="choice-text">{{ choiceItem.name }}</span>
+                                                        </div>
+                                                        <div v-else class="choice-entry card-style">
+                                                            <div class="choice-header">
+                                                                <span class="choice-icon">★</span>
+                                                                <span class="choice-title">{{ choiceItem.name }}</span>
+                                                            </div>
+                                                            <div class="choice-body" v-html="choiceItem.desc"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                            </div>
+                                        </template>
+                                    </div>
+                                
+                                    <div v-if="!activeFeatures.some(s => s.features.some(f => f.choices && f.choices.length > 0))" 
+                                         style="text-align: center; color: #666; font-style: italic; padding: 20px;">
+                                        Bu sınıf için henüz özel bir seçim yapılmamış.
                                     </div>
                                 </div>
                             </div>
+
+                            <div v-if="activeFeatureSubTab === 'equipment'">
+                                <div v-if="selectedClass" class="sheet-feature-item sheet-section">
+                                    <h4 style="color: #b52b2b; border-bottom: 1px solid rgba(181, 43, 43, 0.3); padding-bottom: 5px; margin-bottom: 10px;">
+                                        Sınıf Donanımı ({{ selectedClass.name }})
+                                    </h4>
+                                
+                                    <div v-if="selectedClass.startingProficiencies" style="margin-bottom: 20px;">
+                                        <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🛡️ Zırh ve Silah Yetkinlikleri</strong>
+                                        <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: disc;">
+                                            <li v-if="selectedClass.startingProficiencies.armor && selectedClass.startingProficiencies.armor.length">
+                                                <strong style="color: #aaa;">Zırhlar:</strong> 
+                                                <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.armor.join(', ') }}</span>
+                                            </li>
+                                            <li v-if="selectedClass.startingProficiencies.weapons && selectedClass.startingProficiencies.weapons.length" style="margin-top: 5px;">
+                                                <strong style="color: #aaa;">Silahlar:</strong> 
+                                                <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.weapons.join(', ') }}</span>
+                                            </li>
+                                            <li v-if="selectedClass.startingProficiencies.tools && selectedClass.startingProficiencies.tools.length" style="margin-top: 5px;">
+                                                <strong style="color: #aaa;">Aletler:</strong> 
+                                                <span style="text-transform: capitalize;">{{ selectedClass.startingProficiencies.tools.join(', ') }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                
+                                    <div v-if="selectedClass.startingEquipment">
+                                        <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🎒 Standart Başlangıç Ekipmanları</strong>
+                                        <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: circle;">
+                                            <li v-for="(item, index) in selectedClass.startingEquipment.default" :key="index" style="margin-bottom: 5px;">
+                                                {{ item }}
+                                            </li>
+                                        </ul>
+                                        <div v-if="selectedClass.startingEquipment.goldAlternative" style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #333; font-size: 0.85em; color: #888;">
+                                            <span style="color: #e67e22;">💰 Alternatif Varlık:</span> 
+                                            Eğer ekipman almak yerine altın ile başlamayı seçerseniz: 
+                                            <strong>{{ selectedClass.startingEquipment.goldAlternative }} gp</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-else style="text-align:center; padding:20px; color:#666;">Sınıf seçilmedi.</div>
+                            </div>
+                        
                         </div>
                 </main>
             </div>

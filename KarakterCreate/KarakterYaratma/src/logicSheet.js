@@ -7,6 +7,8 @@ export function useCharacterSheet() {
     
     // Aktif ana sekme (Aksiyonlar, Büyüler, Envanter vb.)
     const activeSheetTab = ref('actions');
+
+    const activeDescSubTab = ref('equipment'); // Varsayılan: Donanım
     
     // Karakter yaratma işlemi bitti mi?
     const hasCreatedSheet = ref(false); 
@@ -29,6 +31,7 @@ export function useCharacterSheet() {
         activeSheetTab,
         hasCreatedSheet,
         activeFeatureSubTab, 
-        finishCreation
+        finishCreation,
+        activeDescSubTab
     };
 }

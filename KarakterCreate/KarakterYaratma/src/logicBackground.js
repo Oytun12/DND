@@ -85,7 +85,7 @@ export function useBackgroundLogic() {
                 }
 
                 // İsmi varsa başlık at
-                let subHtml = `<div class="sheet-feature-item bg-subsection">`;
+                let subHtml = `<div class="bg-subsection sheet-feature-item">`;
                 if (e.name) subHtml += `<h4 class="bg-sub-header">${e.name}</h4>`;
                 
                 let subEntries = Array.isArray(e.entries) ? e.entries : [e.entries];

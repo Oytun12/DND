@@ -67,7 +67,8 @@ const app = createApp({
         // ============================================================
         // 1. GENEL SAYFA MANTIĞI
         // ============================================================
-        const { isSheetMode, activeSheetTab, finishCreation, hasCreatedSheet, activeFeatureSubTab } = useCharacterSheet();
+        // DÜZELTİLMİŞ HALİ:
+        const { isSheetMode, activeSheetTab, finishCreation, hasCreatedSheet, activeFeatureSubTab, activeDescSubTab } = useCharacterSheet();
         const activeInventoryTab = ref('owned'); 
         
         // --- SEKME (TAB) YÖNETİMİ ---
@@ -76,7 +77,6 @@ const app = createApp({
             { id: 'spells',     label: 'Büyüler',     icon: dndIcons.spells },
             { id: 'inventory',  label: 'Envanter',    icon: dndIcons.inventory },
             { id: 'features',   label: 'Özellikler',  icon: dndIcons.features },
-            { id: 'description',label: 'Açıklama',    icon: dndIcons.description }
         ]);
 
         const draggingTabId = ref(null);
@@ -100,6 +100,43 @@ const app = createApp({
                 const item = sheetTabs.value.splice(fromIndex, 1)[0];
                 sheetTabs.value.splice(toIndex, 0, item);
             }
+        };
+
+        // --- MOBİL DOKUNMATİK SÜRÜKLEME (TOUCH EVENTS) ---
+        const handleTouchStart = (evt, tabId) => {
+            draggingTabId.value = tabId;
+            evt.target.style.opacity = '0.5'; // Görsel geri bildirim
+            // Mobilde kaydırmayı engellemek istemiyoruz, o yüzden preventDefault yapmıyoruz.
+        };
+
+        const handleTouchEnd = (evt) => {
+            evt.target.style.opacity = '1'; // Opaklığı düzelt
+            
+            // Parmağın kalktığı noktadaki elementi bul
+            const touch = evt.changedTouches[0];
+            const realTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            if (realTarget) {
+                // Dokunulan yer bir buton mu (veya butonun içindeki ikon/yazı mı)?
+                // .closest('button') ile en yakın butonu buluyoruz.
+                const targetBtn = realTarget.closest('button[data-tab-id]');
+                
+                if (targetBtn) {
+                    const targetId = targetBtn.getAttribute('data-tab-id');
+                    
+                    // Eğer üzerine bırakılan tab farklıysa yer değiştir
+                    if (targetId && targetId !== draggingTabId.value) {
+                        const fromIndex = sheetTabs.value.findIndex(t => t.id === draggingTabId.value);
+                        const toIndex = sheetTabs.value.findIndex(t => t.id === targetId);
+                        
+                        if (fromIndex !== -1 && toIndex !== -1) {
+                            const item = sheetTabs.value.splice(fromIndex, 1)[0];
+                            sheetTabs.value.splice(toIndex, 0, item);
+                        }
+                    }
+                }
+            }
+            draggingTabId.value = null;
         };
 
         // ============================================================
@@ -694,8 +731,10 @@ const app = createApp({
             calculatedAC, attackList, handleArmorEquip, getArmorMechanicText,
             activeModalTab, handleAddItem, newWeapon, newArmor, newGear,
             sheetTabs, handleTabDragStart, handleTabDragEnd, handleTabDrop,
+            handleTouchStart, handleTouchEnd,
             activeBackgroundContent,
-            activeBackgroundFeature
+            activeBackgroundFeature,
+            activeDescSubTab,
         };
     }
 });

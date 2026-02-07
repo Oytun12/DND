@@ -232,6 +232,27 @@
 .tab-icon { width: 20px; height: 20px; fill: currentColor; flex-shrink: 0; }
 .sheet-tab-content { background: #1e1e1e; padding: 25px; border-radius: 0 0 8px 8px; min-height: 400px; border: 1px solid #333; border-top: none; }
 
+@media (max-width: 600px) {
+    
+    /* İkonları Gizle */
+    .sheet-tabs button .tab-icon {
+        display: none !important;
+    }
+
+    /* Buton Ayarları */
+    .sheet-tabs button {
+        padding: 10px 15px; /* Mobilde biraz daha kompakt */
+        font-size: 0.95em;  /* Yazı boyutu ideal */
+        justify-content: center; /* Yazıyı ortala */
+        gap: 0; /* İkon gittiği için boşluğa gerek yok */
+    }
+    
+    /* Sekme çubuğunun kaydırma davranışını iyileştir */
+    .sheet-tabs {
+        justify-content: flex-start; /* Sola yaslı başlasın */
+    }
+}
+
 /* ============================================================
    5. ÖZELLİKLER & KAYNAKLAR
    ============================================================ */
@@ -258,9 +279,85 @@
 .res-card.empty { opacity: 0.6; border-left-color: #444; }
 .res-card.empty .res-value { color: #b52b2b; }
 
-.feature-sub-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #333; }
-.feature-sub-tabs button { background: #252525; border: 1px solid #444; color: #888; padding: 6px 15px; border-radius: 20px; font-size: 0.85em; cursor: pointer; transition: all 0.2s; }
-.feature-sub-tabs button.active { background: #b52b2b; border-color: #b52b2b; color: #fff; box-shadow: 0 0 10px rgba(181, 43, 43, 0.4); }
+.feature-sub-tabs {
+    display: flex; justify-content: center; gap: 15px; margin-bottom: 30px;
+    padding: 15px; background-color: #222; border: 1px solid #333; border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.feature-sub-tabs button {
+    /* Kutu Yapısı */
+    display: flex;
+    flex-direction: column; /* İkon ve yazıyı alt alta veya yan yana dizebiliriz */
+    align-items: center;
+    justify-content: center;
+    
+    padding: 15px 10px;
+    background: rgba(255, 255, 255, 0.03); /* Stat Box Arkaplanı */
+    border: 1px solid #444;
+    border-radius: 6px;
+    
+    /* Yazı Stili */
+    color: #888;
+    font-weight: 600;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 100%;
+}
+
+/* Hover (Üzerine Gelince) */
+.feature-sub-tabs button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #666;
+    color: #fff;
+    transform: translateY(-2px); /* Hafif yukarı kalkma efekti */
+}
+
+/* Aktif (Seçili) Durum */
+.feature-sub-tabs button.active {
+    background: rgba(181, 43, 43, 0.15); /* Crimson Red Vurgu (Hafif) */
+    border-color: #b52b2b; /* Crimson Red Çerçeve */
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Derinlik */
+}
+
+/* ============================================================
+   MOBİL UYUMLULUK: ALT TABLAR (SADECE İKON)
+   ============================================================ */
+
+@media (max-width: 600px) {
+    
+    /* Grid'i mobilde tek satıra sığdır (5 buton yan yana) */
+    .feature-sub-tabs {
+        grid-template-columns: repeat(5, 1fr) !important; 
+        gap: 5px;
+        padding: 15px;
+    }
+
+    /* Buton içindeki metni gizle */
+    .feature-sub-tabs button {
+        font-size: 0 !important; /* Metni yok et */
+        padding: 15px; /* Dikey boşluğu azalt */
+        height: auto;
+    }
+
+    /* İkonu (span) görünür ve büyük yap */
+    .feature-sub-tabs button span {
+        font-size: 2rem !important; /* İkon boyutu (24px civarı) */
+        margin-bottom: 0 !important; /* Alt boşluğu kaldır */
+        display: block;
+        line-height: 1;
+    }
+    
+    /* Aktif durumda biraz daha belirgin olsun */
+    .feature-sub-tabs button.active {
+        background: rgba(181, 43, 43, 0.25);
+    }
+}
 
 .sheet-feature-item { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
 .sheet-feature-item h4 { margin: 0 0 8px 0; color: #b52b2b; font-size: 1.1em; font-weight: bold; letter-spacing: 0.5px; border-bottom: 1px solid rgba(181, 43, 43, 0.2); padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
@@ -696,7 +793,6 @@
     border: 1px solid #333; 
     border-radius: 8px;
     padding: 15px 10px 15px 15px; 
-    margin-bottom: 15px;
 
     border-left: 2px solid #4dabf7;
 }

@@ -4,9 +4,7 @@
    ============================================================ */
 
 /* --- Ana Kapsayıcı --- */
-.background-detail-view {
-    padding: 5px;
-}
+
 
 /* --- Başlık Stili --- */
 .background-detail-view h2 {
@@ -22,7 +20,6 @@
 
 /* --- Genel İçerik Metinleri --- */
 .bg-full-content {
-    margin-top: 20px;
     color: #ddd;
 }
 
@@ -46,10 +43,10 @@
 
 /* --- Alt Bölümler (Subsections) --- */
 .bg-subsection {
-    margin-top: 25px;
     margin-bottom: 25px;
     padding-left: 15px;
     padding: 10px 15px;
+    padding-top: 20px;
 }
 
 .bg-sub-header {
