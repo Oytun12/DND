@@ -14,10 +14,12 @@ import { weaponList as dbWeapons, armorList as dbArmors, gearList as dbGear } fr
 import { useDiceLogic } from './src/logicDice.js';
 import { useInventoryLogic } from './src/logicInventory.js';
 import { useSpellLogic } from './src/logicSpells.js'; 
+// ============================================================
+// DÜZELTME BURADA: loadBackgroundData FONKSİYONU EKLENDİ
+// ============================================================
+import { DataLoader, loadBackgroundData } from './src/dataLoaderKarYa.js'; 
 
 // --- GLOBAL ONAY YÖNETİCİSİ ---
-
-// Listener'ı hafızada tutmak için değişken (Kapatırken silmek şart)
 let activeConfirmListener = null;
 
 window.customConfirm = (message, onConfirm) => {
@@ -27,43 +29,27 @@ window.customConfirm = (message, onConfirm) => {
 
     if (!modal || !textEl || !yesBtn) return;
 
-    // Mesajı Yaz
     textEl.innerText = message || "Bu işlem geri alınamaz. Emin misiniz?";
-    
-    // Modalı Aç
     modal.classList.remove('hidden');
-
-    // 1. Butona Odaklan (Bu sayede Enter ve Space varsayılan olarak çalışır)
     yesBtn.focus();
 
-    // 2. Klavye Kontrolü (Garanti Yöntem)
-    // Eğer daha önce kalmış bir listener varsa temizle
     if (activeConfirmListener) document.removeEventListener('keydown', activeConfirmListener);
 
     activeConfirmListener = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Sayfanın başka yerini tetiklemesin
-            yesBtn.click();     // Evet'e basılmış gibi yap
-        }
-        if (e.key === 'Escape') {
-            window.closeConfirmModal(); // ESC ile iptal et
-        }
+        if (e.key === 'Enter') { e.preventDefault(); yesBtn.click(); }
+        if (e.key === 'Escape') { window.closeConfirmModal(); }
     };
 
-    // Dinleyiciyi belgeye ekle
     document.addEventListener('keydown', activeConfirmListener);
 
-    // Evet Butonunu Ayarla
     yesBtn.onclick = () => {
-        onConfirm(); // İlgili işlemi yap
-        window.closeConfirmModal(); // Kapat
+        onConfirm(); 
+        window.closeConfirmModal(); 
     };
 };
 
 window.closeConfirmModal = () => {
     document.getElementById('global-confirm-modal').classList.add('hidden');
-    
-    // Dinleyiciyi Temizle (Çok Önemli!)
     if (activeConfirmListener) {
         document.removeEventListener('keydown', activeConfirmListener);
         activeConfirmListener = null;
@@ -82,7 +68,7 @@ const app = createApp({
         const { isSheetMode, activeSheetTab, finishCreation, hasCreatedSheet, activeFeatureSubTab } = useCharacterSheet();
         const activeInventoryTab = ref('owned'); 
         
-        // --- SEKME (TAB) YÖNETİMİ VE SÜRÜKLE-BIRAK (YENİ) ---
+        // --- SEKME (TAB) YÖNETİMİ ---
         const sheetTabs = ref([
             { id: 'actions',    label: 'Aksiyonlar',  icon: dndIcons.actions },
             { id: 'spells',     label: 'Büyüler',     icon: dndIcons.spells },
@@ -147,7 +133,7 @@ const app = createApp({
         const loading = ref(true);
         const error = ref(null);
         const backgroundList = ref([]);
-        const featList = ref([ "Alert", "Actor", "Athlete", "Lucky", "Tough", "War Caster" ]);
+        // featList artık dinamik olarak store.data.feats'ten gelecek
         const seedText = ref('');
 
         const avatarGallery = [
@@ -211,7 +197,7 @@ const app = createApp({
                 p: store.skills.proficiencies, e: store.skills.expertises, ch: userChoices.value,
                 sm: selectedScoreMethod.value, rp: rolledPool.value, hp: store.hp, inv: store.inventory, av: store.meta.avatar,
                 spl: store.spells?.known || [],
-                tabs: sheetTabs.value.map(t => t.id) // Tab sırasını kaydet
+                tabs: sheetTabs.value.map(t => t.id) 
             };      
             try { return window.LZString.compressToEncodedURIComponent(JSON.stringify(cleanObject(JSON.parse(JSON.stringify(exportData))))); } 
             catch (e) { return ""; }
@@ -259,23 +245,18 @@ const app = createApp({
                 // HP
                 if (data.hp) store.hp = { ...store.hp, ...data.hp };
 
-                // --- GÜVENLİ ENVANTER YÜKLEME (HATAYI ÇÖZEN KISIM) ---
+                // Envanter
                 if (data.inv) {
                     if (!store.inventory) store.inventory = {};
-                    
-                    // Dizilerin gerçekten dizi olduğundan emin ol
                     store.inventory.weapons = Array.isArray(data.inv.weapons) ? data.inv.weapons : [];
                     store.inventory.armor = Array.isArray(data.inv.armor) ? data.inv.armor : [];
                     store.inventory.gear = Array.isArray(data.inv.gear) ? data.inv.gear : [];
-                    
-                    // Para birimi kontrolü
                     store.inventory.currency = data.inv.currency || { cp:0, sp:0, ep:0, gp:0, pp:0 };
                 } else {
-                    // Veri yoksa sıfırla
                     store.inventory = { weapons: [], armor: [], gear: [], currency: { cp:0, sp:0, ep:0, gp:0, pp:0 } };
                 }
 
-                // Büyüleri Yükle
+                // Büyüler
                 if (data.spl && Array.isArray(data.spl)) {
                     if (!store.spells) store.spells = { known: [] };
                     store.spells.known = [...data.spl];
@@ -284,7 +265,7 @@ const app = createApp({
                     }, 500);
                 }
 
-                // Tab Sırasını Yükle
+                // Tab Sırası
                 if (data.tabs && Array.isArray(data.tabs)) {
                     sheetTabs.value.sort((a, b) => {
                         let idxA = data.tabs.indexOf(a.id);
@@ -336,10 +317,7 @@ const app = createApp({
             const cls = selectedClass.value; 
             if (!cls || !cls.proficiency) return false;
             
-            // Veri temizliği: Küçük harfe çevir ve boşlukları temizle
             const profs = cls.proficiency.map(p => p.toLowerCase().trim());
-            
-            // GENİŞLETİLMİŞ EŞLEŞTİRME HARİTASI
             const map = { 
                 str: ['str', 'güç', 'strength', 'kuvvet', 'kuv', 'saving throw: str'], 
                 dex: ['dex', 'çev', 'dexterity', 'agility', 'ceviklik', 'çeviklik'], 
@@ -350,16 +328,13 @@ const app = createApp({
             };
             
             if (!map[key]) return false;
-            const isProf = map[key].some(term => profs.some(p => p.includes(term)));
-            return isProf;
+            return map[key].some(term => profs.some(p => p.includes(term)));
         };
 
-        // --- BÜYÜ SALDIRI BONUSU HESAPLAMA ---
         const spellAttackMod = computed(() => {
             if (!selectedClass.value) return 0;
-            
             const clsName = selectedClass.value.name;
-            let attr = 'int'; // Varsayılan Zeka
+            let attr = 'int'; 
 
             const map = {
                 'Büyücü': 'int', 'Sihirbaz': 'int', 'Wizard': 'int', 'Rogue': 'int', 'Fighter': 'int', 'Artificer': 'int',
@@ -381,12 +356,11 @@ const app = createApp({
         const isInventoryOpen = ref(false); 
 
         // ============================================================
-        // 6. ENVANTER (LİSTE SEÇİMLİ)
+        // 6. ENVANTER
         // ============================================================
         const isCustomItemModalOpen = ref(false);
         const newItemType = ref('weapon'); 
         const itemSearchTerm = ref(""); 
-
         const activeSort = ref('az'); 
         const activeFilter = ref('all'); 
 
@@ -634,23 +608,31 @@ const app = createApp({
         });
 
         // ============================================================
-        // LIFE CYCLE
+        // LIFE CYCLE (VERİ YÜKLEME)
         // ============================================================
         onMounted(async () => {
             document.addEventListener('click', handleClickOutside);
             if (!store.meta.avatar || typeof store.meta.avatar !== 'string') store.meta.avatar = "../../img/avatars/default-avatar.png";
 
             try {
-                const [classRes, raceRes, bgRes] = await Promise.all([
-                    fetch('../../Data/classes.json').catch(()=>null), fetch('../../Data/races.json').catch(()=>null), fetch('../../Data/backgrounds.json').catch(()=>null)
-                ]);
-                const classData = classRes ? await classRes.json() : { class: [] };
+                // --- YENİ VERİ YÜKLEME YAPISI ---
+                // 1. Önce verileri yükle
+                const classData = await DataLoader.getClassData();
                 classList.value = classData.class || [];
-                const raceData = raceRes ? await raceRes.json() : { race: [] };
-                raceList.value = Array.isArray(raceData) ? raceData : (raceData.race || []);
-                const bgData = bgRes ? await bgRes.json() : { background: [] };
-                backgroundList.value = bgData.background || [];
                 
+                const raceData = await DataLoader.loadJSON('races.json');
+                raceList.value = Array.isArray(raceData) ? raceData : (raceData.race || []);
+                
+                // Artık loadBackgroundData doğru import edildiği için çalışacak
+                const bgData = await loadBackgroundData();
+                backgroundList.value = bgData || [];
+
+                // Feat'leri de yükle (Store'a atar)
+                await DataLoader.getFeatsData().then(data => {
+                    store.data.feats = data;
+                    console.log("Feats yüklendi:", data.length);
+                });
+
                 loading.value = false;
                 const loader = document.getElementById('initial-loader');
                 if(loader) { loader.classList.add('fade-out'); setTimeout(() => loader.remove(), 500); }
@@ -658,7 +640,12 @@ const app = createApp({
                 const urlParams = new URLSearchParams(window.location.search);
                 const urlSeed = urlParams.get('seed');
                 if (urlSeed) { seedText.value = urlSeed; setTimeout(() => loadFromSeed(), 500); }
-            } catch (err) { error.value = "Veri hatası"; loading.value = false; document.getElementById('initial-loader')?.remove(); }
+            } catch (err) { 
+                console.error("Yükleme Hatası:", err);
+                error.value = "Veri hatası"; 
+                loading.value = false; 
+                document.getElementById('initial-loader')?.remove(); 
+            }
         
             window.addEventListener('resize', () => {
                 isSkillsExpanded.value = window.innerWidth > 860;
@@ -668,12 +655,13 @@ const app = createApp({
         onUnmounted(() => { document.removeEventListener('click', handleClickOutside); });
 
         // ============================================================
-        // RETURN OBJECT (TEMİZLENMİŞ HALİ)
+        // RETURN OBJECT
         // ============================================================
         return {
             store, currentStep, steps, nextStep, prevStep, loading, error,
             isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
-            copyLink, showToast, backgroundList, featList, seedText, characterSeed, loadFromSeed, copySeed,
+            copyLink, showToast, backgroundList, 
+            seedText, characterSeed, loadFromSeed, copySeed,
             formatEntry, parseTags, dndIcons, isSheetMode, activeSheetTab, activeInventoryTab, isSkillsExpanded,
             finishCreation: handleFinish, hasCreatedSheet, activeFeatureSubTab, raceList, flatRaceList,
             selectedFlatOption, raceBonuses, activeRaceTraits, raceChoiceConfig, classList, selectedClass,
@@ -699,9 +687,7 @@ const app = createApp({
             calculatedAC, attackList, handleArmorEquip, getArmorMechanicText,
             activeModalTab, handleAddItem, newWeapon, newArmor, newGear,
             sheetTabs, handleTabDragStart, handleTabDragEnd, handleTabDrop,
-
-            // --- YENİ EKLENEN ---
-            currentBgFeature
+            currentBgFeature,
         };
     }
 });

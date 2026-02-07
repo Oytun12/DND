@@ -13,26 +13,34 @@ export const DataLoader = {
         }
     },
 
-    // Artık sadece class dizisini değil, tüm veriyi (feature'lar dahil) döndürüyoruz
+    // Sınıf verisini çeker
     async getClassData() {
         const data = await this.loadJSON('classes.json');
-        return data; // { class: [...], classFeature: [...], subclass: [...] }
+        return data; 
+    },
+
+    // YENİ: Feat (Yetenek) verisini çeker
+    async getFeatsData() {
+        try {
+            const data = await this.loadJSON('feats.json');
+            // 5eTools formatında genellikle { feat: [...] } olur
+            return data.feat || data;
+        } catch (e) {
+            console.warn("Feats dosyası yüklenemedi, boş dizi dönülüyor.");
+            return [];
+        }
     }
 };
 
-
+// Background verisi için bağımsız fonksiyon (Düzeltildi)
 export async function loadBackgroundData() {
     try {
-        const response = await fetch('Data/backgrounds.json');
-        if (!response.ok) {
-            throw new Error(`HTTP hatası! Durum: ${response.status}`);
-        }
-        const data = await response.json();
+        // ESKİ HATALI KOD: const response = await fetch('Data/backgrounds.json');
+        // YENİ DÜZELTİLMİŞ KOD: DataLoader.loadJSON kullanıyoruz, yol otomatik düzeliyor.
+        const data = await DataLoader.loadJSON('backgrounds.json');
         
-        // JSON yapın { "background": [...] } şeklinde olduğu için
-        // doğrudan data.background dizisini döndürüyoruz.
-        console.log("Geçmişler yüklendi:", data.background);
-        return data.background; 
+        console.log("Geçmişler yüklendi:", data.background?.length);
+        return data.background || []; 
     } catch (error) {
         console.error("Background verisi yüklenemedi:", error);
         return [];

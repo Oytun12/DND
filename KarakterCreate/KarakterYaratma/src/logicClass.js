@@ -148,8 +148,20 @@ export function useClassLogic() {
             }
 
             if (e.entries) { 
+                // ============================================================
+                // YENİ: İSİMSİZ KAPLAYICI (GHOST FIX)
+                // ============================================================
+                // Eğer bu grubun bir ismi (name) yoksa, gereksiz bir kutu (div) açma.
+                // Sadece içindekileri işle ve ham olarak geri döndür.
+                if (!e.name) {
+                    let subEntries = Array.isArray(e.entries) ? e.entries : [e.entries];
+                    return subEntries.map(sub => renderEntry(sub)).join(''); 
+                }
+                // ============================================================
+
+                // Eğer ismi varsa normal bir alt bölüm olarak işle
                 let subHtml = `<div class="feature-subsection">`;
-                if (e.name) subHtml += `<h5 class="feature-sub-title">${e.name}</h5>`;
+                subHtml += `<h5 class="feature-sub-title">${e.name}</h5>`;
                 let subEntries = Array.isArray(e.entries) ? e.entries : [e.entries];
                 subHtml += subEntries.map(sub => renderEntry(sub)).join(''); 
                 subHtml += `</div>`;
@@ -163,25 +175,61 @@ export function useClassLogic() {
     };
 
     // ============================================================
-    // 2. SEÇİM KARTI YARDIMCILARI (GÜNCELLENMİŞ VERSİYON)
+    // 2. SEÇİM KARTI YARDIMCILARI
     // ============================================================
 
-    // Özelliğin seçilmesi gereken sayısına göre (selectionCount),
-    // o seviyeye ait yapılmış seçimleri bulur (Dizi Olarak Döner).
+    const renderFeatHeader = (feat) => {
+        let metaHtml = "";
+
+        if (feat.prerequisite && feat.prerequisite.length > 0) {
+            let reqText = "";
+            const reqs = feat.prerequisite.map(req => {
+                if(typeof req === 'string') return req;
+                if(req.level) return `${req.level}. Seviye`;
+                if(req.race) return `Irk: ${req.race.map(r => r.name || r).join(" veya ")}`;
+                if(req.ability) return "Belirli Stat Gereksinimi";
+                if(req.spell) return "Büyü Yeteneği";
+                return "Özel";
+            });
+            metaHtml += `<div style="margin-bottom:10px; color:#ccc;"><strong style="color:#b52b2b;">Gereksinim: </strong> ${reqs.join(", ")}</div>`;
+        }
+
+        if (feat.ability) {
+            let bonuses = [];
+            for (const [key, val] of Object.entries(feat.ability)) {
+                if (key !== 'choose' && attrMap[key]) {
+                    bonuses.push(`${attrMap[key]} +${val}`);
+                }
+            }
+            if (feat.ability.choose) {
+                const choices = Array.isArray(feat.ability.choose) ? feat.ability.choose : [feat.ability.choose];
+                choices.forEach(ch => {
+                    if (ch.from) {
+                        const labels = ch.from.map(k => attrMap[k] || k.toUpperCase());
+                        if (labels.length > 5) bonuses.push(`Herhangi bir Stat +${ch.amount || 1}`);
+                        else bonuses.push(`${labels.join(" veya ")} +${ch.amount || 1}`);
+                    }
+                });
+            }
+            if (bonuses.length > 0) {
+                metaHtml += `<div style="margin-bottom:8px; color:#ccc;"><strong style="color:#e67e22;">Stat Artışı:</strong> ${bonuses.join(", ")}</div>`;
+            }
+        }
+
+        if (metaHtml) {
+            metaHtml += `<div style="border-bottom: 1px dashed #444; margin-bottom: 15px; padding-bottom:5px;"></div>`;
+        }
+
+        return metaHtml;
+    };
+
     const getExactChoices = (featureName, level, count) => {
         if (!userChoices.value || count <= 0) return [];
-        
         const choicesList = [];
-        
-        // Sihirbazda kayıt formatı: "FeatureName-Level_Index"
-        // Örn: "Eldritch Yakarışları-2_0", "Eldritch Yakarışları-2_1"
-        
         for (let i = 0; i < count; i++) {
             const key = `${featureName}-${level}_${i}`;
             const selection = userChoices.value[key];
-
             if (selection) {
-                // Seçim verisini görüntüye uygun hale getir
                 let descHtml = "";
                 if (typeof selection === 'string') {
                     choicesList.push({ type: 'simple', name: selection, desc: '' });
@@ -211,10 +259,8 @@ export function useClassLogic() {
             if(!opts && optionSourceMap[feat.name]) opts = findOptionsByName(optionSourceMap[feat.name]);
             let cleanOpts = opts ? opts.map(normalizeOption) : [];
             let count = detectSelectionCount(feat);
-            // Eğer seçenek listesi var ama count 0 geliyorsa varsayılan 1 olsun
             if(cleanOpts.length > 0 && count === 0) count = 1;
 
-            // Filtreleme: Seçim listesi varsa ana metinden çıkar
             let rawEntries = feat.entries || [];
             if (feat.type === 'options') {
                 rawEntries = [];
@@ -237,8 +283,8 @@ export function useClassLogic() {
                 isSubclass: isSub, 
                 hasOptions: !!cleanOpts.length, 
                 options: cleanOpts, 
-                selectionCount: count, // Seçim sayısını dışarıya veriyoruz
-                choices: [] // Varsayılan boş
+                selectionCount: count,
+                choices: []
             };
         } catch(e) { 
             console.error("Feature error:", feat.name);
@@ -249,22 +295,36 @@ export function useClassLogic() {
     const subclassUnlockLevel = computed(() => selectedClass.value?.classFeatures?.findIndex(grp => grp.some(f => f.gainSubclassFeature)) + 1 || -1);
     const subclassOptions = computed(() => selectedClass.value?.subclasses || []);
     
-    // --- ACTIVE FEATURES (SEÇİM ENJEKSİYONLU) ---
+    // --- ACTIVE FEATURES ---
     const activeFeatures = computed(() => {
         if (!selectedClass.value) return [];
         const timeline = [];
-        const optionCache = {}; 
-    
+        
         for (let i = 0; i < targetLevel.value; i++) {
             const feats = [];
-            const currentLvl = i + 1; // Seviye 1-20
+            const currentLvl = i + 1;
             
             selectedClass.value.classFeatures[i]?.forEach(f => {
                let processed = processFeature(f, false);
 
-                // --- GÜNCEL SEÇİM ENJEKSİYONU ---
-                // Özelliğin kaç seçim hakkı olduğuna (selectionCount) bakıyoruz.
-                // Ve o seviyeye (currentLvl) ait seçimleri çekiyoruz.
+                // --- FEAT ENJEKSİYONU ---
+                if (processed.name === 'Yetenek Skoru Gelişimi' || processed.name === 'Ability Score Improvement') {
+                    const currentAsi = store.abilities.asi[currentLvl];
+                    if (currentAsi && currentAsi.feat && store.data && store.data.feats) {
+                        const featObj = store.data.feats.find(ft => ft.name === currentAsi.feat);
+                        if (featObj) {
+                            const fullDesc = renderFeatHeader(featObj) + renderEntry(featObj.entries);
+                            
+                            processed.choice = {
+                                type: 'card',
+                                name: featObj.name,
+                                desc: fullDesc 
+                            };
+                            processed.choices = [ processed.choice ];
+                        }
+                    }
+                }
+
                 if (processed.selectionCount > 0) {
                     const choicesFound = getExactChoices(processed.name, currentLvl, processed.selectionCount);
                     if (choicesFound.length > 0) {
@@ -273,12 +333,8 @@ export function useClassLogic() {
                 }
 
                 if (processed.hasOptions) {
-                    optionCache[processed.name] = processed.options;
-                }
-                else if (optionCache[processed.name] && !processed.hasOptions) {
                     processed.hasOptions = true;
-                    processed.options = optionCache[processed.name];
-                    if (processed.selectionCount === 0) processed.selectionCount = 1;
+                    processed.options = processed.options; 
                 }
                 feats.push(processed);
             
@@ -288,14 +344,12 @@ export function useClassLogic() {
                         selectedSubclass.value.subclassFeatures?.[subFeatIndex]?.forEach(sf => {
                             let subProcessed = processFeature(sf, true);
                             
-                            // Alt Sınıf Seçimleri (Aynı Mantık)
                             if (subProcessed.selectionCount > 0) {
                                 const subChoicesFound = getExactChoices(subProcessed.name, currentLvl, subProcessed.selectionCount);
                                 if (subChoicesFound.length > 0) {
                                     subProcessed.choices = subChoicesFound;
                                 }
                             }
-
                             feats.push(subProcessed);
                         });
                     }
@@ -313,8 +367,6 @@ export function useClassLogic() {
     };
     
     const getChoiceDetail = (n, l, i) => formatEntry(userChoices.value[`${n}-${l}_${i}`]);
-
-    // Dışarı açmak için (HTML artık processed.choices kullanıyor ama referans kalsın)
     const getDisplayChoice = (featureName) => null; 
 
     // --- RESOURCES ---
