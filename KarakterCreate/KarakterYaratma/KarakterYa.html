@@ -2,31 +2,44 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="D&D Karakterim">
+    <meta name="theme-color" content="#1a1a1a">
+
     <title>Karakter Yaratıcısı - 5eTürkçe</title>
-    <!-- eski stiller STYLES 
-    <link rel="stylesheet" href="stylesKarYa.css">
-    <link rel="stylesheet" href="stylesScores.css">  -->
+    <meta name="description" content="D&D 5e Türkçe Karakter Kağıdı ve Yaratma Aracı.">
+    <meta name="keywords" content="D&D, 5e, Türkçe, Karakter Kağıdı, FRP">
+    <meta name="author" content="Oytun">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="D&D 5e Karakter Kağıdı">
+    <meta property="og:description" content="Karakterinizi görüntüleyin ve düzenleyin.">
+    <meta property="og:image" content="../../favicon.png">
+
+    <link id="dynamic-favicon" rel="icon" href="../../favicon.png" type="image/svg+xml">
+    <link id="dynamic-apple-icon" rel="apple-touch-icon" href="../../favicon.png">
 
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/layout.css">
     <link rel="stylesheet" href="styles/components.css">
-    <!-- <link rel="stylesheet" href="styles/sheet.css"> -->
-     <link rel="stylesheet" href="styles/sheet-live.css">
+    <link rel="stylesheet" href="styles/sheet-live.css">
     <link rel="stylesheet" href="styles/sheet-main.css">
     <link rel="stylesheet" href="styles/sheet-modules.css">
     <link rel="stylesheet" href="styles/dice.css">
     <link rel="stylesheet" href="styles/scores.css">
     <link rel="stylesheet" href="styles/sheet-background.css">
     
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
-        
-            <script type="importmap">
-            {
-                "imports": {
-                    "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
-                }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
             }
+        }
     </script>
 </head>
 <body>

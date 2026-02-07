@@ -229,61 +229,62 @@ const app = createApp({
         // KARAKTER KAYDETME & URL GÜNCELLEME (YENİ)
         // ============================================================
         
+        // ============================================================
+        // KARAKTER KAYDETME & URL GÜNCELLEME (GÜNCELLENMİŞ)
+        // ============================================================
+        
         const updateAppIcon = () => {
             const avatarUrl = store.meta.avatar;
-            // Eğer varsayılan avatarsa veya boşsa elleme (Sarı zar kalsın)
+            // Varsayılan veya boşsa işlem yapma
             if (!avatarUrl || avatarUrl.includes('default-avatar')) return; 
 
-            const links = [
-                { rel: 'icon', selector: "link[rel='icon']" },
-                { rel: 'apple-touch-icon', selector: "link[rel='apple-touch-icon']" },
-                { rel: 'shortcut icon', selector: "link[rel='shortcut icon']" }
-            ];
+            console.log("🖼️ İkon güncelleniyor (ID Hedefli): ", avatarUrl);
 
-            links.forEach(item => {
-                let link = document.querySelector(item.selector);
-                // Eğer link etiketi yoksa yarat
-                if (!link) {
-                    link = document.createElement('link');
-                    link.rel = item.rel;
-                    document.head.appendChild(link);
-                }
-                link.href = avatarUrl;
-            });
+            // 1. Favicon'u Güncelle (Browser Sekmesi)
+            const favicon = document.getElementById('dynamic-favicon');
+            if (favicon) {
+                favicon.href = avatarUrl;
+                // Tipini duruma göre ayarla (opsiyonel, genelde browser anlar)
+                // favicon.type = "image/jpeg"; 
+            }
+
+            // 2. Apple Touch Icon'u Güncelle (iOS Ana Ekran)
+            const appleIcon = document.getElementById('dynamic-apple-icon');
+            if (appleIcon) {
+                appleIcon.href = avatarUrl;
+            }
+
+            // 3. (Opsiyonel) Android/Shortcut için genel bir yaratma işlemi
+            // Eğer yukarıdaki ID'ler yoksa veya Android farklı bir tag arıyorsa:
+            let shortcutIcon = document.querySelector("link[rel='shortcut icon']");
+            if (!shortcutIcon) {
+                shortcutIcon = document.createElement('link');
+                shortcutIcon.rel = 'shortcut icon';
+                document.head.appendChild(shortcutIcon);
+            }
+            shortcutIcon.href = avatarUrl;
         };
+
 
         const saveCharacterState = () => {
             try {
                 // 1. Güncel Seed'i Hesapla
                 // (characterSeed computed olduğu için her zaman en güncel haldedir)
                 const currentSeed = characterSeed.value;
-                
-                if (!currentSeed) {
-                    showToast("Kayıt hatası: Veri yok!", "❌");
-                    return;
-                }
+                if (!currentSeed) { showToast("Kayıt hatası!", "❌"); return; }
 
-                // 2. URL'i Sessizce Güncelle
                 const newUrl = `${window.location.pathname}?seed=${currentSeed}`;
                 window.history.replaceState({ path: newUrl }, '', newUrl);
 
-                // 3. Uygulama İkonunu Güncelle
-                updateAppIcon();
+                updateAppIcon(); // Yeni ID'li fonksiyonu çağırır
 
-                // --- YENİ: Sayfa Başlığını Güncelle (Ana ekranda isim olarak bu görünür) ---
                 if (store.meta.name) {
-                    document.title = store.meta.name;
+                    document.title = store.meta.name; // Sayfa başlığını da güncelle
                 }
 
-                // 4. Kullanıcıya Bildir
                 showToast("Kaydedildi! Ana Ekrana Ekleyebilirsin.", "💾");
-                
-                // Opsiyonel: Mobil kullanıcılara "Ana Ekrana Ekle" ipucu verebiliriz
-                // (Şimdilik sadece toast yeterli)
-
             } catch (e) {
                 console.error("Kayıt Hatası:", e);
-                showToast("Kaydedilemedi!", "❌");
             }
         };
 
