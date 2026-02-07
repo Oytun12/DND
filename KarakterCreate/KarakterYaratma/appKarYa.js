@@ -64,6 +64,28 @@ const app = createApp({
         // GLOBAL STORE
         window.store = store;
 
+        // --- YARDIMCI: Başlık, İkon ve Meta Etiketleri Güncelle ---
+        const updatePageMeta = () => {
+            const charName = store.meta.name || "D&D Karakterim";
+            const avatarUrl = store.meta.avatar;
+
+            // 1. Sayfa Başlığını Güncelle (Ana ekranda görünecek isim)
+            document.title = charName;
+
+            // 2. Apple Web App Başlığını Güncelle (Önemli!)
+            let appleTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+            if (appleTitle) appleTitle.setAttribute("content", charName);
+
+            // 3. İkonları Güncelle
+            if (avatarUrl && !avatarUrl.includes('default-avatar')) {
+                const favicon = document.getElementById('dynamic-favicon');
+                const appleIcon = document.getElementById('dynamic-apple-icon');
+                
+                if (favicon) favicon.href = avatarUrl;
+                if (appleIcon) appleIcon.href = avatarUrl;
+            }
+        };
+
         // ============================================================
         // 1. GENEL SAYFA MANTIĞI
         // ============================================================
@@ -268,23 +290,33 @@ const app = createApp({
 
         const saveCharacterState = () => {
             try {
-                // 1. Güncel Seed'i Hesapla
-                // (characterSeed computed olduğu için her zaman en güncel haldedir)
                 const currentSeed = characterSeed.value;
                 if (!currentSeed) { showToast("Kayıt hatası!", "❌"); return; }
 
+                // Yeni URL'i oluştur
                 const newUrl = `${window.location.pathname}?seed=${currentSeed}`;
-                window.history.replaceState({ path: newUrl }, '', newUrl);
-
-                updateAppIcon(); // Yeni ID'li fonksiyonu çağırır
-
-                if (store.meta.name) {
-                    document.title = store.meta.name; // Sayfa başlığını da güncelle
+                
+                // Mevcut URL ile yeni URL aynıysa (Zaten kaydedilmişse)
+                if (window.location.search === `?seed=${currentSeed}`) {
+                    updatePageMeta();
+                    showToast("Zaten güncel! Ana ekrana ekleyebilirsin.", "✅");
+                    return;
                 }
 
-                showToast("Kaydedildi! Ana Ekrana Ekleyebilirsin.", "💾");
+                // --- GÜNCELLEME BURADA ---
+                // Varsayılan 'confirm' yerine kendi 'customConfirm' fonksiyonumuzu kullanıyoruz.
+                window.customConfirm(
+                    "Karakteri kalıcı olarak kaydetmek için sayfa yenilenecek. Devam edilsin mi?", 
+                    () => {
+                        // "Evet" butonuna basıldığında çalışacak kod:
+                        window.location.href = newUrl; 
+                    }
+                );
+                // -------------------------
+
             } catch (e) {
                 console.error("Kayıt Hatası:", e);
+                showToast("Kaydedilemedi!", "❌");
             }
         };
 
@@ -379,6 +411,11 @@ const app = createApp({
                 }
 
                 setTimeout(() => { syncAllocationsFromStore(); }, 200); 
+
+                // --- YENİ EKLENEN KISIM ---
+                updatePageMeta(); // Yüklendiği an ismi ve resmi değiştir!
+                // --------------------------
+
                 showToast("Yüklendi!", "🚀"); finishCreation(); seedText.value = ''; 
             } catch (e) { 
                 console.error("Yükleme Hatası:", e); 
