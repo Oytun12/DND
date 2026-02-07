@@ -65,24 +65,61 @@ const app = createApp({
         window.store = store;
 
         // --- YARDIMCI: Başlık, İkon ve Meta Etiketleri Güncelle ---
+        // --- YARDIMCI: Başlık, İkon ve MANIFEST Güncelle ---
         const updatePageMeta = () => {
             const charName = store.meta.name || "D&D Karakterim";
             const avatarUrl = store.meta.avatar;
+            const currentUrl = window.location.href; // O anki seed'li tam link
 
-            // 1. Sayfa Başlığını Güncelle (Ana ekranda görünecek isim)
+            // 1. Sayfa Başlığını Güncelle
             document.title = charName;
 
-            // 2. Apple Web App Başlığını Güncelle (Önemli!)
+            // 2. Apple Meta Etiketini Güncelle
             let appleTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
             if (appleTitle) appleTitle.setAttribute("content", charName);
 
-            // 3. İkonları Güncelle
+            // 3. İkonları Güncelle (iOS önceliği buradadır)
             if (avatarUrl && !avatarUrl.includes('default-avatar')) {
                 const favicon = document.getElementById('dynamic-favicon');
                 const appleIcon = document.getElementById('dynamic-apple-icon');
                 
                 if (favicon) favicon.href = avatarUrl;
                 if (appleIcon) appleIcon.href = avatarUrl;
+            }
+
+            // 4. DİNAMİK MANIFEST OLUŞTUR (SORUN ÇÖZÜCÜ) 🚀
+            // Statik manifest dosyasını ezip, start_url'i şimdiki link olan sanal bir manifest yaratıyoruz.
+            const dynamicManifest = {
+                "name": charName,
+                "short_name": charName.length > 12 ? charName.substring(0, 12) + "..." : charName,
+                "start_url": currentUrl, // <--- İŞTE BÜTÜN OLAY BURADA!
+                "display": "standalone",
+                "background_color": "#1a1a1a",
+                "theme_color": "#1a1a1a",
+                "icons": [
+                    {
+                        "src": avatarUrl || "../../img/SariZar.svg", // İkonu da buraya gömelim
+                        "sizes": "192x192",
+                        "type": "image/jpeg"
+                    },
+                    {
+                        "src": avatarUrl || "../../img/SariZar.svg",
+                        "sizes": "512x512",
+                        "type": "image/jpeg"
+                    }
+                ]
+            };
+
+            // JSON objesini Blob'a (Sanal Dosya) çevir
+            const stringManifest = JSON.stringify(dynamicManifest);
+            const blob = new Blob([stringManifest], {type: 'application/json'});
+            const manifestURL = URL.createObjectURL(blob);
+
+            // HTML'deki manifest linkini bul ve değiştir
+            let manifestLink = document.querySelector('link[rel="manifest"]');
+            if (manifestLink) {
+                manifestLink.href = manifestURL;
+                console.log("🚀 Manifest dinamik olarak güncellendi: ", currentUrl);
             }
         };
 
