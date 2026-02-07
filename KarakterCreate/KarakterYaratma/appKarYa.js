@@ -14,6 +14,8 @@ import { weaponList as dbWeapons, armorList as dbArmors, gearList as dbGear } fr
 import { useDiceLogic } from './src/logicDice.js';
 import { useInventoryLogic } from './src/logicInventory.js';
 import { useSpellLogic } from './src/logicSpells.js'; 
+import { useBackgroundLogic } from './src/logicBackground.js';
+
 // ============================================================
 // DÜZELTME BURADA: loadBackgroundData FONKSİYONU EKLENDİ
 // ============================================================
@@ -608,6 +610,11 @@ const app = createApp({
         });
 
         // ============================================================
+        // 9. GEÇMİŞ (BACKGROUND) MANTIĞI (YENİ)
+        // ============================================================
+        const { activeBackgroundContent, activeBackgroundFeature } = useBackgroundLogic();
+
+        // ============================================================
         // LIFE CYCLE (VERİ YÜKLEME)
         // ============================================================
         onMounted(async () => {
@@ -687,7 +694,8 @@ const app = createApp({
             calculatedAC, attackList, handleArmorEquip, getArmorMechanicText,
             activeModalTab, handleAddItem, newWeapon, newArmor, newGear,
             sheetTabs, handleTabDragStart, handleTabDragEnd, handleTabDrop,
-            currentBgFeature,
+            activeBackgroundContent,
+            activeBackgroundFeature
         };
     }
 });

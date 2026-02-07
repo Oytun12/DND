@@ -1,0 +1,141 @@
+/* ============================================================
+   SHEET-BACKGROUND.CSS
+   Karakter Kağıdı - Geçmiş (Background) Sekmesi Özel Stilleri
+   ============================================================ */
+
+/* --- Ana Kapsayıcı --- */
+.background-detail-view {
+    padding: 5px;
+}
+
+/* --- Başlık Stili --- */
+.background-detail-view h2 {
+    color: #b52b2b; /* Crimson Red */
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    justify-content: center;
+    margin: 15px;
+}
+
+/* --- Genel İçerik Metinleri --- */
+.bg-full-content {
+    margin-top: 20px;
+    color: #ddd;
+}
+
+.bg-full-content p {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+/* Listeler */
+.bg-full-content ul {
+    margin: 10px 0 15px 25px;
+    list-style-type: disc;
+    color: #ccc;
+}
+
+.bg-full-content li {
+    margin-bottom: 6px;
+    padding-left: 5px;
+}
+
+/* --- Alt Bölümler (Subsections) --- */
+.bg-subsection {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-left: 15px;
+    padding: 10px 15px;
+}
+
+.bg-sub-header {
+    font-size: 1em;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- TABLO TASARIMLARI (Data/styleBack.css ile Uyumlu) --- */
+.table-responsive {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 6px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.bg-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1e1e1e;
+    font-size: 0.9em;
+    min-width: 300px; /* Mobilde sıkışmayı önler */
+}
+
+/* Tablo Başlıkları */
+.bg-table th {
+    background-color: #2a2a2a;
+    color: #b52b2b; /* Crimson Red */
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 2px solid #444;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+/* Tablo Hücreleri */
+.bg-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #333;
+    color: #ccc;
+    vertical-align: top;
+}
+
+.bg-table tr:last-child td {
+    border-bottom: none;
+}
+
+.bg-table tr:hover td {
+    background-color: #252525;
+    color: #fff;
+}
+
+/* Zar Sütunu (Örn: d8 Sonuçları) */
+.bg-table td.text-center {
+    text-align: center;
+    width: 60px; /* Zar sütununu daralt */
+}
+
+.bg-table td.font-bold {
+    font-weight: bold;
+    color: #e67e22; /* Zar sonucunu turuncu yap */
+    font-family: monospace;
+    font-size: 1.1em;
+}
+
+/* --- Animasyonlar --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Mobil Uyumluluk --- */
+@media (max-width: 600px) {
+    .bg-table th, .bg-table td {
+        padding: 8px 10px;
+        font-size: 0.85em;
+    }
+    
+    .feature-box-highlight {
+        padding: 10px;
+        margin: 15px 0;
+    }
+}

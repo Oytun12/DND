@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="styles/sheet-modules.css">
     <link rel="stylesheet" href="styles/dice.css">
     <link rel="stylesheet" href="styles/scores.css">
+    <link rel="stylesheet" href="styles/sheet-background.css">
     
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
         
@@ -1089,35 +1090,27 @@
                             </div>
                         
                             <div v-if="activeFeatureSubTab === 'background'">
+    
                                 <div v-if="!store.background.selected" class="sheet-feature-item" style="text-align: center; color: #777;">
                                     <p>Henüz bir geçmiş seçilmedi.</p>
                                 </div>
                             
-                                <div v-else class="sheet-feature-item">
-                                    <h4>{{ store.background.selected.name }}</h4>
+                                <div v-else class="background-detail-view">
 
-                                    <div v-if="store.background.selected.skillProficiencies" class="skill-list">
-                                        Beceriler: {{ store.background.selected.skillProficiencies }}
+                                    <h2>{{ store.background.selected.name }}</h2>
+                                    <div v-if="activeBackgroundContent" class="bg-full-content">
+                                        <div v-html="activeBackgroundContent" class="feat-text"></div>
                                     </div>
                                 
-                                    <div v-if="currentBgFeature" class="feature-box-highlight">
-                                        <strong>{{ currentBgFeature.name }}</strong>
-                                        <span v-html="currentBgFeature.description" class="feature-box"></span>
-                                    </div>
-
-                                    <p v-else style="color:#666; font-style: italic; margin-top: 10px;">
-                                        Bu geçmişin özel bir mekanik yeteneği bulunmuyor.
-                                    </p>
                                 </div>
                             </div>
-                        </div>
                         
+                        </div>
                         <div v-if="activeSheetTab === 'description'">
                              <div v-if="selectedClass" class="sheet-section">
                                 <h4 style="color: #b52b2b; border-bottom: 1px solid rgba(181, 43, 43, 0.3); padding-bottom: 5px; margin-bottom: 10px;">
                                     Sınıf Donanımı ({{ selectedClass.name }})
                                 </h4>
-
                                 <div v-if="selectedClass.startingProficiencies" style="margin-bottom: 20px;">
                                     <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🛡️ Zırh ve Silah Yetkinlikleri</strong>
                                     <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: disc;">
@@ -1135,7 +1128,6 @@
                                         </li>
                                     </ul>
                                 </div>
-
                                 <div v-if="selectedClass.startingEquipment">
                                     <strong style="color: #e67e22; display:block; margin-bottom: 8px;">🎒 Standart Başlangıç Ekipmanları</strong>
                                     <ul style="padding-left: 20px; color: #ccc; margin: 0; list-style-type: circle;">
@@ -1151,8 +1143,6 @@
                                 </div>
                             </div>
                         </div>
-                        
-                    </div>
                 </main>
             </div>
         </div>
