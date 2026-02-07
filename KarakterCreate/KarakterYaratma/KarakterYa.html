@@ -657,7 +657,7 @@
             
             <header class="sheet-header-main">
     
-                <div class="header-section left-tools">
+               <div class="header-section left-tools">
                     <button class="edit-mode-btn" @click="isSheetMode = false" title="Sihirbaza Geri Dön">
                         ✎ Düzenle
                     </button>
@@ -669,9 +669,13 @@
                         <button @click="copyLink" class="btn btn-primary btn-icon-text" title="Linki Kopyala">
                             🔗 <span class="hide-on-mobile">Link</span>
                         </button>
+
+                        <button @click="saveCharacterState" class="btn btn-success btn-icon-text" title="Son Durumu URL'ye Kaydet" style="background-color: #2e7d32; color: white; border: 1px solid #1b5e20;">
+                            💾 <span class="hide-on-mobile">Güncelle</span>
+                        </button>
                     </div>
                 </div>
-            
+
                 <div class="header-section center-identity">
                     <div class="sheet-avatar">
                         <img :src="store.meta.avatar" alt="Avatar">

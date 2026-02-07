@@ -226,6 +226,68 @@ const app = createApp({
         const handleRoll = () => { rollStats(showToast); };
 
         // ============================================================
+        // KARAKTER KAYDETME & URL GÜNCELLEME (YENİ)
+        // ============================================================
+        
+        const updateAppIcon = () => {
+            const avatarUrl = store.meta.avatar;
+            // Eğer varsayılan avatarsa veya boşsa elleme (Sarı zar kalsın)
+            if (!avatarUrl || avatarUrl.includes('default-avatar')) return; 
+
+            const links = [
+                { rel: 'icon', selector: "link[rel='icon']" },
+                { rel: 'apple-touch-icon', selector: "link[rel='apple-touch-icon']" },
+                { rel: 'shortcut icon', selector: "link[rel='shortcut icon']" }
+            ];
+
+            links.forEach(item => {
+                let link = document.querySelector(item.selector);
+                // Eğer link etiketi yoksa yarat
+                if (!link) {
+                    link = document.createElement('link');
+                    link.rel = item.rel;
+                    document.head.appendChild(link);
+                }
+                link.href = avatarUrl;
+            });
+        };
+
+        const saveCharacterState = () => {
+            try {
+                // 1. Güncel Seed'i Hesapla
+                // (characterSeed computed olduğu için her zaman en güncel haldedir)
+                const currentSeed = characterSeed.value;
+                
+                if (!currentSeed) {
+                    showToast("Kayıt hatası: Veri yok!", "❌");
+                    return;
+                }
+
+                // 2. URL'i Sessizce Güncelle
+                const newUrl = `${window.location.pathname}?seed=${currentSeed}`;
+                window.history.replaceState({ path: newUrl }, '', newUrl);
+
+                // 3. Uygulama İkonunu Güncelle
+                updateAppIcon();
+
+                // --- YENİ: Sayfa Başlığını Güncelle (Ana ekranda isim olarak bu görünür) ---
+                if (store.meta.name) {
+                    document.title = store.meta.name;
+                }
+
+                // 4. Kullanıcıya Bildir
+                showToast("Kaydedildi! Ana Ekrana Ekleyebilirsin.", "💾");
+                
+                // Opsiyonel: Mobil kullanıcılara "Ana Ekrana Ekle" ipucu verebiliriz
+                // (Şimdilik sadece toast yeterli)
+
+            } catch (e) {
+                console.error("Kayıt Hatası:", e);
+                showToast("Kaydedilemedi!", "❌");
+            }
+        };
+
+        // ============================================================
         // SEED (KAYIT/YÜKLEME)
         // ============================================================
         const characterSeed = computed(() => {
@@ -705,6 +767,7 @@ const app = createApp({
             store, currentStep, steps, nextStep, prevStep, loading, error,
             isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
             copyLink, showToast, backgroundList, 
+            saveCharacterState,
             seedText, characterSeed, loadFromSeed, copySeed,
             formatEntry, parseTags, dndIcons, isSheetMode, activeSheetTab, activeInventoryTab, isSkillsExpanded,
             finishCreation: handleFinish, hasCreatedSheet, activeFeatureSubTab, raceList, flatRaceList,
