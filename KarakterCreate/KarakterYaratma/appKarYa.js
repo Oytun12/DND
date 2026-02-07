@@ -89,16 +89,22 @@ const app = createApp({
 
             // 4. DİNAMİK MANIFEST OLUŞTUR (SORUN ÇÖZÜCÜ) 🚀
             // Statik manifest dosyasını ezip, start_url'i şimdiki link olan sanal bir manifest yaratıyoruz.
+            // Mevcut URL'yi al (Seed dahil)
+            const fullUrl = window.location.href;
+            
             const dynamicManifest = {
                 "name": charName,
                 "short_name": charName.length > 12 ? charName.substring(0, 12) + "..." : charName,
-                "start_url": currentUrl, // <--- İŞTE BÜTÜN OLAY BURADA!
+                // start_url: Kullanıcının o an bulunduğu, seed'li link.
+                "start_url": fullUrl, 
                 "display": "standalone",
                 "background_color": "#1a1a1a",
                 "theme_color": "#1a1a1a",
+                // id: Uygulamaları birbirinden ayırmak için seed'i kullanıyoruz (Android için önemli)
+                "id": fullUrl, 
                 "icons": [
                     {
-                        "src": avatarUrl || "../../img/SariZar.svg", // İkonu da buraya gömelim
+                        "src": avatarUrl || "../../img/SariZar.svg",
                         "sizes": "192x192",
                         "type": "image/jpeg"
                     },
@@ -110,16 +116,22 @@ const app = createApp({
                 ]
             };
 
-            // JSON objesini Blob'a (Sanal Dosya) çevir
+            // JSON'u metne, metni de Base64 koduna çevir
             const stringManifest = JSON.stringify(dynamicManifest);
-            const blob = new Blob([stringManifest], {type: 'application/json'});
-            const manifestURL = URL.createObjectURL(blob);
+            const base64Manifest = btoa(unescape(encodeURIComponent(stringManifest)));
+            const dataUri = 'data:application/json;base64,' + base64Manifest;
 
             // HTML'deki manifest linkini bul ve değiştir
             let manifestLink = document.querySelector('link[rel="manifest"]');
             if (manifestLink) {
-                manifestLink.href = manifestURL;
-                console.log("🚀 Manifest dinamik olarak güncellendi: ", currentUrl);
+                manifestLink.setAttribute('href', dataUri);
+                console.log("🚀 Manifest Data-URI olarak güncellendi!");
+            } else {
+                // Eğer yoksa yarat
+                let newLink = document.createElement('link');
+                newLink.rel = 'manifest';
+                newLink.href = dataUri;
+                document.head.appendChild(newLink);
             }
         };
 
@@ -449,10 +461,14 @@ const app = createApp({
 
                 setTimeout(() => { syncAllocationsFromStore(); }, 200); 
 
-                // --- YENİ EKLENEN KISIM ---
-                updatePageMeta(); // Yüklendiği an ismi ve resmi değiştir!
-                // --------------------------
+                // 1. Hemen güncelle
+                updatePageMeta(); 
 
+                // 2. Garanti olsun diye 1 saniye sonra tekrar zorla (iOS için)
+                setTimeout(() => {
+                    updatePageMeta();
+                }, 1000);
+                
                 showToast("Yüklendi!", "🚀"); finishCreation(); seedText.value = ''; 
             } catch (e) { 
                 console.error("Yükleme Hatası:", e); 

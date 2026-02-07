@@ -1,7 +1,6 @@
 {
   "name": "D&D Karakter Oluşturma Rehberi",
   "short_name": "D&D",
-  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#f9f5e3",
   "theme_color": "#8b4513",
