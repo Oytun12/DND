@@ -197,7 +197,7 @@ export function calculateResources(cls, sub, race, level, stats) {
     }
 
     // --- BÜYÜCÜ (SORCERER) ---
-    if ((cName === 'Büyücü' || cName === 'Sorcerer') && level >= 2) {
+    if ((cName === 'Sorcerer') && level >= 2) {
         resources.push({ id: 'sorcery_points', name: 'Büyücülük Puanı', max: level, reset: 'long', icon: '🔮' });
     }
 
