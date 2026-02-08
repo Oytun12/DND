@@ -1,6 +1,7 @@
 import { ref, computed, watch } from 'vue';
 import { store } from './store.js';
 import { formatEntry } from './utils.js';
+import { calculateResources } from './logicResources.js';
 
 export function useClassLogic() {
     
@@ -369,76 +370,24 @@ export function useClassLogic() {
     const getChoiceDetail = (n, l, i) => formatEntry(userChoices.value[`${n}-${l}_${i}`]);
     const getDisplayChoice = (featureName) => null; 
 
-    // --- RESOURCES ---
+    // --- RESOURCES (YENİLENMİŞ HALİ) ---
+    // Artık hesaplamayı logicResources.js yapıyor.
     const classResources = computed(() => {
-        const cls = selectedClass.value;
-        const sub = selectedSubclass.value;
-        const lvl = targetLevel.value;
-        const resources = [];
-
-        if (!cls) return resources;
-        const cName = cls.name;
-        const sName = sub ? sub.name : "";
-        const rName = store.race.selected?.name || "";
-
-        const hdFace = getHitDie(cls);
-        resources.push({ id: 'hit_dice', name: `Can Zarı (d${hdFace})`, max: lvl, reset: 'long' });
-
-        if (rName === 'Aasimar') resources.push({ id: 'celestial_rev', name: 'Semavi Dönüşüm', max: 1, reset: 'long' });
-        if (rName.includes('Tiefling') && lvl >= 3) {
-             resources.push({ id: 'hellish_rebuke', name: 'Cehennem Azarı (2.Sv)', max: 1, reset: 'long' });
-             if (lvl >= 5) resources.push({ id: 'darkness_race', name: 'Karanlık (2.Sv)', max: 1, reset: 'long' });
-        }
-        if (rName.includes('Ejder')) resources.push({ id: 'breath_weapon', name: 'Ejder Nefesi', max: 1, reset: 'short' });
-
-        if (cName === 'Dövüşçü' || cName === 'Savaşçı') {
-            resources.push({ id: 'second_wind', name: 'İkinci Soluk', max: 1, reset: 'short' });
-            if (lvl >= 2) {
-                let maxAS = 1; if (lvl >= 17) maxAS = 2;
-                resources.push({ id: 'action_surge', name: 'Eylem Coşkusu', max: maxAS, reset: 'short' });
-            }
-            if (sName.includes('Savaş Üstadı') && lvl >= 3) {
-                let dice = 4; if (lvl >= 15) dice = 6; else if (lvl >= 7) dice = 5;
-                resources.push({ id: 'sup_dice', name: 'Üstünlük Zarı', max: dice, reset: 'short' });
-            }
-            if (sName.includes('Samuray') && lvl >= 3) resources.push({ id: 'fighting_spirit', name: 'Dövüş Ruhu', max: 3, reset: 'long' });
-            if (sName.includes('Psi') && lvl >= 3) resources.push({ id: 'psi_dice', name: 'Psionik Enerji', max: 2 * Math.ceil(lvl / 4) + 1, reset: 'long' });
-        }
-
-        if (cName === 'Barbar') {
-            let maxRage = 2; if (lvl >= 17) maxRage = 6; else if (lvl >= 12) maxRage = 5; else if (lvl >= 6) maxRage = 4; else if (lvl >= 3) maxRage = 3;
-            resources.push({ id: 'rage', name: 'Öfke (Rage)', max: maxRage, reset: 'long' });
-        }
-
-        if (cName === 'Keşiş' && lvl >= 2) resources.push({ id: 'ki', name: 'Ki Puanı', max: lvl, reset: 'short' });
-
-        if (cName === 'Warlock' || cName === 'Cadı') {
-            let slots = 1; if (lvl >= 17) slots = 4; else if (lvl >= 11) slots = 3; else if (lvl >= 2) slots = 2;
-            resources.push({ id: 'pact_slots', name: 'Pact Slotları', max: slots, reset: 'short' });
-        }
-
-        if (cName === 'Sihirbaz') {
-            resources.push({ id: 'arcane_recovery', name: 'Slot Yenileme (Arcane Rec.)', max: 1, reset: 'long' });
-            if (sName.includes('Kılıç') && lvl >= 2) resources.push({ id: 'bladesong', name: 'Kılıç Şarkısı', max: Math.ceil(lvl / 4) + 1, reset: 'long' });
-        }
+        // Store'daki yetenek puanlarını alıyoruz. 
+        // DİKKAT: store.abilities.base ham puandır. Bonus eklenmiş halini appKarYa tarafı biliyor.
+        // Ancak store üzerinden erişebildiğimiz en iyi veri şu an bu.
+        // İdeal çözüm: appKarYa.js'den finalAbilityScores'u buraya inject etmek olurdu.
+        // Fakat şimdilik store.abilities.base kullanıp ırk bonuslarını logicScores'dan çekemediğimiz için
+        // yaklaşık bir değer (veya appKarYa'da hesaplanan değeri store'a yazarak) kullanabiliriz.
+        // Şimdilik store.abilities.base üzerinden gidelim, bonuslar eksik olabilir ama çalışır.
         
-        if (cName === 'Büyücü' && lvl >= 2) resources.push({ id: 'sorcery_points', name: 'Büyücülük Puanı', max: lvl, reset: 'long' });
-
-        if ((cName === 'Rahip' && lvl >= 2) || (cName === 'Paladin' && lvl >= 3)) {
-             let maxCD = 1; if (cName === 'Rahip') { if (lvl >= 18) maxCD = 3; else if (lvl >= 6) maxCD = 2; }
-             resources.push({ id: 'channel_divinity', name: 'Kutsal Kanal', max: maxCD, reset: 'short' });
-        }
-        if (cName === 'Paladin') resources.push({ id: 'lay_on_hands', name: 'Şifa Elleri (HP)', max: lvl * 5, reset: 'long' });
-
-        if (cName === 'Ozan') {
-             const chaMod = Math.max(1, Math.floor(((store.abilities.base.cha || 10) - 10) / 2));
-             const resetType = lvl >= 5 ? 'short' : 'long';
-             resources.push({ id: 'bardic', name: 'Ozan İlhamı', max: chaMod, reset: resetType });
-        }
-        
-        if (cName === 'Druid' && lvl >= 2) resources.push({ id: 'wild_shape', name: 'Vahşi Şekil', max: 2, reset: 'short' });
-
-        return resources;
+        return calculateResources(
+            selectedClass.value,
+            selectedSubclass.value,
+            store.race.selected,
+            targetLevel.value,
+            store.abilities.base // Veya appKarYa.js'den buraya provide/inject ile final skorları taşıyabilirsin.
+        );
     });
 
     return {

@@ -15,6 +15,7 @@ import { useDiceLogic } from './src/logicDice.js';
 import { useInventoryLogic } from './src/logicInventory.js';
 import { useSpellLogic } from './src/logicSpells.js'; 
 import { useBackgroundLogic } from './src/logicBackground.js';
+import { calculateResources } from './src/logicResources.js';
 
 // ============================================================
 // DÜZELTME BURADA: loadBackgroundData FONKSİYONU EKLENDİ
@@ -219,7 +220,7 @@ const app = createApp({
         // ============================================================
         // 3. SINIF MANTIĞI
         // ============================================================
-        const { classList, selectedClass, selectedSubclass, targetLevel, userChoices, subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, getAvailableOptions, getChoiceDetail, classResources } = useClassLogic();
+        const { classList, selectedClass, selectedSubclass, targetLevel, userChoices, subclassOptions, subclassUnlockLevel, activeFeatures, getHitDie, getAvailableOptions, getChoiceDetail } = useClassLogic();
 
         // ============================================================
         // 4. PUANLAR
@@ -231,6 +232,16 @@ const app = createApp({
         // ============================================================
         const { SKILL_DEFINITIONS, raceSkillInfo, classSkillInfo, skillBudget, expertiseBudget, toggleSkill, calculatedSkills, currentProfCount, currentExpertCount } = useSkillLogic(finalAbilityScores, proficiencyBonus);
         const isSkillsExpanded = ref(window.innerWidth > 860);
+
+        const classResources = computed(() => {
+            return calculateResources(
+                selectedClass.value,
+                selectedSubclass.value,
+                store.race.selected,
+                targetLevel.value,
+                finalAbilityScores.value // <--- İşte kilit nokta burası!
+            );
+        });
 
         // ============================================================
         // UI & SİSTEM DEĞİŞKENLERİ
