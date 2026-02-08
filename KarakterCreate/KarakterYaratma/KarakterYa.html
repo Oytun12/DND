@@ -55,13 +55,14 @@
         <header class="main-header">
             <div class="header-container">
                 <div class="brand-area">
-                    <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
-                    <div class="titles">
-                        <h1 class="main-title">D&D 5e Türkçe</h1>
-                        <span class="sub-title">Karakter Motoru v2.4</span>
-                    </div>
+                    <a href="../../index.html" style="display: flex; align-items: center; gap: 15px;">
+                        <img src="../../img/SariZar.svg" alt="Logo" class="logo-img">
+                        <div class="titles">
+                            <h1 class="main-title">D&D 5e Türkçe</h1>
+                            <span class="sub-title">Karakter Motoru v2.4</span>
+                        </div>
+                    </a>    
                 </div>
-            
                 <nav class="desktop-nav">
                     <a href="../../Sayfalar/Race/race.html" class="nav-link">Irklar</a>
                     <a href="../../Sayfalar/Class/class.html" class="nav-link">Sınıflar</a>
@@ -897,7 +898,7 @@
                                 <h4 style="margin: 0 0 15px 0; color: #b52b2b; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 5px;">Sınıf Kaynakları</h4>
                                 <div class="res-grid">
                                     <div v-for="res in classResources" :key="res.id" class="res-card" :class="{ 'empty': (store.resources[res.id] !== undefined ? store.resources[res.id] : res.max) === 0 }">
-                                        <div class="res-info"><h5>{{ res.name }}</h5><div class="res-meta"><span v-if="res.reset === 'short'">⚡ Kısa Dinlenme</span><span v-else>💤 Uzun Dinlenme</span></div></div>
+                                        <div class="res-info"><h5>{{ res.icon }} {{ res.name }}</h5><div class="res-meta"><span v-if="res.reset === 'short'">⚡ Kısa Dinlenme</span><span v-else>💤 Uzun Dinlenme</span></div></div>
                                         <div class="res-controls"><button @click="updateResource(res.id, -1, res.max)" class="res-btn minus">–</button><div class="res-value">{{ store.resources[res.id] !== undefined ? store.resources[res.id] : res.max }}<span class="max">/{{ res.max }}</span></div><button @click="updateResource(res.id, 1, res.max)" class="res-btn plus">+</button></div>
                                     </div>
                                 </div>
@@ -1675,6 +1676,40 @@
                 </div>
             </div>
         </div>
+
+        <div v-if="showRestModal" class="modal-overlay">
+            <div class="modal-content">
+                <h3>Kamp Ateşi 🔥</h3>
+                
+                <div class="rest-stats">
+                    <div>Mevcut Can: <span style="color:#4caf50">{{ store.hp.current }}</span></div>
+                    <div>Kalan Zar: <span style="color:#d68c29">
+                        {{ store.resources['hit_dice'] !== undefined ? store.resources['hit_dice'] : (classResources.find(r=>r.id==='hit_dice')?.max || 0) }} 
+                    </span></div>
+                </div>
+            
+                <div class="dice-control-area">
+                    <label>Harcanacak Zar:</label>
+                    <div class="stepper">
+                        <button @click="spendDiceCount > 0 ? spendDiceCount-- : null" class="step-btn" :disabled="spendDiceCount <= 0">-</button>
+                        
+                        <span class="step-val">{{ spendDiceCount }}</span>
+                        
+                        <button @click="spendDiceCount < (store.resources['hit_dice'] !== undefined ? store.resources['hit_dice'] : (classResources.find(r=>r.id==='hit_dice')?.max || 0)) ? spendDiceCount++ : null" class="step-btn">+</button>
+                    </div>
+                    <p v-if="spendDiceCount === 0" style="font-size: 0.8em; color: #aaa; margin-top: 5px;">Zar harcamadan sadece dinleniyorsun.</p>
+                </div>
+            
+                <div class="modal-actions">
+                    <button @click="showRestModal = false" class="cancel-btn">Vazgeç</button>
+                    
+                    <button @click="confirmShortRest" class="confirm-btn">
+                        {{ spendDiceCount > 0 ? 'İyileş & Dinlen' : 'Dinlen' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div id="global-confirm-modal" class="modal-overlay hidden" style="z-index: 9999;">
             <div class="confirm-card">
                 <h3 style="margin:0 0 10px 0; color:#b52b2b;">⚠️ Dikkat</h3>

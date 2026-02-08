@@ -44,10 +44,10 @@ export function calculateResources(cls, sub, race, level, stats) {
         
         resources.push({ id: 'rage', name: 'Öfke (Rage)', max: maxRage, reset: 'long', icon: '🔥' });
 
-        if (sName.includes('Ata Yadigarı') || sName.includes('Ancestral')) {
+        if (sName.includes('Ata Muhafızı Yolu') || sName.includes('Ancestral')) {
              // Spirit Shield vb. genelde rage harcar ama özel bir havuz varsa buraya eklenir.
         }
-        if (sName.includes('Yobaz') || sName.includes('Zealot') && level >= 6) {
+        if (sName.includes('Yobazın Yolu') || sName.includes('Zealot') && level >= 6) {
              resources.push({ id: 'fanatical_focus', name: 'Fanatik Odak', max: 1, reset: 'long', icon: '🛡️' });
         }
     }
@@ -148,7 +148,7 @@ export function calculateResources(cls, sub, race, level, stats) {
              resources.push({ id: 'giants_might', name: 'Devin Kudreti', max: prof, reset: 'long', icon: '💪' });
         }
         
-        if (sName.includes('Arcane Archer') && level >= 3) {
+        if (sName.includes('Arcane Okçu') && level >= 3) {
             resources.push({ id: 'arcane_shot', name: 'Arcane Atış', max: 2, reset: 'short', icon: '🏹' });
         }
     }
@@ -168,7 +168,7 @@ export function calculateResources(cls, sub, race, level, stats) {
     }
 
     // --- KORUCU (RANGER) ---
-    if (cName === 'Korucu') {
+    if (cName === 'Kolcu') {
         // Tasha's Favored Foe
         // Eğer varyant özellik seçildiyse (kontrolü zor, varsayılan ekleyelim)
         const prof = Math.ceil(level / 4) + 1;
@@ -186,7 +186,7 @@ export function calculateResources(cls, sub, race, level, stats) {
     }
 
     // --- HARAMİ (ROGUE) ---
-    if (cName === 'Rogue' || cName === 'Harami') {
+    if (cName === 'Rogue' || cName === 'Düzenbaz') {
         if (sName.includes('Soulknife') && level >= 3) {
             const prof = Math.ceil(level / 4) + 1;
             resources.push({ id: 'psi_dice_rogue', name: 'Psionik Enerji', max: prof * 2, reset: 'long', icon: '🧠' });
@@ -217,10 +217,10 @@ export function calculateResources(cls, sub, race, level, stats) {
 
         resources.push({ id: 'pact_slots', name: `Pact Slotları (Lv.${slotLvl})`, max: slots, reset: 'short', icon: '🌙' });
         
-        if (sName.includes('Celestial') && level >= 1) {
+        if (sName.includes('Kutsal') && level >= 1) {
             resources.push({ id: 'healing_light', name: 'İyileştirici Işık (d6)', max: 1 + level, reset: 'long', icon: '✨' });
         }
-        if (sName.includes('Hexblade') && level >= 1) {
+        if (sName.includes('Hex Kılıcı') && level >= 1) {
             resources.push({ id: 'hexblades_curse', name: 'Hexblade Laneti', max: 1, reset: 'short', icon: '💀' });
         }
     }
@@ -229,7 +229,7 @@ export function calculateResources(cls, sub, race, level, stats) {
     if (cName === 'Sihirbaz' || cName === 'Wizard') {
         resources.push({ id: 'arcane_recovery', name: 'Arcane Recovery', max: 1, reset: 'long', icon: '📘' });
         
-        if (sName.includes('Kılıç') || sName.includes('Bladesinging') && level >= 2) {
+        if (sName.includes('Bladesinger') || sName.includes('Bladesinging') && level >= 2) {
             const prof = Math.ceil(level / 4) + 1;
             resources.push({ id: 'bladesong', name: 'Kılıç Şarkısı', max: prof, reset: 'long', icon: '⚔️' });
         }
@@ -255,11 +255,11 @@ export function calculateResources(cls, sub, race, level, stats) {
     }
     if (rName.includes('Tiefling') && level >= 3) {
          resources.push({ id: 'hellish_rebuke', name: 'Cehennem Azarı', max: 1, reset: 'long', icon: '🔥' });
-         if (level >= 5) resources.push({ id: 'darkness_race', name: 'Karanlık (Irk)', max: 1, reset: 'long', icon: '🌑' });
+         if (level >= 5) resources.push({ id: 'darkness_race', name: 'Karanlık (Tiefling)', max: 1, reset: 'long', icon: '🌑' });
     }
     if (rName.includes('Orc') || rName.includes('Ork')) {
          // Half-orc Relentless Endurance
-         resources.push({ id: 'relentless_endurance', name: 'Amansız Dayanıklılık', max: 1, reset: 'long', icon: '💀' });
+         resources.push({ id: 'relentless_endurance', name: 'Amansız Dayanıklılık (Half-Orc)', max: 1, reset: 'long', icon: '💀' });
     }
 
     return resources;

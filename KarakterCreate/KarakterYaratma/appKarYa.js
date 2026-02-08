@@ -493,17 +493,28 @@ const app = createApp({
             if (newVal > max) newVal = max; if (newVal < 0) newVal = 0;
             store.resources[id] = newVal;
         };
+        
 
+        // 1. Modal Açma (Akıllı Varsayılan Değer)
         const handleRest = (type) => {
-            let msg = type === 'long' ? "Uzun dinlenme: HP, Büyüler ve Yetenekler yenilendi! 💤" : "Kısa dinlenme yapıldı. ☕";
-            classResources.value.forEach(res => { if (type === 'long' || res.reset === 'short') store.resources[res.id] = res.max; });
-            
-            if (typeof window.resetSpellSlots === 'function') {
-                window.resetSpellSlots(type);
-                const charClass = store.class.selected?.name;
-                if (type === 'short' && charClass === 'Warlock') msg += " (Pact Büyüleri Yenilendi)";
+            if (type === 'short') {
+                const hdRes = getHitDiceResource();
+                // Zar var mı kontrolü (yoksa 0)
+                const currentHD = store.resources['hit_dice'] !== undefined ? store.resources['hit_dice'] : (hdRes ? hdRes.max : 0);
+
+                // Eğer can full ise varsayılan 0 olsun, değilse ve zar varsa 1 olsun
+                if (currentHP.value >= maxHP.value) {
+                    spendDiceCount.value = 0;
+                } else {
+                    // Can eksikse ve zarın varsa 1, yoksa 0
+                    spendDiceCount.value = currentHD > 0 ? 1 : 0;
+                }
+                
+                showRestModal.value = true;
+            } 
+            else if (type === 'long') {
+                performLongRest();
             }
-            showToast(msg);
         };
 
         // ============================================================
@@ -768,6 +779,128 @@ const app = createApp({
             } else { addDeathSave(type); }
         };
 
+        // Yardımcı Fonksiyon: Can Zarı Kaynağını Bul
+        const getHitDiceResource = () => {
+            return classResources.value.find(r => r.id === 'hit_dice');
+        };
+
+        // --- Dinlenme Sistemi Değişkenleri ---
+        const showRestModal = ref(false); // Modalı açıp kapatan kontrol
+        const spendDiceCount = ref(1);    // Harcanacak zar sayısı
+
+        // 1. UZUN DİNLENME (Long Rest)
+        const performLongRest = () => {
+            if(!confirm("Uzun dinlenme yapmak üzeresin. Canın fullenecek ve kaynaklar yenilenecek.")) return;
+
+            // 1. Canı Fulle
+            store.hp.current = maxHP.value; // maxHP computed'ını kullanıyoruz
+
+            // 2. Tüm Kaynakları Resetle (Uzun Dinlenmede hepsi dolar)
+            // classResources listesindeki her kaynağın max değerini store.resources'a yazıyoruz
+            classResources.value.forEach(res => {
+                // Eğer kaynak 'hit_dice' ise özel kural: Yarısı geri gelir
+                if (res.id === 'hit_dice') {
+                    const currentHD = store.resources['hit_dice'] || res.max;
+                    const regained = Math.max(1, Math.floor(res.max / 2));
+                    store.resources['hit_dice'] = Math.min(res.max, currentHD + regained);
+                } 
+                else if (res.reset === 'long' || res.reset === 'short') {
+                    // Diğer tüm uzun/kısa dinlenme kaynaklarını fulle
+                    store.resources[res.id] = res.max;
+                }
+            });
+
+            showToast("Uzun dinlenme tamamlandı. Zinde uyandın! ☀️", "💤");
+        };
+
+        // 2. KISA DİNLENME (Short Rest) - Modal Açma
+        const openShortRestModal = () => {
+            if (store.hitDice.current <= 0) {
+                alert("Hiç Can Zarın kalmadı! Kısa dinlenmede iyileşmek için zarın yok.");
+                return;
+            }
+            spendDiceCount.value = 1; // Varsayılan 1 zar
+            showRestModal.value = true;
+        };
+
+        // 3. KISA DİNLENME - Uygulama (Zar Atma ve İyileşme)
+        const confirmShortRest = () => {
+            const diceToSpend = parseInt(spendDiceCount.value);
+            const hdRes = getHitDiceResource();
+            const currentHD = store.resources['hit_dice'] !== undefined ? store.resources['hit_dice'] : hdRes.max;
+
+            // Güvenlik: Olmayan zarı harcatma
+            if (diceToSpend > currentHD) {
+                showToast("Yeterli Can Zarın yok!", "⚠️");
+                return;
+            }
+
+            let totalHeal = 0;
+            let individualRolls = []; // Tek tek zarları tutacak dizi
+            
+            // Anlık Con Modunu al
+            const conScore = finalAbilityScores.value ? finalAbilityScores.value.con : 10;
+            const conMod = Math.floor((conScore - 10) / 2);
+
+            if (diceToSpend > 0) {
+                // Zar Tipi
+                let dieFace = 8; 
+                if (hdRes && hdRes.name) {
+                    const match = hdRes.name.match(/d(\d+)/);
+                    if (match) dieFace = parseInt(match[1]);
+                }
+                
+                // Zarları At ve Kaydet
+                for (let i = 0; i < diceToSpend; i++) {
+                    const roll = Math.floor(Math.random() * dieFace) + 1;
+                    individualRolls.push(roll); // Zarı kaydet
+                    totalHeal += Math.max(0, roll + conMod); // İyileşmeyi hesapla
+                }
+
+                // Canı ve Zarları Güncelle
+                store.hp.current = Math.min(maxHP.value, currentHP.value + totalHeal);
+                store.resources['hit_dice'] = currentHD - diceToSpend;
+
+                // --- ZAR GEÇMİŞİNE EKLEME ---
+                // diceHistory setup içinde useDiceLogic'ten geliyor, reactive bir ref'tir.
+                if (diceHistory && diceHistory.value) {
+                    diceHistory.value.unshift({
+                        id: Date.now(),
+                        source: `Kısa Dinlenme (${diceToSpend}d${dieFace})`,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        // baseRoll html'de string olarak da gösterilebilir.
+                        // Örn: (3, 5) şeklinde zarları gösterelim
+                        baseRoll: `(${individualRolls.join(', ')})`, 
+                        modifier: conMod * diceToSpend, // Toplam Con bonusu
+                        total: totalHeal,
+                        isCrit: false, // İyileşmede kritik olmaz
+                        isFail: false
+                    });
+                    
+                    // İstersen sonuçları görmek için paneli otomatik aç:
+                    isHistoryOpen.value = true;
+                }
+                // -----------------------------
+            }
+
+            // Kısa Dinlenme Kaynaklarını (Warlock vb.) Her Zaman Yenile
+            let refreshedCount = 0;
+            classResources.value.forEach(res => {
+                if (res.reset === 'short') {
+                    store.resources[res.id] = res.max;
+                    refreshedCount++;
+                }
+            });
+
+            showRestModal.value = false;
+            
+            if (totalHeal > 0) {
+                showToast(`Dinlenme: +${totalHeal} Can`, "☕");
+            } else {
+                showToast("Kısa molan bitti.", "☕");
+            }
+        };
+
         // ============================================================
         // 8. BÜYÜ SİSTEMİ
         // ============================================================
@@ -900,6 +1033,12 @@ const app = createApp({
             activeBackgroundContent,
             activeBackgroundFeature,
             activeDescSubTab,
+
+            performLongRest,
+            openShortRestModal,
+            confirmShortRest,
+            showRestModal,
+            spendDiceCount,
         };
     }
 });

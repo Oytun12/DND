@@ -68,8 +68,9 @@ ul { list-style: none; padding: 0; margin: 0; }
     display: none; 
 }
 .mobile-nav.open { display: block; }
-.mobile-nav ul li {text-align: center; }
-.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; } 
+.mobile-nav ul li a:hover { color: #b52b2b; }
 
 /* --- FİLTRELEME ALANI (Gelişmiş) --- */
 .filter-section {
