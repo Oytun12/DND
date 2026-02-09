@@ -247,7 +247,7 @@ const app = createApp({
         // UI & SİSTEM DEĞİŞKENLERİ
         // ============================================================
         const currentStep = ref(0);
-        const steps = [{ title: "Konsept" }, { title: "Irk" }, { title: "Sınıf" }, { title: "Puanlar" }, { title: "Geçmiş" }];
+        const steps = [{ title: "Konsept" }, { title: "Irk" }, { title: "Sınıf" }, { title: "Stat" }, { title: "Geçmiş" }];
         const nextStep = () => { if (currentStep.value < steps.length - 1) currentStep.value++; };
         const prevStep = () => { if (currentStep.value > 0) currentStep.value--; };
 

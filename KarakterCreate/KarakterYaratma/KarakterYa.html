@@ -249,7 +249,7 @@
                                     <option v-for="c in classList" :key="c.name" :value="c">{{ c.name }}</option>
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <div>
                                 <label>Seviye: <strong>{{ targetLevel }}</strong></label>
                                 <input type="range" v-model.number="targetLevel" min="1" max="20" class="level-slider">
                             </div>

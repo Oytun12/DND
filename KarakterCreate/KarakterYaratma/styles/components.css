@@ -749,6 +749,106 @@ input:checked + .slider:before {
     transform: translateX(16px);
 }
 
+/* --- Level Slider (Seviye Kaydırıcısı) - Yeni Stil --- */
+
+/* 1. Slider Genel Yapısı */
+input[type=range].level-slider {
+  -webkit-appearance: none; /* Varsayılan stili kaldır */
+  width: 100%;
+  background: transparent;
+  margin: 10px 0;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+input[type=range].level-slider:focus {
+  outline: none;
+}
+
+/* 2. Kaydırma Çubuğu (Track - Yol) */
+/* Chrome, Safari, Opera */
+input[type=range].level-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: #1a1a1a; /* Çok koyu gri zemin */
+  border: 1px solid #444; /* Hafif çerçeve */
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Firefox */
+input[type=range].level-slider::-moz-range-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* 3. Tutamaç (Thumb - Yuvarlak Kısım) */
+
+/* Chrome, Safari */
+input[type=range].level-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  
+  /* İSTENİLEN RENKLER (Varsayılan Hal) */
+  background: #333333; /* İçi Koyu Gri */
+  border: 3px solid #bbbbbb; /* Çerçevesi Açık Gri */
+  
+  margin-top: -10px; /* Ortalamak için */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  transition: all 0.2s ease; /* Yumuşak geçiş efekti */
+}
+
+/* Firefox */
+input[type=range].level-slider::-moz-range-thumb {
+  height: 26px;
+  width: 26px;
+  border: none;
+  border-radius: 50%;
+  
+  /* İSTENİLEN RENKLER */
+  background: #333333;
+  border: 3px solid #bbbbbb;
+  
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  transition: all 0.2s ease;
+}
+
+/* 4. Efektler (Hover ve Active) */
+
+/* Fare üzerine gelince (Hover) - Hafif parlasın */
+input[type=range].level-slider:hover::-webkit-slider-thumb {
+  border-color: #ffffff; /* Çerçeve beyaza döner */
+  transform: scale(1.05);
+}
+input[type=range].level-slider:hover::-moz-range-thumb {
+  border-color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* TIKLANINCA / SÜRÜKLENİNCE (Active) - Kızıl Olsun */
+input[type=range].level-slider:active::-webkit-slider-thumb {
+  background: #b52b2b; /* Kızıl (D&D kırmızısı) */
+  border-color: #ff8c8c; /* Çerçeve hafif açık kırmızıya dönsün */
+  transform: scale(1.2); /* Biraz büyüsün */
+  box-shadow: 0 0 10px rgba(181, 43, 43, 0.6); /* Kızıl bir parlama ekle */
+}
+
+input[type=range].level-slider:active::-moz-range-thumb {
+  background: #b52b2b;
+  border-color: #ff8c8c;
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(181, 43, 43, 0.6);
+}
+
 @media (max-width: 800px) {
     .mobile-sheet-toggle {
         display: flex; align-items: center; justify-content: center;

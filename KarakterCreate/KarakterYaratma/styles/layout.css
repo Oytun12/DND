@@ -91,7 +91,7 @@
         border-radius: 0;
     }
     .wizard-container { width: 100%; min-height: auto; }
-    .step-indicator { margin-bottom: 20px; padding-bottom: 10px; }
+
     .desktop-nav { display: none; }
     .menu-icon { display: block; }
     /* YENİ: Mobilde yanlardaki Geri/İleri oklarını gizle */
@@ -99,9 +99,5 @@
         display: none !important;
     }
     
-    /* Adımları biraz daha sıkılaştır ki sığsın */
-    .step-indicator {
-        justify-content: center; /* Ortala */
-        gap: 15px; /* Araları aç */
-    }
+
 }
