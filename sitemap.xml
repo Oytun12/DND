@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://oytun12.github.io/DND/</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://marangozor.github.io/DND/</loc>
+    <lastmod>2026-02-09</lastmod>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://oytun12.github.io/DND/Sayfalar/Race/race.html</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://marangozor.github.io/DND/Sayfalar/Race/race.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://oytun12.github.io/DND/Sayfalar/Class/class.html</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://marangozor.github.io/DND/Sayfalar/Class/class.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://oytun12.github.io/DND/Sayfalar/BackGround/back.html</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://marangozor.github.io/DND/Sayfalar/BackGround/back.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://oytun12.github.io/DND/Sayfalar/Envanter/envanter.html</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://marangozor.github.io/DND/Sayfalar/Envanter/envanter.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://oytun12.github.io/DND/KarakterCreate/KarakterOlusturma/karakterOl.html</loc>
-    <lastmod>2026-01-07</lastmod>
-    <priority>0.9</priority>
-  </url>
+    <loc>https://marangozor.github.io/DND/Sayfalar/Spells/spells.html</loc>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.8</priority>
   <url>
-    <loc>https://oytun12.github.io/DND/KarakterCreate/PointBuy/PointBuy.html</loc>
-    <lastmod>2026-01-07</lastmod>
-    <priority>0.9</priority>
-  </url>
+
   <url>
-    <loc>https://oytun12.github.io/DND/KarakterCreate/KarakterSheet/KaKa.html</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://marangozor.github.io/DND/Sayfalar/EkBilgi/ekbilgi.html</loc>
+    <lastmod>2026-02-09</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://marangozor.github.io/DND/KarakterCreate/KarakterSheet/KaKa.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <priority>0.6</priority>
   </url>
 </urlset>
