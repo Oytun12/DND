@@ -753,12 +753,15 @@ input:checked + .slider:before {
 
 /* 1. Slider Genel Yapısı */
 input[type=range].level-slider {
-  -webkit-appearance: none; /* Varsayılan stili kaldır */
+  -webkit-appearance: none; /* Chrome, Safari, Opera, Edge */
+  -moz-appearance: none;    /* Firefox */
+  appearance: none;
+
   width: 100%;
   background: transparent;
   margin: 10px 0;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 19px;
 }
 
 input[type=range].level-slider:focus {
