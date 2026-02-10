@@ -672,6 +672,17 @@
             <header class="sheet-header-main">
     
                <div class="header-section left-tools">
+    
+                    <div class="auth-wrapper" style="margin-right: 10px;">
+                        <button v-if="!user" @click="handleLogin" title="Google ile Giriş Yap" style="background:transparent; border:1px solid #4285F4; color:#4285F4; padding:5px 10px; border-radius:20px; font-size:0.8em; cursor:pointer; display:flex; align-items:center; gap:5px;">
+                            <span style="font-weight:bold;">G</span> Giriş
+                        </button>
+                    
+                        <div v-else @click="handleLogout" title="Çıkış Yap" style="cursor:pointer; position:relative;">
+                            <img :src="user.photoURL" style="width:32px; height:32px; border-radius:50%; border:2px solid #2e7d32;">
+                            <span style="position:absolute; bottom:0; right:0; width:8px; height:8px; background:#2e7d32; border-radius:50%; border:1px solid #1a1a1a;"></span>
+                        </div>
+                    </div>
                     <button class="edit-mode-btn" @click="isSheetMode = false" title="Sihirbaza Geri Dön">
                         ✎ Düzenle
                     </button>
@@ -684,8 +695,25 @@
                             🔗 <span class="hide-on-mobile">Link</span>
                         </button>
 
-                        <button @click="saveCharacterState" class="btn btn-success btn-icon-text" title="Son Durumu URL'ye Kaydet" style="background-color: #2e7d32; color: white; border: 1px solid #1b5e20;">
-                            💾 <span class="hide-on-mobile">Güncelle</span>
+                        <button 
+                            @click="saveCharacterState" 
+                            class="btn btn-success btn-icon-text" 
+                            :title="user ? 'Buluta Kaydet' : 'Giriş yapmadan sadece URL güncellenir'"
+                            :disabled="isSaving"
+                            :style="{ 
+                                backgroundColor: hasUnsavedChanges ? '#2e7d32' : '#555', 
+                                borderColor: hasUnsavedChanges ? '#1b5e20' : '#444',
+                                opacity: isSaving ? 0.7 : 1,
+                                cursor: isSaving ? 'wait' : 'pointer'
+                            }"
+                            style="color: white;">
+                            
+                            <span v-if="isSaving">⏳</span>
+                            <span v-else>{{ hasUnsavedChanges ? '💾' : '☁️' }}</span>
+                            
+                            <span class="hide-on-mobile">
+                                {{ isSaving ? 'Kaydediliyor...' : (hasUnsavedChanges ? 'Güncelle' : 'Senkronize') }}
+                            </span>
                         </button>
                     </div>
                 </div>

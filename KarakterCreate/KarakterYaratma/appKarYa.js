@@ -16,11 +16,24 @@ import { useInventoryLogic } from './src/logicInventory.js';
 import { useSpellLogic } from './src/logicSpells.js'; 
 import { useBackgroundLogic } from './src/logicBackground.js';
 import { calculateResources } from './src/logicResources.js';
+import { 
+    auth, 
+    db, 
+    googleProvider, 
+    signInWithPopup, 
+    signOut, 
+    onAuthStateChanged, // <--- Bunu ekledik
+    doc, 
+    getDoc, 
+    setDoc 
+} from './src/firebaseConfig.js';
 
-// ============================================================
-// DÜZELTME BURADA: loadBackgroundData FONKSİYONU EKLENDİ
-// ============================================================
-import { DataLoader, loadBackgroundData } from './src/dataLoaderKarYa.js'; 
+import { 
+    DataLoader, 
+    loadBackgroundData, 
+    generateSeedFromStore, // <--- Bunu ekle
+    encodeState            // <--- Bunu ekle
+} from './src/dataLoaderKarYa.js';
 
 // --- GLOBAL ONAY YÖNETİCİSİ ---
 let activeConfirmListener = null;
@@ -348,8 +361,19 @@ const app = createApp({
         };
 
 
-        const saveCharacterState = () => {
+        const saveCharacterState = async () => {
+            isSaving.value = true;
+
             try {
+                // EKSİK VERİLERİ STORE'A YAZALIM (Seed üretimi için gerekli)
+                store.level = targetLevel.value; 
+                store.choices = userChoices.value;
+                store.scores = { method: selectedScoreMethod.value, pool: rolledPool.value };
+
+                // A. ESKİ YÖNTEM: SEED OLUŞTUR. Burda sou va reyse
+                const seed = generateSeedFromStore(store);
+                const statePart = encodeState(store);
+
                 const currentSeed = characterSeed.value;
                 if (!currentSeed) { showToast("Kayıt hatası!", "❌"); return; }
 
@@ -948,6 +972,42 @@ const app = createApp({
         // ============================================================
         const { activeBackgroundContent, activeBackgroundFeature } = useBackgroundLogic();
 
+
+        const user = ref(null); // <--- İşte hataya sebep olan eksik değişken
+        const isSaving = ref(false);
+        const lastSavedData = ref(null);
+
+        // Kullanıcı Durumunu İzle
+        onAuthStateChanged(auth, (currentUser) => {
+            user.value = currentUser;
+            if (currentUser) {
+                showToast(`Hoşgeldin, ${currentUser.displayName}! 👋`);
+            }
+        });
+
+        // Giriş Yap
+        const handleLogin = async () => {
+            try {
+                await signInWithPopup(auth, googleProvider);
+            } catch (error) {
+                console.error("Giriş hatası:", error);
+                showToast("Giriş yapılamadı: " + error.message, "❌");
+            }
+        };
+
+        // Çıkış Yap
+        const handleLogout = async () => {
+            if(!confirm("Çıkış yapmak istediğine emin misin?")) return;
+            await signOut(auth);
+            showToast("Güle güle! 👋");
+        };
+
+        const hasUnsavedChanges = computed(() => {
+            if (!lastSavedData.value) return true; 
+            return JSON.stringify(store) !== lastSavedData.value;
+        });
+
+        // ------------------------------------------------------------
         // ============================================================
         // LIFE CYCLE (VERİ YÜKLEME)
         // ============================================================
@@ -1003,6 +1063,16 @@ const app = createApp({
             isMobileMenuOpen, toggleMobileMenu, isMobileSheetOpen, toggleMobileSheet,
             copyLink, showToast, backgroundList, 
             saveCharacterState,
+
+            // --- EKSİK OLAN SATIRLAR BURASI ---
+            // Bunları eklemezsen o sarı hataları alırsın ve butonlar çalışmaz
+            user,
+            handleLogin,
+            handleLogout,
+            isSaving,
+            hasUnsavedChanges,
+            // ----------------------------------
+            
             seedText, characterSeed, loadFromSeed, copySeed,
             formatEntry, parseTags, dndIcons, isSheetMode, activeSheetTab, activeInventoryTab, isSkillsExpanded,
             finishCreation: handleFinish, hasCreatedSheet, activeFeatureSubTab, raceList, flatRaceList,
@@ -1039,6 +1109,8 @@ const app = createApp({
             confirmShortRest,
             showRestModal,
             spendDiceCount,
+            currentBgFeature,
+
         };
     }
 });
