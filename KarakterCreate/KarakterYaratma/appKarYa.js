@@ -1068,59 +1068,35 @@ const app = createApp({
             else characterSlots.value = Array(6).fill(null);
         });
 
-        // --- SLOT SEÇİM VE SIFIRLAMA MANTIĞI (GÜNCELLENDİ) ---
-        const handleSlotSelect = (slotIndex, charData) => {
+        // --- SLOT SEÇİM VE SIFIRLAMA MANTIĞI (GARANTİLİ YÖNTEM) ---
+        const handleSlotSelect = async (slotIndex, charData) => {
             if (charData) {
-                // A. VAR OLAN KARAKTERİ YÜKLE
-                if(confirm(`${charData.meta?.name || 'Karakter'} yüklensin mi?`)) {
-                    // 1. Store'u Veritabanından Gelenle Doldur
-                    store.meta = charData.meta || {};
-                    store.hp = charData.hp || {};
-                    store.inventory = charData.inventory || {};
-                    store.spells = charData.spells || { known: [] };
-                    store.resources = charData.resources || {};
-                    store.race = { selected: null }; // Önce sıfırla, seed dolduracak
-                    store.class = { selected: null };
-                    
-                    // 2. Seed Varsa Logic'leri Tetikle
-                    if (charData.seed) {
-                        seedText.value = charData.seed;
-                        loadFromSeed(); // Bu fonksiyon tüm hesaplamaları yapar
-                    }
-                    
-                    // 3. URL'i Güncelle
-                    const newUrl = `${window.location.pathname}?uid=${user.value.uid}&charID=${charData.id}`;
-                    window.history.pushState({ path: newUrl }, '', newUrl);
+                // A. VAR OLAN KARAKTERİ YÜKLE (Soft Load - Sayfa Yenilenmez)
+                // Burası zaten çalışıyordu, aynen koruyoruz.
+                if (charData.seed) {
+                    seedText.value = charData.seed;
+                    loadFromSeed();
                 }
-            } else {
-                // B. YENİ KARAKTER YARAT (SOFT RESET - SAYFA YENİLEMEDEN)
-                if(confirm("Yeni, tertemiz bir sayfa açılsın mı?")) {
-                    // 1. Değişkenleri Sıfırla (Ref'ler)
-                    currentStep.value = 0;
-                    targetLevel.value = 1;
-                    seedText.value = '';
-                    selectedScoreMethod.value = 'manual';
-                    rolledPool.value = [];
-                    hasRolled.value = false;
-                    
-                    // 2. Store'u Manuel Sıfırla (Store reactive olduğu için tek tek yapıyoruz)
-                    store.meta = { name: '', avatar: '../../img/avatars/default-avatar.png' };
-                    store.race = { selected: null, subrace: null, abilityChoices: {} };
-                    store.class = { selected: null, subclass: null };
-                    store.background = { selected: null };
-                    store.abilities = { base: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, asi: { str:0, dex:0, con:0, int:0, wis:0, cha:0 } };
-                    store.skills = { proficiencies: [], expertises: [] };
-                    store.hp = { current: null };
-                    store.inventory = { weapons: [], armor: [], gear: [], currency: { cp:0, sp:0, ep:0, gp:0, pp:0 } };
-                    store.spells = { known: [] };
-                    store.choices = {};
+                if(charData.meta) store.meta = charData.meta;
+                
+                const newUrl = `${window.location.pathname}?uid=${user.value.uid}&charID=${charData.id}`;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+                
+                // Karakter kağıdını aktif et
+                hasCreatedSheet.value = true; 
+                
+                showToast(`${charData.meta?.name || 'Karakter'} yüklendi.`, "📂");
 
-                    // 3. URL'i Temizle
-                    const cleanUrl = window.location.pathname;
-                    window.history.pushState({}, '', cleanUrl);
-                    
-                    showToast("Yeni karakter sayfası hazır! ✨", "📄");
-                }
+            } else {
+                // B. YENİ KARAKTER YARAT (HARD RELOAD - SAYFA YENİLENİR)
+                // Değişkenleri tek tek sıfırlamak yerine, sayfayı yenilemek en temiz çözümdür.
+                
+                // 1. URL'deki ID'leri ve parametreleri temizle (Sadece ana domain kalsın)
+                const cleanUrl = window.location.pathname;
+
+                // 2. Sayfayı bu temiz adrese gitmeye zorla
+                // Bu işlem sayfayı yeniler ve uygulamayı "fabrika ayarlarına" döndürür.
+                window.location.href = cleanUrl;
             }
         };
 

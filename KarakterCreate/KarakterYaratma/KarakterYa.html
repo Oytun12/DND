@@ -899,8 +899,16 @@
                             <span class="value" style="padding-bottom: 13px;">{{ Math.floor((finalAbilityScores.dex - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((finalAbilityScores.dex - 10) / 2) }}</span>
                         </div>
                         <div class="c-stat-box">
-                            <span class="label">Hız</span>
-                            <span class="value" style="padding-bottom: 13px;">{{ store.race.selected?.speed || 30 }} ft.</span>
+                            <span class="label">HIZ</span>
+                            <div v-if="typeof (store.race.selected?.speed) === 'object'" class="value" style="font-size: 0.9em; line-height: 1.2; display: flex; flex-direction: column; justify-content: center; padding-bottom:13px;">
+                                <div>Yürüme: {{ store.race.selected.speed.walk }} ft.</div>
+                                <div>Uçma: {{ store.race.selected.speed.fly || store.race.selected.speed['uçma'] || 50 }} ft.</div>
+                            </div>
+                        
+                            <span v-else class="value" style="padding-bottom:13px;">
+                                {{ store.race.selected?.speed || 30 }}
+                                <small style="font-size:0.6em; color:#888;">ft.</small>
+                            </span>
                         </div>
                         <div class="c-stat-box hp-box" :class="hpStatusClass">
                             
@@ -1842,7 +1850,7 @@
                     <hr style="border-color: #b52b2b; margin: 20px 0;">
                 
                     <div class="d-flex justify-center">
-                        <button @click="handleLogout" class="btn btn-danger btn-icon-text w-100" style="max-width: 300px;">
+                        <button @click="handleLogout" class="btn btn-danger btn-icon-text w-100" style="background-color: #b52b2b; max-width: 300px;">
                             🚪 Hesaptan Çıkış Yap
                         </button>
                     </div>
