@@ -17,15 +17,10 @@ import { useSpellLogic } from './src/logicSpells.js';
 import { useBackgroundLogic } from './src/logicBackground.js';
 import { calculateResources } from './src/logicResources.js';
 import { 
-    auth, 
-    db, 
-    googleProvider, 
-    signInWithPopup, 
-    signOut, 
-    onAuthStateChanged, // <--- Bunu ekledik
-    doc, 
-    getDoc, 
-    setDoc 
+    auth, db, googleProvider, signInWithPopup, signOut, onAuthStateChanged,
+    doc, getDoc, setDoc, 
+    collection, getDocs, deleteDoc, // <--- YENİ EKLENENLER
+    signInWithRedirect, // <--- BUNU EKLE
 } from './src/firebaseConfig.js';
 
 import { 
@@ -361,46 +356,100 @@ const app = createApp({
         };
 
 
+       // --- GÜNCELLE / KAYDET FONKSİYONU (DÜZELTİLMİŞ & TEMİZLENMİŞ) ---
+        // --- GÜNCELLE / KAYDET FONKSİYONU (FİNAL & GÜVENLİ) ---
         const saveCharacterState = async () => {
             isSaving.value = true;
-
+        
             try {
-                // EKSİK VERİLERİ STORE'A YAZALIM (Seed üretimi için gerekli)
+                // 1. Store'daki eksikleri tamamla (Seed için gerekli)
                 store.level = targetLevel.value; 
                 store.choices = userChoices.value;
                 store.scores = { method: selectedScoreMethod.value, pool: rolledPool.value };
 
-                // A. ESKİ YÖNTEM: SEED OLUŞTUR. Burda sou va reyse
+                // 2. Seed'i oluştur (Bu bizim ana yedeğimiz)
                 const seed = generateSeedFromStore(store);
-                const statePart = encodeState(store);
-
-                const currentSeed = characterSeed.value;
-                if (!currentSeed) { showToast("Kayıt hatası!", "❌"); return; }
-
-                // Yeni URL'i oluştur
-                const newUrl = `${window.location.pathname}?seed=${currentSeed}`;
                 
-                // Mevcut URL ile yeni URL aynıysa (Zaten kaydedilmişse)
-                if (window.location.search === `?seed=${currentSeed}`) {
-                    updatePageMeta();
-                    showToast("Zaten güncel! Ana ekrana ekleyebilirsin.", "✅");
-                    return;
-                }
+                // -------------------------------------------------------------
+                // FİNAL ÇÖZÜM: GÜVENLİ VERİ PAKETİ (SAFE PAYLOAD)
+                // Tüm 'store'u kaydedince içindeki zengin metinler (nested array) hata veriyor.
+                // Bu yüzden sadece ihtiyacımız olanları temiz bir paket yapıyoruz.
+                // -------------------------------------------------------------
+                const safePayload = {
+                    // Kimlik Bilgileri
+                    uid: user.value ? user.value.uid : null,
+                    owner: user.value ? user.value.displayName : 'Anonim',
+                    updated: new Date(),
+                    
+                    // ANAHTAR VERİ: Seed (Geri yüklerken karakteri bu kuracak)
+                    seed: seed, 
 
-                // --- GÜNCELLEME BURADA ---
-                // Varsayılan 'confirm' yerine kendi 'customConfirm' fonksiyonumuzu kullanıyoruz.
-                window.customConfirm(
-                    "Karakteri kalıcı olarak kaydetmek için sayfa yenilenecek. Devam edilsin mi?", 
-                    () => {
-                        // "Evet" butonuna basıldığında çalışacak kod:
-                        window.location.href = newUrl; 
+                    // DİNAMİK VERİLER (Seed'in tutmadığı anlık değişimler)
+                    hp: { ...store.hp },
+                    resources: { ...store.resources },
+                    inventory: JSON.parse(JSON.stringify(store.inventory)), // Derin kopya (Referans kopmasın)
+                    spells: JSON.parse(JSON.stringify(store.spells || { known: [] })),
+                    meta: { ...store.meta },
+                    
+                    // FIX: Zar geçmişi iç içe dizi olduğu için string olarak saklıyoruz
+                    // Firestore [[1,2]] yapısını kabul etmez, ama "[ [1,2] ]" (string) kabul eder.
+                    rolledPoolStr: JSON.stringify(rolledPool.value),
+                    
+                    // İleride lazım olabilecek basit bilgiler
+                    raceName: store.race.selected ? store.race.selected.name : '',
+                    className: store.class.selected ? store.class.selected.name : '',
+                    level: targetLevel.value
+                };
+                // -------------------------------------------------------------
+
+                // A. GİRİŞ YAPILMAMIŞSA (Sadece URL)
+                if (!user.value) {
+                    const statePart = encodeState(store);
+                    const newUrl = `${window.location.pathname}?s=${seed}&st=${statePart}`;
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                    
+                    lastSavedData.value = JSON.stringify(store);
+                    showToast("URL güncellendi! Linki kopyalayabilirsin. 🔗", "✅");
+                } 
+                
+                // B. GİRİŞ YAPILMIŞSA (Firebase)
+                else {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    let charID = urlParams.get('charID');
+                    
+                    // ID yoksa isimden oluştur
+                    if (!charID) {
+                        const rawName = store.meta.name || 'adsiz'; 
+                        const charNameSlug = rawName.toLowerCase()
+                            .replace(/ /g, '-')
+                            .replace(/[ıİğĞüÜşŞöÖçÇ]/g, (c) => ({'ı':'i','İ':'i','ğ':'g','Ğ':'g','ü':'u','Ü':'u','ş':'s','Ş':'s','ö':'o','Ö':'o','ç':'c','Ç':'c'}[c]));
+                        charID = `${charNameSlug}-${Date.now().toString().slice(-6)}`;
                     }
-                );
-                // -------------------------
-
-            } catch (e) {
-                console.error("Kayıt Hatası:", e);
-                showToast("Kaydedilemedi!", "❌");
+                
+                    // Veritabanı Referansı
+                    const charRef = doc(db, "users", user.value.uid, "characters", charID);
+                    
+                    // YAZMA İŞLEMİ (SafePayload kullanıyoruz)
+                    await setDoc(charRef, safePayload, { merge: true });
+                
+                    // URL Güncelleme
+                    const newUrl = `${window.location.pathname}?uid=${user.value.uid}&charID=${charID}`;
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                    
+                    lastSavedData.value = JSON.stringify(store);
+                    showToast("Karakter Buluta Kaydedildi! ☁️", "✅");
+                }
+            
+            } catch (error) {
+                console.error("Kayıt Hatası Detayı:", error);
+                // Kullanıcıya detaylı bilgi verelim
+                if (error.code === 'invalid-argument') {
+                    showToast("Veri formatı hatası! (Konsola bak)", "❌");
+                } else {
+                    showToast("Kaydederken bir hata oluştu!", "❌");
+                }
+            } finally {
+                isSaving.value = false;
             }
         };
 
@@ -974,6 +1023,120 @@ const app = createApp({
 
 
         const user = ref(null); // <--- İşte hataya sebep olan eksik değişken
+
+        // --- KARAKTER SLOT SİSTEMİ ---
+        const characterSlots = ref(Array(6).fill(null)); // 6 Boş Slot
+        const isLoadingSlots = ref(false);
+
+        // Karakterleri Veritabanından Çek
+        const fetchUserCharacters = async () => {
+            if (!user.value) {
+                characterSlots.value = Array(6).fill(null);
+                return;
+            }
+            
+            isLoadingSlots.value = true;
+            try {
+                // users/{uid}/characters koleksiyonuna git
+                const charsRef = collection(db, "users", user.value.uid, "characters");
+                const snapshot = await getDocs(charsRef);
+                
+                // Gelen verileri sırayla slotlara yerleştir
+                const loadedChars = [];
+                snapshot.forEach(doc => {
+                    loadedChars.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Slotları doldur (Maksimum 6 tane)
+                const newSlots = Array(6).fill(null);
+                loadedChars.slice(0, 6).forEach((char, i) => {
+                    newSlots[i] = char;
+                });
+                characterSlots.value = newSlots;
+
+            } catch (error) {
+                console.error("Karakter listesi alınamadı:", error);
+                showToast("Karakterler yüklenemedi.", "❌");
+            } finally {
+                isLoadingSlots.value = false;
+            }
+        };
+
+        // Kullanıcı giriş yapınca listeyi otomatik çek
+        watch(user, (newUser) => {
+            if (newUser) fetchUserCharacters();
+            else characterSlots.value = Array(6).fill(null);
+        });
+
+        // --- SLOT SEÇİM VE SIFIRLAMA MANTIĞI (GÜNCELLENDİ) ---
+        const handleSlotSelect = (slotIndex, charData) => {
+            if (charData) {
+                // A. VAR OLAN KARAKTERİ YÜKLE
+                if(confirm(`${charData.meta?.name || 'Karakter'} yüklensin mi?`)) {
+                    // 1. Store'u Veritabanından Gelenle Doldur
+                    store.meta = charData.meta || {};
+                    store.hp = charData.hp || {};
+                    store.inventory = charData.inventory || {};
+                    store.spells = charData.spells || { known: [] };
+                    store.resources = charData.resources || {};
+                    store.race = { selected: null }; // Önce sıfırla, seed dolduracak
+                    store.class = { selected: null };
+                    
+                    // 2. Seed Varsa Logic'leri Tetikle
+                    if (charData.seed) {
+                        seedText.value = charData.seed;
+                        loadFromSeed(); // Bu fonksiyon tüm hesaplamaları yapar
+                    }
+                    
+                    // 3. URL'i Güncelle
+                    const newUrl = `${window.location.pathname}?uid=${user.value.uid}&charID=${charData.id}`;
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                }
+            } else {
+                // B. YENİ KARAKTER YARAT (SOFT RESET - SAYFA YENİLEMEDEN)
+                if(confirm("Yeni, tertemiz bir sayfa açılsın mı?")) {
+                    // 1. Değişkenleri Sıfırla (Ref'ler)
+                    currentStep.value = 0;
+                    targetLevel.value = 1;
+                    seedText.value = '';
+                    selectedScoreMethod.value = 'manual';
+                    rolledPool.value = [];
+                    hasRolled.value = false;
+                    
+                    // 2. Store'u Manuel Sıfırla (Store reactive olduğu için tek tek yapıyoruz)
+                    store.meta = { name: '', avatar: '../../img/avatars/default-avatar.png' };
+                    store.race = { selected: null, subrace: null, abilityChoices: {} };
+                    store.class = { selected: null, subclass: null };
+                    store.background = { selected: null };
+                    store.abilities = { base: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, asi: { str:0, dex:0, con:0, int:0, wis:0, cha:0 } };
+                    store.skills = { proficiencies: [], expertises: [] };
+                    store.hp = { current: null };
+                    store.inventory = { weapons: [], armor: [], gear: [], currency: { cp:0, sp:0, ep:0, gp:0, pp:0 } };
+                    store.spells = { known: [] };
+                    store.choices = {};
+
+                    // 3. URL'i Temizle
+                    const cleanUrl = window.location.pathname;
+                    window.history.pushState({}, '', cleanUrl);
+                    
+                    showToast("Yeni karakter sayfası hazır! ✨", "📄");
+                }
+            }
+        };
+
+        // Karakter Silme
+        const deleteCharacter = async (charID) => {
+            if(!confirm("Bu karakter kalıcı olarak silinecek! Emin misin?")) return;
+            
+            try {
+                await deleteDoc(doc(db, "users", user.value.uid, "characters", charID));
+                showToast("Karakter silindi.", "🗑️");
+                fetchUserCharacters(); // Listeyi yenile
+            } catch (e) {
+                showToast("Silinemedi!", "❌");
+            }
+        };
+
         const isSaving = ref(false);
         const lastSavedData = ref(null);
 
@@ -985,13 +1148,20 @@ const app = createApp({
             }
         });
 
-        // Giriş Yap
+        // Giriş Yap (Popup yerine Redirect deneniyor)
         const handleLogin = async () => {
             try {
+                // Önce Popup dene (Masaüstü için daha iyi)
                 await signInWithPopup(auth, googleProvider);
             } catch (error) {
-                console.error("Giriş hatası:", error);
-                showToast("Giriş yapılamadı: " + error.message, "❌");
+                // Eğer Popup engellenirse, Redirect (Yönlendirme) dene
+                if (error.code === 'auth/popup-blocked') {
+                    console.warn("Popup engellendi, yönlendirme deneniyor...");
+                    await signInWithRedirect(auth, googleProvider);
+                } else {
+                    console.error("Giriş hatası:", error);
+                    showToast("Giriş yapılamadı: " + error.message, "❌");
+                }
             }
         };
 
@@ -1110,6 +1280,11 @@ const app = createApp({
             showRestModal,
             spendDiceCount,
             currentBgFeature,
+
+            characterSlots,
+            isLoadingSlots,
+            handleSlotSelect,
+            deleteCharacter,
 
         };
     }

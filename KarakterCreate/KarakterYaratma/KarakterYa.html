@@ -119,7 +119,7 @@
 
                 <div class="step-content">
                     
-                    <div v-show="currentStep === 0" class="step-pane active">
+                    <div v-show="currentStep === 0" class="step-pane active step-container fade-in">
                         
                         <div v-if="hasCreatedSheet" class="form-group" style="margin-bottom: 20px; padding: 15px; border: 1px solid #4caf50; background: rgba(76, 175, 80, 0.1); border-radius: 4px; text-align: center;">
                             <label style="color:#4caf50; display:block; margin-bottom:10px;">✨ Karakter kağıdınız hazır!</label>
@@ -171,7 +171,7 @@
                             </div>
                         </div>
 
-                        <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
+                        <div style=" border-top: 1px solid #222; padding-top: 20px;">
                             
                             <div class="seed-trigger" 
                                  onclick="const el = document.getElementById('importArea'); const isOpen = el.style.display === 'block'; el.style.display = isOpen ? 'none' : 'block'; this.style.color = isOpen ? '#666' : '#b52b2b';">
@@ -191,6 +191,51 @@
                             </div>
                         </div>
 
+                        <div class="text-center mb-2">
+                            <h2 class="rpg-title">Karakterini Seç</h2>
+                            <p class="text-muted">Maceraya başlamak için bir slot seçin.</p>
+                                         
+
+                            <div v-if="!user" class="login-prompt-card" style="text-align:center; padding:40px; background:rgba(0,0,0,0.2); border-radius:10px; margin-bottom:20px;">
+                                <div style="font-size:3rem; margin-bottom:10px;">🔐</div>
+                                <h3>Kayıtlı Karakterlerinizi Görmek İçin Giriş Yapın</h3>
+                                <p>Tarayıcınızda yerel olarak çalışmak için direkt "Yeni Oluştur" diyebilirsiniz.</p>
+                                <button @click="handleLogin" class="btn btn-primary btn-lg mt-2">
+                                    <span style="font-weight:bold;">G</span> Google ile Giriş Yap
+                                </button>
+                            </div>                  
+                        
+                            <div class="slots-grid">
+                            <div 
+                                v-for="(char, index) in characterSlots" 
+                                :key="index"
+                                class="character-slot-card"
+                                :class="{ 'empty': !char, 'filled': char }"
+                                @click="char ? handleSlotSelect(index, char) : null"
+                            >
+                                <div v-if="char" class="slot-content">
+                                    <button @click.stop="deleteCharacter(char.id)" class="btn-delete-mini" title="Karakteri Sil">✕</button>
+                                    
+                                    <div class="slot-avatar">
+                                        <img :src="char.meta?.avatar || '../../img/avatars/default-avatar.png'" alt="Avatar">
+                                        <div class="slot-level-badge">Lv. {{ char.level || 1 }}</div>
+                                    </div>
+                                    
+                                    <div class="slot-info">
+                                        <h3 class="slot-name">{{ char.meta?.name || 'İsimsiz' }}</h3>
+                                        <div class="slot-details">
+                                            {{ char.raceName || 'Irk?' }} - {{ char.className || 'Sınıf?' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div v-else class="slot-empty-content" style="text-align:center;">
+                                    <div class="empty-icon">∅</div>
+                                    <div class="empty-text">Boş Slot</div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
                     </div>
 
                     <div v-show="currentStep === 1" class="step-pane">

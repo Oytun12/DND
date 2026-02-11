@@ -28,6 +28,150 @@ button, input, select, textarea, a {
     touch-action: manipulation;
 }
 
+/* --- GÜNCELLENMİŞ SLOT SİSTEMİ (MİNİMALİST) --- */
+
+.slots-grid {
+    display: grid;
+    /* Masaüstünde kesinlikle 3 sütun olsun */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 15px; /* Boşlukları azalttık */
+    padding: 10px 0;
+}
+
+.mb-2 {
+    padding: 15px; border-radius: 8px; border: 2px dashed rgb(68, 68, 68); margin-top: 15px;
+}
+
+.rpg-title {
+    font-size: 1.8em; font-weight: bold; color: #b52b2b; text-align: center; margin-top: 10px;}
+
+.text-muted {
+    color: #888; font-size: 0.9em; text-align: center;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+.character-slot-card {
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 8px;
+    height: 180px; /* Yüksekliği 320px'den 180px'e indirdik */
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+}
+
+/* --- DOLU SLOT STİLİ --- */
+.character-slot-card.filled {
+    border: 1px solid #d4af37;
+    cursor: pointer; /* Sadece dolulara tıklanabilsin */
+}
+
+.character-slot-card.filled:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+}
+
+.slot-avatar {
+    width: 100%;
+    height: 110px; /* Resim alanı küçüldü */
+    overflow: hidden;
+    border-bottom: 1px solid #333;
+    position: relative;
+}
+
+.slot-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+/* Resim üzerindeki seviye rozeti */
+.slot-level-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.8);
+    color: #d4af37;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #d4af37;
+}
+
+.slot-info {
+    padding: 8px;
+    text-align: center;
+    background: linear-gradient(to bottom, #252525, #1a1a1a);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.slot-name {
+    margin: 0;
+    font-size: 1rem; /* İsim küçüldü */
+    color: #eee;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.slot-details {
+    font-size: 0.75rem; /* Detay yazıları küçüldü */
+    color: #888;
+    margin-top: 3px;
+}
+
+/* Silme Butonu (Sağ üstte küçük çarpı) */
+.btn-delete-mini {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    background: rgba(0,0,0,0.6);
+    color: #ff5555;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    z-index: 10;
+}
+.btn-delete-mini:hover {
+    background: #ff5555;
+    color: white;
+}
+
+/* --- BOŞ SLOT STİLİ (DEAKTİF) --- */
+.character-slot-card.empty {
+    border: 1px dashed #333;
+    background: rgba(255, 255, 255, 0.02);
+    cursor: default; /* Tıklanamaz imleci */
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5; /* Silik görünüm */
+}
+
+.empty-icon {
+    font-size: 1.5rem;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.empty-text {
+    font-size: 0.8rem;
+    color: #555;
+    font-style: italic;
+}
+
 /* Mobilde inputa tıklayınca otomatik zoom yapmasını engellemek için font boyutu kuralı */
 @media (max-width: 800px) {
     input, select, textarea {

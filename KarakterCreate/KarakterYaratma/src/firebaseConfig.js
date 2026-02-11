@@ -2,19 +2,26 @@
 
 // Firebase kütüphanelerini internetten (CDN) çekiyoruz
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+// === GÜNCELLEME BURADA (1/2) ===
+// signInWithRedirect fonksiyonunu import listesine ekledik
 import { 
     getAuth, 
     GoogleAuthProvider, 
     signInWithPopup, 
+    signInWithRedirect, // <--- YENİ EKLENDİ
     signOut, 
     onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
 import { 
     getFirestore, 
     doc, 
     getDoc, 
     setDoc, 
-    collection 
+    collection, 
+    getDocs, 
+    deleteDoc 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // Senin Proje Ayarların
@@ -31,10 +38,22 @@ const firebaseConfig = {
 // Uygulamayı Başlat
 const app = initializeApp(firebaseConfig);
 
-// Servisleri Dışarı Aktar (Diğer dosyalarda kullanmak için)
+// Servisleri Dışarı Aktar
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
-// Yardımcı Fonksiyonlar
-export { signInWithPopup, signOut, onAuthStateChanged, doc, getDoc, setDoc, collection };
+// === GÜNCELLEME BURADA (2/2) ===
+// Fonksiyonu dışarı aktar listesine ekledik
+export { 
+    signInWithPopup, 
+    signInWithRedirect, // <--- YENİ EKLENDİ
+    signOut, 
+    onAuthStateChanged, 
+    doc, 
+    getDoc, 
+    setDoc,
+    collection,
+    getDocs,
+    deleteDoc
+};
