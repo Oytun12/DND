@@ -1177,6 +1177,28 @@ const app = createApp({
             return JSON.stringify(store) !== lastSavedData.value;
         });
 
+        // --- PROFİL & KARAKTER DEĞİŞTİRME MODALI ---
+        const isProfileModalOpen = ref(false);
+
+        const openProfileModal = () => {
+            // Modalı açmadan önce listeyi tazeleyelim ki yeni karakterler görünsün
+            fetchUserCharacters(); 
+            isProfileModalOpen.value = true;
+        };
+
+        // YENİLİK: Konsept adımına (Step 0) dönüldüğünde listeyi OTOMATİK yenile
+        watch(currentStep, (newStep) => {
+            if (newStep === 0 && user.value) {
+                fetchUserCharacters();
+            }
+        });
+
+        // Slot Seçildiğinde Modalı da Kapat (Ekstra İşlem)
+        const handleProfileSlotSelect = (index, char) => {
+            handleSlotSelect(index, char); // Mevcut mantığı çalıştır
+            isProfileModalOpen.value = false; // Modalı kapat
+        };
+
         // ------------------------------------------------------------
         // ============================================================
         // LIFE CYCLE (VERİ YÜKLEME)
@@ -1285,6 +1307,10 @@ const app = createApp({
             isLoadingSlots,
             handleSlotSelect,
             deleteCharacter,
+
+            isProfileModalOpen,    
+            openProfileModal,      
+            handleProfileSlotSelect,
 
         };
     }

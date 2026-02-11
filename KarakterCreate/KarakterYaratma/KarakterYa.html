@@ -206,34 +206,31 @@
                             </div>                  
                         
                             <div class="slots-grid">
-                            <div 
-                                v-for="(char, index) in characterSlots" 
-                                :key="index"
-                                class="character-slot-card"
-                                :class="{ 'empty': !char, 'filled': char }"
-                                @click="char ? handleSlotSelect(index, char) : null"
-                            >
-                                <div v-if="char" class="slot-content">
-                                    <button @click.stop="deleteCharacter(char.id)" class="btn-delete-mini" title="Karakteri Sil">✕</button>
-                                    
-                                    <div class="slot-avatar">
-                                        <img :src="char.meta?.avatar || '../../img/avatars/default-avatar.png'" alt="Avatar">
-                                        <div class="slot-level-badge">Lv. {{ char.level || 1 }}</div>
-                                    </div>
-                                    
-                                    <div class="slot-info">
-                                        <h3 class="slot-name">{{ char.meta?.name || 'İsimsiz' }}</h3>
-                                        <div class="slot-details">
-                                            {{ char.raceName || 'Irk?' }} - {{ char.className || 'Sınıf?' }}
+                                <div 
+                                    v-for="(char, index) in characterSlots" 
+                                    :key="index"
+                                    class="character-slot-card"
+                                    :class="{ 'empty': !char, 'filled': char }"
+                                    @click="handleSlotSelect(index, char)" 
+                                >
+                                    <div v-if="char" class="slot-content">
+                                        <button @click.stop="deleteCharacter(char.id)" class="btn-delete-mini" title="Karakteri Sil">✕</button>
+                                        <div class="slot-avatar">
+                                            <img :src="char.meta?.avatar || '../../img/avatars/default-avatar.png'" alt="Avatar">
+                                            <div class="slot-level-badge">Lv. {{ char.level || 1 }}</div>
+                                        </div>
+                                        <div class="slot-info">
+                                            <h3 class="slot-name">{{ char.meta?.name || 'İsimsiz' }}</h3>
+                                            <div class="slot-details">
+                                                {{ char.raceName || 'Irk?' }} - {{ char.className || 'Sınıf?' }}
+                                            </div>
                                         </div>
                                     </div>
+                                
+                                    <div v-else class="slot-empty-content" style="text-align:center;">
+                                        <div class="empty-icon">➕</div> <div class="empty-text">Yeni Oluştur</div>
+                                    </div>
                                 </div>
-                            
-                                <div v-else class="slot-empty-content" style="text-align:center;">
-                                    <div class="empty-icon">∅</div>
-                                    <div class="empty-text">Boş Slot</div>
-                                </div>
-                            </div>
                             </div>
                         </div> 
                     </div>
@@ -718,13 +715,17 @@
     
                <div class="header-section left-tools">
     
-                    <div class="auth-wrapper" style="margin-right: 10px;">
+                    <div class="auth-wrapper" style="margin-right: 5px;">
                         <button v-if="!user" @click="handleLogin" title="Google ile Giriş Yap" style="background:transparent; border:1px solid #4285F4; color:#4285F4; padding:5px 10px; border-radius:20px; font-size:0.8em; cursor:pointer; display:flex; align-items:center; gap:5px;">
                             <span style="font-weight:bold;">G</span> Giriş
                         </button>
                     
-                        <div v-else @click="handleLogout" title="Çıkış Yap" style="cursor:pointer; position:relative;">
-                            <img :src="user.photoURL" style="width:32px; height:32px; border-radius:50%; border:2px solid #2e7d32;">
+                        <div style="cursor:pointer; position:relative;">
+                            <img :src="user.photoURL || '../../img/avatars/default-avatar.png'" 
+                                @click="openProfileModal" 
+                                class="user-avatar" 
+                                style="cursor: pointer; width:48px; height:48px; border-radius:50%; border:2px solid #2e7d32;"
+                                title="Karakter Değiştir / Çıkış">
                             <span style="position:absolute; bottom:0; right:0; width:8px; height:8px; background:#2e7d32; border-radius:50%; border:1px solid #1a1a1a;"></span>
                         </div>
                     </div>
@@ -1791,6 +1792,60 @@
                 <div class="confirm-actions">
                     <button class="btn-confirm-cancel" onclick="window.closeConfirmModal()">İptal</button>
                     <button id="btn-global-yes" class="btn-confirm-yes">Evet</button>
+                </div>
+            </div>
+        </div>
+        <div v-if="isProfileModalOpen" class="modal-overlay fade-in" @click.self="isProfileModalOpen = false">
+            <div class="modal-overlay6" style="max-width: 700px; width: 95%;">
+                
+                <div class="modal-header6">
+                    <h2>Karakter Değiştir</h2>
+                    <button class="close-btn" @click="isProfileModalOpen = false">✕</button>
+                </div>
+            
+                <div class="modal-body">
+                    <p class="text-center text-muted mb-2">
+                        Mevcut karakterden çıkıp başka bir slota geçmek için seçin.<br>
+                        <small>(Kaydedilmemiş değişiklikleriniz varsa önce kaydedin!)</small>
+                    </p>
+                
+                    <div class="slots-grid">
+                        <div 
+                            v-for="(char, index) in characterSlots" 
+                            :key="index"
+                            class="character-slot-card"
+                            :class="{ 'empty': !char, 'filled': char }"
+                            @click="handleProfileSlotSelect(index, char)"
+                        >
+                            <div v-if="char" class="slot-content">
+                                <button @click.stop="deleteCharacter(char.id)" class="btn-delete-mini" title="Sil">✕</button>
+                                
+                                <div class="slot-avatar">
+                                    <img :src="char.meta?.avatar || '../../img/avatars/default-avatar.png'">
+                                    <div class="slot-level-badge">Lv. {{ char.level || 1 }}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <h3 class="slot-name">{{ char.meta?.name || 'İsimsiz' }}</h3>
+                                    <div class="slot-details">
+                                        {{ char.raceName || 'Irk?' }} - {{ char.className || 'Sınıf?' }}
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div v-else class="slot-empty-content" style="text-align:center;">
+                                <div class="empty-icon">➕</div>
+                                <div class="empty-text">Yeni Yarat</div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <hr style="border-color: #b52b2b; margin: 20px 0;">
+                
+                    <div class="d-flex justify-center">
+                        <button @click="handleLogout" class="btn btn-danger btn-icon-text w-100" style="max-width: 300px;">
+                            🚪 Hesaptan Çıkış Yap
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
