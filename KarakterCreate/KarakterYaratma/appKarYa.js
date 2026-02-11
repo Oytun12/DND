@@ -1094,6 +1094,9 @@ const app = createApp({
                 // 1. URL'deki ID'leri ve parametreleri temizle (Sadece ana domain kalsın)
                 const cleanUrl = window.location.pathname;
 
+                // Tarayıcının "Kaydedilmemiş değişiklik var" uyarısını sustur
+                window.onbeforeunload = null;
+
                 // 2. Sayfayı bu temiz adrese gitmeye zorla
                 // Bu işlem sayfayı yeniler ve uygulamayı "fabrika ayarlarına" döndürür.
                 window.location.href = cleanUrl;
