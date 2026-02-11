@@ -74,20 +74,33 @@ const app = createApp({
         window.store = store;
 
         // --- YARDIMCI: Başlık, İkon ve Meta Etiketleri Güncelle ---
-        // --- YARDIMCI: Başlık, İkon ve MANIFEST Güncelle ---
         const updatePageMeta = () => {
             const charName = store.meta.name || "D&D Karakterim";
             const avatarUrl = store.meta.avatar;
-            const currentUrl = window.location.href; // O anki seed'li tam link
+            const fullUrl = window.location.href; // O anki seed'li tam link
 
             // 1. Sayfa Başlığını Güncelle
             document.title = charName;
 
-            // 2. Apple Meta Etiketini Güncelle
+            // 2. iOS Ana Ekran Başlığını Güncelle (Yoksa Yarat)
             let appleTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
-            if (appleTitle) appleTitle.setAttribute("content", charName);
+            if (!appleTitle) {
+                appleTitle = document.createElement('meta');
+                appleTitle.name = "apple-mobile-web-app-title";
+                document.head.appendChild(appleTitle);
+            }
+            appleTitle.setAttribute("content", charName);
 
-            // 3. İkonları Güncelle (iOS önceliği buradadır)
+            // 3. Android/Desktop Uygulama Adını Güncelle (Yoksa Yarat)
+            let appNameMeta = document.querySelector('meta[name="application-name"]');
+            if (!appNameMeta) {
+                appNameMeta = document.createElement('meta');
+                appNameMeta.name = "application-name";
+                document.head.appendChild(appNameMeta);
+            }
+            appNameMeta.setAttribute("content", charName);
+
+            // 4. İkonları Güncelle
             if (avatarUrl && !avatarUrl.includes('default-avatar')) {
                 const favicon = document.getElementById('dynamic-favicon');
                 const appleIcon = document.getElementById('dynamic-apple-icon');
@@ -96,21 +109,18 @@ const app = createApp({
                 if (appleIcon) appleIcon.href = avatarUrl;
             }
 
-            // 4. DİNAMİK MANIFEST OLUŞTUR (SORUN ÇÖZÜCÜ) 🚀
-            // Statik manifest dosyasını ezip, start_url'i şimdiki link olan sanal bir manifest yaratıyoruz.
-            // Mevcut URL'yi al (Seed dahil)
-            const fullUrl = window.location.href;
+            // 5. DİNAMİK MANIFEST OLUŞTUR 🚀
+            // İkon altındaki isim (short_name) en fazla 12 karakter olmalı ki sığsın
+            const shortName = charName.length > 12 ? charName.substring(0, 10) + ".." : charName;
             
             const dynamicManifest = {
-                "name": charName,
-                "short_name": charName.length > 12 ? charName.substring(0, 12) + "..." : charName,
-                // start_url: Kullanıcının o an bulunduğu, seed'li link.
+                "name": charName, // Açılış ekranında (Splash) yazan isim
+                "short_name": shortName, // İkonun altında yazan isim
                 "start_url": fullUrl, 
                 "display": "standalone",
                 "background_color": "#1a1a1a",
                 "theme_color": "#1a1a1a",
-                // id: Uygulamaları birbirinden ayırmak için seed'i kullanıyoruz (Android için önemli)
-                "id": fullUrl, 
+                "id": fullUrl, // Her karakterin ayrı bir uygulama gibi davranması için
                 "icons": [
                     {
                         "src": avatarUrl || "../../img/SariZar.svg",
@@ -125,18 +135,14 @@ const app = createApp({
                 ]
             };
 
-            // JSON'u metne, metni de Base64 koduna çevir
             const stringManifest = JSON.stringify(dynamicManifest);
             const base64Manifest = btoa(unescape(encodeURIComponent(stringManifest)));
             const dataUri = 'data:application/json;base64,' + base64Manifest;
 
-            // HTML'deki manifest linkini bul ve değiştir
             let manifestLink = document.querySelector('link[rel="manifest"]');
             if (manifestLink) {
                 manifestLink.setAttribute('href', dataUri);
-                console.log("🚀 Manifest Data-URI olarak güncellendi!");
             } else {
-                // Eğer yoksa yarat
                 let newLink = document.createElement('link');
                 newLink.rel = 'manifest';
                 newLink.href = dataUri;
