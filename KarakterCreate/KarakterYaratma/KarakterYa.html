@@ -151,7 +151,9 @@
                         </button>
 
                         <div ref="galleryContainer" :class="['avatar-gallery-container', 'gallery-drawer', { 'open': isGalleryExpanded }]">
-                            <div class="avatar-grid-large">
+                            
+                            <div v-if="isGalleryExpanded" class="avatar-grid-large">
+                                
                                 <div v-for="(img, index) in avatarList" 
                                      :key="index" 
                                      class="avatar-option"
@@ -160,15 +162,13 @@
                                     
                                     <img :src="'../../img/avatars/' + img" loading="lazy" alt="Avatar">
                                 </div>
+
                             </div>
                             
-                            <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #333; text-align: center;">
-                                <input v-model="store.meta.avatar" 
-                                   type="text" 
-                                   placeholder="veya internetten resim linki yapıştır..." 
-                                   class="big-input" 
-                                   style="width: 100%; font-size: 0.85em; background: #111; border: 1px solid #333;">
+                            <div v-else class="text-center p-3 text-muted">
+                                <small>Galeri yüklenmeyi bekliyor...</small>
                             </div>
+
                         </div>
 
                         <div style=" border-top: 1px solid #222; padding-top: 20px;">
