@@ -30,6 +30,7 @@ import {
     encodeState            // <--- Bunu ekle
 } from './src/dataLoaderKarYa.js';
 
+
 // --- GLOBAL ONAY YÖNETİCİSİ ---
 let activeConfirmListener = null;
 
@@ -69,6 +70,8 @@ window.closeConfirmModal = () => {
 
 const app = createApp({
     setup() {
+
+        const isReadOnlyMode = ref(false); // <--- Setup'ın başına ekle
         
         // GLOBAL STORE
         window.store = store;
@@ -365,6 +368,14 @@ const app = createApp({
        // --- GÜNCELLE / KAYDET FONKSİYONU (DÜZELTİLMİŞ & TEMİZLENMİŞ) ---
         // --- GÜNCELLE / KAYDET FONKSİYONU (FİNAL & GÜVENLİ) ---
         const saveCharacterState = async () => {
+            
+            // --- YENİ EKLENEN KISIM: MİSAFİR KONTROLÜ ---
+            if (!user.value) {
+                showToast("Karakterinizi kaydedebilmek için Google ile giriş yapın", "🔒");
+                return; // Fonksiyonu burada durdur, aşağıya inme
+            }
+            // ---------------------------------------------
+
             isSaving.value = true;
         
             try {
@@ -558,7 +569,15 @@ const app = createApp({
                 setTimeout(() => {
                     updatePageMeta();
                 }, 1000);
-                
+
+                // Eğer bu işlem "Salt Okunur" modunda yapılıyorsa veya karakter kağıdı açılmalıysa:
+                if (hasCreatedSheet.value) {
+                    nextTick(() => {
+                        currentStep.value = 99;
+                        window.scrollTo(0, 0);
+                    });
+                }
+
                 showToast("Yüklendi!", "🚀"); finishCreation(); seedText.value = ''; 
             } catch (e) { 
                 console.error("Yükleme Hatası:", e); 
@@ -571,6 +590,63 @@ const app = createApp({
             let newVal = current + delta;
             if (newVal > max) newVal = max; if (newVal < 0) newVal = 0;
             store.resources[id] = newVal;
+        };
+
+        // --- BAŞKASININ KARAKTERİNİ YÜKLE (STANDART MOD) ---
+        const loadExternalCharacter = async (targetUid, charID) => {
+            loading.value = true;
+            console.log("🔍 Karakter kopyası yükleniyor...", targetUid, charID);
+
+            try {
+                // 1. Veriyi Çek
+                const docRef = doc(db, "users", targetUid, "characters", charID);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    console.log("✅ Veri bulundu.");
+                    const data = docSnap.data();
+
+                    // 2. Sayfayı Hazırla (Kağıt Modu)
+                    hasCreatedSheet.value = true; 
+
+                    // 3. Seed Varsa Yükle
+                    if (data.seed) {
+                        seedText.value = data.seed;
+                        await nextTick();
+                        loadFromSeed();
+                    }
+
+                    // 4. Güncel Verileri Üstüne Yaz
+                    await nextTick();
+                    
+                    if(data.meta) store.meta = { ...store.meta, ...data.meta };
+                    if(data.hp) store.hp = { ...store.hp, ...data.hp };
+                    if(data.inventory) store.inventory = data.inventory;
+                    
+                    // 5. EKRANI ZORLA GÜNCELLE
+                    currentStep.value = 99; // Sihirbazdan çık
+                    
+                    // Sayfa Başlığını Güncelle
+                    updatePageMeta();
+
+                    // ÖNEMLİ: Artık "Salt Okunur" demiyoruz.
+                    // Giriş yapmamışsa sadece görüntüler, yapmışsa kendi hesabına kaydedebilir.
+                    if (user.value) {
+                         showToast("Karakter yüklendi! Kaydederek kopyasını alabilirsin.", "💾");
+                    } else {
+                         showToast("Karakter görüntüleniyor.", "👁️");
+                    }
+
+                } else {
+                    console.error("❌ Veri bulunamadı.");
+                    showToast("Karakter bulunamadı.", "❌");
+                }
+            } catch (error) {
+                console.error("🔥 Yükleme Hatası:", error);
+                showToast("Yükleme Hatası: " + error.message, "❌");
+            } finally {
+                loading.value = false;
+            }
         };
         
 
@@ -1190,44 +1266,76 @@ const app = createApp({
         // ============================================================
         onMounted(async () => {
             document.addEventListener('click', handleClickOutside);
-            if (!store.meta.avatar || typeof store.meta.avatar !== 'string') store.meta.avatar = "../../img/avatars/default-avatar.png";
+            window.addEventListener('resize', () => {
+                isSkillsExpanded.value = window.innerWidth > 860;
+            });
+
+            // 1. URL Parametrelerini EN BAŞTA al (Referans hatasını çözer)
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlSeed = urlParams.get('seed');
+            const urlUid = urlParams.get('uid');
+            const urlCharID = urlParams.get('charID');
+
+            // Varsayılan avatar kontrolü
+            if (!store.meta.avatar || typeof store.meta.avatar !== 'string') {
+                store.meta.avatar = "../../img/avatars/default-avatar.png";
+            }
 
             try {
-                // --- YENİ VERİ YÜKLEME YAPISI ---
-                // 1. Önce verileri yükle
+                // --- VERİLERİ YÜKLE ---
                 const classData = await DataLoader.getClassData();
                 classList.value = classData.class || [];
                 
                 const raceData = await DataLoader.loadJSON('races.json');
                 raceList.value = Array.isArray(raceData) ? raceData : (raceData.race || []);
                 
-                // Artık loadBackgroundData doğru import edildiği için çalışacak
                 const bgData = await loadBackgroundData();
                 backgroundList.value = bgData || [];
 
-                // Feat'leri de yükle (Store'a atar)
                 await DataLoader.getFeatsData().then(data => {
                     store.data.feats = data;
                     console.log("Feats yüklendi:", data.length);
                 });
 
+                // Yükleme ekranını kaldır
                 loading.value = false;
                 const loader = document.getElementById('initial-loader');
                 if(loader) { loader.classList.add('fade-out'); setTimeout(() => loader.remove(), 500); }
 
-                const urlParams = new URLSearchParams(window.location.search);
-                const urlSeed = urlParams.get('seed');
-                if (urlSeed) { seedText.value = urlSeed; setTimeout(() => loadFromSeed(), 500); }
             } catch (err) { 
-                console.error("Yükleme Hatası:", err);
+                console.error("Veri Yükleme Hatası:", err);
                 error.value = "Veri hatası"; 
                 loading.value = false; 
                 document.getElementById('initial-loader')?.remove(); 
             }
-        
-            window.addEventListener('resize', () => {
-                isSkillsExpanded.value = window.innerWidth > 860;
-            });
+
+            // --- KARAKTER YÜKLEME MANTIĞI (Beklemeli) ---
+            // Verilerin (Irk, Sınıf) tam yüklendiğinden emin olana kadar bekle
+            const checkDataLoaded = setInterval(async () => {
+                if (raceList.value.length > 0 && classList.value.length > 0) {
+                    clearInterval(checkDataLoaded);
+                    
+                    console.log("✅ Veriler hazır, URL kontrol ediliyor...");
+
+                    // SENARYO A: Firebase ID ile Yükleme (Öncelikli)
+                    if (urlUid && urlCharID) {
+                        // Giriş yapmış kullanıcı biz miyiz?
+                        if (user.value && user.value.uid === urlUid) {
+                            // Bizim karakterimiz -> Normal akış (Bir şey yapmaya gerek yok)
+                        } else {
+                            // Başkasının karakteri veya Gizli Sekme -> Salt Okunur Yükle
+                            await loadExternalCharacter(urlUid, urlCharID);
+                        }
+                    }
+                    // SENARYO B: Seed ile Yükleme (ID yoksa buna bak)
+                    else if (urlSeed) {
+                        console.log("🌱 Seed bulundu, yükleniyor...");
+                        seedText.value = urlSeed;
+                        // Vue'nun güncellenmesini bekle ve yükle
+                        setTimeout(() => loadFromSeed(), 100);
+                    }
+                }
+            }, 100); // 100ms'de bir kontrol et
         });
 
         onUnmounted(() => { document.removeEventListener('click', handleClickOutside); });
