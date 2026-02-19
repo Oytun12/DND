@@ -327,11 +327,7 @@ const app = createApp({
         // ============================================================
         // KARAKTER KAYDETME & URL GÜNCELLEME (YENİ)
         // ============================================================
-        
-        // ============================================================
-        // KARAKTER KAYDETME & URL GÜNCELLEME (GÜNCELLENMİŞ)
-        // ============================================================
-        
+
         const updateAppIcon = () => {
             const avatarUrl = store.meta.avatar;
             // Varsayılan veya boşsa işlem yapma
@@ -1301,17 +1297,23 @@ const app = createApp({
                 store.meta.avatar = "../../img/avatars/default-avatar.png";
             }
 
-            try {
+           try {
                 // --- VERİLERİ YÜKLE ---
+                
+                // 1. Sınıfları Yükle ve Sırala
                 const classData = await DataLoader.getClassData();
-                classList.value = classData.class || [];
+                classList.value = (classData.class || []).sort((a, b) => a.name.localeCompare(b.name, 'tr'));
                 
+                // 2. Irkları Yükle ve Sırala
                 const raceData = await DataLoader.loadJSON('races.json');
-                raceList.value = Array.isArray(raceData) ? raceData : (raceData.race || []);
+                const rawRaceList = Array.isArray(raceData) ? raceData : (raceData.race || []);
+                raceList.value = rawRaceList.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
                 
+                // 3. Geçmişleri Yükle ve Sırala
                 const bgData = await loadBackgroundData();
-                backgroundList.value = bgData || [];
+                backgroundList.value = (bgData || []).sort((a, b) => a.name.localeCompare(b.name, 'tr'));
 
+                // 4. Yetenekleri (Feats) Yükle
                 await DataLoader.getFeatsData().then(data => {
                     store.data.feats = data;
                     console.log("Feats yüklendi:", data.length);

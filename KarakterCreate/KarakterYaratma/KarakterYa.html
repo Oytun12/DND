@@ -478,7 +478,10 @@
                                     </div>
                                     <button class="pb-btn plus" @click="changePointBuy(key, 1)">+</button>
                                 </div>
-                                <div class="score-total">Maliyet: {{ getFlexCost(store.abilities.base[key]) }}</div>
+                                <div class="score-total" style="line-height: 1.2; padding-top: 5px;">
+                                    <span style="font-size: 0.8em; opacity: 0.8;">Maliyet:</span><br>
+                                    <strong style="font-size: 1.1em;">{{ getFlexCost(store.abilities.base[key]) }}</strong>
+                                </div>
                             </div>
                         </div>
 
@@ -574,61 +577,73 @@
                             </div>
                         </div>
                     
-                        <div class="budget-status" style="flex-direction: column; align-items: flex-start; gap: 10px; padding: 15px;">
-                            <h4 style="margin:0; color:#b52b2b;">Yetenek Analizi</h4>
-                                                
-                            <div style="width: 100%; display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                <span>Uzmanlık Yuvası:</span>
-                                <strong :class="{'over-budget': currentProfCount > skillBudget}">
-                                    {{ currentProfCount }} / {{ skillBudget }}
-                                </strong>
-                            </div>
-                        
-                            <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 5px;">
-                                <span>Ustalık Yuvası (Expertise):</span>
-                                <strong :class="{'over-budget': currentExpertCount > expertiseBudget}">
-                                    {{ currentExpertCount }} / {{ expertiseBudget }}
-                                </strong>
-                            </div>
-                        </div>
-                    
-                        <div v-if="store.background.selected" class="choice-wrapper" style="border-color: #4caf50; background: rgba(76, 175, 80, 0.05); margin-bottom: 20px;">
-                            <h5 style="margin:0; color:#4caf50;">💡 Geçmiş Yetenekleri ({{ store.background.selected.name }})</h5>
-                            <p style="font-size: 0.85em; margin: 5px 0; color: #eee;">
-                                Kural kitabına göre bu <strong>2</strong> yetenek önerilir: <strong>{{ store.background.selected.skillProficiencies }}</strong>
-                            </p>
-                        </div>
-                        <div v-if="classSkillInfo" class="choice-wrapper" style="border-color: #2196f3; background: rgba(33, 150, 243, 0.05); margin-bottom: 20px;">
-                            <h5 style="margin:0; color:#2196f3;">⚔️ Sınıf Yetenekleri ({{ store.class.selected.name }})</h5>
-                            <p style="font-size: 0.85em; margin: 5px 0; color: #eee;" v-html="classSkillInfo"></p>
-                        </div>
-                        <div v-if="raceSkillInfo" class="choice-wrapper" style="border-color: #e67e22; background: rgba(230, 126, 34, 0.05); margin-bottom: 20px;">
-                            <h5 style="margin:0; color:#e67e22;">🧬 Irk Yetenekleri ({{ store.race.selected.name }})</h5>                          
-                            <p style="font-size: 0.85em; margin: 5px 0; color: #eee;" v-html="raceSkillInfo"></p>
-                        </div>
-                    
-                        <div class="skill-picker-grid">
-                            <div v-for="skill in calculatedSkills" 
-                                 :key="skill.id" 
-                                 class="skill-card"
-                                 :class="{ 'is-prof': skill.profLevel === 1, 'is-expert': skill.profLevel === 2 }"
-                                 @click="toggleSkill(skill.id)">
-                                
-                                <div class="skill-bonus-tag">
-                                    {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
-                                </div>
-                                
-                                <div class="skill-info">
-                                    <span class="name">{{ skill.name }}</span>
-                                    <span class="attr">{{ skill.attrLabel }} : {{ finalAbilityScores[skill.attr] }}</span>
+                        <div v-if="store.background.selected">
+
+                            <div class="budget-status" style="flex-direction: column; align-items: flex-start; gap: 10px; padding: 15px;">
+                                <h4 style="margin:0; color:#b52b2b;">Yetenek Analizi</h4>
+
+                                <div style="width: 100%; display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                    <span>Uzmanlık Yuvası:</span>
+                                    <strong :class="{'over-budget': currentProfCount > skillBudget}">
+                                        {{ currentProfCount }} / {{ skillBudget }}
+                                    </strong>
                                 </div>
                             
-                                <div style="margin-right:10px; font-size: 1.2em;">
-                                    <span v-if="skill.profLevel === 1" title="Uzman (Proficient)" style="color: #b52b2b;">●</span>
-                                    <span v-if="skill.profLevel === 2" title="Usta (Expertise)" style="color: #e67e22;">★</span>
+                                <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 5px;">
+                                    <span>Ustalık Yuvası (Expertise):</span>
+                                    <strong :class="{'over-budget': currentExpertCount > expertiseBudget}">
+                                        {{ currentExpertCount }} / {{ expertiseBudget }}
+                                    </strong>
+                                </div>
+                            </div>
+                        
+                            <div class="choice-wrapper" style="border-color: #4caf50; background: rgba(76, 175, 80, 0.05); margin-bottom: 20px;">
+                                <h5 style="margin:0; color:#4caf50;">💡 Geçmiş Yetenekleri ({{ store.background.selected.name }})</h5>
+                                <p style="font-size: 0.85em; margin: 5px 0; color: #eee;">
+                                    Kural kitabına göre bu <strong>2</strong> yetenek önerilir: <strong>{{ store.background.selected.skillProficiencies }}</strong>
+                                </p>
+                            </div>
+                        
+                            <div v-if="classSkillInfo" class="choice-wrapper" style="border-color: #2196f3; background: rgba(33, 150, 243, 0.05); margin-bottom: 20px;">
+                                <h5 style="margin:0; color:#2196f3;">⚔️ Sınıf Yetenekleri ({{ store.class.selected.name }})</h5>
+                                <p style="font-size: 0.85em; margin: 5px 0; color: #eee;" v-html="classSkillInfo"></p>
+                            </div>
+                        
+                            <div v-if="raceSkillInfo" class="choice-wrapper" style="border-color: #e67e22; background: rgba(230, 126, 34, 0.05); margin-bottom: 20px;">
+                                <h5 style="margin:0; color:#e67e22;">🧬 Irk Yetenekleri ({{ store.race.selected.name }})</h5>                          
+                                <p style="font-size: 0.85em; margin: 5px 0; color: #eee;" v-html="raceSkillInfo"></p>
+                            </div>
+                        
+                            <div class="skill-picker-grid">
+                                <div v-for="skill in calculatedSkills" 
+                                     :key="skill.id" 
+                                     class="skill-card"
+                                     :class="{ 'is-prof': skill.profLevel === 1, 'is-expert': skill.profLevel === 2 }"
+                                     @click="toggleSkill(skill.id)">
+
+                                    <div class="skill-bonus-tag">
+                                        {{ skill.totalBonus >= 0 ? '+' : '' }}{{ skill.totalBonus }}
+                                    </div>
+
+                                    <div class="skill-info">
+                                        <span class="name">{{ skill.name }}</span>
+                                        <span class="attr">{{ skill.attrLabel }} : {{ finalAbilityScores[skill.attr] }}</span>
+                                    </div>
+                                
+                                    <div style="margin-right:10px; font-size: 1.2em;">
+                                        <span v-if="skill.profLevel === 1" title="Uzman (Proficient)" style="color: #b52b2b;">●</span>
+                                        <span v-if="skill.profLevel === 2" title="Usta (Expertise)" style="color: #e67e22;">★</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div v-else class="empty-selection-placeholder">
+                            <div class="empty-icon">📜</div> 
+                            <div class="empty-title">Bir Geçmiş Seçin</div>
+                            <div class="empty-desc">Karakterinizin yeteneklerini (skills) ve köken hikayesini belirleyebilmek için yukarıdan bir karakter geçmişi seçin.</div>
+                        </div>
+                    
                     </div>
                 </div>
 
