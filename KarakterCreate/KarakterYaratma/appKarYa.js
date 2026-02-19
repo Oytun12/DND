@@ -377,6 +377,21 @@ const app = createApp({
             // ---------------------------------------------
 
             isSaving.value = true;
+
+            // --- YENİ EKLENEN KISIM: KULLANICI PROFİLİNİ KAYDET ---
+            // Bu sayede Admin panelinde "Hayalet Doküman" sorunu olmaz.
+            try {
+                const userRef = doc(db, "users", user.value.uid);
+                // Sadece temel bilgileri merge (birleştirme) ile yazıyoruz
+                await setDoc(userRef, {
+                    displayName: user.value.displayName,
+                    email: user.value.email,
+                    photoURL: user.value.photoURL,
+                    lastSeen: new Date()
+                }, { merge: true });
+            } catch (err) {
+                console.warn("Kullanıcı profili güncellenemedi:", err);
+            }
         
             try {
                 // 1. Store'daki eksikleri tamamla (Seed için gerekli)
@@ -1270,11 +1285,16 @@ const app = createApp({
                 isSkillsExpanded.value = window.innerWidth > 860;
             });
 
-            // 1. URL Parametrelerini EN BAŞTA al (Referans hatasını çözer)
+            // 1. URL Parametrelerini Al (Hem standart hem Admin linklerini destekle)
             const urlParams = new URLSearchParams(window.location.search);
+            
             const urlSeed = urlParams.get('seed');
-            const urlUid = urlParams.get('uid');
-            const urlCharID = urlParams.get('charID');
+            
+            // BURASI GÜNCELLENDİ: Hem 'uid' hem 'loadUser' parametresine bakıyoruz
+            const urlUid = urlParams.get('uid') || urlParams.get('loadUser'); 
+            
+            // BURASI GÜNCELLENDİ: Hem 'charID' hem 'loadChar' parametresine bakıyoruz
+            const urlCharID = urlParams.get('charID') || urlParams.get('loadChar');
 
             // Varsayılan avatar kontrolü
             if (!store.meta.avatar || typeof store.meta.avatar !== 'string') {
