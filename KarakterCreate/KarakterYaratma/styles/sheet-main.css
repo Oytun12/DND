@@ -317,7 +317,6 @@
 .modal-content {
     background: #1e1e1e; /* Koyu tema */
     color: #eee;
-    padding: 20px;
     border-radius: 10px;
     border: 1px solid #444;
     width: 300px;
@@ -372,7 +371,6 @@
 .modal-content {
     background: #1a1a1a;
     border: 1px solid #333;
-    padding: 25px;
     border-radius: 12px;
     width: 320px;
     text-align: center;

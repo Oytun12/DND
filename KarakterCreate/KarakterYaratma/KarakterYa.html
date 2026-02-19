@@ -136,12 +136,16 @@
                             <h2 style="color:#b52b2b; margin-bottom: 5px; text-align: center; text-transform: uppercase; letter-spacing: 1px;">Kahramanın Doğuşu</h2>
                             <p style="color:#666; font-size: 0.9em; margin-bottom: 25px; text-align: center; font-style: italic;">Efsane burada başlıyor...</p>
 
-                            <div class="hero-avatar-frame">
+                            <div class="hero-avatar-frame" 
+                                 @click.stop="toggleGallery" 
+                                 style="cursor: pointer;" 
+                                 title="Resmi Değiştirmek İçin Tıkla">
+
                                 <img :src="(store.meta.avatar && store.meta.avatar.startsWith('http')) ? store.meta.avatar : (store.meta.avatar || '../../img/avatars/default-avatar.png')" 
                                      alt="Seçili Avatar" 
                                      @error="$event.target.src='../../img/avatars/default-avatar.png'"
                                      style="object-fit: cover;">
-                            </div>
+                            </div>                      
 
                             <div class="hero-input-group" style="text-align: center; margin-top: 20px;">
                                 <input type="text" v-model="store.meta.name" placeholder="Karakterinin Adı Nedir?" style="text-align: center;">
@@ -773,10 +777,10 @@
                             </template>
                             
                             <span class="hide-on-mobile">
-                                <template v-if="!user">Kaydet</template>
+                                <template v-if="!user">Kayıt et</template>
                                 
                                 <template v-else>
-                                    {{ isSaving ? 'Kaydediliyor...' : (hasUnsavedChanges ? 'Güncelle' : 'Senkronize') }}
+                                    {{ isSaving ? 'Kaydediliyor...' : (hasUnsavedChanges ? 'Kaydet' : 'Senkronize') }}
                                 </template>
                             </span>
                         </button>
@@ -799,8 +803,8 @@
                 </div>
                 
                 <div class="header-section right-rest">
-                    <button class="rest-btn short" @click="handleRest('short')">Kısa Dinlenme</button>
-                    <button class="rest-btn long" @click="handleRest('long')">Uzun Dinlenme</button>
+                    <button class="rest-btn short" @click="handleRest('short')">⚡ Kısa Dinlenme</button>
+                    <button class="rest-btn long" @click="handleRest('long')">💤 Uzun Dinlenme</button>
                 </div>
             
             </header>
@@ -1767,10 +1771,9 @@
                         
                         <div class="icon" v-if="hpModalValue < 0">🩸</div>
                         <div class="icon" v-else-if="hpModalValue > 0">💚</div>
-                        <div class="icon" v-else>⚪</div>
 
                         <span>
-                            {{ hpModalValue > 0 ? 'Uygula (İyileş)' : (hpModalValue < 0 ? 'Uygula (Hasar)' : 'Değer Giriniz') }}
+                            {{ hpModalValue > 0 ? 'Uygula (İyileş)' : (hpModalValue < 0 ? 'Uygula (Hasar)' : '-') }}
                         </span>
                     </button>
 
@@ -1801,7 +1804,7 @@
                     <p v-if="spendDiceCount === 0" style="font-size: 0.8em; color: #aaa; margin-top: 5px;">Zar harcamadan sadece dinleniyorsun.</p>
                 </div>
             
-                <div class="modal-actions">
+                <div class="modal-actions" style="padding: 20px;">
                     <button @click="showRestModal = false" class="cancel-btn">Vazgeç</button>
                     
                     <button @click="confirmShortRest" class="confirm-btn">
