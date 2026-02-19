@@ -245,6 +245,62 @@ a.dnd-link.spell-link:hover {
     font-size: 1.1em;
 }
 
+
+/* ==========================================
+   ASI (Ability Score Improvement) KLASÖR SEKMELERİ
+   ========================================== */
+
+/* Sekme Butonlarının Konteyneri */
+.asi-tabs-container {
+    display: flex;
+    gap: 5px;
+    margin-top: 20px;
+    margin-bottom: -1px; /* Kutunun üst çizgisiyle birleşmesi için 1px aşağı çeker */
+    position: relative;
+    z-index: 2; /* Kutunun üstünde durmasını sağlar */
+}
+
+/* Pasif Sekme Görünümü */
+.asi-tab-btn {
+    flex: 1;
+    padding: 12px;
+    background: #2a2a2a; /* Ana arka plan rengi */
+    color: #777;
+    border: 1px solid #444;
+    border-bottom: 1px solid #e67e22;
+    border-radius: 8px 8px 0 0; /* Sadece üst köşeler yuvarlak */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95em;
+    transition: all 0.2s ease;
+}
+
+.asi-tab-btn:hover {
+    background: #222;
+    color: #ccc;
+}
+
+/* Aktif (Seçili) Sekme Görünümü */
+.asi-tab-btn.active {
+    background: #2a2a2a; /* İçerik kutusuyla aynı arka plan rengi */
+    color: #e67e22; /* Turuncu vurgu rengi */
+    border: 1px solid #e67e22; /* Kutuyla aynı sınır rengi */
+    border-bottom: 1px solid #2a2a2a; /* Kutunun çizgisiyle kaynaşıp silinmesini sağlar */
+}
+
+/* Sekmenin Altındaki İçerik Kutusu */
+.asi-tab-content {
+    background: #2a2a2a;
+    border: 1px solid #e67e22;
+    border-radius: 0 0 8px 8px; /* Sol üst köşe sekme ile birleşeceği için düz (0) */
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 20px;
+}
+
+
+
 /* ============================================================
    AVATAR SEÇİM GALERİSİ
    ============================================================ */

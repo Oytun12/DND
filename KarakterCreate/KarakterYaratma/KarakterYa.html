@@ -329,67 +329,106 @@
                                         <template v-for="feat in step.features" :key="'main-'+feat.name">
                                             <div v-if="feat.name === 'Yetenek Skoru Gelişimi' || feat.name === 'Ability Score Improvement'" class="feature-item">
                                                 <h4 style="color: #e67e22;">{{ feat.name }}</h4>
-
+                                            
                                                 <div class="feature-text">
                                                     <p>Bu seviyede stat artışı ya da bir feat seçimi tercih edilebilir.</p>
-                                                    <p style="font-size: 0.9em; color: #aaa; margin-top: 5px; font-style: italic;">
-                                                        (Not: Feat seçerseniz, aşağıdaki stat artışlarını boş bırakmanız veya Feat'in verdiği bonuslara göre ayarlamanız önerilir.)
-                                                    </p>
                                                 </div>
                                             
-                                                <div class="choice-wrapper">
-                                                    <div class="choice-container">
-                                                        <label>Feat Seçimi (Opsiyonel):</label>
+                                                <div class="asi-tabs-container">
+                                                    <button 
+                                                        @click.prevent="store.abilities.asi[step.level].mode = 'stat'; store.abilities.asi[step.level].feat = null;"
+                                                        class="asi-tab-btn"
+                                                        :class="{ 'active': store.abilities.asi[step.level].mode !== 'feat' }">
+                                                        STAT GELİŞİMİ
+                                                    </button>
 
-                                                        <select v-model="store.abilities.asi[step.level].feat" class="mini-select">
-                                                            <option :value="null">-- Feat Seçiniz (Boş Bırakılabilir) --</option>
+                                                    <button 
+                                                        @click.prevent="store.abilities.asi[step.level].mode = 'feat'; store.abilities.asi[step.level].stat2 = null;"
+                                                        class="asi-tab-btn"
+                                                        :class="{ 'active': store.abilities.asi[step.level].mode === 'feat' }">
+                                                        FEAT (YETENEK)
+                                                    </button>
+                                                </div>
+                                            
+                                                <div class="asi-tab-content">
 
-                                                            <option v-if="!store.data.feats || store.data.feats.length === 0" disabled>
-                                                                Yükleniyor...
-                                                            </option>
-                                                        
-                                                            <template v-else>
-                                                                <option v-for="ft in store.data.feats.sort((a,b) => a.name.localeCompare(b.name))" 
-                                                                        :key="ft.name" 
-                                                                        :value="ft.name">
-                                                                    {{ ft.name }}
-                                                                </option>
-                                                            </template>
-                                                        </select>
-                                                    </div>
+                                                    <div v-if="store.abilities.asi[step.level].mode !== 'feat'">
+                                                        <p style="font-size: 0.85em; color: #ccc; margin-bottom: 5px;">
+                                                            İki farklı statınıza +1 ekleyebilir veya aynı stata +2 ekleyebilirsiniz (Aynı statı iki kez seçerek).
+                                                        </p>
+                                                        <p style="font-size: 0.8em; color: rgb(181, 43, 43); margin-top: 0; margin-bottom: 15px;">
+                                                            (Not: Bu yetenek ile hiç bir stat 20'nin üstüne arttırılamaz.)
+                                                        </p>
 
-                                                    <div v-if="feat.choice" class="sheet-choice-wrapper" style="margin-top: 10px;">
-                                                        <div class="choice-entry card-style">
-                                                            <div class="choice-header">
-                                                                <span class="choice-icon">➤</span>
-                                                                <span class="choice-title">{{ feat.choice.name }}</span>
+                                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                                            <div>
+                                                                <label>Yükseltme 1:</label>
+                                                                <select v-model="store.abilities.asi[step.level]['stat1']" class="mini-select">
+                                                                    <option :value="null">-</option>
+                                                                    <option v-for="(lbl, k) in {'str':'STR (+1)','dex':'DEX (+1)','con':'CON (+1)','int':'INT (+1)','wis':'WIS (+1)','cha':'CHA (+1)'}" 
+                                                                            :key="k" :value="k">{{ lbl }}</option>
+                                                                </select>
                                                             </div>
-                                                            <div class="choice-body" v-html="feat.choice.desc"></div>
+                                                            <div>
+                                                                <label>Yükseltme 2:</label>
+                                                                <select v-model="store.abilities.asi[step.level]['stat2']" class="mini-select">
+                                                                    <option :value="null">-</option>
+                                                                    <option v-for="(lbl, k) in {'str':'STR (+1)','dex':'DEX (+1)','con':'CON (+1)','int':'INT (+1)','wis':'WIS (+1)','cha':'CHA (+1)'}" 
+                                                                            :key="k" :value="k">{{ lbl }}</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                
+                                                    <div v-if="store.abilities.asi[step.level].mode === 'feat'">
+                                                        <div class="choice-container" style="margin-bottom: 15px;">
+                                                            <label>Feat Seçimi:</label>
+                                                            <select v-model="store.abilities.asi[step.level].feat" class="mini-select">
+                                                                <option :value="null">-- Feat Seçiniz --</option>
+                                                                <option v-if="!store.data.feats || store.data.feats.length === 0" disabled>Yükleniyor...</option>
+                                                                <template v-else>
+                                                                    <option v-for="ft in store.data.feats.sort((a,b) => a.name.localeCompare(b.name))" 
+                                                                            :key="ft.name" 
+                                                                            :value="ft.name">
+                                                                        {{ ft.name }}
+                                                                    </option>
+                                                                </template>
+                                                            </select>
+                                                        </div>
+                                                    
+                                                        <div v-if="feat.choice" class="sheet-choice-wrapper" style="margin-top: 10px; margin-bottom: 15px;">
+                                                            <div class="choice-entry card-style">
+                                                                <div class="choice-header">
+                                                                    <span class="choice-icon">➤</span>
+                                                                    <span class="choice-title">{{ feat.choice.name }}</span>
+                                                                </div>
+                                                                <div class="choice-body" v-html="feat.choice.desc"></div>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border: 1px solid #444;">
+                                                            <p style="font-size: 0.8em; color: #ccc; margin: 0 0 10px 0;">
+                                                                Seçtiğiniz feat stat artışı sağlıyorsa (Örn: Resilient, Actor vs.), gerekli yükseltmeyi buradan uygulayabilirsiniz.
+                                                            </p>
+                                                            <div>
+                                                                <label>Yükseltme 1 (Feat Bonusu):</label>
+                                                                <select v-model="store.abilities.asi[step.level]['stat1']" class="mini-select">
+                                                                    <option :value="null">-</option>
+                                                                    <option v-for="(lbl, k) in {'str':'STR (+1)','dex':'DEX (+1)','con':'CON (+1)','int':'INT (+1)','wis':'WIS (+1)','cha':'CHA (+1)'}" 
+                                                                            :key="k" :value="k">{{ lbl }}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 
-                                                <div class="choice-wrapper" style="border-top: 1px dashed #444; margin-top: 15px; padding-top: 15px;">
-                                                    <p style="font-size: 0.8em; color: #ccc; margin: 0;">Seçtiğiniz feat stat artışı sağlıyorsa veya stat artışı seçtiyseniz gerekli yükseltmeyi buradan uygulayabilirsiniz.</p>
-                                                    <p style="font-size: 0.8em; color: rgb(181, 43, 43); margin: 0; margin-bottom: 10px;">(Not: Bu yetenek ile hiç bir stat 20'nin üstüne arttırılamaz.)</p>
-                                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                                         <div v-for="n in 2" :key="n">
-                                                             <label>Yükseltme {{ n }}:</label>
-                                                             <select v-model="store.abilities.asi[step.level]['stat'+n]" class="mini-select">
-                                                                 <option :value="null">-</option>
-                                                                 <option v-for="(lbl, k) in {'str':'STR (+1)','dex':'DEX (+1)','con':'CON (+1)','int':'INT (+1)','wis':'WIS (+1)','cha':'CHA (+1)'}" 
-                                                                         :value="k">{{ lbl }}</option>
-                                                             </select>
-                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                                                </div> 
+                                            </div> 
                                             <div v-else-if="!feat.isSubclass" class="feature-item">
                                                 <h4 style="color: #b52b2b;">{{ feat.name }}</h4>
                                                 <div class="feature-text">
                                                     <p v-for="(txt, idx) in feat.entries" :key="idx" v-html="txt" style="margin-bottom: 5px;"></p>
                                                 </div>
+
                                                 <div v-if="feat.hasOptions">
                                                     <div v-for="i in feat.selectionCount" :key="i" class="choice-wrapper">
                                                         <div class="choice-container">
@@ -405,7 +444,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </template>
 
                                         <div v-if="step.level === subclassUnlockLevel" class="subclass-selection-box">
