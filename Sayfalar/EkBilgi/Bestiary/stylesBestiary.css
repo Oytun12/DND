@@ -131,6 +131,27 @@ ul { list-style: none; padding: 0; margin: 0; }
     flex: 1; /* Dropdown'ların eşit genişlikte yayılmasını sağlar */
 }
 
+.filter-selects-group {
+    display: flex;
+    flex-direction: row; /* Masaüstünde yan yana */
+    gap: 10px;
+    width: 100%;
+}
+
+.dropdown-filter {
+    background-color: #2a2a2a;
+    color: #eee;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    cursor: pointer;
+    width: 100%;
+    /* Flex yapısı içinde Selectlerin eşit genişlikte olması için */
+    flex: 1 1 0px; 
+    min-width: 0; 
+}
+
 /* Dropdown Grubu (Masaüstü Varsayılanı) */
 .dropdown-group {
     display: flex;
@@ -309,27 +330,40 @@ ul { list-style: none; padding: 0; margin: 0; }
    RESPONSIVE & FİLTRE DÜZENİ (MOBİL UYUM)
    ============================================================ */
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
     .desktop-nav { display: none; }
     .menu-icon { display: block; }
     
-    .filter-section {
-        position: relative; 
-        padding: 10px 15px;
-        top: auto;
-        border-bottom: 1px solid #333;
+.filter-section {
+        padding: 15px;
     }
 
-    .dropdown-group { flex-direction: column; gap: 10px; }
-    .dropdown-group > div { flex-direction: column; gap: 10px; }
-    .dropdown-filter { width: 100%; padding: 12px; font-size: 1rem; background-color: #2a2a2a; }
-    .search-input { padding: 12px; font-size: 1rem; }
-    .main-container { padding: 0 15px; }
-    
-    /* Canavar Stat Blokları Mobil İyileştirmesi (3x2 Grid) */
-    .ability-scores-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+    /* Mobilde filtre konteynerini tamamen serbest bırakıyoruz */
+    .filter-container {
+        padding: 0;
+    }
+
+    .filters-row {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* YENİ MOBİL KOD: Bu 4'lü grubu alt alta diz! */
+    .filter-selects-group {
+        flex-direction: column; /* Telefonda alt alta */
+        gap: 8px; /* Aradaki boşluğu biraz daralttık */
+    }
+
+    /* Telefonda tüm filtreler %100 genişlikte olsun */
+    .dropdown-filter {
+        width: 100%;
+        margin-bottom: 0; /* Alt alta dizildikleri için manuel marjına gerek yok */
+        flex: none; /* Masaüstündeki eşit genişlik kuralını iptal et */
+    }
+
+    /* Sıralama menüsü bu grubun dışında olduğu için marjını temizledik */
+    #sort-select {
+        margin-top: 5px !important;
     }
 
     /* Mobil için Yukarı Dön Butonu Küçültmesi */
