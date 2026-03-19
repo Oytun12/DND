@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="manifest" href="../../../manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <title>D&D 5e Yaratık Rehberi (Bestiary) | 5e Türkçe</title>
+    
+    <link rel="icon" href="../../../favicon.png" type="image/png">
+    <link rel="stylesheet" href="stylesBestiary.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <a href="../../../index.html" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../../../img/SariZar.svg" alt="Logo" class="logo-img">
+                    <div class="titles">
+                        <h1 class="main-title">D&D 5e Türkçe</h1>
+                        <span class="sub-title">Yaratık Rehberi</span>
+                    </div>
+                </a>
+            </div>
+        
+            <nav class="desktop-nav">
+                <a href="../../Race/race.html" class="nav-link">Irklar</a>
+                <a href="../../Class/class.html" class="nav-link">Sınıflar</a>
+                <a href="../../BackGround/back.html" class="nav-link">Geçmişler</a>
+                <a href="../../Envanter/envanter.html" class="nav-link">Ekipmanlar</a>
+                <a href="../../Spells/spells.html" class="nav-link">Büyüler</a>
+                <a href="../ekbilgi.html" class="nav-link" style="color: #b52b2b;">Ek Bilgiler</a>
+                <a>|</a>
+                <a href="../../../KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
+            </nav>
+        
+            <div class="menu-icon" onclick="toggleMenu(event)">☰</div>
+        </div>
+    
+        <nav id="mobile-menu" class="mobile-nav">
+            <ul>
+                <li><a href="../../Race/race.html">Irklar</a></li>
+                <li><a href="../../Class/class.html">Sınıflar</a></li>
+                <li><a href="../../Envanter/envanter.html">Ekipmanlar</a></li>
+                <li><a href="../../Spells/spells.html">Büyüler</a></li>
+                <li><a href="../ekbilgi.html">Ek Bilgiler</a></li>
+                <li style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                    <a href="../../../KarakterCreate/KarakterYaratma/KarakterYa.html" style="color: #b52b2b;">✨ Karakter Yaratıcısı</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="Yaratık adı ara... (Örn: Goblin, Dragon)">
+            </div>
+            
+            <div class="filters-row">
+                    <div style="display:flex; gap:10px; width: 100%;">
+                        <select id="cr-select" class="dropdown-filter">
+                            <option value="all">Tüm CR'ler</option>
+                            <option value="0">CR 0</option>
+                            <option value="1/8">CR 1/8</option>
+                            <option value="1/4">CR 1/4</option>
+                            <option value="1/2">CR 1/2</option>
+                            <option value="1">CR 1</option>
+                            <option value="2">CR 2</option>
+                            <option value="3">CR 3</option>
+                            <option value="4">CR 4</option>
+                            <option value="5">CR 5</option>
+                            <option value="high">CR 6+</option>
+                        </select>
+
+                        <select id="type-select" class="dropdown-filter">
+                            <option value="all">Tüm Türler</option>
+                            <option value="aberration">Aberration (Ucube)</option>
+                            <option value="beast">Beast (Hayvan)</option>
+                            <option value="celestial">Celestial (Semavi)</option>
+                            <option value="construct">Construct (Yapı)</option>
+                            <option value="dragon">Dragon (Ejderha)</option>
+                            <option value="elemental">Elemental (Elementer)</option>
+                            <option value="fey">Fey (Peri)</option>
+                            <option value="fiend">Fiend (Zebani)</option>
+                            <option value="giant">Giant (Dev)</option>
+                            <option value="humanoid">Humanoid (İnsansı)</option>
+                            <option value="monstrosity">Monstrosity (Canavar)</option>
+                            <option value="ooze">Ooze (Balçık)</option>
+                            <option value="plant">Plant (Bitki)</option>
+                            <option value="undead">Undead (Ölümsüz)</option>
+                        </select>
+
+                        <select id="size-select" class="dropdown-filter">
+                            <option value="all">Tüm Boyutlar</option>
+                            <option value="T">Tiny (Minik)</option>
+                            <option value="S">Small (Küçük)</option>
+                            <option value="M">Medium (Orta)</option>
+                            <option value="L">Large (Büyük)</option>
+                            <option value="H">Huge (Devasa)</option>
+                            <option value="G">Gargantuan (Muazzam)</option>
+                        </select>
+
+                        <select id="source-select" class="dropdown-filter">
+                            <option value="all">Tüm Kaynaklar</option>
+                            </select>
+                    </div>
+                    
+                    <select id="sort-select" class="dropdown-filter" style="margin-top: 10px;">
+                        <option value="name-asc">İsim (A-Z)</option>
+                        <option value="name-desc">İsim (Z-A)</option>
+                        <option value="cr-asc">Tehlike Puanı (Düşük > Yüksek)</option>
+                        <option value="cr-desc">Tehlike Puanı (Yüksek > Düşük)</option>
+                        <option value="source">Kaynak Kitap (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-container">
+        <div id="monster-list">
+            <div id="loading-msg">Yaratıklar Yükleniyor... (Bu işlem JSON boyutuna göre birkaç saniye sürebilir)</div>
+        </div>
+    </main>
+
+    <button id="scrollToTopBtn" class="scroll-to-top" aria-label="Yukarı Dön">▲</button>
+    
+    <script src="scriptBestiary.js"></script>
+</body>
+</html>

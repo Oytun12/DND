@@ -166,7 +166,7 @@
                                      :key="index" 
                                      class="avatar-option"
                                      :class="{ 'selected': store.meta.avatar === '../../img/avatars/' + img }"
-                                     @click="store.meta.avatar = '../../img/avatars/' + img">
+                                     @click="selectAvatar(img)">
                                     
                                     <img :src="'../../img/avatars/' + img" loading="lazy" alt="Avatar">
                                 </div>

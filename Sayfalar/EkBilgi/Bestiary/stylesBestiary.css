@@ -1,0 +1,343 @@
+/* ============================================================
+   STYLESBESTIARY.CSS - Yaratık Rehberi Teması (Büyüler ile %100 Uyumlu)
+   ============================================================ */
+
+/* --- TEMEL AYARLAR --- */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a; 
+    color: #eee;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b52b2b; }
+
+.hidden { display: none !important; }
+
+/* --- HEADER (Standart) --- */
+.main-header {
+    background-color: #222; 
+    border-bottom: 2px solid #b52b2b;
+    padding: 0 20px; 
+    height: 70px;
+    display: flex; align-items: center; 
+    position: relative; z-index: 2001;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.header-container {
+    width: 100%; max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.brand-area { display: flex; align-items: center; gap: 15px; }
+.logo-img { height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+
+.titles { display: flex; flex-direction: column; }
+.main-title { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Menü */
+.desktop-nav { display: flex; gap: 20px; }
+.nav-link { color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+
+.menu-icon { 
+    display: none; 
+    font-size: 28px; 
+    cursor: pointer; 
+    color: #fff; 
+    user-select: none; 
+    padding: 15px; margin-right: -15px;
+    position: relative; z-index: 10000; pointer-events: auto;
+}
+
+/* Mobil Menü */
+.mobile-nav {
+    position: absolute; top: 70px; left: 0; width: 100%;
+    background-color: #222; border-bottom: 2px solid #b52b2b;
+    padding: 20px; z-index: 2000; box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    display: none; 
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul li { margin-bottom: 15px; text-align: center; }
+.mobile-nav ul li a { font-size: 1.2em; display: block; color: #eee; } 
+.mobile-nav ul li a:hover { color: #b52b2b; }
+
+/* --- FİLTRELEME ALANI (Gelişmiş) --- */
+.filter-section {
+    background-color: #222;
+    padding: 20px;
+    border-bottom: 1px solid #333;
+    top: 0;
+    z-index: 900;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.filter-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Arama Çubuğu */
+.search-box {
+    position: relative;
+    width: 100%;
+}
+.search-input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+.search-input:focus {
+    outline: none;
+    border-color: #b52b2b;
+    box-shadow: 0 0 5px rgba(181, 43, 43, 0.3);
+}
+
+/* Filtre Grupları */
+.filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Dropdown Filtreler */
+.dropdown-filter {
+    background-color: #333;
+    color: #ccc;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+    flex: 1; /* Dropdown'ların eşit genişlikte yayılmasını sağlar */
+}
+
+/* Dropdown Grubu (Masaüstü Varsayılanı) */
+.dropdown-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+/* --- YARATIK LİSTESİ --- */
+.main-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.monster-card {
+    background-color: #2a2a2a;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.monster-card:hover { border-color: #555; }
+
+/* Kart Başlığı */
+.monster-header {
+    background-color: #333;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid transparent; 
+    transition: background 0.2s;
+}
+.monster-header:hover { background-color: #3a3a3a; }
+
+.monster-name-group {
+    display: flex;
+    flex-direction: column;
+}
+.monster-name { font-size: 1.1em; font-weight: bold; color: #fff; }
+.monster-meta-short { font-size: 0.85em; color: #aaa; margin-top: 3px; font-style: italic; }
+
+/* Yaratık Türüne Göre Renkler */
+.type-aberration { border-left-color: #8b5cf6; } 
+.type-beast { border-left-color: #a16207; }      
+.type-celestial { border-left-color: #eab308; }  
+.type-construct { border-left-color: #94a3b8; }  
+.type-dragon { border-left-color: #ef4444; }     
+.type-elemental { border-left-color: #06b6d4; }  
+.type-fey { border-left-color: #ec4899; }        
+.type-fiend { border-left-color: #b91c1c; }      
+.type-giant { border-left-color: #d97706; }      
+.type-humanoid { border-left-color: #3b82f6; }   
+.type-monstrosity { border-left-color: #10b981;} 
+.type-ooze { border-left-color: #84cc16; }       
+.type-plant { border-left-color: #22c55e; }      
+.type-undead { border-left-color: #64748b; }     
+/* Kart İçeriği (Karanlık Tema - Büyülerle Uyumlu) */
+.monster-content {
+    background-color: #252525;
+    padding: 20px;
+    display: none; /* JS ile açılır */
+    border-top: 1px solid #3b3b3b;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+/* Detay Izgarası (AC, HP, Hız) */
+.monster-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #444;
+}
+.detail-item strong { display: block; color: #b52b2b; font-size: 0.85em; text-transform: uppercase; margin-bottom: 3px; }
+.detail-item span { color: #eee; font-size: 1.05em; }
+
+/* Nitelik Skorları (STR, DEX vb.) */
+.ability-scores-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #444;
+}
+.ability-score-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1a1a;
+    border: 1px solid #3b3b3b;
+    border-radius: 6px;
+    padding: 10px 5px;
+}
+.ability-score-item strong { color: #b52b2b; font-size: 0.85em; text-transform: uppercase; margin-bottom: 4px; }
+.ability-score-item span { color: #fff; font-size: 1em; }
+
+/* Pasifler, Kurtarmalar, Diller (Alt Bilgi Satırı) */
+.monster-info-line {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #444;
+    line-height: 1.8;
+}
+.monster-info-line strong { color: #b52b2b; margin-right: 5px; }
+
+/* Canavar Özellikleri ve Eylemleri */
+.monster-section { margin-bottom: 20px; }
+.monster-section h4 {
+    color: #b52b2b; 
+    font-size: 1.1em; 
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px; 
+    margin-bottom: 10px; 
+    margin-top: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.monster-section p { margin: 8px 0; }
+.monster-section strong { color: #fff; font-style: normal; } /* Eylem adları beyaz ve belirgin */
+
+/* Yükleme ve Hata Mesajları */
+#loading-msg { text-align: center; color: #888; padding: 40px; }
+.no-results { text-align: center; padding: 40px; color: #aaa; font-style: italic; }
+
+/* ============================================================
+   YUKARI DÖN BUTONU
+   ============================================================ */
+.scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #333;
+    color: #ccc;
+    border: 1px solid #444;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    
+    /* Gizleme ve Animasyon Ayarları */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.scroll-to-top:hover {
+    background-color: #b52b2b;
+    color: #fff;
+    border-color: #b52b2b;
+    transform: translateY(-3px); /* Hover olunca hafif yukarı kalkar */
+}
+
+/* Butonun Görünür Olduğu Durum */
+.scroll-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* ============================================================
+   RESPONSIVE & FİLTRE DÜZENİ (MOBİL UYUM)
+   ============================================================ */
+
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    
+    .filter-section {
+        position: relative; 
+        padding: 10px 15px;
+        top: auto;
+        border-bottom: 1px solid #333;
+    }
+
+    .dropdown-group { flex-direction: column; gap: 10px; }
+    .dropdown-group > div { flex-direction: column; gap: 10px; }
+    .dropdown-filter { width: 100%; padding: 12px; font-size: 1rem; background-color: #2a2a2a; }
+    .search-input { padding: 12px; font-size: 1rem; }
+    .main-container { padding: 0 15px; }
+    
+    /* Canavar Stat Blokları Mobil İyileştirmesi (3x2 Grid) */
+    .ability-scores-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    /* Mobil için Yukarı Dön Butonu Küçültmesi */
+    .scroll-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 1em;
+    }
+}

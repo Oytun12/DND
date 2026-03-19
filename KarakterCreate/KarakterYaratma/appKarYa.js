@@ -294,10 +294,26 @@ const app = createApp({
             if (isGalleryExpanded.value) {
                 nextTick(() => {
                     setTimeout(() => {
-                        if (galleryContainer.value) galleryContainer.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        if (galleryContainer.value) galleryContainer.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }, 300);
                 });
             }
+        };
+
+        // --- YENİ EKLENECEK KISIM BURADAN BAŞLIYOR ---
+        const selectAvatar = (img) => {
+            // 1. Resmi Store'a kaydet (Avatar anında değişir)
+            store.meta.avatar = '../../img/avatars/' + img;
+            
+            // 2. Galeriyi KAPATMIYORUZ! 
+            
+            // 3. Anında yukarıdaki isim ve avatar çerçevesine odaklan
+            nextTick(() => {
+                const frame = document.querySelector('.hero-avatar-frame');
+                if (frame) {
+                    frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
         };
 
         const galleryContainer = ref(null); 
@@ -1392,6 +1408,7 @@ const app = createApp({
             assignScore, unassignScore, syncAllocationsFromStore, SKILL_DEFINITIONS, calculatedSkills, toggleSkill,
             skillBudget, expertiseBudget, raceSkillInfo, classSkillInfo, currentProfCount, currentExpertCount,
             avatarGallery, avatarList, showCustomAvatarInput, isGalleryExpanded, toggleGallery, galleryContainer,
+            selectAvatar,
             galleryButton, classResources, updateResource, handleRest, diceResult, rollD20, rollDamage,
             closeDiceResult, isSaveProficient, diceHistory, isHistoryOpen, clearHistory, toggleHistory,
             isInventoryOpen, isHpModalOpen, hpModalValue, maxHP, currentHP, hpStatusClass, setFullHp,
