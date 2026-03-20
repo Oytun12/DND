@@ -1,0 +1,168 @@
+/* ============================================================
+   ZENGİN METİN EDİTÖRÜ (NOTION TARZI) - MODÜL
+   ============================================================ */
+.panel-content-notes {
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+    position: relative;
+}
+
+.rich-text-editor {
+    flex-grow: 1; 
+    padding: 10px;
+    padding-bottom: 40px; 
+    outline: none;
+    overflow-y: auto;
+    color: #eee;
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+.rich-text-editor:empty:before {
+    content: attr(data-placeholder);
+    color: #666;
+    pointer-events: none;
+    font-style: italic;
+    display: block;
+}
+
+/* Editör İçi Stiller (Birebir Notion Uyarlaması) */
+.rich-text-editor h1, .rich-text-editor h2, .rich-text-editor h3 { 
+    color: #ffffff; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 600; 
+    line-height: 1.3;
+    margin: 0;
+    padding: 0;
+}
+
+.rich-text-editor h1 { font-size: 1.875em; margin-top: 1.2em; margin-bottom: 0.25em; }
+.rich-text-editor h2 { font-size: 1.5em; margin-top: 1.1em; margin-bottom: 0.25em; }
+.rich-text-editor h3 { font-size: 1.25em; margin-top: 1em; margin-bottom: 0.25em; }
+.rich-text-editor hr { border: none; border-top: 1px solid #444; margin: 20px 0; }
+.rich-text-editor ul, .rich-text-editor ol { padding-left: 20px; margin: 8px 0; color: #eee; }
+.rich-text-editor blockquote { border-left: 3px solid #ccc; margin: 8px 0; padding-left: 14px; color: #aaa; font-style: italic; background: transparent; }
+
+.export-notes-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #2a2a2a;
+    color: #aaa;
+    border: 1px solid #444;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    opacity: 0.3; 
+}
+.panel-content-notes:hover .export-notes-btn { opacity: 1; }
+.export-notes-btn:hover { background: #b52b2b; color: #fff; border-color: #b52b2b; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+/* Help Modal Stilleri */
+.text-edit-help-list { list-style: none; padding: 0; color: #ccc; }
+.text-edit-help-list li { margin-bottom: 8px; border-bottom: 1px solid #333; padding-bottom: 8px;}
+.text-edit-help-list code { background: #111; color: #b52b2b; padding: 2px 6px; border-radius: 4px; border: 1px solid #444; font-family: monospace; }
+
+/* ============================================================
+   MEDYA (GÖRSEL VE PDF) YÖNETİCİSİ - BUG FIXLİ VERSİYON
+   ============================================================ */
+.custom-media-wrapper {
+    position: relative;
+    display: block;
+    margin: 15px 0;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    /* YENİ: Tarayıcıların içeriği seçmesini ve değiştirmesini donanım seviyesinde engeller */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-modify: read-only;
+    transition: border-color 0.2s;
+}
+
+.custom-media-wrapper.media-edit-mode {
+    border-color: #b52b2b;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* YENİ: Bilgilendirme metni artık sanal (Pseudo). Seçilmesi imkansızdır. */
+.custom-media-wrapper.media-edit-mode::before {
+    content: "Sürükle ve Boyutlandır (Kapatmak için boşluğa tıkla)";
+    position: absolute;
+    top: -25px; left: 0;
+    font-size: 0.85em;
+    color: #b52b2b;
+    font-weight: bold;
+    pointer-events: none;
+    user-select: none;
+}
+
+.custom-media-wrapper img, .custom-media-wrapper iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    object-fit: contain; 
+    background: rgba(0,0,0,0.2);
+    user-select: none;
+}
+
+.media-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.custom-media-wrapper.media-edit-mode .media-overlay {
+    pointer-events: none; 
+}
+
+.media-resize-handle {
+    position: absolute;
+    width: 16px; height: 16px;
+    background: #b52b2b;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    bottom: -8px; right: -8px;
+    cursor: nwse-resize;
+    display: none;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.custom-media-wrapper.media-edit-mode .media-resize-handle {
+    display: block;
+}
+
+/* ============================================================
+   SÜRÜKLE BIRAK (DRAG & DROP) ÖNİZLEME ÇİZGİSİ
+   ============================================================ */
+.media-drop-placeholder {
+    height: 4px;
+    background-color: #b52b2b;
+    border-radius: 2px;
+    margin: 10px 0;
+    box-shadow: 0 0 8px rgba(181, 43, 43, 0.8);
+    pointer-events: none; /* Farenin çizgiyi algılamasını engeller */
+    transition: all 0.1s ease;
+    width: 100%;
+    position: relative;
+}
+
+/* Çizginin sol başına Notion tarzı ufak bir yuvarlak ekleyelim */
+.media-drop-placeholder::before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: -3px;
+    width: 10px;
+    height: 10px;
+    background-color: #b52b2b;
+    border-radius: 50%;
+}
