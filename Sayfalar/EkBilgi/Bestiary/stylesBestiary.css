@@ -229,8 +229,9 @@ ul { list-style: none; padding: 0; margin: 0; }
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #444;
+    padding-right: 10px;
+    padding-left: 10px;
+    
 }
 .detail-item strong { display: block; color: #b52b2b; font-size: 0.85em; text-transform: uppercase; margin-bottom: 3px; }
 .detail-item span { color: #eee; font-size: 1.05em; }
@@ -243,6 +244,8 @@ ul { list-style: none; padding: 0; margin: 0; }
     text-align: center;
     margin-bottom: 20px;
     padding-bottom: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #444;
     border-bottom: 1px solid #444;
 }
 .ability-score-item {
@@ -470,5 +473,54 @@ ul { list-style: none; padding: 0; margin: 0; }
         width: 40px;
         height: 40px;
         font-size: 1em;
+    }
+}
+
+/* ============================================================
+   EKSTRA MOBİL GÖRÜNÜM (YARATIK KARTLARI İÇİN ÖZEL)
+   ============================================================ */
+@media (max-width: 600px) {
+    /* AC, HP, Hız ızgarasını 2 sütuna düşür (Daha rahat okunur) */
+    .monster-details-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* STR, DEX, CON... Skorlarını 3 Sütun x 2 Satır (Çift Sıra) yap */
+    .ability-scores-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    /* Kutuların iç boşluklarını ve yazı tiplerini mobilde daralt */
+    .ability-score-item {
+        padding: 8px 2px;
+    }
+    .ability-score-item strong {
+        font-size: 0.75em;
+    }
+    .ability-score-item span {
+        font-size: 0.9em;
+    }
+
+    /* Token görseli mobilde yazıları çok fazla sıkıştırmasın diye küçültülür */
+    .monster-token-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 0 10px 10px;
+    }
+
+    /* Başlıklar mobilde biraz daha ufak ve derli toplu dursun */
+    .monster-name {
+        font-size: 1.05em;
+    }
+    .monster-meta-short {
+        font-size: 0.75em;
+    }
+    
+    /* Bilgi satırları (Diller, Pasif Algı vb.) mobilde daha rahat okunsun */
+    .monster-info-line {
+        font-size: 0.9em;
+        line-height: 1.6;
     }
 }

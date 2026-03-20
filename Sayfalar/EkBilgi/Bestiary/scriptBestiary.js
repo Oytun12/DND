@@ -471,7 +471,8 @@ function renderText(entry) {
         res = res.replace(/{@creature (.*?)(?:\|.*?)?}/gi, '<span style="color:#3498db; font-weight:bold;">$1</span>');
         res = res.replace(/{@skill (.*?)(?:\|.*?)?}/gi, '<strong style="color:#f39c12;">$1</strong>');
         res = res.replace(/{@sense (.*?)(?:\|.*?)?}/gi, '<em>$1</em>');
-        res = res.replace(/{@item (.*?)(?:\|.*?)?}/gi, '<em>$1</em>');
+        // Eşyalar (Item) için Altın/Bronz renkli ve altı kesik çizgili şık tasarım
+        res = res.replace(/{@item (.*?)(?:\|.*?)?}/gi, '<span style="color:#f1c40f; font-weight:bold; border-bottom: 1px dashed #f1c40f;">$1</span>');
         
         // Geri kalan bilinmeyen tüm etiketleri filtreleyip içindeki ana metni kurtar
         res = res.replace(/{@\w+\s+([^}|]+)(?:\|[^}]+)?}/g, '$1');
@@ -589,7 +590,8 @@ function formatAC(acList) {
     if (!acList || !acList.length) return "10";
     if (typeof acList[0] === 'number') return acList[0];
     if (typeof acList[0] === 'object') {
-        let fromText = acList[0].from ? ` (${acList[0].from.join(", ")})` : "";
+        // YENİ: 'from' (kaynak) içindeki etiketleri renderText motorundan geçiriyoruz
+        let fromText = acList[0].from ? ` (${acList[0].from.map(f => renderText(f)).join(", ")})` : "";
         return `${acList[0].ac}${fromText}`;
     }
     return "10";
