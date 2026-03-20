@@ -129,6 +129,51 @@ body {
 .close-modal-btn { background: none; border: none; color: #888; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: 0.2s; }
 .close-modal-btn:hover { color: #fff; }
 
+
+/* ============================================================
+   TAM EKRAN (FULLSCREEN) SİSTEMİ
+   ============================================================ */
+
+/* Butonun panele değil, ekrana göre yerleşmesi için relative tanımladık */
+.dmscreen-container {
+    position: relative; 
+}
+
+/* Transparan, Silik, Sol Üst Köşe Butonu */
+.fullscreen-toggle-btn {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.2); /* Çok silik */
+    width: 30px;
+    height: 30px;
+    font-size: 1.4em;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Üzerine gelince belirginleşir */
+.fullscreen-toggle-btn:hover {
+    color: #b52b2b;
+    transform: scale(1.1);
+}
+
+/* TAM EKRAN MODU AKTİF OLDUĞUNDA ÇALIŞACAK KODLAR */
+body.fullscreen-mode .main-header {
+    display: none !important; /* Header'ı tamamen yok et */
+}
+
+/* Header gittiğinde Grid çok tepeye yapışmasın diye ekstra boşluk */
+body.fullscreen-mode .dmscreen-container {
+    padding-top: 20px; 
+}
+
 @media (max-width: 800px) {
     .desktop-nav { display: none; }
     .menu-icon { display: block; }

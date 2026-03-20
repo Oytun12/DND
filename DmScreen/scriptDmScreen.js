@@ -53,9 +53,10 @@ function loadScreenState() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadScreenState(); // Önce kayıtlı veriyi yükle
+    loadScreenState(); 
     setupControls();
     setupModal();
+    setupFullscreen(); // YENİ EKLENEN SATIR
     renderGrid(); 
 });
 
@@ -455,6 +456,36 @@ window.rollDice = function(sides) {
             div.textContent = `1d${sides} Sonucu: ${roll}`;
             div.style.color = '#b52b2b';
             setTimeout(() => div.style.color = '#eee', 500);
+        }
+    });
+}
+
+// --- TAM EKRAN (FULLSCREEN) YÖNETİMİ ---
+function setupFullscreen() {
+    const fsBtn = document.getElementById('fullscreen-toggle-btn');
+    if (!fsBtn) return;
+
+    // Butona tıklandığında büyüt/küçült
+    fsBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Tam ekran hatası: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    });
+
+    // Tarayıcı büyüyüp küçüldükçe (ESC tuşuna basılırsa dahil) body class'ını güncelle
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            document.body.classList.add('fullscreen-mode');
+            fsBtn.innerHTML = '🗗'; // İkonu küçültme moduna çevir
+            fsBtn.title = "Tam Ekrandan Çık (ESC)";
+        } else {
+            document.body.classList.remove('fullscreen-mode');
+            fsBtn.innerHTML = '⛶'; // İkonu büyütme moduna çevir
+            fsBtn.title = "Tam Ekran (ESC ile çık)";
         }
     });
 }

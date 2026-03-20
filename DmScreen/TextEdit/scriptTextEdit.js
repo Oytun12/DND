@@ -7,6 +7,17 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
     const exportBtn = panelEl.querySelector('.export-notes-btn');
     if (!editor) return;
 
+    // YENİ: HER ZAMAN EN ALTTA BOŞ BİR SATIR (DIV) BIRAKAN YARDIMCI MOTOR
+    function ensureBottomLine() {
+        let last = editor.lastElementChild;
+        // Son eleman yoksa veya bir DIV değilse veya içi boş değilse (içinde resim vs varsa)
+        if (!last || last.tagName !== 'DIV' || last.textContent !== '' || last.innerHTML.includes('<img') || last.innerHTML.includes('<iframe')) {
+            const div = document.createElement('div');
+            div.innerHTML = '<br>';
+            editor.appendChild(div);
+        }
+    }
+
     // 1. OTOMATİK KAYDETME VE YABANCI MADDE TEMİZLİĞİ
     editor.addEventListener('input', () => {
         editor.querySelectorAll('.custom-media-wrapper').forEach(wrapper => {
@@ -14,16 +25,20 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
                 if (child.nodeType === 3) child.remove(); 
             });
         });
+        
+        ensureBottomLine(); // Altta boşluk garantisi
         panelData.content = editor.innerHTML;
         if (saveCallback) saveCallback();
     });
 
-    // 2. KLAVYE KISAYOLLARI VE İMLEÇ KORUMASI
+    // 2. KLAVYE KISAYOLLARI VE AKILLI FORMATLAMA MOTORU
     editor.addEventListener('keydown', (e) => {
         const sel = window.getSelection();
         if (!sel.rangeCount) return;
         const node = sel.anchorNode;
+        const offset = sel.anchorOffset;
 
+        // Medya kutusu koruması
         let wrapperCheck = node.nodeType === 3 ? node.parentNode.closest('.custom-media-wrapper') : node.closest('.custom-media-wrapper');
         if (wrapperCheck) {
             if (!e.key.startsWith('Arrow') && e.key !== 'Backspace' && e.key !== 'Delete') {
@@ -32,9 +47,39 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
             }
         }
 
+        // YENİ: BACKSPACE İLE FORMATTAN ÇIKIŞ (SATIR BAŞINDAYSA)
+        if (e.key === 'Backspace') {
+            const block = node.nodeType === 3 ? node.parentNode.closest('h1, h2, h3, blockquote, li') : node.closest('h1, h2, h3, blockquote, li');
+            if (block && offset === 0) {
+                e.preventDefault();
+                if (block.tagName === 'LI') {
+                    document.execCommand('outdent', false, null);
+                } else {
+                    document.execCommand('formatBlock', false, 'DIV');
+                }
+                return;
+            }
+        }
+
+        // YENİ: ENTER İLE BOŞ FORMATTAN (ALINTI/LİSTE) ÇIKIŞ
+        if (e.key === 'Enter') {
+            const block = node.nodeType === 3 ? node.parentNode.closest('blockquote, li') : node.closest('blockquote, li');
+            if (block && block.textContent.trim() === '') {
+                e.preventDefault();
+                if (block.tagName === 'LI') {
+                    document.execCommand('outdent', false, null);
+                }
+                document.execCommand('formatBlock', false, 'DIV');
+                return;
+            }
+        }
+
         if (e.key === ' ' || e.key === 'Enter') {
             if (node.nodeType === 3) { 
                 const text = node.textContent;
+                const textUpToCursor = text.slice(0, offset); // İmlece kadar olan metni al
+
+                // Satır Başı (Block) Komutları
                 const blockMatch = text.match(/^(\/h1|\/h2|\/h3|#{1,3}|---|[-*]|>|1\.|[0-9]+\.|\/help|\/list|\/num|\/quote|\/line)\s?$/i);
                 
                 if (blockMatch) {
@@ -57,7 +102,35 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
                     else if (cmd === '/help') { showEditorHelp(); }
                 } 
                 else if (e.key === ' ') {
-                    const words = text.split(' ');
+                    // YENİ: WHATSAPP STİLİ SATIR İÇİ FORMATLAMA (*bold*, _italik_, ==highlight==)
+                    const boldMatch = textUpToCursor.match(/\*([^\*]+)\*$/);
+                    const italicMatch = textUpToCursor.match(/_([^_]+)_$/);
+                    const highlightMatch = textUpToCursor.match(/==([^=]+)==$/);
+
+                    if (boldMatch || italicMatch || highlightMatch) {
+                        e.preventDefault();
+                        const match = boldMatch || italicMatch || highlightMatch;
+                        
+                        const range = document.createRange();
+                        // Yazılan komutu (örn: *bold*) bul ve sil
+                        range.setStart(node, offset - match[0].length);
+                        range.setEnd(node, offset);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                        document.execCommand('delete', false, null);
+                        
+                        // Yerine formatlı HTML'i bas
+                        let insertStr = '';
+                        if (boldMatch) insertStr = `<strong>${match[1]}</strong>&nbsp;`;
+                        else if (italicMatch) insertStr = `<em>${match[1]}</em>&nbsp;`;
+                        else if (highlightMatch) insertStr = `<mark style="background-color:rgba(90, 15, 15, 0.5); color:#ff4444; padding:0 4px; border-radius:3px;">${match[1]}</mark>&nbsp;`;
+
+                        document.execCommand('insertHTML', false, insertStr);
+                        return; // Format atıldıysa emoji motoruna girme
+                    }
+
+                    // Emojiler
+                    const words = textUpToCursor.split(' ');
                     const lastWord = words[words.length - 1];
                     const replacements = {
                         '->': '→', '<-': '←', '=>': '⇒',
@@ -68,8 +141,8 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
                     if (replacements[lastWord]) {
                         e.preventDefault();
                         const range = document.createRange();
-                        range.setStart(node, text.length - lastWord.length);
-                        range.setEnd(node, text.length);
+                        range.setStart(node, offset - lastWord.length);
+                        range.setEnd(node, offset);
                         sel.removeAllRanges();
                         sel.addRange(range);
                         document.execCommand('delete', false, null);
@@ -80,7 +153,7 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
         }
     });
 
-    // 3. YAPIŞTIRMA MANTIĞI (SİSTEM KORUMASI EKLENDİ)
+    // 3. YAPIŞTIRMA MANTIĞI (SİSTEM KORUMASI VE BOŞLUK FİLTRESİ EKLENDİ)
     editor.addEventListener('paste', (e) => {
         if (e.clipboardData.files && e.clipboardData.files.length > 0) {
             e.preventDefault();
@@ -120,17 +193,20 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
 
             if (mediaHtml) {
                 document.execCommand('insertHTML', false, mediaHtml);
+                ensureBottomLine();
                 panelData.content = editor.innerHTML;
                 if (saveCallback) saveCallback();
                 return; 
             }
         }
 
+        // YENİ: ==Highlight== desteği eklendi
         let html = text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')       
             .replace(/\*(.*?)\*/g, '<em>$1</em>')                   
             .replace(/_(.*?)_/g, '<em>$1</em>')                     
             .replace(/~~(.*?)~~/g, '<del>$1</del>')                 
+            .replace(/==(.*?)==/g, '<mark style="background-color:rgba(90, 15, 15, 0.5); color:#ff4444; padding:0 4px; border-radius:3px;">$1</mark>')
             .replace(/^### (.*$)/gim, '<h3>$1</h3>')                
             .replace(/^## (.*$)/gim, '<h2>$1</h2>')                 
             .replace(/^# (.*$)/gim, '<h1>$1</h1>')                  
@@ -141,6 +217,9 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
         let inUl = false, inOl = false, finalHtml = '';
 
         lines.forEach(line => {
+            line = line.trim(); // Satırı temizle
+            if (line === '') return; // YENİ: Notion'dan gelen gereksiz boşlukları iptal et
+            
             let ulMatch = line.match(/^[-*]\s+(.*)/);
             let olMatch = line.match(/^\d+\.\s+(.*)/);
 
@@ -158,8 +237,6 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
                 
                 if (line.match(/^<(h1|h2|h3|hr|blockquote)/)) {
                     finalHtml += line;
-                } else if (line.trim() === '') {
-                    finalHtml += '<div><br></div>'; 
                 } else {
                     finalHtml += `<div>${line}</div>`; 
                 }
@@ -170,6 +247,7 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
         if (inOl) finalHtml += '</ol>';
 
         document.execCommand('insertHTML', false, finalHtml);
+        ensureBottomLine();
         panelData.content = editor.innerHTML;
         if (saveCallback) saveCallback();
     });
@@ -186,7 +264,6 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/plain', 'custom-media-drag');
 
-            // Önizleme (Placeholder) Çizgisini Yarat
             dropPlaceholder = document.createElement('div');
             dropPlaceholder.className = 'media-drop-placeholder';
             dropPlaceholder.contentEditable = "false";
@@ -195,10 +272,9 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
 
     editor.addEventListener('dragover', (e) => {
         if (draggedMediaNode && dropPlaceholder) {
-            e.preventDefault(); // Sürüklemeye İzin Ver
+            e.preventDefault(); 
 
             const y = e.clientY;
-            // Editörün içindeki blok seviyesindeki tüm çocukları al (Sürüklenen öğe ve çizgi hariç)
             const children = Array.from(editor.children).filter(c => c !== draggedMediaNode && c !== dropPlaceholder);
             
             let closestChild = null;
@@ -209,18 +285,15 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
                 return;
             }
 
-            // Fareye (Y ekseni) en yakın olan bloğu (Paragraf, H1, Liste vb.) bul
             for (let child of children) {
                 const rect = child.getBoundingClientRect();
                 if (y >= rect.top && y <= rect.bottom) {
                     closestChild = child;
-                    // Eğer farenin imleci bloğun alt yarısındaysa "Altına" (After) yapıştır, üstündeyse "Üstüne" (Before)
                     insertAfter = y > (rect.top + rect.height / 2);
                     break;
                 }
             }
 
-            // Eğer tam üstünde değilsek ama aralardaysak en yakınını mesafe ölçerek bul
             if (!closestChild) {
                 let closestDist = Infinity;
                 for (let child of children) {
@@ -235,7 +308,6 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
                 }
             }
 
-            // Önizleme Çizgisini İlgili Yere Yerleştir
             if (closestChild) {
                 if (insertAfter) closestChild.after(dropPlaceholder);
                 else closestChild.before(dropPlaceholder);
@@ -255,19 +327,17 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
         if (draggedMediaNode && dropPlaceholder) {
             e.preventDefault();
             
-            // Sürüklenen Öğeyi Tam Olarak Kırmızı Çizginin Olduğu Yere Taşı (Replace)
             dropPlaceholder.replaceWith(draggedMediaNode);
             draggedMediaNode.style.opacity = '1';
             
-            // Altında yazı yazmaya devam edebilmek için boş bir satır oluştur
             const emptyDiv = document.createElement('div');
             emptyDiv.innerHTML = '<br>';
             draggedMediaNode.after(emptyDiv);
             
-            // Temizlik
             draggedMediaNode = null;
             dropPlaceholder = null;
             
+            ensureBottomLine();
             panelData.content = editor.innerHTML;
             if(saveCallback) saveCallback();
         }
@@ -278,7 +348,7 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
             draggedMediaNode.style.opacity = '1';
         }
         if (dropPlaceholder && dropPlaceholder.parentNode) {
-            dropPlaceholder.remove(); // Yanlışlıkla dışarı bırakılırsa çizgiyi yok et
+            dropPlaceholder.remove(); 
         }
         draggedMediaNode = null;
         dropPlaceholder = null;
@@ -328,46 +398,67 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
         }
     });
 
-    // 6. DIŞA AKTAR (EXPORT)
+    // 6. DIŞA AKTAR (EXPORT) - MARKDOWN & NOTION HTML ÇİFT KATMANLI KOPYALAMA
     exportBtn.onclick = () => {
         let markdown = "";
+        let cleanHtml = ""; // YENİ: Notion'ın okuyabilmesi için eşzamanlı HTML çıktısı
+
         function parseNode(n) {
-            if (n.nodeType === Node.TEXT_NODE) return n.textContent;
+            if (n.nodeType === Node.TEXT_NODE) {
+                return { md: n.textContent, html: n.textContent };
+            }
             if (n.nodeType === Node.ELEMENT_NODE) {
                 
+                // Medyaları her iki formata da uygun şekilde ayır
                 if (n.classList && n.classList.contains('custom-media-wrapper')) {
                     const img = n.querySelector('img');
                     const iframe = n.querySelector('iframe');
-                    if (img) return `\n\n![Görsel](${img.src})\n\n`;
-                    if (iframe) return `\n\n[PDF/Link Bağlantısı](${iframe.src})\n\n`;
+                    if (img) return { md: `\n![Görsel](${img.src})\n`, html: `<br><img src="${img.src}"><br>` };
+                    if (iframe) return { md: `\n[PDF/Link Bağlantısı](${iframe.src})\n`, html: `<br><a href="${iframe.src}">PDF/Link Bağlantısı</a><br>` };
                 }
 
-                let inner = "";
-                n.childNodes.forEach(c => inner += parseNode(c));
+                let innerMd = "";
+                let innerHtml = "";
+                n.childNodes.forEach(c => {
+                    const res = parseNode(c);
+                    innerMd += res.md;
+                    innerHtml += res.html;
+                });
+
+                // Hem Markdown Hem de Kusursuz HTML Çıktısını Eşzamanlı Üret
                 switch(n.tagName) {
-                    case 'H1': return `# ${inner}\n\n`;
-                    case 'H2': return `## ${inner}\n\n`;
-                    case 'H3': return `### ${inner}\n\n`;
-                    case 'P': case 'DIV': return `${inner}\n`;
-                    case 'BR': return `\n`;
-                    case 'B': case 'STRONG': return `**${inner}**`;
-                    case 'I': case 'EM': return `*${inner}*`;
-                    case 'U': return `__${inner}__`;
-                    case 'STRIKE': case 'DEL': return `~~${inner}~~`;
-                    case 'HR': return `---\n\n`;
-                    case 'UL': return `${inner}\n`;
-                    case 'OL': return `${inner}\n`;
+                    case 'H1': return { md: `\n# ${innerMd}\n`, html: `<h1>${innerHtml}</h1>` };
+                    case 'H2': return { md: `\n## ${innerMd}\n`, html: `<h2>${innerHtml}</h2>` };
+                    case 'H3': return { md: `\n### ${innerMd}\n`, html: `<h3>${innerHtml}</h3>` };
+                    case 'P': case 'DIV': return { md: `${innerMd}\n`, html: `<div>${innerHtml}</div>` };
+                    case 'BR': return { md: `\n`, html: `<br>` };
+                    case 'B': case 'STRONG': return { md: `**${innerMd}**`, html: `<strong>${innerHtml}</strong>` };
+                    case 'I': case 'EM': return { md: `*${innerMd}*`, html: `<em>${innerHtml}</em>` };
+                    case 'U': return { md: `__${innerMd}__`, html: `<u>${innerHtml}</u>` };
+                    case 'STRIKE': case 'DEL': return { md: `~~${innerMd}~~`, html: `<del>${innerHtml}</del>` };
+                    case 'MARK': return { md: `==${innerMd}==`, html: `<mark style="background-color:rgba(90, 15, 15, 0.5); color:#ff4444; font-weight:bold;">${innerHtml}</mark>` };
+                    case 'HR': return { md: `---\n`, html: `<hr>` };
+                    case 'UL': return { md: `${innerMd}\n`, html: `<ul>${innerHtml}</ul>` };
+                    case 'OL': return { md: `${innerMd}\n`, html: `<ol>${innerHtml}</ol>` };
                     case 'LI': 
                         const isOrdered = n.parentElement && n.parentElement.tagName === 'OL';
-                        return isOrdered ? `1. ${inner}\n` : `- ${inner}\n`;
-                    case 'BLOCKQUOTE': return `> ${inner}\n\n`;
-                    default: return inner;
+                        return { md: isOrdered ? `1. ${innerMd}\n` : `- ${innerMd}\n`, html: `<li>${innerHtml}</li>` };
+                    case 'BLOCKQUOTE': return { md: `> ${innerMd}\n`, html: `<blockquote>${innerHtml}</blockquote>` };
+                    default: return { md: innerMd, html: innerHtml };
                 }
             }
-            return "";
+            return { md: "", html: "" };
         }
-        editor.childNodes.forEach(c => { markdown += parseNode(c); });
+
+        editor.childNodes.forEach(c => { 
+            const res = parseNode(c);
+            markdown += res.md;
+            cleanHtml += res.html;
+        });
+        
         markdown = markdown.trim();
+        // Notion'a HTML kopyalanırken aralara sızan gizli sürükleme boşluklarını (u200B) temizle
+        cleanHtml = `<meta charset="utf-8"><div>${cleanHtml.replace(/\u200B/g, '')}</div>`; 
 
         const win = window.open('', '_blank');
         win.document.write(`
@@ -384,14 +475,40 @@ window.initTextEditor = function(panelEl, panelData, saveCallback) {
                 <div class="container">
                     <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
                         <h2 style="color:#b52b2b; margin:0;">📝 Markdown Çıktısı</h2>
-                        <button onclick="navigator.clipboard.writeText(document.querySelector('pre').innerText).then(()=>this.innerText='✓ Kopyalandı!')">Panoya Kopyala</button>
+                        <button id="copy-btn">Panoya Kopyala</button>
                     </div>
                     <pre>${markdown.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
                 </div>
+                
+                <script>
+                    document.getElementById('copy-btn').addEventListener('click', async function() {
+                        // JavaScript değişkenlerini güvenle içeri aktar
+                        const mdText = ${JSON.stringify(markdown)};
+                        const htmlText = ${JSON.stringify(cleanHtml)};
+                        
+                        try {
+                            // PANONUN BEYNİ: Aynı anda iki farklı formatı kopyalıyoruz
+                            const clipboardItem = new ClipboardItem({
+                                'text/plain': new Blob([mdText], { type: 'text/plain' }),
+                                'text/html': new Blob([htmlText], { type: 'text/html' })
+                            });
+                            await navigator.clipboard.write([clipboardItem]);
+                            this.innerText = '✓ Kopyalandı (Notion Uyumlu)!';
+                        } catch (err) {
+                            // Eğer tarayıcı eski bir sürümse veya ClipboardItem desteklemiyorsa düz metin kopyala
+                            navigator.clipboard.writeText(mdText);
+                            this.innerText = '✓ Sadece Metin Kopyalandı!';
+                        }
+                        setTimeout(() => this.innerText = 'Panoya Kopyala', 2500);
+                    });
+                </script>
             </body></html>
         `);
         win.document.close();
     };
+
+    // BAŞLANGIÇTA EN ALTTA BOŞ BİR SATIR OLDUĞUNDAN EMİN OL
+    ensureBottomLine();
 };
 
 function showEditorHelp() {
@@ -409,17 +526,15 @@ function showEditorHelp() {
                 <div class="modal-content" style="padding: 20px;">
                     <h4 style="color:#e67e22; margin-bottom:10px;">Medya Ekleme (Resim / PDF)</h4>
                     <p style="font-size:0.9em; color:#ccc; margin-bottom: 15px;">İnternetteki bir <strong>Görsel Linkini (.jpg, .png)</strong> veya <strong>Google Drive Dosya Linkini</strong> buraya yapıştırın (Ctrl+V).<br><br>Düzenlemek veya boyutlandırmak için resmin üzerine <strong>bir kez tıklayın.</strong> Resmi dilediğiniz gibi farklı bir satıra sürükleyebilirsiniz.</p>
-                    <h4 style="color:#e67e22; margin-bottom:10px;">Blok Komutları (Satır Başında + Boşluk/Enter)</h4>
+                    <h4 style="color:#e67e22; margin-bottom:10px;">Satır İçi Kısayollar (Yazarken Boşluk Bırakın)</h4>
+                    <p style="font-size:0.9em; color:#ccc;"><code>*metin*</code> Kalın Yapar | <code>_metin_</code> İtalik Yapar <br> <code>==metin==</code> Kırmızı Vurgu (Highlight) Yapar</p>
+                    <h4 style="color:#e67e22; margin:20px 0 10px 0;">Blok Komutları (Satır Başında + Boşluk/Enter)</h4>
                     <ul class="text-edit-help-list" style="list-style:none; padding:0; color:#ccc;">
                         <li style="margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:8px;"><code style="background:#111; color:#b52b2b; padding:2px 6px; border-radius:4px;">/h1</code> veya <code>#</code> : Ana Başlık</li>
                         <li style="margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:8px;"><code style="background:#111; color:#b52b2b; padding:2px 6px; border-radius:4px;">/h2</code> veya <code>##</code> : Alt Başlık</li>
-                        <li style="margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:8px;"><code style="background:#111; color:#b52b2b; padding:2px 6px; border-radius:4px;">/num</code> veya <code>1.</code> : Numaralı Liste</li>
                         <li style="margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:8px;"><code style="background:#111; color:#b52b2b; padding:2px 6px; border-radius:4px;">/list</code> veya <code>-</code> : Madde İmi (Bullet)</li>
                         <li style="margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:8px;"><code style="background:#111; color:#b52b2b; padding:2px 6px; border-radius:4px;">/quote</code> veya <code>&gt;</code> : Alıntı Kutusu</li>
-                        <li style="margin-bottom:8px;"><code style="background:#111; color:#b52b2b; padding:2px 6px; border-radius:4px;">/line</code> veya <code>---</code> : Ayırıcı Çizgi</li>
                     </ul>
-                    <h4 style="color:#e67e22; margin:20px 0 10px 0;">Klavye Kısayolları (Metni Seçip)</h4>
-                    <p style="font-size:0.9em; color:#ccc;"><code>Ctrl+B</code> Kalın | <code>Ctrl+I</code> İtalik | <code>Ctrl+U</code> Altı Çizili</p>
                 </div>
             </div>
         `;
