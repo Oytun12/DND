@@ -5,171 +5,40 @@
 let ALL_MONSTERS = [];
 let FLUFF_DICT = {}; 
 let ACTIVE_FILTERS = {
-    search: "",
-    cr: "all",
-    type: "all",
-    size: "all",
-    source: "all",
-    sort: "name-asc" 
+    search: "", cr: "all", type: "all", size: "all", source: "all", sort: "name-asc" 
 };
 
-/* --- 1. YÜKLÜ KAYNAKLAR (AKILLI LİSTE) --- */
-// Sunucuya yüklediğin JSON dosyalarının adını buraya ekle. 
-// Böylece sistem olmayan 70+ dosyayı arayıp konsolda 404 hatası vermez.
 const ACTIVE_SOURCES = [
-    "bestiary-aatm.json",
-    "bestiary-ai.json",
-    "bestiary-aitfr-isf.json",
-    "bestiary-aitfr-thp.json",
-    "bestiary-aitfr-dn.json",
-    "bestiary-aitfr-fcd.json",
-    "bestiary-awm.json",
-    "bestiary-bam.json",
-    "bestiary-bgdia.json",
-    "bestiary-bgg.json",
-    "bestiary-bmt.json",
-    "bestiary-cm.json",
-    "bestiary-coa.json",
-    "bestiary-cos.json",
-    "bestiary-crcotn.json",
-    "bestiary-dc.json",
-    "bestiary-dip.json",
-    "bestiary-ditlcot.json",
-    "bestiary-dmg.json",
-    "bestiary-dod.json",
-    "bestiary-dosi.json",
-    "bestiary-dsotdq.json",
-    "bestiary-egw.json",
-    "bestiary-erlw.json",
-//  "bestiary-esk.json",
-    "bestiary-ftd.json",
-    "bestiary-ggr.json",
-    "bestiary-gos.json",
-//  "bestiary-gotsf.json",
-    "bestiary-hat-tg.json",
-    "bestiary-hftt.json",
-//  "bestiary-hol.json",
-    "bestiary-hotdq.json",
-    "bestiary-idrotf.json",
-    "bestiary-imr.json",
-    "bestiary-jttrc.json",
-    "bestiary-kftgv.json",
-    "bestiary-kkw.json",
-    "bestiary-llk.json",
-    "bestiary-lmop.json",
-    "bestiary-lox.json",
-    "bestiary-lr.json",
-    "bestiary-lrdt.json",
-    "bestiary-mabjov.json",
-    "bestiary-mcv1sc.json",
-    "bestiary-mcv2dc.json",
-    "bestiary-mcv3mc.json",
-    "bestiary-mcv4ec.json",
-    "bestiary-mismv1.json",
-    "bestiary-mff.json",
-    "bestiary-mgelft.json",
-    "bestiary-mm.json",
-    "bestiary-mpmm.json",
-    "bestiary-mpp.json",
-    "bestiary-mot.json",
-    "bestiary-mtf.json",
-//  "bestiary-nrh-tcmc.json",
-//  "bestiary-nrh-avitw.json",
-//  "bestiary-nrh-ass.json",
-//  "bestiary-nrh-coi.json",
-//  "bestiary-nrh-tlt.json",
-//  "bestiary-nrh-awol.json",
-//  "bestiary-nrh-at.json",
-    "bestiary-oota.json",
-    "bestiary-oow.json",
-    "bestiary-pabtso.json",
-    "bestiary-ps-a.json",
-    "bestiary-ps-d.json",
-    "bestiary-ps-i.json",
-    "bestiary-ps-k.json",
-    "bestiary-ps-x.json",
-    "bestiary-ps-z.json",
-//  "bestiary-phb.json",
-    "bestiary-pota.json",
-    "bestiary-qftis.json",
-    "bestiary-rmbre.json",
-    "bestiary-rot.json",
-//  "bestiary-rtg.json",
-    "bestiary-sads.json",
-    "bestiary-scc.json",
-    "bestiary-sdw.json",
-    "bestiary-skt.json",
-//  "bestiary-slw.json",
-    "bestiary-tce.json",
-    "bestiary-ttp.json",
-    "bestiary-tftyp.json",
-    "bestiary-toa.json",
-    "bestiary-tofw.json",
-    "bestiary-vd.json",
-    "bestiary-veor.json",
-    "bestiary-vgm.json",
-    "bestiary-vrgr.json",
-//  "bestiary-xge.json",
-    "bestiary-wbtw.json",
-    "bestiary-wdh.json",
-    "bestiary-wdmm.json"
-
-    // BURAYA ASLA "fluff-" BAŞLIKLI DOSYALARI YAZMA. 
-    // Kod onları bu isimlerden türeterek arka planda kendi bulacak.
+    "bestiary-aatm.json", "bestiary-ai.json", "bestiary-aitfr-isf.json", "bestiary-aitfr-thp.json",
+    "bestiary-aitfr-dn.json", "bestiary-aitfr-fcd.json", "bestiary-awm.json", "bestiary-bam.json",
+    "bestiary-bgdia.json", "bestiary-bgg.json", "bestiary-bmt.json", "bestiary-cm.json",
+    "bestiary-coa.json", "bestiary-cos.json", "bestiary-crcotn.json", "bestiary-dc.json",
+    "bestiary-dip.json", "bestiary-ditlcot.json", "bestiary-dmg.json", "bestiary-dod.json",
+    "bestiary-dosi.json", "bestiary-dsotdq.json", "bestiary-egw.json", "bestiary-erlw.json",
+    "bestiary-ftd.json", "bestiary-ggr.json", "bestiary-gos.json", "bestiary-hat-tg.json",
+    "bestiary-hftt.json", "bestiary-hotdq.json", "bestiary-idrotf.json", "bestiary-imr.json",
+    "bestiary-jttrc.json", "bestiary-kftgv.json", "bestiary-kkw.json", "bestiary-llk.json",
+    "bestiary-lmop.json", "bestiary-lox.json", "bestiary-lr.json", "bestiary-lrdt.json",
+    "bestiary-mabjov.json", "bestiary-mcv1sc.json", "bestiary-mcv2dc.json", "bestiary-mcv3mc.json",
+    "bestiary-mcv4ec.json", "bestiary-mismv1.json", "bestiary-mff.json", "bestiary-mgelft.json",
+    "bestiary-mm.json", "bestiary-mpmm.json", "bestiary-mpp.json", "bestiary-mot.json",
+    "bestiary-mtf.json", "bestiary-oota.json", "bestiary-oow.json", "bestiary-pabtso.json",
+    "bestiary-ps-a.json", "bestiary-ps-d.json", "bestiary-ps-i.json", "bestiary-ps-k.json",
+    "bestiary-ps-x.json", "bestiary-ps-z.json", "bestiary-pota.json", "bestiary-qftis.json",
+    "bestiary-rmbre.json", "bestiary-rot.json", "bestiary-sads.json", "bestiary-scc.json",
+    "bestiary-sdw.json", "bestiary-skt.json", "bestiary-tce.json", "bestiary-ttp.json",
+    "bestiary-tftyp.json", "bestiary-toa.json", "bestiary-tofw.json", "bestiary-vd.json",
+    "bestiary-veor.json", "bestiary-vgm.json", "bestiary-vrgr.json", "bestiary-wbtw.json",
+    "bestiary-wdh.json", "bestiary-wdmm.json"
 ];
 
-// Dropdown'da şık görünmesi için isim sözlüğü
 const SOURCE_NAMES = {
-    "AI": "Acquisitions Incorporated (AI)",
-    "BAM": "Boo's Astral Menagerie (BAM)",
-    "BGDIA": "Baldur's Gate: Descent into Avernus (BGDIA)",
-    "BGG": "Bigby Presents: Glory of the Giants (BGG)",
-    "BMT": "The Book of Many Things (BMT)",
-    "CM": "Candlekeep Mysteries (CM)",
-    "CoS": "Curse of Strahd (CoS)",
-    "CRCotN": "Critical Role: Call of the Netherdeep (CRCotN)",
-    "DMG": "Dungeon Master's Guide (DMG)",
-    "DoD": "Domains of Delight (DoD)",
-    "DoSI": "Dragons of Stormwreck Isle (DoSI)",
-    "DSotDQ": "Dragonlance: Shadow of the Dragon Queen (DSotDQ)",
-    "EGW": "Explorer's Guide to Wildemount (EGW)",
-    "ERLW": "Eberron: Rising from the Last War (ERLW)",
-    "FTD": "Fizban's Treasury of Dragons (FTD)",
-    "GGR": "Guildmasters' Guide to Ravnica (GGR)",
-    "GoS": "Ghosts of Saltmarsh (GoS)",
-    "HotDQ": "Hoard of the Dragon Queen (HotDQ)",
-    "IDRotF": "Icewind Dale: Rime of the Frostmaiden (IDRotF)",
-    "JttRC": "Journeys through the Radiant Citadel (JttRC)",
-    "KftGV": "Keys from the Golden Vault (KftGV)",
-    "LMoP": "Lost Mine of Phandelver (LMoP)",
-    "LoX": "Light of Xaryxis (LoX)",
-    "MM": "Monster Manual (MM)",
-    "MPMM": "Mordenkainen Presents: Monsters of the Multiverse (MPMM)",
-    "MOT": "Mythic Odysseys of Theros (MOT)",
-    "MTF": "Mordenkainen's Tome of Foes (MTF)",
-    "OotA": "Out of the Abyss (OotA)",
-    "PHB": "Player's Handbook (PHB)",
-    "PotA": "Princes of the Apocalypse (PotA)",
-    "RoT": "The Rise of Tiamat (RoT)",
-    "SADS": "Spelljammer: Adventures in Space (SADS)",
-    "SCC": "Strixhaven: A Curriculum of Chaos (SCC)",
-    "SKT": "Storm King's Thunder (SKT)",
-    "TCE": "Tasha's Cauldron of Everything (TCE)",
-    "TftYP": "Tales from the Yawning Portal (TftYP)",
-    "ToA": "Tomb of Annihilation (ToA)",
-    "VGM": "Volo's Guide to Monsters (VGM)",
-    "VRGR": "Van Richten's Guide to Ravenloft (VRGR)",
-    "XGE": "Xanathar's Guide to Everything (XGE)",
-    "WBtW": "The Wild Beyond the Witchlight (WBtW)",
-    "WDH": "Waterdeep: Dragon Heist (WDH)",
-    "WDMM": "Waterdeep: Dungeon of the Mad Mage (WDMM)"
-    
-    // Not: Popüler olmayan veya çok spesifik modüller listeye uzunluk katmaması 
-    // için eklenmedi. Eğer SOURCE_NAMES içinde karşılığı yoksa, kod otomatik olarak 
-    // kısaltmayı (Örn: AATM) dropdown menüsüne sorunsuz bir şekilde yazdıracaktır.
+    "AI": "Acquisitions Inc.", "BGDIA": "Descent into Avernus", "CoS": "Curse of Strahd",
+    "DMG": "Dungeon Master's Guide", "MM": "Monster Manual", "MPMM": "Monsters of the Multiverse",
+    "MTF": "Mordenkainen's Tome of Foes", "PHB": "Player's Handbook", "TCE": "Tasha's Cauldron",
+    "VGM": "Volo's Guide to Monsters", "XGE": "Xanathar's Guide"
 };
 
-/* --- MENÜ VE TIKLAMA YÖNETİMİ --- */
 function toggleMenu(event) {
     if(event) event.stopPropagation();
     const menu = document.getElementById('mobile-menu');
@@ -195,7 +64,6 @@ function closeAllMonsters() {
     });
 }
 
-/* --- BAŞLATMA VE VERİ ÇEKME --- */
 document.addEventListener("DOMContentLoaded", () => {
     loadAllBestiaries();
     setupFilters();
@@ -207,8 +75,6 @@ async function loadAllBestiaries() {
     ALL_MONSTERS = [];
     FLUFF_DICT = {};
 
-    // Sadece ACTIVE_SOURCES listesinde olan dosyaları çekiyoruz (Hatasız işlem)
-    // DİKKAT: Dosya yolları '../../../' olarak güncellendi.
     const fetchPromises = ACTIVE_SOURCES.map(async (filename) => {
         try {
             const res = await fetch(`../../../Data/bestiary/${filename}`);
@@ -228,28 +94,50 @@ async function loadAllBestiaries() {
                     });
                 }
             }
-        } catch (e) { /* Fluff yoksa sessizce atla */ }
+        } catch (e) { }
     });
 
     await Promise.all(fetchPromises);
 
     if (ALL_MONSTERS.length === 0) {
-        container.innerHTML = `<div class="no-results" style="color:#b52b2b;">Yaratık verileri bulunamadı. Lütfen Data/bestiary klasörünü ve ACTIVE_SOURCES listesini kontrol edin.</div>`;
+        container.innerHTML = `<div class="no-results" style="color:#b52b2b;">Yaratık verileri bulunamadı.</div>`;
         return;
     }
 
+    resolveCopies();
     populateSourceFilter();
     sortAndRender();
 }
 
-/* --- DİNAMİK KAYNAK FİLTRESİ --- */
+function getBaseMonster(monster) {
+    if (!monster._copy) return monster;
+    let base = ALL_MONSTERS.find(x => x.name === monster._copy.name && x.source === monster._copy.source);
+    if (!base) return monster;
+    if (base._copy) base = getBaseMonster(base); 
+    return base;
+}
+
+function resolveCopies() {
+    ALL_MONSTERS.forEach(m => {
+        if (m._copy) {
+            const base = getBaseMonster(m);
+            if (base && base !== m) {
+                Object.keys(base).forEach(key => {
+                    if (m[key] === undefined && key !== '_copy') {
+                        m[key] = JSON.parse(JSON.stringify(base[key]));
+                    }
+                });
+            }
+        }
+    });
+}
+
 function populateSourceFilter() {
     const sourceSelect = document.getElementById('source-select');
     if (!sourceSelect) return;
     sourceSelect.innerHTML = '<option value="all">Tüm Kaynaklar</option>';
 
     const uniqueSources = [...new Set(ALL_MONSTERS.map(m => m.source))].sort();
-
     uniqueSources.forEach(src => {
         if(!src) return;
         const option = document.createElement('option');
@@ -259,7 +147,6 @@ function populateSourceFilter() {
     });
 }
 
-/* --- FİLTRELEME VE SIRALAMA AYARLARI --- */
 function setupFilters() {
     ['search-input', 'cr-select', 'type-select', 'size-select', 'source-select', 'sort-select'].forEach(id => {
         const el = document.getElementById(id);
@@ -274,7 +161,6 @@ function setupFilters() {
     });
 }
 
-/* --- ANA MANTIK (Filtreleme) --- */
 function sortAndRender() {
     let filtered = ALL_MONSTERS.filter(m => {
         if (ACTIVE_FILTERS.search && !m.name.toLowerCase().includes(ACTIVE_FILTERS.search)) return false;
@@ -314,7 +200,6 @@ function sortAndRender() {
     renderMonsters(filtered);
 }
 
-/* --- RENDER İŞLEMLERİ --- */
 function renderMonsters(monsters) {
     const container = document.getElementById('monster-list');
     container.innerHTML = '';
@@ -356,9 +241,13 @@ function createMonsterCard(m) {
     let acData = formatAC(m.ac);
     let speedData = formatSpeed(m.speed);
 
-    // Fluff sözlüğünden resim yakalama mantığı
     let imageUrl = "";
-    const fluffData = FLUFF_DICT[`${m.name}_${m.source}`];
+    let fluffData = FLUFF_DICT[`${m.name}_${m.source}`];
+    
+    if (!fluffData && m._copy) {
+        fluffData = FLUFF_DICT[`${m._copy.name}_${m._copy.source}`];
+    }
+
     if (fluffData && fluffData.images && fluffData.images.length > 0) {
         let imgHref = fluffData.images[0].href;
         if (typeof imgHref === 'object' && imgHref.path) {
@@ -368,37 +257,39 @@ function createMonsterCard(m) {
         }
     }
 
-    let html = ``;
-    
-    // AKILLI & TEMBEL GÖRSEL KONTROLÜ (Lazy Load)
-    // "src" yerine "data-src" kullanıyoruz. Tarayıcı resmi baştan indirmeyecek.
-    if (imageUrl) {
-        html += `<div class="monster-image-container" style="text-align:center; margin-bottom: 20px;">
-                    <img data-src="${imageUrl}" 
-                         class="lazy-monster-img"
-                         alt="${m.name}" 
-                         onerror="this.outerHTML='<div style=\\'color:#ff8888; background:#2a1111; padding:15px; border:1px dashed #ff4444; border-radius:8px; font-size:0.9em; word-break: break-all;\\'><strong>Görsel Bulunamadı!</strong><br><br><small>Sistemin Aradığı Konum:<br>' + this.src + '</small></div>';" 
-                         style="max-width: 100%; height: auto; max-height: 250px; border-radius: 8px; border: 1px solid #444; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
-                 </div>`;
-    }
+    const tokenSafeName = m.name.replace(/"/g, ''); 
+    const tokenUrl = `../../../img/bestiary/tokens/${m.source}/${tokenSafeName}.webp`;
 
-    html += `
-        <div class="monster-details-grid">
-            <div class="detail-item"><strong>Zırh Sınıfı (AC)</strong><span>${acData}</span></div>
-            <div class="detail-item"><strong>Can Puanı (HP)</strong><span>${hpData}</span></div>
-            <div class="detail-item"><strong>Hız</strong><span>${speedData}</span></div>
+    let html = `
+        <div class="monster-tabs">
+            <button class="monster-tab-btn active" data-target="tab-stats-${m.name.replace(/\s+/g, '')}">İstatistikler</button>
+            <button class="monster-tab-btn" data-target="tab-fluff-${m.name.replace(/\s+/g, '')}">Detaylar & Hikaye</button>
         </div>
-        
-        <div class="ability-scores-grid">
-            <div class="ability-score-item"><strong>STR</strong><span>${m.str} (${getMod(m.str)})</span></div>
-            <div class="ability-score-item"><strong>DEX</strong><span>${m.dex} (${getMod(m.dex)})</span></div>
-            <div class="ability-score-item"><strong>CON</strong><span>${m.con} (${getMod(m.con)})</span></div>
-            <div class="ability-score-item"><strong>INT</strong><span>${m.int} (${getMod(m.int)})</span></div>
-            <div class="ability-score-item"><strong>WIS</strong><span>${m.wis} (${getMod(m.wis)})</span></div>
-            <div class="ability-score-item"><strong>CHA</strong><span>${m.cha} (${getMod(m.cha)})</span></div>
-        </div>
+
+        <div class="monster-tab active" id="tab-stats-${m.name.replace(/\s+/g, '')}">
+            <div class="monster-token-container">
+                <img data-src="${tokenUrl}" 
+                     class="monster-token-img lazy-monster-img" 
+                     onerror="this.parentElement.style.display='none';">
+            </div>
+
+            <div class="monster-details-grid">
+                <div class="detail-item"><strong>Zırh Sınıfı (AC)</strong><span>${acData}</span></div>
+                <div class="detail-item"><strong>Can Puanı (HP)</strong><span>${hpData}</span></div>
+                <div class="detail-item"><strong>Hız</strong><span>${speedData}</span></div>
+            </div>
+            
+            <div class="ability-scores-grid">
+                <div class="ability-score-item"><strong>STR</strong><span>${m.str} (${getMod(m.str)})</span></div>
+                <div class="ability-score-item"><strong>DEX</strong><span>${m.dex} (${getMod(m.dex)})</span></div>
+                <div class="ability-score-item"><strong>CON</strong><span>${m.con} (${getMod(m.con)})</span></div>
+                <div class="ability-score-item"><strong>INT</strong><span>${m.int} (${getMod(m.int)})</span></div>
+                <div class="ability-score-item"><strong>WIS</strong><span>${m.wis} (${getMod(m.wis)})</span></div>
+                <div class="ability-score-item"><strong>CHA</strong><span>${m.cha} (${getMod(m.cha)})</span></div>
+            </div>
     `;
 
+    // EKSİKLER GİDERİLDİ: Savaş sırasında DM'in çok ihtiyaç duyduğu hayati istatistikler eklendi
     let infoLines = [];
     if (m.save) {
         let saves = Object.entries(m.save).map(([stat, val]) => `${stat.toUpperCase()} ${val}`).join(", ");
@@ -408,32 +299,115 @@ function createMonsterCard(m) {
         let skills = Object.entries(m.skill).map(([sk, val]) => `${sk} ${val}`).join(", ");
         infoLines.push(`<strong>Yetenekler:</strong> <span style="color:#eee;">${skills}</span>`);
     }
-    if (m.passive) infoLines.push(`<strong>Pasif Algı:</strong> <span style="color:#eee;">${m.passive}</span>`);
-    if (m.languages) infoLines.push(`<strong>Diller:</strong> <span style="color:#eee;">${m.languages.join(", ")}</span>`);
+    if (m.vulnerable) infoLines.push(`<strong>Zafiyetler:</strong> <span style="color:#eee;">${parseResist(m.vulnerable)}</span>`);
+    if (m.resist) infoLines.push(`<strong>Dirençler:</strong> <span style="color:#eee;">${parseResist(m.resist)}</span>`);
+    if (m.immune) infoLines.push(`<strong>Bağışıklıklar:</strong> <span style="color:#eee;">${parseResist(m.immune)}</span>`);
+    if (m.conditionImmune) infoLines.push(`<strong>Durum Bağışıklıkları:</strong> <span style="color:#eee;">${parseResist(m.conditionImmune)}</span>`);
     
+    let senses = m.senses ? m.senses.join(", ") + ", " : "";
+    let passive = m.passive ? `Pasif Algı ${m.passive}` : "";
+    if (senses || passive) infoLines.push(`<strong>Duyular:</strong> <span style="color:#eee;">${senses}${passive}</span>`);
+    
+    if (m.languages) infoLines.push(`<strong>Diller:</strong> <span style="color:#eee;">${m.languages.join(", ")}</span>`);
+    else infoLines.push(`<strong>Diller:</strong> <span style="color:#eee;">—</span>`);
+
+    if (m.cr) {
+        let xp = typeof m.cr === 'object' && m.cr.xp ? ` (${m.cr.xp} XP)` : "";
+        infoLines.push(`<strong>Tehlike (CR):</strong> <span style="color:#eee;">${crVal}${xp}</span>`);
+    }
+
     if(infoLines.length > 0) {
-        html += `<div class="monster-info-line">${infoLines.join(" &nbsp;|&nbsp; ")}</div>`;
+        html += `<div class="monster-info-line" style="line-height:1.8;">${infoLines.join(" &nbsp;|&nbsp; ")}</div>`;
+    }
+
+    // YENİ DÜZEN: renderText artık obje veya array gelse de hata vermeden HTML üretecek
+    if (m.spellcasting) {
+        html += `<div class="monster-section"><h4>Büyü Yapma (Spellcasting)</h4>`;
+        m.spellcasting.forEach(sc => { html += `<p>${renderText(sc)}</p>`; });
+        html += `</div>`;
     }
 
     if (m.trait) {
         html += `<div class="monster-section"><h4>Özellikler</h4>`;
-        m.trait.forEach(t => {
-            html += `<p><strong>${t.name}.</strong> ${renderText(t.entries)}</p>`;
-        });
+        m.trait.forEach(t => { html += `<p>${renderText(t)}</p>`; });
         html += `</div>`;
     }
 
     if (m.action) {
         html += `<div class="monster-section"><h4>Eylemler</h4>`;
-        m.action.forEach(a => {
-            html += `<p><strong>${a.name}.</strong> ${renderText(a.entries)}</p>`;
-        });
+        m.action.forEach(a => { html += `<p>${renderText(a)}</p>`; });
         html += `</div>`;
     }
 
+    if (m.reaction) {
+        html += `<div class="monster-section"><h4>Tepkiler (Reactions)</h4>`;
+        m.reaction.forEach(r => { html += `<p>${renderText(r)}</p>`; });
+        html += `</div>`;
+    }
+
+    if (m.legendary) {
+        html += `<div class="monster-section"><h4>Efsanevi Eylemler</h4>`;
+        if (m.legendaryHeader) html += `<p>${renderText(m.legendaryHeader)}</p>`;
+        else html += `<p>Yaratık, aşağıdaki seçeneklerden seçerek 3 efsanevi eylem yapabilir. Sadece bir efsanevi eylem seçeneği tek bir seferde ve sadece başka bir yaratığın turunun sonunda kullanılabilir. Yaratık harcadığı efsanevi eylemleri sırasının başında geri kazanır.</p>`;
+        
+        m.legendary.forEach(l => { html += `<p>${renderText(l)}</p>`; });
+        html += `</div>`;
+    }
+
+    if (m.mythic) {
+        html += `<div class="monster-section"><h4>Mistik Eylemler (Mythic Actions)</h4>`;
+        if (m.mythicHeader) html += `<p>${renderText(m.mythicHeader)}</p>`;
+        m.mythic.forEach(my => { html += `<p>${renderText(my)}</p>`; });
+        html += `</div>`;
+    }
+    
+    html += `</div> `;
+
+    // TAB 2: DETAYLAR VE HİKAYE (FLUFF)
+    html += `<div class="monster-tab fluff-text" id="tab-fluff-${m.name.replace(/\s+/g, '')}">`;
+    
+    if (imageUrl) {
+        html += `<div style="text-align:center; margin-bottom: 20px;">
+                    <img data-src="${imageUrl}" 
+                         class="lazy-monster-img"
+                         alt="${m.name}" 
+                         style="max-width: 100%; height: auto; max-height: 400px; border-radius: 8px; border: 1px solid #444; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
+                 </div>`;
+    }
+
+    if (fluffData && fluffData.entries) {
+        html += renderText(fluffData.entries); // Fluff ayrıştırıcı olarak da ana motoru kullanıyoruz
+    } else {
+        html += `<p style="text-align:center; color:#888; font-style:italic;">Bu yaratık için detaylı hikaye verisi bulunamadı.</p>`;
+    }
+
+    html += `</div> `;
+
     content.innerHTML = html;
 
-    // AÇILIR/KAPANIR MANTIK VE GÖRSEL YÜKLEME
+    const tabBtns = content.querySelectorAll('.monster-tab-btn');
+    const tabs = content.querySelectorAll('.monster-tab');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetTab = content.querySelector(`#${btn.dataset.target}`);
+            if(targetTab) targetTab.classList.add('active');
+
+            const lazyImgs = targetTab.querySelectorAll('.lazy-monster-img');
+            lazyImgs.forEach(img => {
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                }
+            });
+        });
+    });
+
     header.addEventListener('click', () => {
         const isOpen = content.style.display === 'block';
         content.style.display = isOpen ? 'none' : 'block';
@@ -441,15 +415,16 @@ function createMonsterCard(m) {
         const arrow = header.querySelector('.arrow-icon');
         arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
 
-        // Kart açıldığında resmi yükle
         if (!isOpen) { 
-            const lazyImg = content.querySelector('.lazy-monster-img');
-            if (lazyImg && lazyImg.dataset.src) {
-                // data-src içindeki yolu gerçek src'ye atar, resim o saniye yüklenmeye başlar
-                lazyImg.src = lazyImg.dataset.src; 
-                
-                // Her açılışta tekrar denememesi için data-src'yi temizleriz
-                lazyImg.removeAttribute('data-src'); 
+            const activeTab = content.querySelector('.monster-tab.active');
+            if(activeTab) {
+                const lazyImgs = activeTab.querySelectorAll('.lazy-monster-img');
+                lazyImgs.forEach(img => {
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                });
             }
         }
     });
@@ -459,7 +434,136 @@ function createMonsterCard(m) {
     return card;
 }
 
-/* --- YARDIMCI FONKSİYONLAR --- */
+/* ============================================================
+   YENİ NESİL RECURSIVE (ÖZYİNELEMELİ) METİN VE OBJE ÇÖZÜCÜ
+   Bu motor, [object Object] hatasını %100 ortadan kaldırır.
+   ============================================================ */
+function renderText(entry) {
+    if (!entry) return "";
+
+    // 1. Düz Metin (Tüm 5etools etiketlerini şık HTML'e çevirir)
+    if (typeof entry === "string") {
+        let res = entry;
+        
+        // Saldırı Etiketleri
+        res = res.replace(/{@atk mw}/g, '<em>Yakın Dövüş Silah Saldırısı:</em>');
+        res = res.replace(/{@atk rw}/g, '<em>Menzilli Silah Saldırısı:</em>');
+        res = res.replace(/{@atk mw,rw}/g, '<em>Yakın veya Menzilli Silah Saldırısı:</em>');
+        res = res.replace(/{@atk rs}/g, '<em>Menzilli Büyü Saldırısı:</em>');
+        res = res.replace(/{@atk ms}/g, '<em>Yakın Dövüş Büyü Saldırısı:</em>');
+        res = res.replace(/{@atk ms,rs}/g, '<em>Yakın veya Menzilli Büyü Saldırısı:</em>');
+        
+        // Şarj (Recharge) Etiketleri
+        res = res.replace(/{@recharge (\d+)}/gi, '(Şarj $1-6)');
+        res = res.replace(/{@recharge}/gi, '(Şarj 6)');
+        
+        // Hasar, İsabet ve Matematiksel Veriler
+        res = res.replace(/{@hit (.*?)}/gi, '<strong style="color:#b52b2b;">+$1</strong>');
+        res = res.replace(/{@h}/gi, '<em>İsabet halinde:</em>');
+        res = res.replace(/{@damage (.*?)}/gi, '<strong style="color:#b52b2b;">$1</strong>');
+        res = res.replace(/{@dc (.*?)}/gi, '<strong style="color:#b52b2b;">DC $1</strong>');
+        res = res.replace(/{@dice (.*?)(?:\|.*?)?}/gi, '<strong>$1</strong>');
+        res = res.replace(/{@chance (.*?)(?:\|.*?)?}/gi, '<strong>%str</strong>');
+        
+        // Stilistik Etiketler (Büyü, Durum, Yaratık)
+        res = res.replace(/{@spell (.*?)(?:\|.*?)?}/gi, '<span style="color:#2ecc71; font-weight:bold; font-style:italic;">$1</span>');
+        res = res.replace(/{@condition (.*?)(?:\|.*?)?}/gi, '<span style="color:#e74c3c; font-weight:bold; border-bottom: 1px dotted #e74c3c;">$1</span>');
+        res = res.replace(/{@creature (.*?)(?:\|.*?)?}/gi, '<span style="color:#3498db; font-weight:bold;">$1</span>');
+        res = res.replace(/{@skill (.*?)(?:\|.*?)?}/gi, '<strong style="color:#f39c12;">$1</strong>');
+        res = res.replace(/{@sense (.*?)(?:\|.*?)?}/gi, '<em>$1</em>');
+        res = res.replace(/{@item (.*?)(?:\|.*?)?}/gi, '<em>$1</em>');
+        
+        // Geri kalan bilinmeyen tüm etiketleri filtreleyip içindeki ana metni kurtar
+        res = res.replace(/{@\w+\s+([^}|]+)(?:\|[^}]+)?}/g, '$1');
+        
+        return res;
+    }
+
+    // 2. Dizi (Array) İçeriği
+    if (Array.isArray(entry)) {
+        return entry.map(e => renderText(e)).join(" ");
+    }
+
+    // 3. Obje (Object) İçeriği -> [object Object] hatasını engelleyen kısım
+    if (typeof entry === "object") {
+        let html = "";
+        
+        // İsim (Name) alanı varsa onu vurgula
+        if (entry.name) {
+            html += `<strong style="color:#fff;"><em>${renderText(entry.name)}.</em></strong> `;
+        }
+
+        if (entry.type === "entries") {
+            html += renderText(entry.entries);
+        } 
+        else if (entry.type === "list") {
+            html += `<ul style="margin-top: 5px; margin-bottom: 5px;">`;
+            if (entry.items) {
+                entry.items.forEach(item => {
+                    html += `<li>${renderText(item)}</li>`;
+                });
+            }
+            html += `</ul>`;
+        } 
+        else if (entry.type === "table") {
+            html += `<div style="overflow-x: auto;"><table style="width:100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; text-align: left;">`;
+            if (entry.caption) html += `<caption style="font-weight:bold; color:#b52b2b; margin-bottom:5px;">${renderText(entry.caption)}</caption>`;
+            if (entry.colLabels) {
+                html += `<tr>${entry.colLabels.map(c => `<th style="border-bottom: 1px solid #b52b2b; padding: 5px; color:#ddd;">${renderText(c)}</th>`).join('')}</tr>`;
+            }
+            if (entry.rows) {
+                entry.rows.forEach(row => {
+                    html += `<tr>${row.map(cell => `<td style="padding: 5px; border-bottom: 1px solid #444;">${renderText(cell)}</td>`).join('')}</tr>`;
+                });
+            }
+            html += `</table></div>`;
+        } 
+        else if (entry.type === "spellcasting") {
+            if (entry.headerEntries) html += renderText(entry.headerEntries) + "<br>";
+            if (entry.spells) {
+                for (const [level, data] of Object.entries(entry.spells)) {
+                    let levelName = level === "0" ? "Cantrips (at will)" : `${level}. Seviye (${data.slots} slot)`;
+                    html += `<em>${levelName}:</em> ${renderText(data.spells)}<br>`;
+                }
+            }
+            if (entry.will) html += `<em>Sınırsız (At will):</em> ${renderText(entry.will)}<br>`;
+            if (entry.daily) {
+                for (const [times, spells] of Object.entries(entry.daily)) {
+                    let t = times.replace('e', ' her biri');
+                    html += `<em>Günde ${t} defa:</em> ${renderText(spells)}<br>`;
+                }
+            }
+            if (entry.footerEntries) html += renderText(entry.footerEntries);
+        } 
+        else if (entry.type === "inset" || entry.type === "insetReadaloud") {
+            html += `<div style="background: rgba(181, 43, 43, 0.05); border-left: 3px solid #b52b2b; padding: 10px 15px; margin: 15px 0;">${renderText(entry.entries)}</div>`;
+        } 
+        else if (entry.type === "quote") {
+            html += `<div style="font-style:italic; color:#aaa; margin: 10px 0;">"${renderText(entry.entries)}"`;
+            if (entry.by) html += `<br><strong style="color:#888;">— ${renderText(entry.by)}</strong>`;
+            html += `</div>`;
+        }
+        else if (entry.entries) {
+            html += renderText(entry.entries);
+        }
+
+        return html;
+    }
+    return "";
+}
+
+/* --- DİĞER YARDIMCI FONKSİYONLAR --- */
+function parseResist(arr) {
+    if (!arr) return "";
+    return arr.map(x => {
+        if (typeof x === 'string') return renderText(x);
+        if (x.resist) return `${x.resist.join(", ")} ${x.note ? '('+x.note+')' : ''}`;
+        if (x.immune) return `${x.immune.join(", ")} ${x.note ? '('+x.note+')' : ''}`;
+        if (x.vulnerable) return `${x.vulnerable.join(", ")} ${x.note ? '('+x.note+')' : ''}`;
+        return "";
+    }).join("; ");
+}
+
 function getMod(score) {
     if(!score) return "+0";
     let mod = Math.floor((score - 10) / 2);
@@ -502,41 +606,19 @@ function formatSpeed(speedData) {
     if (speedData.walk) speeds.push(`${speedData.walk} ft.`);
     if (speedData.fly) speeds.push(`Uçma ${speedData.fly} ft.`);
     if (speedData.swim) speeds.push(`Yüzme ${speedData.swim} ft.`);
+    if (speedData.climb) speeds.push(`Tırmanma ${speedData.climb} ft.`);
+    if (speedData.burrow) speeds.push(`Kazma ${speedData.burrow} ft.`);
     return speeds.join(", ");
 }
 
-function renderText(entries) {
-    if (!entries) return "";
-    let text = Array.isArray(entries) ? entries.join(" ") : entries;
-    text = text.replace(/{@atk mw}/g, '<em>Yakın Dövüş Silah Saldırısı:</em>');
-    text = text.replace(/{@atk rw}/g, '<em>Menzilli Silah Saldırısı:</em>');
-    text = text.replace(/{@atk mw,rw}/g, '<em>Yakın veya Menzilli Silah Saldırısı:</em>');
-    text = text.replace(/{@hit (.*?)}/g, '<strong style="color:#b52b2b;">+$1</strong>');
-    text = text.replace(/{@h}/g, '<em>İsabet halinde:</em>');
-    text = text.replace(/{@damage (.*?)}/g, '<strong style="color:#b52b2b;">$1</strong> hasar');
-    text = text.replace(/{@dc (.*?)}/g, '<strong style="color:#b52b2b;">DC $1</strong>');
-    return text;
-}
-
-/* --- YUKARI DÖN BUTONU MANTIĞI --- */
 function setupScrollToTop() {
     const btn = document.getElementById('scrollToTopBtn');
     if (!btn) return;
-
-    // Sayfa kaydırıldıkça butonu göster/gizle
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            btn.classList.add('show');
-        } else {
-            btn.classList.remove('show');
-        }
+        if (window.scrollY > 300) btn.classList.add('show');
+        else btn.classList.remove('show');
     });
-
-    // Tıklanınca en üste yumuşakça çık
     btn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }

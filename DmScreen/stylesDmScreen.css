@@ -63,10 +63,44 @@ body {
 .panel-control-btn.edit-panel-btn:hover { color: #b52b2b; }
 .panel-control-btn.remove-panel-btn:hover { color: #ff4444; }
 
+/* ============================================================
+   EVRENSEL HAYALET SCROLLBAR (Tüm Tarayıcılar İçin)
+   ============================================================ */
+/* Firefox Uyumluluğu */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
+}
+
+/* Chrome, Brave, Safari, Edge Uyumluluğu */
+::-webkit-scrollbar {
+    width: 5px;  /* Çok ince, zarif bir genişlik */
+    height: 5px; /* Yatay scroll için ince genişlik */
+}
+
+/* O sinir bozucu beyaz/gri arkaplanı tamamen yok ediyoruz */
+::-webkit-scrollbar-track {
+    background: transparent !important; 
+}
+
+/* Scrollbar'ın kendisi (Normalde Görünmez) */
+::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0); /* Sıfır opaklık = Gizli */
+    border-radius: 10px;
+    transition: background-color 0.3s ease; /* Yumuşak geçiş */
+}
+
+/* Sadece kaydırılabilir kutunun üzerine gelindiğinde beliren silik gri renk */
+*:hover::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0.4); 
+}
+
+/* Scrollbar'ın bizzat üstüne gelip tuttuğunda parlayan D&D kırmızısı */
+*:hover::-webkit-scrollbar-thumb:hover {
+    background: rgba(181, 43, 43, 0.8); 
+}
+
 .panel-content { flex-grow: 1; overflow-y: auto; font-size: 0.9em; }
-.panel-content::-webkit-scrollbar { width: 6px; }
-.panel-content::-webkit-scrollbar-track { background: #111; }
-.panel-content::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
 
 /* YENİ EKLENEN KISIM: Iframe ve widget'lar için akıllı Zoom ve sıfır boşluk */
 .panel-content.no-padding { 
