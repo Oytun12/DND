@@ -59,16 +59,27 @@
     <main class="dmscreen-container">
         <button id="fullscreen-toggle-btn" class="fullscreen-toggle-btn" title="Tam Ekran (ESC ile çık)">⛶</button>
         
+        <button id="nav-screen-left" class="screen-nav-arrow" style="display:none;" title="Önceki Ekran">❮</button>
+        <button id="nav-screen-right" class="screen-nav-arrow" style="display:none;" title="Sonraki Ekran">❯</button>
+
         <div id="dm-grid" class="dm-grid"></div>
     </main>
 
     <div id="grid-settings-modal" class="modal-overlay">
-        <div class="modal-window" style="width: 320px;">
+        <div class="modal-window" style="width: 360px;">
             <div class="modal-header">
-                <h3 style="margin: 0; color: #b52b2b;">Grid Ayarları</h3>
+                <h3 style="margin: 0; color: #b52b2b;">Grid & Ekran Ayarları</h3>
                 <button class="close-modal-btn close-settings-btn">✕</button>
             </div>
             <div class="modal-content" style="padding: 20px;">
+                
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; background: #222; padding: 10px; border-radius: 6px; border: 1px solid #444;">
+                    <button id="add-screen-left-btn" class="secondary-btn" style="padding: 5px 12px; font-weight: bold; font-size: 1.2em;" title="Sola Yeni Ekran Ekle">+</button>
+                    <div id="screen-tabs-list" style="display: flex; gap: 5px; overflow-x: auto; flex-grow: 1; justify-content: center; padding: 0 10px;">
+                        </div>
+                    <button id="add-screen-right-btn" class="secondary-btn" style="padding: 5px 12px; font-weight: bold; font-size: 1.2em;" title="Sağa Yeni Ekran Ekle">+</button>
+                </div>
+
                 <div class="control-group" style="justify-content: space-between; margin-bottom: 15px;">
                     <label for="grid-cols">Sütun Sayısı:</label>
                     <input type="number" id="grid-cols" min="1" max="10" value="4">
@@ -77,13 +88,15 @@
                     <label for="grid-rows">Satır Sayısı:</label>
                     <input type="number" id="grid-rows" min="1" max="10" value="2">
                 </div>
-                <button id="build-grid-btn" class="main-btn" style="width: 100%; margin-bottom: 10px;">Güncelle</button>
-                <button id="confirm-reset-btn" class="secondary-btn" style="width: 100%; background-color: #552222; border: 1px solid #ff4444; color: #ff8888;">Ekranı Temizle</button>
+                
+                <button id="build-grid-btn" class="main-btn" style="width: 100%; margin-bottom: 10px;">Bu Ekranı Güncelle</button>
+                <button id="delete-screen-btn" class="secondary-btn" style="width: 100%; margin-bottom: 10px; background-color: #552222; border: 1px solid #ff4444; color: #ff8888; display: none;">Bu Ekranı Komple Sil</button>
+                <button id="confirm-reset-btn" class="secondary-btn" style="width: 100%; background-color: #332222; border: 1px solid #ffaa44; color: #ffaa88;">Panelleri Temizle</button>
                 
                 <div id="reset-confirm-area" style="display: none; margin-top: 15px; padding: 15px; background: #2a0808; border-radius: 6px; border: 1px dashed #ff4444; text-align: center;">
-                    <p style="font-size: 0.9em; margin-bottom: 10px; color: #ccc;">Tüm paneller silinecek. Emin misin?</p>
+                    <p style="font-size: 0.9em; margin-bottom: 10px; color: #ccc;">Bu ekrandaki tüm paneller silinecek. Emin misin?</p>
                     <div style="display: flex; gap: 10px;">
-                        <button id="reset-screen-btn" class="main-btn" style="flex: 1; padding: 8px;">Evet, Sil</button>
+                        <button id="reset-screen-btn" class="main-btn" style="flex: 1; padding: 8px;">Evet, Temizle</button>
                         <button id="cancel-reset-btn" class="secondary-btn" style="flex: 1; padding: 8px;">İptal</button>
                     </div>
                 </div>

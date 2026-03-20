@@ -1,10 +1,9 @@
 /* ============================================================
-   SCRIPT-DMSCREEN.JS - Akıllı (State-Preserving) Grid Motoru
+   SCRIPT-DMSCREEN.JS - Çoklu Ekran (Multi-Monitor) Grid Motoru
    ============================================================ */
 
-let GRID_COLS = 4;
-let GRID_ROWS = 2;
-let PANELS = []; 
+let SCREENS = [];
+let currentScreenIndex = 0;
 let editingPanelId = null;
 let activeAddTarget = null; 
 
@@ -24,11 +23,7 @@ const WIDGETS = {
 
 // --- LOCAL STORAGE (KAYIT SİSTEMİ) ---
 function saveScreenState() {
-    const state = {
-        cols: GRID_COLS,
-        rows: GRID_ROWS,
-        panels: PANELS
-    };
+    const state = { screens: SCREENS, currentIndex: currentScreenIndex };
     localStorage.setItem('dndDmScreenState', JSON.stringify(state));
 }
 
@@ -37,18 +32,17 @@ function loadScreenState() {
     if (saved) {
         try {
             const state = JSON.parse(saved);
-            GRID_COLS = state.cols || 4;
-            GRID_ROWS = state.rows || 2;
-            PANELS = state.panels || [];
-            
-            // Ayar menüsündeki inputları da güncelleyelim
-            const colInput = document.getElementById('grid-cols');
-            const rowInput = document.getElementById('grid-rows');
-            if (colInput) colInput.value = GRID_COLS;
-            if (rowInput) rowInput.value = GRID_ROWS;
-        } catch (e) {
-            console.error("Kayıt okuma hatası:", e);
-        }
+            if (state.screens) { 
+                SCREENS = state.screens;
+                currentScreenIndex = state.currentIndex || 0;
+            } else { 
+                SCREENS = [{ id: Date.now(), cols: state.cols || 4, rows: state.rows || 2, panels: state.panels || [] }];
+                currentScreenIndex = 0;
+            }
+        } catch (e) { console.error("Kayıt okuma hatası:", e); }
+    } else {
+        SCREENS = [{ id: Date.now(), cols: 4, rows: 2, panels: [] }];
+        currentScreenIndex = 0;
     }
 }
 
@@ -56,73 +50,147 @@ document.addEventListener("DOMContentLoaded", () => {
     loadScreenState(); 
     setupControls();
     setupModal();
-    setupFullscreen(); // YENİ EKLENEN SATIR
+    setupFullscreen(); 
+    updateModalInputs(); 
     renderGrid(); 
 });
+
+// --- ANİMASYONLU EKRAN GEÇİŞ MOTORU ---
+function animateGridSwap(direction, callback) {
+    const grid = document.getElementById('dm-grid');
+    const exitX = direction === 'right' ? '-50px' : '50px';
+    const enterX = direction === 'right' ? '50px' : '-50px';
+
+    grid.style.transition = 'transform 0.2s ease-in-out, opacity 0.2s ease-in-out';
+    grid.style.transform = `translateX(${exitX})`;
+    grid.style.opacity = '0';
+    
+    setTimeout(() => {
+        callback(); 
+        
+        grid.style.transition = 'none';
+        grid.style.transform = `translateX(${enterX})`;
+        void grid.offsetWidth; 
+        
+        grid.style.transition = 'transform 0.2s ease-in-out, opacity 0.2s ease-in-out';
+        grid.style.transform = 'translateX(0)';
+        grid.style.opacity = '1';
+    }, 200);
+}
+
+function switchScreen(newIndex) {
+    if (newIndex < 0 || newIndex >= SCREENS.length || newIndex === currentScreenIndex) return;
+    const direction = newIndex > currentScreenIndex ? 'right' : 'left';
+    
+    animateGridSwap(direction, () => {
+        currentScreenIndex = newIndex;
+        editingPanelId = null;
+        updateModalInputs();
+        renderGrid();
+    });
+}
+
+function updateNavArrows() {
+    const leftBtn = document.getElementById('nav-screen-left');
+    const rightBtn = document.getElementById('nav-screen-right');
+    leftBtn.style.display = currentScreenIndex > 0 ? 'flex' : 'none';
+    rightBtn.style.display = currentScreenIndex < SCREENS.length - 1 ? 'flex' : 'none';
+}
+
+function updateModalInputs() {
+    const activeScreen = SCREENS[currentScreenIndex];
+    document.getElementById('grid-cols').value = activeScreen.cols;
+    document.getElementById('grid-rows').value = activeScreen.rows;
+    
+    const tabsContainer = document.getElementById('screen-tabs-list');
+    tabsContainer.innerHTML = '';
+    
+    SCREENS.forEach((scr, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'screen-tab' + (idx === currentScreenIndex ? ' active' : '');
+        btn.textContent = `Ekran ${idx + 1}`;
+        btn.onclick = () => switchScreen(idx);
+        tabsContainer.appendChild(btn);
+    });
+    
+    document.getElementById('delete-screen-btn').style.display = SCREENS.length > 1 ? 'block' : 'none';
+}
 
 // --- KONTROL VE MODAL YÖNETİMİ ---
 function setupControls() {
     const settingsModal = document.getElementById('grid-settings-modal');
     
-    document.getElementById('open-grid-modal-btn').onclick = () => settingsModal.classList.add('open');
+    document.getElementById('open-grid-modal-btn').onclick = () => { updateModalInputs(); settingsModal.classList.add('open'); };
     const mobileBtn = document.getElementById('open-grid-modal-mobile');
-    if(mobileBtn) mobileBtn.onclick = () => settingsModal.classList.add('open');
+    if(mobileBtn) mobileBtn.onclick = () => { updateModalInputs(); settingsModal.classList.add('open'); };
 
     document.querySelector('.close-settings-btn').onclick = () => {
         settingsModal.classList.remove('open');
         document.getElementById('reset-confirm-area').style.display = 'none';
     };
 
-    document.getElementById('build-grid-btn').onclick = () => {
-        GRID_COLS = parseInt(document.getElementById('grid-cols').value) || 4;
-        GRID_ROWS = parseInt(document.getElementById('grid-rows').value) || 2;
-        
-        PANELS = PANELS.filter(p => p.r + p.h - 1 <= GRID_ROWS && p.c + p.w - 1 <= GRID_COLS);
-        renderGrid();
-        settingsModal.classList.remove('open');
+    document.getElementById('nav-screen-left').onclick = () => switchScreen(currentScreenIndex - 1);
+    document.getElementById('nav-screen-right').onclick = () => switchScreen(currentScreenIndex + 1);
+
+    document.getElementById('add-screen-left-btn').onclick = () => {
+        const newScreen = { id: Date.now(), cols: 4, rows: 2, panels: [] };
+        SCREENS.splice(currentScreenIndex, 0, newScreen); 
+        animateGridSwap('left', () => { updateModalInputs(); renderGrid(); });
     };
 
-    document.getElementById('confirm-reset-btn').onclick = () => {
-        document.getElementById('reset-confirm-area').style.display = 'block';
+    document.getElementById('add-screen-right-btn').onclick = () => {
+        const newScreen = { id: Date.now(), cols: 4, rows: 2, panels: [] };
+        SCREENS.splice(currentScreenIndex + 1, 0, newScreen); 
+        currentScreenIndex++; 
+        animateGridSwap('right', () => { updateModalInputs(); renderGrid(); });
     };
-    
-    document.getElementById('cancel-reset-btn').onclick = () => {
-        document.getElementById('reset-confirm-area').style.display = 'none';
+
+    document.getElementById('delete-screen-btn').onclick = () => {
+        if (SCREENS.length <= 1) return;
+        if (confirm("Bu ekranı (ve içindeki tüm panelleri) silmek istediğine emin misin?")) {
+            SCREENS.splice(currentScreenIndex, 1);
+            if (currentScreenIndex >= SCREENS.length) currentScreenIndex = SCREENS.length - 1;
+            updateModalInputs();
+            renderGrid();
+        }
     };
+
+    document.getElementById('build-grid-btn').onclick = () => {
+        const activeScreen = SCREENS[currentScreenIndex];
+        activeScreen.cols = parseInt(document.getElementById('grid-cols').value) || 4;
+        activeScreen.rows = parseInt(document.getElementById('grid-rows').value) || 2;
+        
+        activeScreen.panels = activeScreen.panels.filter(p => p.r + p.h - 1 <= activeScreen.rows && p.c + p.w - 1 <= activeScreen.cols);
+        renderGrid();
+    };
+
+    document.getElementById('confirm-reset-btn').onclick = () => { document.getElementById('reset-confirm-area').style.display = 'block'; };
+    document.getElementById('cancel-reset-btn').onclick = () => { document.getElementById('reset-confirm-area').style.display = 'none'; };
 
     document.getElementById('reset-screen-btn').onclick = () => {
-        PANELS = [];
+        SCREENS[currentScreenIndex].panels = [];
         editingPanelId = null;
         renderGrid();
         document.getElementById('reset-confirm-area').style.display = 'none';
-        settingsModal.classList.remove('open');
     };
 
-    // MODAL VE EDİT MODUNU BOŞLUĞA TIKLAYARAK KAPATMA MANTIĞI
     document.addEventListener('click', (e) => {
-        // 1. Modal Kapatma
         if (e.target.classList.contains('modal-overlay')) {
             e.target.classList.remove('open');
             const confirmArea = document.getElementById('reset-confirm-area');
             if (confirmArea) confirmArea.style.display = 'none';
         }
-
-        // 2. Edit Modunu Boşluğa Tıklayarak Kapatma
         if (editingPanelId !== null) {
-            // Tıklanan öğe editörün hayati kontrol araçlarından biri mi kontrol et
             const isResizeHandle = e.target.classList.contains('resize-handle');
             const isDragHandle = e.target.classList.contains('drag-handle-center');
             const isEditBtn = e.target.closest('.edit-panel-btn');
             
-            // Eğer tıklanan yer taşıma topu, genişletme çubuğu veya "edit'i aç" butonunun KENDİSİ değilse;
-            // Yani ekrandaki herhangi başka bir boşluk, yazı veya arka plansa edit modunu kapat!
             if (!isResizeHandle && !isDragHandle && !isEditBtn) {
                 editingPanelId = null;
-                renderGrid(); // Ekranı güncelleyip (kaydedip) edit katmanını siler
+                renderGrid(); 
             }
         }
     });
-
 }
 
 function setupModal() {
@@ -132,14 +200,14 @@ function setupModal() {
     typeModal.querySelectorAll('.type-opt-btn').forEach(btn => {
         btn.onclick = () => {
             if (activeAddTarget) {
-                PANELS.push({
+                SCREENS[currentScreenIndex].panels.push({
                     id: Date.now(),
                     r: activeAddTarget.r,
                     c: activeAddTarget.c,
                     w: 1, h: 1,
                     type: btn.dataset.type,
                     content: "", 
-                    zoom: 1 // YENİ: Panelin varsayılan yakınlaştırma seviyesi (%100)
+                    zoom: 1 
                 });
                 typeModal.classList.remove('open');
                 renderGrid();
@@ -148,45 +216,65 @@ function setupModal() {
     });
 }
 
-// --- ANA GRID ÇİZİCİ ---
+// --- ANA GRID ÇİZİCİ (YENİ AKILLI STATE MOTORU) ---
 function renderGrid() {
     const container = document.getElementById('dm-grid');
+    const activeScreen = SCREENS[currentScreenIndex];
     
-    container.style.gridTemplateColumns = `repeat(${GRID_COLS}, 1fr)`;
-    container.style.gridTemplateRows = `repeat(${GRID_ROWS}, 1fr)`;
+    container.style.gridTemplateColumns = `repeat(${activeScreen.cols}, 1fr)`;
+    container.style.gridTemplateRows = `repeat(${activeScreen.rows}, 1fr)`;
 
+    // Boş (Eklemeye hazır) hücreleri temizle
     container.querySelectorAll('.empty-panel').forEach(el => el.remove());
 
-    const currentPanelIds = PANELS.map(p => p.id.toString());
+    // 1. Sistemde kayıtlı olan "Tüm Ekranlardaki" panellerin kimliklerini topla
+    const allValidPanelIds = [];
+    SCREENS.forEach(screen => {
+        screen.panels.forEach(p => allValidPanelIds.push(p.id.toString()));
+    });
+    
+    // 2. Şu an baktığımız (Aktif) ekrandaki panellerin kimlikleri
+    const activePanelIds = activeScreen.panels.map(p => p.id.toString());
+
+    // 3. DOM'da bulunan tüm panelleri denetle
     container.querySelectorAll('.dm-panel').forEach(el => {
-        if (!currentPanelIds.includes(el.dataset.id)) {
+        if (!allValidPanelIds.includes(el.dataset.id)) {
+            // Panel sistemden tamamen silinmiş (Kullanıcı Çarpıya basmış veya Ekran silinmiş)
             el.remove();
+        } else if (!activePanelIds.includes(el.dataset.id)) {
+            // Panel silinmemiş AMA başka bir ekrana ait. SADECE GİZLE! (State korunur)
+            el.style.display = 'none';
         }
     });
 
-    PANELS.forEach(p => {
+    // 4. Aktif Ekranın Panellerini Çiz ve Göster
+    activeScreen.panels.forEach(p => {
         let panelEl = container.querySelector(`.dm-panel[data-id="${p.id}"]`);
         
+        // Daha önce oluşturulmamışsa (Yeni eklendiyse) oluştur
         if (!panelEl) {
             panelEl = createNewPanelDOM(p);
             container.appendChild(panelEl);
         }
         
+        // Paneli Görünür Yap ve Kordinatlarına Oturt
+        panelEl.style.display = 'flex'; 
         panelEl.style.gridArea = `${p.r} / ${p.c} / span ${p.h} / span ${p.w}`;
         manageEditOverlay(panelEl, p);
     });
 
-    let occupied = Array(GRID_ROWS + 1).fill(0).map(() => Array(GRID_COLS + 1).fill(false));
-    PANELS.forEach(p => {
+    // 5. Kalan boş alanlara (Ekleme Butonları) hücre çiz
+    let occupied = Array(activeScreen.rows + 1).fill(0).map(() => Array(activeScreen.cols + 1).fill(false));
+    activeScreen.panels.forEach(p => {
         for(let i = p.r; i < p.r + p.h; i++) {
             for(let j = p.c; j < p.c + p.w; j++) {
-                if(i <= GRID_ROWS && j <= GRID_COLS) occupied[i][j] = true;
+                if(i <= activeScreen.rows && j <= activeScreen.cols) occupied[i][j] = true;
             }
         }
     });
 
-    for(let i = 1; i <= GRID_ROWS; i++) {
-        for(let j = 1; j <= GRID_COLS; j++) {
+    for(let i = 1; i <= activeScreen.rows; i++) {
+        for(let j = 1; j <= activeScreen.cols; j++) {
             if(!occupied[i][j]) {
                 const empty = document.createElement('div');
                 empty.className = 'grid-cell empty-panel';
@@ -205,7 +293,7 @@ function renderGrid() {
                     e.preventDefault();
                     empty.classList.remove('drag-over');
                     const id = e.dataTransfer.getData('text/plain');
-                    const draggedP = PANELS.find(x => x.id == id);
+                    const draggedP = activeScreen.panels.find(x => x.id == id);
                     if (draggedP && canPlacePanel(draggedP.id, i, j, draggedP.w, draggedP.h)) {
                         draggedP.r = i; draggedP.c = j;
                         editingPanelId = null;
@@ -218,41 +306,24 @@ function renderGrid() {
         }
     }
 
-    // Herhangi bir ekleme, silme, taşıma veya yeniden boyutlandırma yapıldığında kaydet:
+    updateNavArrows();
     saveScreenState();
 }
 
-// --- PANEL İÇERİĞİ OLUŞTURMA (SADECE BİR KERE ÇALIŞIR) ---
 function createNewPanelDOM(p) {
     const panelEl = document.createElement('div');
     panelEl.className = 'dm-panel';
     panelEl.dataset.id = p.id; 
 
-    // Eski kayıtlardan gelen panellerde zoom verisi yoksa çökmemsi için varsayılan ata
     if (typeof p.zoom === 'undefined') p.zoom = 1;
 
     let title = "", contentHtml = "", extraClass = "";
 
-    // -- BURASI EKLENECEK --
-    // İframe'ler CSS --zoom değişkenini, diğerleri standart zoom özelliğini kullanır
     let inlineStyle = `style="--zoom: ${p.zoom};`;
     if (p.type === 'notes' || p.type === 'diceroller') {
         inlineStyle += ` zoom: ${p.zoom};`;
     }
     inlineStyle += `"`;
-
-    panelEl.innerHTML = `
-        <div class="panel-header">
-            <span class="panel-title">${title}</span>
-            <div class="panel-controls">
-                <button class="panel-control-btn zoom-out-btn" title="Küçült" style="font-weight:bold; font-size:1.3em; margin-top:-2px;">-</button>
-                <button class="panel-control-btn zoom-in-btn" title="Büyüt" style="font-weight:bold; font-size:1.1em;">+</button>
-                <button class="panel-control-btn edit-panel-btn" title="Genişlet & Taşı">⤡</button>
-                <button class="panel-control-btn remove-panel-btn" title="Kapat">✕</button>
-            </div>
-        </div>
-        <div class="panel-content${extraClass}" ${inlineStyle}>${contentHtml}</div>
-    `;
 
     if (p.type === 'notes') { 
         title = "📝 Serbest Notlar"; 
@@ -288,7 +359,6 @@ function createNewPanelDOM(p) {
         title = "Hata"; contentHtml = `<div>Geçersiz Panel</div>`;
     }
 
-    // YENİ: Başlığa + ve - butonları eklendi. panel-content'e zoom stili eklendi!
     panelEl.innerHTML = `
         <div class="panel-header">
             <span class="panel-title">${title}</span>
@@ -299,12 +369,12 @@ function createNewPanelDOM(p) {
                 <button class="panel-control-btn remove-panel-btn" title="Kapat">✕</button>
             </div>
         </div>
-        <div class="panel-content${extraClass}" style="zoom: ${p.zoom};">${contentHtml}</div>
+        <div class="panel-content${extraClass}" ${inlineStyle}>${contentHtml}</div>
     `;
 
-    // Etkileşim Butonları (Kapat & Genişlet)
     panelEl.querySelector('.remove-panel-btn').onclick = () => {
-        PANELS = PANELS.filter(x => x.id !== p.id);
+        const activeScreen = SCREENS[currentScreenIndex];
+        activeScreen.panels = activeScreen.panels.filter(x => x.id !== p.id);
         renderGrid();
     };
 
@@ -313,32 +383,22 @@ function createNewPanelDOM(p) {
         renderGrid();
     };
 
-    // YENİ: Büyüteç (Zoom) Mantığı
     const contentDiv = panelEl.querySelector('.panel-content');
     
     panelEl.querySelector('.zoom-in-btn').onclick = () => {
         p.zoom = Math.min(2.5, (p.zoom * 10 + 1) / 10); 
-        // İframe'ler için CSS değişkenini güncelle
         contentDiv.style.setProperty('--zoom', p.zoom);
-        // İframe OLMAYANLAR (Notlar vs.) için standart zoom uygula
-        if (p.type === 'notes' || p.type === 'diceroller') {
-            contentDiv.style.zoom = p.zoom;
-        }
-        saveScreenState(); // Zoom yapıldığı an kaydet
+        if (p.type === 'notes' || p.type === 'diceroller') contentDiv.style.zoom = p.zoom;
+        saveScreenState(); 
     };
 
     panelEl.querySelector('.zoom-out-btn').onclick = () => {
         p.zoom = Math.max(0.5, (p.zoom * 10 - 1) / 10); 
-        // İframe'ler için CSS değişkenini güncelle
         contentDiv.style.setProperty('--zoom', p.zoom);
-        // İframe OLMAYANLAR (Notlar vs.) için standart zoom uygula
-        if (p.type === 'notes' || p.type === 'diceroller') {
-            contentDiv.style.zoom = p.zoom;
-        }
-        saveScreenState(); // Zoom yapıldığı an kaydet
+        if (p.type === 'notes' || p.type === 'diceroller') contentDiv.style.zoom = p.zoom;
+        saveScreenState(); 
     };
 
-    // Text Editör modülü bağlama
     if (p.type === 'notes') {
         if (typeof window.initTextEditor === 'function') {
             window.initTextEditor(panelEl, p, saveScreenState);
@@ -391,10 +451,11 @@ function manageEditOverlay(panelEl, p) {
 }
 
 function canPlacePanel(ignoreId, r, c, w, h) {
-    if (r < 1 || c < 1 || r + h - 1 > GRID_ROWS || c + w - 1 > GRID_COLS) return false;
+    const activeScreen = SCREENS[currentScreenIndex];
+    if (r < 1 || c < 1 || r + h - 1 > activeScreen.rows || c + w - 1 > activeScreen.cols) return false;
     for (let i = r; i < r + h; i++) {
         for (let j = c; j < c + w; j++) {
-            const occupant = PANELS.find(p => p.id !== ignoreId && i >= p.r && i < p.r + p.h && j >= p.c && j < p.c + p.w);
+            const occupant = activeScreen.panels.find(p => p.id !== ignoreId && i >= p.r && i < p.r + p.h && j >= p.c && j < p.c + p.w);
             if (occupant) return false;
         }
     }
@@ -407,8 +468,9 @@ function startResize(e, panel, direction) {
     const startR = panel.r, startC = panel.c, startW = panel.w, startH = panel.h;
     
     const gridEl = document.getElementById('dm-grid');
-    const cellW = gridEl.getBoundingClientRect().width / GRID_COLS;
-    const cellH = gridEl.getBoundingClientRect().height / GRID_ROWS;
+    const activeScreen = SCREENS[currentScreenIndex];
+    const cellW = gridEl.getBoundingClientRect().width / activeScreen.cols;
+    const cellH = gridEl.getBoundingClientRect().height / activeScreen.rows;
 
     const onMove = (moveEv) => {
         const dx = moveEv.clientX - startX;
@@ -460,12 +522,10 @@ window.rollDice = function(sides) {
     });
 }
 
-// --- TAM EKRAN (FULLSCREEN) YÖNETİMİ ---
 function setupFullscreen() {
     const fsBtn = document.getElementById('fullscreen-toggle-btn');
     if (!fsBtn) return;
 
-    // Butona tıklandığında büyüt/küçült
     fsBtn.addEventListener('click', () => {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch(err => {
@@ -476,15 +536,14 @@ function setupFullscreen() {
         }
     });
 
-    // Tarayıcı büyüyüp küçüldükçe (ESC tuşuna basılırsa dahil) body class'ını güncelle
     document.addEventListener('fullscreenchange', () => {
         if (document.fullscreenElement) {
             document.body.classList.add('fullscreen-mode');
-            fsBtn.innerHTML = '🗗'; // İkonu küçültme moduna çevir
+            fsBtn.innerHTML = '🗗'; 
             fsBtn.title = "Tam Ekrandan Çık (ESC)";
         } else {
             document.body.classList.remove('fullscreen-mode');
-            fsBtn.innerHTML = '⛶'; // İkonu büyütme moduna çevir
+            fsBtn.innerHTML = '⛶'; 
             fsBtn.title = "Tam Ekran (ESC ile çık)";
         }
     });

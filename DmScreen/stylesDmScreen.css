@@ -174,6 +174,67 @@ body.fullscreen-mode .dmscreen-container {
     padding-top: 20px; 
 }
 
+/* ============================================================
+   ÇOKLU EKRAN (MULTI-MONITOR) VE ANİMASYON STİLLERİ
+   ============================================================ */
+
+/* Sağ-Sol Geçiş Okları */
+.screen-nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: #eee;
+    border: 2px solid #444;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(3px);
+}
+
+.screen-nav-arrow:hover {
+    background: rgba(181, 43, 43, 0.9);
+    border-color: #b52b2b;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 15px rgba(181, 43, 43, 0.6);
+}
+
+#nav-screen-left { left: 15px; }
+#nav-screen-right { right: 15px; }
+
+/* Ayarlar Modalı İçindeki Ekran Sekmeleri */
+.screen-tab {
+    background: #333;
+    color: #aaa;
+    border: 1px solid #444;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+.screen-tab:hover { background: #444; }
+.screen-tab.active {
+    background: #b52b2b;
+    color: #fff;
+    border-color: #b52b2b;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(181, 43, 43, 0.5);
+}
+
+/* Animasyonların Pürüzsüz Çalışması İçin */
+#dm-grid {
+    will-change: transform, opacity;
+}
+
 @media (max-width: 800px) {
     .desktop-nav { display: none; }
     .menu-icon { display: block; }
