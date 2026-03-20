@@ -1,3 +1,23 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // URL'de '?widget=true' var mı kontrol et
+    if (window.location.search.includes('widget=true')) {
+        // Varsa, sayfadaki Header'ı (Menüyü) gizle
+        const header = document.querySelector('.main-header');
+        if (header) header.style.display = 'none';
+
+        // İsteğe bağlı: Yukarı Dön butonunu gizle (Çünkü widget'ın içi kısadır)
+        const scrollBtn = document.querySelector('.scroll-to-top');
+        if (scrollBtn) scrollBtn.style.display = 'none';
+        
+        // Widget içinde padding'leri sıfırla ki güzel görünsün
+        const mainContainer = document.querySelector('.main-container');
+        if (mainContainer) {
+            mainContainer.style.margin = '0';
+            mainContainer.style.padding = '10px';
+        }
+    }
+});
+
 /* ============================================================
    SCRIPTENVANTER.JS - Akıllı Birleştirici, Filtreleyici ve Sıralayıcı (v2.0)
    ============================================================ */

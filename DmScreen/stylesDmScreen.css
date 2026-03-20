@@ -1,0 +1,192 @@
+/* ============================================================
+   STYLES-DMSCREEN.CSS - Akıllı Grid ve Tam Ekran Tasarım
+   ============================================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+
+body {
+    background-color: #1a1a1a;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- HEADER VE NAV BUTONU --- */
+.main-header { flex-shrink: 0; background-color: #222; border-bottom: 2px solid #b52b2b; padding: 10px 0; z-index: 1000; }
+.header-container { max-width: 100%; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+.logo-img { width: 50px; height: 50px; filter: drop-shadow(0 0 5px rgba(181, 43, 43, 0.5)); }
+.titles {text-decoration: none; color: inherit; }
+.main-title { font-size: 1.4em; font-weight: bold; color: #fff; margin-bottom: -5px; }
+.sub-title { font-size: 0.8em; color: #b52b2b; text-transform: uppercase; letter-spacing: 2px; }
+.desktop-nav { display: flex; gap: 20px; align-items: center; color: #444; }
+.nav-link { text-decoration: none; color: #ccc; font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.nav-link:hover { color: #b52b2b; }
+.menu-icon { display: none; font-size: 1.8em; cursor: pointer; color: #ccc; }
+
+.mobile-nav { display: none; position: absolute; top: 70px; left: 0; width: 100%; background-color: #222; border-bottom: 2px solid #b52b2b; margin-top: 20px; padding: 20px; z-index: 2000; box-shadow: 0 5px 10px rgba(0,0,0,0.5); }
+.mobile-nav.open { display: block; }
+.mobile-nav ul { list-style: none; }
+.mobile-nav li { margin-bottom: 15px; text-align: center; }
+.mobile-nav a { text-decoration: none; color: #eee; font-size: 1.2em; display: block; }
+
+/* YENİ: Nav İçindeki Grid Düzenleme Butonu */
+.nav-grid-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 6px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.nav-grid-btn:hover { background: #333; color: #fff; border-color: #b52b2b; }
+
+/* DMSCREEN ANA KONTEYNER */
+.dmscreen-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+    overflow: hidden; 
+}
+
+/* Genel Buton ve Input Stilleri */
+.control-group { display: flex; align-items: center; gap: 8px; }
+.control-group label { color: #aaa; font-size: 0.9em; }
+.control-group input[type="number"] { background-color: #333; color: #eee; border: 1px solid #444; padding: 8px; border-radius: 4px; width: 70px; font-size: 1em; text-align: center; outline: none; }
+.control-group input[type="number"]:focus { border-color: #b52b2b; }
+.main-btn { background-color: #b52b2b; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+.main-btn:hover { background-color: #d13d3d; }
+.secondary-btn { background-color: #333; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+.secondary-btn:hover { background-color: #444; }
+
+/* --- GRID SİSTEMİ STİLLERİ --- */
+.dm-grid { flex-grow: 1; display: grid; gap: 10px; min-height: 0; }
+
+.grid-cell.empty-panel { background-color: rgba(30, 30, 30, 0.5); border: 2px dashed #444; border-radius: 8px; display: flex; justify-content: center; align-items: center; min-height: 0; min-width: 0; transition: 0.2s; }
+.grid-cell.empty-panel.drag-over { background-color: rgba(181, 43, 43, 0.2); border-color: #b52b2b; }
+.add-content-btn { background: none; border: none; color: #666; font-size: 3em; cursor: pointer; transition: 0.2s; width: 100%; height: 100%; }
+.add-content-btn:hover { color: #b52b2b; transform: scale(1.1); }
+
+.dm-panel { background-color: #222; border: 1px solid #444; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; position: relative; min-height: 0; min-width: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+.panel-header { background-color: #111; border-bottom: 1px solid #333; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.panel-title { font-weight: bold; font-size: 0.95em; color: #ddd; }
+.panel-controls { display: flex; gap: 8px; }
+.panel-control-btn { background: none; border: none; color: #888; cursor: pointer; font-size: 1.1em; transition: 0.2s; }
+.panel-control-btn:hover { color: #fff; }
+.panel-control-btn.edit-panel-btn:hover { color: #b52b2b; }
+.panel-control-btn.remove-panel-btn:hover { color: #ff4444; }
+
+.panel-content { padding: 12px; flex-grow: 1; overflow-y: auto; font-size: 0.9em; }
+.panel-content::-webkit-scrollbar { width: 6px; }
+.panel-content::-webkit-scrollbar-track { background: #111; }
+.panel-content::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+/* YENİ EKLENEN KISIM: Iframe ve widget'lar için sıfır boşluk ve tek scroll */
+.panel-content.no-padding {
+    padding: 0;
+    overflow: hidden; /* Dıştaki gereksiz scroll'u tamamen kapatır */
+    display: flex; /* İframe'in içini tam doldurmasını sağlar */
+}
+.panel-content.no-padding iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block; /* Alt kısımdaki beyaz boşluk hatasını engeller */
+    border-radius: 0 0 8px 8px; /* Panelin alt köşelerinin yuvarlaklığına uyum sağlar */
+}
+
+/* --- EDİT MODU ARAYÜZÜ --- */
+.edit-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); z-index: 10; display: flex; justify-content: center; align-items: center; border-radius: 8px; }
+.drag-handle-center { width: 60px; height: 60px; background-color: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.5); border-radius: 50%; color: white; font-size: 28px; display: flex; justify-content: center; align-items: center; cursor: grab; transition: 0.2s; }
+.drag-handle-center:active { cursor: grabbing; background-color: rgba(181, 43, 43, 0.5); border-color: #b52b2b; }
+
+/* YENİ: Edit Onay Tiki */
+.finish-edit-btn {
+    position: absolute; top: 20px; right: 20px;
+    width: 30px; height: 30px;
+    background-color: #4caf50; color: white;
+    border: none; border-radius: 50%;
+    font-size: 1em;
+    cursor: pointer; z-index: 20;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    transition: 0.2s;
+}
+.finish-edit-btn:hover { background-color: #45a049; transform: scale(1.1); }
+
+/* --- YENİ KENAR VE KÖŞE BARLARI --- */
+.resize-handle { position: absolute; background-color: rgba(255, 255, 255, 0.15); transition: 0.2s; }
+.resize-handle:hover { background-color: rgba(181, 43, 43, 0.8); }
+
+/* Kompakt Kenar Barları (Ortalanmış ve Kısa) */
+.resize-handle.top { top: 0; left: 50%; transform: translateX(-50%); width: 40%; height: 10px; cursor: ns-resize; border-radius: 0 0 6px 6px; }
+.resize-handle.bottom { bottom: 0; left: 50%; transform: translateX(-50%); width: 40%; height: 10px; cursor: ns-resize; border-radius: 6px 6px 0 0; }
+.resize-handle.left { top: 50%; transform: translateY(-50%); left: 0; width: 10px; height: 40%; cursor: ew-resize; border-radius: 0 6px 6px 0; }
+.resize-handle.right { top: 50%; transform: translateY(-50%); right: 0; width: 10px; height: 40%; cursor: ew-resize; border-radius: 6px 0 0 6px; }
+
+/* Köşe Çekme Noktaları (Çapraz Genişletme) */
+.resize-handle.top-left { top: 0; left: 0; width: 18px; height: 18px; cursor: nwse-resize; border-radius: 8px 0 6px 0; }
+.resize-handle.top-right { top: 0; right: 0; width: 18px; height: 18px; cursor: nesw-resize; border-radius: 0 8px 0 6px; }
+.resize-handle.bottom-left { bottom: 0; left: 0; width: 18px; height: 18px; cursor: nesw-resize; border-radius: 0 6px 0 8px; }
+.resize-handle.bottom-right { bottom: 0; right: 0; width: 18px; height: 18px; cursor: nwse-resize; border-radius: 6px 0 8px 0; }
+
+.panel-content-notes textarea { width: 100%; height: 100%; background: none; border: none; color: #eee; font-family: inherit; font-size: 1em; resize: none; outline: none; }
+.panel-content-diceroller { display: flex; flex-direction: column; gap: 10px; height: 100%; }
+.dice-buttons { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+.dice-btn { background-color: #333; border: 1px solid #555; color: #eee; padding: 8px 12px; border-radius: 4px; cursor: pointer; flex: 1 1 30%; font-weight: bold; transition: 0.2s; }
+.dice-btn:hover { background-color: #b52b2b; border-color: #b52b2b; }
+
+/* --- MODAL STİLLERİ (KARAKTER YARATMA UYARLAMASI) --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.8); z-index: 20000; display: none; justify-content: center; align-items: center; }
+.modal-overlay.open { display: flex; }
+.modal-window { background: #1e1e1e; border-radius: 8px; border: 1px solid #444; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+.modal-header { background: #252525; padding: 15px 20px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+.modal-content { max-height: 70vh; overflow-y: auto; }
+
+/* Eklenen: Butonları 2 Sütuna Bölen Grid */
+.panel-type-options { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px; 
+    margin: 15px 0; 
+}
+
+/* Güncellenen: Type Butonu Stili */
+.type-opt-btn { 
+    width: 100%; 
+    background-color: #2a2a2a; 
+    border: 1px solid #444; 
+    color: #eee; 
+    padding: 10px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    text-align: left; 
+    font-size: 0.95em; 
+    transition: 0.2s; 
+}
+.type-opt-btn:hover { background-color: #333; border-color: #b52b2b; }
+
+/* Mobilde tek sütuna düşür */
+@media (max-width: 600px) {
+    .panel-type-options { grid-template-columns: 1fr; }
+}
+
+.close-modal-btn { background: none; border: none; color: #888; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: 0.2s; }
+.close-modal-btn:hover { color: #fff; }
+
+@media (max-width: 800px) {
+    .desktop-nav { display: none; }
+    .menu-icon { display: block; }
+    .nav-grid-btn { margin-right: 15px; } /* Mobilde logoyla sıkışmasın */
+}

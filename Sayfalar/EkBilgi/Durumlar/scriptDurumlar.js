@@ -1,3 +1,23 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // Sayfanın URL'sinde 'widget=true' şifresi var mı kontrol et
+    if (window.location.search.includes('widget=true')) {
+        // Varsa, ana menüyü (header) gizle
+        const header = document.querySelector('.main-header');
+        if (header) header.style.display = 'none';
+
+        // İsteğe bağlı: DM screen'e daha iyi sığması için ana kapsayıcının dış boşluklarını sıfırla
+        const mainContainer = document.querySelector('.main-container');
+        if (mainContainer) {
+            mainContainer.style.margin = '0';
+            mainContainer.style.padding = '10px';
+        }
+        
+        // İsteğe bağlı: Filtreleme arama çubuğunu gizlemek istersen
+        // const filterSection = document.querySelector('.filter-section');
+        // if (filterSection) filterSection.style.display = 'none';
+    }
+});
+
 /* ============================================================
    SCRIPTDURUMLAR.JS - Durumlar (Multi-Open & Auto Close)
    ============================================================ */

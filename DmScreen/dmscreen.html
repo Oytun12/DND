@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <title>D&D 5e DM Screen | 5e Türkçe</title>
+    
+    <link rel="icon" href="../favicon.png" type="image/png">
+    <link rel="stylesheet" href="stylesDmScreen.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <a href="../index.html" style="display: flex; align-items: center; gap: 15px; text-decoration: none; color: inherit;">
+                    <img src="../img/SariZar.svg" alt="Logo" class="logo-img">
+                    <div class="titles">
+                        <h1 class="main-title">D&D 5e Türkçe</h1>
+                        <span class="sub-title">DM Screen</span>
+                    </div>
+                </a>
+            </div>
+
+            <button id="open-grid-modal-btn" class="nav-grid-btn">Gridi Düzenle</button>
+        
+            <nav class="desktop-nav">
+                <a href="../Sayfalar/Race/race.html" class="nav-link">Irklar</a>
+                <a href="../Sayfalar/Class/class.html" class="nav-link">Sınıflar</a>
+                <a href="../Sayfalar/BackGround/back.html" class="nav-link">Geçmişler</a>
+                <a href="../Sayfalar/Envanter/envanter.html" class="nav-link">Ekipmanlar</a>
+                <a href="../Sayfalar/Spells/spells.html" class="nav-link">Büyüler</a>
+                <a href="../Sayfalar/EkBilgi/ekbilgi.html" class="nav-link">Ek Bilgiler</a>
+                <a>|</a>
+                <a href="../KarakterCreate/KarakterYaratma/KarakterYa.html" class="nav-link">Karakter Yarat</a>
+            </nav>
+        
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        </div>
+    
+        <nav id="mobile-menu" class="mobile-nav">
+            <ul>
+                <li><a href="../Sayfalar/Race/race.html">Irklar</a></li>
+                <li><a href="../Sayfalar/Class/class.html">Sınıflar</a></li>
+                <li><a href="../Sayfalar/Envanter/envanter.html">Ekipmanlar</a></li>
+                <li><a href="../Sayfalar/Spells/spells.html">Büyüler</a></li>
+                <li><a href="../Sayfalar/EkBilgi/ekbilgi.html">Ek Bilgiler</a></li>
+                <li style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                    <a href="../KarakterCreate/KarakterYaratma/KarakterYa.html" style="color: #b52b2b;">✨ Karakter Yaratıcısı</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dmscreen-container">
+        <div id="dm-grid" class="dm-grid"></div>
+    </main>
+
+    <div id="grid-settings-modal" class="modal-overlay">
+        <div class="modal-window" style="width: 320px;">
+            <div class="modal-header">
+                <h3 style="margin: 0; color: #b52b2b;">Grid Ayarları</h3>
+                <button class="close-modal-btn close-settings-btn">✕</button>
+            </div>
+            <div class="modal-content" style="padding: 20px;">
+                <div class="control-group" style="justify-content: space-between; margin-bottom: 15px;">
+                    <label for="grid-cols">Sütun Sayısı:</label>
+                    <input type="number" id="grid-cols" min="1" max="10" value="4">
+                </div>
+                <div class="control-group" style="justify-content: space-between; margin-bottom: 20px;">
+                    <label for="grid-rows">Satır Sayısı:</label>
+                    <input type="number" id="grid-rows" min="1" max="10" value="2">
+                </div>
+                <button id="build-grid-btn" class="main-btn" style="width: 100%; margin-bottom: 10px;">Güncelle</button>
+                <button id="confirm-reset-btn" class="secondary-btn" style="width: 100%; background-color: #552222; border: 1px solid #ff4444; color: #ff8888;">Ekranı Temizle</button>
+                
+                <div id="reset-confirm-area" style="display: none; margin-top: 15px; padding: 15px; background: #2a0808; border-radius: 6px; border: 1px dashed #ff4444; text-align: center;">
+                    <p style="font-size: 0.9em; margin-bottom: 10px; color: #ccc;">Tüm paneller silinecek. Emin misin?</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="reset-screen-btn" class="main-btn" style="flex: 1; padding: 8px;">Evet, Sil</button>
+                        <button id="cancel-reset-btn" class="secondary-btn" style="flex: 1; padding: 8px;">İptal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="panel-type-modal" class="modal-overlay">
+        <div class="modal-window" style="width: 500px;"> <div class="modal-header">
+                <h3 style="margin: 0; color: #b52b2b;">Panel Ekle</h3>
+                <button class="close-modal-btn close-type-btn">✕</button>
+            </div>
+            <div class="modal-content" style="padding: 20px;">
+                <div class="panel-type-options">
+                    <button class="type-opt-btn" data-type="notes">📝 Serbest Notlar</button>
+                    <button class="type-opt-btn" data-type="diceroller">🎲 Zar Atıcı</button>
+                    <button class="type-opt-btn" data-type="bestiary">🐉 Yaratık Rehberi</button>
+                    <button class="type-opt-btn" data-type="spells">✨ Büyüler</button>
+                    <button class="type-opt-btn" data-type="conditions">💀 Durumlar</button>
+                    <button class="type-opt-btn" data-type="feats">🎖️ Hünerler (Feats)</button>
+                    <button class="type-opt-btn" data-type="invocations">🔮 Warlock Yakarışları</button>
+                    <button class="type-opt-btn" data-type="inventory">🎒 Ekipmanlar</button>
+                    <button class="type-opt-btn" data-type="classes">⚔️ Sınıflar</button>
+                    <button class="type-opt-btn" data-type="races">🧝 Irklar</button>
+                    <button class="type-opt-btn" data-type="backgrounds">📜 Geçmişler</button>
+                    <button class="type-opt-btn" data-type="charcreator">🛠️ Karakter Yarat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scriptDmScreen.js"></script>
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
