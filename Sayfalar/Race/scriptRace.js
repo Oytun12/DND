@@ -144,11 +144,19 @@ function createRaceCard(race) {
         entriesHTML = formatEntries(race.entries);
     }
 
+    // YENİ: Alt ırk parantezlerini silip sadece Ana Irk ismini alan kod
+    // Örn: "Cüce (Dağ)" -> "Cüce"
+    const baseRaceName = race.name.split(' (')[0];
+
     content.innerHTML = `
         <p><strong class="bold">Yetenek Skorları:</strong> ${abilityText}</p>                
         <p><strong class="bold">Boyut:</strong> ${sizeText} | <strong class="bold">Hız:</strong> ${speedText}</p>
         <hr>
         ${entriesHTML}
+        
+        <div class="race-image-container">
+            <img src="../../img/species/${baseRaceName}.webp" alt="${race.name}" loading="lazy" onerror="this.parentElement.style.display='none';">
+        </div>
     `;
 
     card.appendChild(header);

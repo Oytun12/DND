@@ -1,7 +1,7 @@
 {
 	"condition": [
 		{
-			"name": "Körlük",
+			"name": "Körlük (Blinded)",
 			"entries": [
 				{
 					"type": "list",
@@ -15,7 +15,7 @@
 			"page": 290
 		},
 		{
-			"name": "Cezbedilme",
+			"name": "Cezbedilme (Charmed)",
 			"entries": [
 				{
 					"type": "list",
@@ -29,7 +29,7 @@
 			"page": 290
 		},
 		{
-			"name": "Sağırlık",
+			"name": "Sağırlık (Deafened)",
 			"entries": [
 				{
 					"type": "list",
@@ -91,7 +91,7 @@
 			"page": 291
 		},
 		{
-			"name": "Korkma",
+			"name": "Korkma (Frightened)",
 			"entries": [
 				{
 					"type": "list",
@@ -105,7 +105,7 @@
 			"page": 290
 		},
 		{
-			"name": "Yakalanma",
+			"name": "Yakalanma (Grappled)",
 			"entries": [
 				{
 					"type": "list",
@@ -120,7 +120,7 @@
 			"page": 290
 		},
 		{
-			"name": "Etkisiz Hal",
+			"name": "Etkisiz Hal (Incappeditated)",
 			"entries": [
 				{
 					"type": "list",
@@ -133,7 +133,7 @@
 			"page": 290
 		},
 		{
-			"name": "Görünmezlik",
+			"name": "Görünmezlik (Invisible)",
 			"entries": [
 				{
 					"type": "list",
@@ -147,7 +147,7 @@
 			"page": 291
 		},
 		{
-			"name": "Felç",
+			"name": "Felç (Paralyzed)",
 			"entries": [
 				{
 					"type": "list",
@@ -162,7 +162,7 @@
 			"page": 291
 		},
 		{
-			"name": "Taşa Dönme",
+			"name": "Taşa Dönme (Petrified)",
 			"entries": [
 				{
 					"type": "list",
@@ -180,7 +180,7 @@
 			"page": 291
 		},
 		{
-			"name": "Zehirlenme",
+			"name": "Zehirlenme (Poisoned)",
 			"entries": [
 				{
 					"type": "list",
@@ -193,7 +193,7 @@
 			"page": 292
 		},
 		{
-			"name": "Yere Düşme",
+			"name": "Yere Düşme (Prone)",
 			"entries": [
 				{
 					"type": "list",
@@ -208,7 +208,7 @@
 			"page": 292
 		},
 		{
-			"name": "Kısıtlanma",
+			"name": "Kısıtlanma (Restrained)",
 			"entries": [
 				{
 					"type": "list",
@@ -223,7 +223,7 @@
 			"page": 292
 		},
 		{
-			"name": "Sersemleme",
+			"name": "Sersemleme (Stunned)",
 			"entries": [
 				{
 					"type": "list",
@@ -238,7 +238,7 @@
 			"page": 292
 		},
 		{
-			"name": "Bilinçsizlik",
+			"name": "Bilinçsizlik (Unconscious)",
 			"entries": [
 				{
 					"type": "list",

@@ -214,3 +214,23 @@ a.dnd-link.spell-link:hover {
     border-radius: 4px;
     text-decoration: none;
 }
+
+/* ============================================================
+   IRK GÖRSELLERİ (SPECIES IMAGES)
+   ============================================================ */
+.race-image-container {
+    margin-top: 25px;
+    text-align: center;
+    border-top: 1px dashed #444; /* Metinle görseli ayırmak için şık bir çizgi */
+    padding-top: 20px;
+}
+
+.race-image-container img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px; /* Görsellerin ekranı çok kaplamaması için sınır */
+    border-radius: 8px; /* Köşeleri hafif yuvarlat */
+    border: 1px solid #444; /* İnce karanlık bir çerçeve */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* Etkileyici bir derinlik gölgesi */
+    object-fit: cover;
+}

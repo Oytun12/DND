@@ -123,13 +123,27 @@ function renderConditions(list) {
             <span class="arrow-icon">▼</span>
         `;
 
-        // Content
+        // Content 
         const content = document.createElement('div');
         content.className = 'condition-content';
-        content.innerHTML = renderEntries(cond.entries);
+        
+        let entriesHtml = renderEntries(cond.entries);
+        
+        // İŞTE DÜZELTTİĞİMİZ KISIM
+        let imgFileName = cond.name;
+
+        content.innerHTML = `
+            ${entriesHtml}
+            <div class="condition-image-container" style="margin-top: 20px; text-align: center; border-top: 1px dashed #444; padding-top: 20px;">
+                <img src="../../../img/conditions/${imgFileName}.webp" 
+                     alt="${cond.name}" 
+                     loading="lazy" 
+                     onerror="this.parentElement.style.display='none';" 
+                     style="max-width: 100%; height: auto; max-height: 250px; border-radius: 8px; border: 1px solid #444; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">
+            </div>
+        `;
 
         // TIKLAMA OLAYI (MULTI-OPEN)
-        // Sadece tıklanan kartı aç/kapat, diğerlerini etkileme
         header.addEventListener('click', () => {
             const isOpen = content.style.display === 'block';
             
