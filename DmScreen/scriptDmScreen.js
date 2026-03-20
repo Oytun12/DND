@@ -339,18 +339,8 @@ function createNewPanelDOM(p) {
         `; 
     } else if (p.type === 'diceroller') { 
         title = "🎲 Zar Atıcı"; 
-        contentHtml = `
-            <div class="panel-content-diceroller">
-                <div class="dice-buttons">
-                    <button class="dice-btn" onclick="rollDice(20)">d20</button>
-                    <button class="dice-btn" onclick="rollDice(12)">d12</button>
-                    <button class="dice-btn" onclick="rollDice(10)">d10</button>
-                    <button class="dice-btn" onclick="rollDice(8)">d8</button>
-                    <button class="dice-btn" onclick="rollDice(6)">d6</button>
-                    <button class="dice-btn" onclick="rollDice(4)">d4</button>
-                </div>
-                <div id="dice-result-${p.id}" style="margin-top: auto; padding: 15px; background-color: #111; border-radius: 4px; text-align: center; font-weight: bold;">Zar atın</div>
-            </div>`; 
+        // Eski ilkel HTML'i tamamen silip, Premium Wrapper koyuyoruz.
+        contentHtml = `<div class="premium-dice-wrapper"></div>`;
     } else if (WIDGETS[p.type]) { 
         title = WIDGETS[p.type].title;
         extraClass = " no-padding";
@@ -405,7 +395,14 @@ function createNewPanelDOM(p) {
         } else {
             console.error("TextEdit modülü bulunamadı!");
         }
-    }
+    };
+
+    // YENİ EKLENEN ZAR MOTORU BAĞLANTISI
+    if (p.type === 'diceroller') {
+        if (typeof window.initDiceRoller === 'function') {
+            window.initDiceRoller(panelEl, p, saveScreenState);
+        }
+    };
 
     return panelEl;
 }

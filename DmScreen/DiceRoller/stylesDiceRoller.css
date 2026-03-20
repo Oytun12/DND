@@ -1,0 +1,272 @@
+/* ============================================================
+   PREMIUM DICE ROLLER STYLES
+   ============================================================ */
+.premium-dice-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #1a1a1a;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    overflow: hidden;
+}
+
+/* Üst Kısım: Temel Zarlar */
+.dice-base-row {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 10px;
+    background: #222;
+    border-bottom: 2px solid #b52b2b;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 2;
+}
+
+.die-btn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
+.die-btn svg {
+    width: 36px;
+    height: 36px;
+    fill: transparent;
+    stroke: #aaa;
+    stroke-width: 2px;
+    transition: all 0.2s;
+}
+
+.die-btn span { font-weight: bold; font-size: 0.9em; }
+
+.die-btn:hover svg { stroke: #b52b2b; fill: rgba(181, 43, 43, 0.1); transform: translateY(-3px) rotate(10deg); }
+.die-btn:hover span { color: #fff; }
+.die-btn:active svg { transform: scale(0.9); stroke: #ff4444; }
+
+@keyframes shakeDie {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(15deg) scale(1.1); }
+    50% { transform: rotate(-15deg) scale(1.1); }
+    75% { transform: rotate(15deg) scale(1.1); }
+    100% { transform: rotate(0deg) scale(1); }
+}
+.rolling-anim svg { animation: shakeDie 0.3s ease-in-out; stroke: #b52b2b !important; fill: rgba(181, 43, 43, 0.3) !important; }
+
+/* Orta Kısım: Avantaj ve Bonus Kontrolleri */
+.dice-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #1e1e1e;
+    border-bottom: 1px solid #333;
+}
+
+.adv-toggle-group {
+    display: flex;
+    background: #111;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #444;
+}
+
+.adv-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    padding: 6px 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.adv-btn.active { background: #b52b2b; color: #fff; }
+.adv-btn:not(.active):hover { background: #333; color: #ccc; }
+
+.mod-group { display: flex; align-items: center; gap: 8px; }
+.mod-group label { font-size: 0.85em; color: #888; font-weight: bold; }
+.mod-input {
+    width: 50px; background: #111; border: 1px solid #444; color: #fff;
+    padding: 6px; border-radius: 4px; text-align: center; font-weight: bold; outline: none;
+}
+.mod-input:focus { border-color: #b52b2b; }
+
+/* Alt Kısım: Özel Zarlar ve Geçmiş */
+.dice-workspace {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.custom-rolls-section {
+    padding: 15px;
+    border-bottom: 1px dashed #333;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #151515;
+    
+    /* ESKİ max-height: 200px'i silebilir veya çok fazla zar eklendiğinde
+       tüm ekranı kaplamaması için 40vh gibi esnek bir sınır koyabilirsin */
+    max-height: 40vh; 
+    overflow-y: auto; 
+    align-items: flex-start;
+    
+    /* İŞTE HAYAT KURTARAN KOD: Alt taraftaki geçmiş dolduğunda bu kutunun ezilmesini YASAKLAR */
+    flex-shrink: 0; 
+}
+
+/* YENİ: Geçmiş Başlığı ve Temizle Butonu */
+.history-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px 0;
+    
+    /* Başlık satırının da ezilip kaybolmasını engelliyoruz */
+    flex-shrink: 0; 
+}
+
+.custom-roll-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-roll-btn {
+    background: #2a2a2a;
+    border: 1px solid #555;
+    color: #eee;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    width: 75px; 
+    height: 75px;
+    text-align: center;
+}
+.custom-roll-btn span { font-size: 0.75em; line-height: 1.2; word-wrap: break-word; color: #aaa; }
+.custom-roll-btn strong { color: #b52b2b; font-size: 1.1em; }
+.custom-roll-btn:hover { background: #333; border-color: #b52b2b; transform: translateY(-2px); }
+.custom-roll-btn:active { transform: translateY(0); }
+
+/* YENİ: Hover ile beliren silme tuşu */
+.delete-custom-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: 0.2s;
+    z-index: 5;
+}
+.custom-roll-wrap:hover .delete-custom-btn { opacity: 1; }
+.delete-custom-btn:hover { background: #cc0000; transform: scale(1.1); }
+
+.add-custom-trigger {
+    background: transparent;
+    border: 1px dashed #666;
+    color: #888;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: bold;
+    transition: 0.2s;
+    width: 75px; 
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.add-custom-trigger:hover { border-color: #b52b2b; color: #b52b2b; }
+
+/* Zar Ekleme Menüsü */
+.custom-roll-builder {
+    display: none; flex-wrap: wrap; gap: 10px; padding: 10px 15px; background: #222; border-bottom: 1px solid #b52b2b; align-items: center;
+}
+.custom-roll-builder.open { display: flex; }
+.builder-input { background: #111; border: 1px solid #444; color: #fff; padding: 6px; border-radius: 4px; font-size: 0.85em; outline: none; }
+.builder-input:focus { border-color: #b52b2b; }
+.builder-btn { background: #b52b2b; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.builder-btn:hover { background: #d13d3d; }
+
+/* YENİ: Geçmiş Başlığı ve Temizle Butonu */
+.history-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px 0;
+}
+.history-header-row span { color: #888; font-size: 0.8em; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+.clear-history-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 0.75em;
+    transition: 0.2s;
+}
+.clear-history-btn:hover { border-color: #b52b2b; color: #b52b2b; }
+
+/* Zar Geçmişi (Log) */
+.dice-history {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px 15px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-item {
+    background: #222;
+    border-left: 4px solid #444;
+    padding: 10px 15px;
+    border-radius: 0 6px 6px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease-out;
+}
+.history-item.crit-success { border-left-color: #2ecc71; }
+.history-item.crit-fail { border-left-color: #e74c3c; }
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.hi-header { display: flex; justify-content: space-between; font-size: 0.8em; color: #888; margin-bottom: 5px; text-transform: uppercase; }
+.hi-body { display: flex; justify-content: space-between; align-items: center; }
+.hi-formula { color: #ccc; font-family: monospace; font-size: 1.1em; word-break: break-all; }
+.hi-rolls-array { color: #888; font-size: 0.85em; margin-right: 10px; }
+.hi-rolls-array del { color: #555; } 
+.hi-rolls-array .dropped { color: #555; text-decoration: line-through; }
+.hi-total { font-size: 1.8em; font-weight: bold; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+.crit-success .hi-total { color: #2ecc71; text-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
+.crit-fail .hi-total { color: #e74c3c; text-shadow: 0 0 10px rgba(231, 76, 60, 0.4); }
