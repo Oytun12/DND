@@ -57,6 +57,9 @@
 /* Satır Düzeni */
 .ct-member-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; border-bottom: 1px dashed #333; }
 .ct-member-row:last-child { border-bottom: none; }
+/* Ölü Minyonların (Grup Üyelerinin) Grileşmesi ve Çizilmesi */
+.ct-member-row.dead { opacity: 0.4; filter: grayscale(100%); }
+.ct-member-row.dead .ct-name { text-decoration: line-through; color: #888; }
 .ct-row-left { display: flex; align-items: center; gap: 10px; flex-grow: 1; min-width: 200px; }
 .ct-row-right { display: flex; align-items: center; gap: 10px; }
 

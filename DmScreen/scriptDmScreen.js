@@ -549,3 +549,47 @@ function setupFullscreen() {
         }
     });
 }
+
+/* ============================================================
+   MOBİL İÇİN EKRAN KAYDIRMA (SWIPE) MOTORU
+   ============================================================ */
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+
+document.addEventListener('touchend', function(e) {
+    // Kullanıcı bir yazı alanına (HP girişi, Not defteri vs) tıklıyorsa kaydırmayı iptal et
+    const t = e.target;
+    if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable) return;
+    
+    // Zar veya buton tıklamalarını kaydırma olarak algılama
+    if (t.closest('button') || t.closest('.ct-rollable')) return;
+
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipe();
+}, { passive: true });
+
+function handleSwipe() {
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+    
+    // Yatay kaydırma hareketi dikeyden büyükse ve en az 60px kaydırılmışsa tetikle
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 60) {
+        if (diffX < 0) {
+            // Sola Kaydırma (Sonraki Ekran -> Sağ Ok)
+            const nextBtn = document.querySelector('.nav-btn.next-screen');
+            if (nextBtn) nextBtn.click();
+        } else {
+            // Sağa Kaydırma (Önceki Ekran -> Sol Ok)
+            const prevBtn = document.querySelector('.nav-btn.prev-screen');
+            if (prevBtn) prevBtn.click();
+        }
+    }
+}

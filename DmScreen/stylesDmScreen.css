@@ -2,6 +2,11 @@
    STYLES-DMSCREEN.CSS - Akıllı Grid ve Tam Ekran Tasarım
    ============================================================ */
 
+/* Mobil cihazlarda seri tıklamada yakınlaştırmayı (Zoom) engeller */
+button, input, select, textarea, .ct-hp-btn, .ct-rollable {
+    touch-action: manipulation;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -276,4 +281,20 @@ body.fullscreen-mode .dmscreen-container {
 }
 @media (max-width: 600px) {
     .panel-type-options { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   MOBİL (TELEFON) GÖRÜNÜMÜ UYARLAMALARI
+   ============================================================ */
+@media screen and (max-width: 768px) {
+    /* Izgarayı mobilde 1 Sütun, 2 Satır olacak şekilde zorla */
+    .screen {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: 1fr 1fr !important;
+        overflow-y: auto; /* Taşan içerikler için kaydırma çubuğu */
+    }
+    
+    /* İnisiyatif tablosundaki arama çubuğu ve butonların boyutlarını dar ekrana uydur */
+    .ct-controls { flex-wrap: wrap; justify-content: flex-end; }
+    .ct-smart-input { font-size: 16px; } /* Mobilde inputa tıklayınca zoom yapmasını da engeller */
 }
