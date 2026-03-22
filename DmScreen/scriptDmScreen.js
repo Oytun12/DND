@@ -341,6 +341,9 @@ function createNewPanelDOM(p) {
         title = "🎲 Zar Atıcı"; 
         // Eski ilkel HTML'i tamamen silip, Premium Wrapper koyuyoruz.
         contentHtml = `<div class="premium-dice-wrapper"></div>`;
+    } else if (p.type === 'combattracker') {
+        title = "⚔️ Savaş Takipçisi";
+        contentHtml = `<div class="combat-tracker-wrapper" style="height:100%; display:flex; flex-direction:column; overflow:hidden;"></div>`;
     } else if (WIDGETS[p.type]) { 
         title = WIDGETS[p.type].title;
         extraClass = " no-padding";
@@ -397,12 +400,13 @@ function createNewPanelDOM(p) {
         }
     };
 
-    // YENİ EKLENEN ZAR MOTORU BAĞLANTISI
     if (p.type === 'diceroller') {
-        if (typeof window.initDiceRoller === 'function') {
-            window.initDiceRoller(panelEl, p, saveScreenState);
-        }
-    };
+        if (typeof window.initDiceRoller === 'function') window.initDiceRoller(panelEl, p, saveScreenState);
+    }
+    // YENİ EKLENEN SAVAŞ TAKİPÇİSİ MOTORU BAĞLANTISI
+    if (p.type === 'combattracker') {
+        if (typeof window.initCombatTracker === 'function') window.initCombatTracker(panelEl, p, saveScreenState);
+    }
 
     return panelEl;
 }

@@ -1,0 +1,140 @@
+/* ============================================================
+   SAVAŞ TAKİPÇİSİ (COMBAT TRACKER) STİLLERİ
+   ============================================================ */
+.combat-tracker-wrapper { background-color: #1a1a1a; color: #eee; font-family: 'Segoe UI', Tahoma, sans-serif; position: relative; height: 100%; overflow: hidden; }
+
+/* BAŞLANGIÇ EKRANI */
+.ct-setup-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; text-align: center; }
+.ct-setup-btn { background: #b52b2b; color: white; border: none; padding: 12px 24px; font-size: 1.2em; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(181, 43, 43, 0.4); transition: 0.2s; }
+.ct-setup-btn:hover { background: #d13d3d; transform: translateY(-2px); }
+
+/* ANA SAVAŞ EKRANI */
+.ct-main-screen { display: flex; flex-direction: column; height: 100%; }
+
+.ct-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #222; border-bottom: 2px solid #b52b2b; flex-shrink: 0; }
+.ct-room-code { font-weight: bold; color: #888; font-size: 0.9em; letter-spacing: 1px; }
+.ct-room-code span { color: #e67e22; }
+.ct-controls { display: flex; gap: 10px; align-items: center; }
+
+/* Meta Koruması Butonu */
+.ct-meta-btn { background: #333; color: #aaa; border: 1px solid #555; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8em; transition: 0.2s; display: flex; align-items: center; gap: 5px; font-weight: bold; }
+.ct-meta-btn:hover { background: #444; }
+.ct-meta-btn.active { background: #b52b2b; color: #fff; border-color: #ff4444; box-shadow: 0 0 8px rgba(181,43,43,0.5); }
+
+.ct-round-counter { font-weight: bold; color: #ccc; }
+.ct-next-btn { background: #2ecc71; color: #000; border: none; padding: 5px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+.ct-next-btn:hover { background: #27ae60; }
+.ct-clear-btn { background: transparent; border: 1px solid #444; color: #888; border-radius: 4px; padding: 4px 8px; cursor: pointer; }
+.ct-clear-btn:hover { color: #e74c3c; border-color: #e74c3c; }
+
+/* Akıllı Arama Çubuğu */
+.ct-search-area { padding: 10px; background: #1a1a1a; position: relative; border-bottom: 1px solid #333; flex-shrink: 0; }
+.ct-smart-input { width: 100%; background: #111; border: 1px solid #444; color: #fff; padding: 10px; border-radius: 6px; font-size: 1em; outline: none; transition: 0.2s; }
+.ct-smart-input:focus { border-color: #b52b2b; }
+
+.ct-dropdown { position: absolute; top: 100%; left: 10px; right: 10px; background: #222; border: 1px solid #444; border-top: none; border-radius: 0 0 6px 6px; max-height: 200px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+.ct-dropdown.active { display: block; }
+.ct-drop-item { padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+.ct-drop-item:hover { background: #333; }
+.ct-drop-item span.cr { color: #888; font-size: 0.8em; }
+
+/* Savaşçılar Listesi (Yeni Hiyerarşik Yapı) */
+.ct-combatants-list { flex-grow: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+
+/* Dış Kutu (Grup veya Tekli) */
+.ct-card { display: flex; flex-direction: column; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; overflow: hidden; transition: 0.3s; flex-shrink: 0; }
+.ct-card.active-turn { border-color: #2ecc71; box-shadow: 0 0 10px rgba(46, 204, 113, 0.2); }
+.ct-card.dead { opacity: 0.5; filter: grayscale(100%); }
+
+/* Grup Başlığı */
+.ct-group-header { display: flex; align-items: center; justify-content: space-between; background: #2a2a2a; padding: 8px 12px; border-bottom: 1px solid #444; }
+.ct-group-title-area { display: flex; align-items: center; gap: 10px; }
+
+/* İnisiyatif Kutusu */
+.ct-init-box { background: #111; border: 1px solid #444; color: #b52b2b; font-weight: bold; font-size: 1.1em; min-width: 45px; height: 38px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 4px; padding: 0 5px; line-height: 1.1; }
+.ct-init-box small { font-size: 0.55em; color: #888; font-weight: normal; margin-bottom: 2px; }
+
+/* Satır Düzeni */
+.ct-member-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; border-bottom: 1px dashed #333; }
+.ct-member-row:last-child { border-bottom: none; }
+.ct-row-left { display: flex; align-items: center; gap: 10px; flex-grow: 1; min-width: 200px; }
+.ct-row-right { display: flex; align-items: center; gap: 10px; }
+
+.ct-token { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #555; background: #111; cursor: pointer; transition: 0.2s; }
+.ct-token:hover { border-color: #b52b2b; transform: scale(1.1); }
+.ct-name { font-weight: bold; font-size: 1em; color: #eee; padding: 2px 4px; border-radius: 4px; transition: 0.2s; outline: none; cursor: pointer; }
+.ct-name:hover { color: #b52b2b; }
+.ct-name[contenteditable="true"]:hover { background: rgba(255,255,255,0.1); cursor: text; color: #eee; }
+.ct-ac { font-size: 0.85em; color: #aaa; background: #111; padding: 2px 6px; border-radius: 4px; border: 1px solid #333; }
+
+/* HP Kontrolleri */
+.ct-hp-controls { display: flex; align-items: center; gap: 5px; background: #111; padding: 4px; border-radius: 4px; border: 1px solid #444; }
+.ct-hp-btn { background: #333; color: white; border: none; width: 24px; height: 24px; border-radius: 3px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+.ct-hp-btn:hover { background: #b52b2b; }
+.ct-hp-input { width: 35px; background: transparent; border: none; color: #fff; text-align: center; font-weight: bold; outline: none; }
+.ct-delete-btn { background: transparent; border: none; color: #666; cursor: pointer; font-size: 1.2em; transition: 0.2s; padding: 4px; }
+.ct-delete-btn:hover { color: #e74c3c; transform: scale(1.1); }
+
+/* ============================================================
+   MODALLAR VE BESTIARY STAT BLOĞU
+   ============================================================ */
+.ct-modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; display: none; align-items: center; justify-content: center; padding: 15px; }
+.ct-modal-overlay.active { display: flex; }
+.ct-modal-content { background: #222; border: 1px solid #444; border-radius: 8px; width: 100%; max-width: 500px; max-height: 90%; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
+.ct-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #1a1a1a; border-bottom: 2px solid #b52b2b; }
+.ct-modal-header h3 { margin: 0; color: #b52b2b; }
+.ct-modal-close { background: none; border: none; color: #888; font-size: 1.2em; cursor: pointer; }
+.ct-modal-close:hover { color: #fff; }
+.ct-modal-body { padding: 15px; position: relative; }
+
+/* Özel Canavar Formu & Zengin Metin */
+.ct-form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+.ct-form-group label { color: #aaa; font-size: 0.85em; font-weight: bold; }
+.ct-form-input { background: #111; border: 1px solid #444; color: #fff; padding: 8px; border-radius: 4px; font-family: inherit; }
+.ct-form-input:focus { border-color: #b52b2b; outline: none; }
+.ct-form-row { display: flex; gap: 10px; }
+.ct-form-row .ct-form-group { flex: 1; min-width: 45px; }
+.ct-rich-editor { min-height: 100px; background: #111; border: 1px solid #444; color: #fff; padding: 10px; border-radius: 4px; outline: none; overflow-y: auto; line-height: 1.5; }
+.ct-rich-editor:focus { border-color: #b52b2b; }
+.ct-rich-editor:empty:before { content: attr(data-placeholder); color: #666; font-style: italic; pointer-events: none; }
+
+/* Şık Stat Kutuları (TIKLANABİLİR YENİ TASARIM) */
+.ct-stat-block { color: #ccc; font-size: 0.9em; line-height: 1.5; }
+.ct-stat-block h4 { color: #e67e22; border-bottom: 1px solid #444; padding-bottom: 4px; margin-top: 15px; margin-bottom: 8px; }
+.ct-stat-block p { margin-bottom: 8px; }
+.ct-stat-block ul { margin: 5px 0 5px 20px; }
+.ct-stat-row { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 10px; }
+
+/* Büyük Ana Stat Kutuları (AC, HP, Hız) */
+.ct-main-stats { display: flex; gap: 10px; background: #1a1a1a; padding: 10px; border-radius: 6px; border: 1px solid #333; justify-content: space-around; }
+.ct-stat-item { display: flex; flex-direction: column; align-items: center; }
+.ct-stat-item span:first-child { font-weight: bold; color: #888; font-size: 0.8em; text-transform: uppercase; }
+.ct-stat-item span:last-child { color: #fff; font-weight: bold; font-size: 1.1em; }
+
+/* Yetenek Skorları Kutuları (STR, DEX...) */
+.ct-ability-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin: 15px 0; }
+.ct-ability-box { 
+    background: #151515; border: 1px solid #444; border-radius: 6px; padding: 8px 5px; flex: 1; min-width: 60px; 
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: 0.2s; /* Tıklanabilirlik Eklendi */
+}
+.ct-ability-box:hover { background: rgba(181, 43, 43, 0.1); border-color: #b52b2b; transform: translateY(-2px); }
+.ct-ability-box:active { transform: translateY(0); }
+.ct-ability-box span:first-child { font-weight: bold; color: #b52b2b; font-size: 0.8em; margin-bottom: 2px; }
+.ct-ability-box span:last-child { color: #eee; font-weight: bold; font-size: 1em; pointer-events: none; }
+
+/* Ekstra Info Satırı (Skills, Senses vb.) */
+.ct-info-line { background: rgba(181, 43, 43, 0.05); border-left: 2px solid #b52b2b; padding: 8px 10px; font-size: 0.85em; margin-bottom: 15px; border-radius: 0 4px 4px 0; }
+.ct-info-line strong { color: #aaa; }
+
+/* ============================================================
+   ATILABİLİR ZARLAR (ROLLABLE DICE) VE TOAST MODAL
+   ============================================================ */
+.ct-rollable { color: #e67e22; cursor: pointer; font-weight: bold; text-decoration: underline dotted #e67e22; transition: 0.2s; padding: 0 3px; border-radius: 3px; }
+.ct-rollable:hover { background: rgba(230, 126, 34, 0.2); color: #fff; text-decoration: none; }
+
+.ct-dice-toast { position: absolute; bottom: -100px; right: 20px; background: #222; border-left: 4px solid #e67e22; padding: 10px 20px; border-radius: 6px; box-shadow: 0 5px 20px rgba(0,0,0,0.8); transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 500; min-width: 150px; display: flex; flex-direction: column; align-items: flex-start; }
+.ct-dice-toast.show { bottom: 20px; }
+.ct-dt-header { font-size: 0.7em; color: #888; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px; }
+.ct-dt-formula { color: #aaa; font-family: monospace; font-size: 1em; }
+.ct-dt-result { color: #fff; font-size: 2em; font-weight: bold; line-height: 1; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
