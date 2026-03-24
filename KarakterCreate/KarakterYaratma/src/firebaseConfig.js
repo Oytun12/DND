@@ -27,7 +27,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // Senin Proje Ayarların
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyCh0xhq3cbjlhlqpFYpxyLA9AezSMEVQ6Y",
   authDomain: "marangozor-kar-ya.firebaseapp.com",
   projectId: "marangozor-kar-ya",

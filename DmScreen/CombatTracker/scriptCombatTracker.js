@@ -75,6 +75,80 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
         });
     }
 
+    // ==========================================
+    // FAZ 2: FIREBASE KÖPRÜSÜ (BULUT SENKRONİZASYONU)
+    // ==========================================
+    let unsubscribeSnapshot = null;
+    let isRemoteUpdate = false; // Sonsuz döngü (loop) engeli
+
+    async function syncToFirebase() {
+        if (!window.db || isRemoteUpdate) return;
+        if (!panelData.roomCode || !panelData.isCombatActive) return;
+
+        try {
+            const roomRef = window.doc(window.db, "combat_sessions", panelData.roomCode);
+            
+            // Oyunculara gidecek "Güvenli Liste" (Canavarların canı ve gizli bilgileri yollanmaz)
+            const safeCombatants = panelData.combatants.map(c => {
+                let safeObj = {
+                    id: c.id, name: c.name, initTotal: c.initTotal, isMonster: c.isMonster, isGroup: c.isGroup, token: c.token
+                };
+                // Meta Koruması kontrolü
+                safeObj.ac = panelData.isMetaHidden ? "?" : c.ac;
+                return safeObj;
+            });
+
+            await window.setDoc(roomRef, {
+                combatants: safeCombatants,
+                round: panelData.round,
+                activeTurnIndex: panelData.activeTurnIndex,
+                isMetaHidden: panelData.isMetaHidden,
+                lastUpdatedBy: "DM", // Değişikliği kimin yaptığını bilmek için
+                timestamp: Date.now()
+            });
+            console.log("🔥 Buluta (Firebase) senkronize edildi!");
+        } catch (e) {
+            console.error("Firebase senkronizasyon hatası:", e);
+        }
+    }
+
+    function listenToFirebaseRoom() {
+        if (!window.db || !panelData.roomCode) return;
+        const roomRef = window.doc(window.db, "combat_sessions", panelData.roomCode);
+        
+        if (unsubscribeSnapshot) unsubscribeSnapshot(); 
+        
+        unsubscribeSnapshot = window.onSnapshot(roomRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                
+                // Sadece son değişikliği OYUNCU yaptıysa yerel listemizi güncelliyoruz
+                if (data.lastUpdatedBy === "Player") {
+                    isRemoteUpdate = true; // Kalkanı aç (Tekrar Firebase'e itmemesi için)
+                    
+                    data.combatants.forEach(remoteC => {
+                        const localIndex = panelData.combatants.findIndex(lc => lc.id === remoteC.id);
+                        if (localIndex === -1 && !remoteC.isMonster) {
+                            // Yeni bir oyuncu katılmış! Masaya dahil et
+                            panelData.combatants.push({
+                                id: remoteC.id, name: remoteC.name, 
+                                initTotal: remoteC.initTotal, initRoll: remoteC.initTotal, initMod: 0, 
+                                isMonster: false, isGroup: false, token: remoteC.token || '../../img/SariZar.svg'
+                            });
+                        }
+                    });
+
+                    panelData.combatants.sort((a, b) => b.initTotal - a.initTotal);
+                    saveCallback();
+                    renderList();
+                    
+                    isRemoteUpdate = false; // Kalkanı kapat
+                    syncToFirebase(); // Hakem (DM) olarak masanın son halini tekrar buluta sabitle
+                }
+            }
+        });
+    }
+
     function renderApp() {
         if (!panelData.isCombatActive) {
             wrapper.innerHTML = `
@@ -88,7 +162,10 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 const prefixes = ["Ejderha", "Zindan", "Büyü", "Kılıç", "Karanlık", "Gölge"];
                 panelData.roomCode = `${prefixes[Math.floor(Math.random() * prefixes.length)]}-${Math.floor(Math.random() * 900) + 100}`;
                 panelData.isCombatActive = true;
-                saveCallback(); renderApp();
+                saveCallback(); 
+                syncToFirebase(); // YENİ
+                listenToFirebaseRoom(); // YENİ
+                renderApp();
             };
         } else {
             wrapper.innerHTML = `
@@ -124,6 +201,11 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
             `;
             attachMainEvents();
             renderList();
+
+            if (!unsubscribeSnapshot && window.db && panelData.isCombatActive) {
+                listenToFirebaseRoom();
+            }
+
         }
     }
 
@@ -144,7 +226,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
             if (e.target === modalOverlay) modalOverlay.classList.remove('active');
         };
 
-        metaBtn.onclick = () => { panelData.isMetaHidden = !panelData.isMetaHidden; saveCallback(); renderApp(); };
+        metaBtn.onclick = () => { panelData.isMetaHidden = !panelData.isMetaHidden; saveCallback(); syncToFirebase(); renderApp(); };
 
         clearBtn.onclick = () => {
             if(confirm("Savaşı bitirip odayı kapatmak istediğinize emin misiniz?")) {
@@ -160,7 +242,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 panelData.activeTurnIndex++;
                 if (panelData.activeTurnIndex >= panelData.combatants.length) { panelData.activeTurnIndex = 0; panelData.round++; }
             }
-            saveCallback(); renderList();
+            saveCallback(); syncToFirebase(); renderList();
             wrapper.querySelector('.ct-round-counter').innerText = `Tur: ${panelData.round}`;
             nextBtn.innerText = 'Sonraki ❯';
         };
@@ -258,7 +340,9 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
     function addCombatant(obj) {
         panelData.combatants.push(obj);
         panelData.combatants.sort((a, b) => b.initTotal - a.initTotal);
-        saveCallback(); renderList();
+        saveCallback(); 
+        syncToFirebase();
+        renderList();
     }
 
     function renderList() {
@@ -319,7 +403,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 card.querySelectorAll('.hp-val').forEach(inp => inp.onchange = (e) => { let m = c.members[inp.dataset.mindex]; m.hp = parseInt(e.target.value) || 0; saveCallback(); renderList(); });
                 card.querySelectorAll('.member-delete').forEach(btn => btn.onclick = () => { 
                     c.members.splice(btn.dataset.mindex, 1); 
-                    if(c.members.length === 0) deleteCombatant(index); else { saveCallback(); renderList(); }
+                    if(c.members.length === 0) deleteCombatant(index); else { saveCallback(); syncToFirebase(); renderList(); }
                 });
 
             } else {
@@ -359,7 +443,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
 
             const nameDiv = card.querySelector('.ct-name[contenteditable="true"]');
             if (nameDiv) {
-                nameDiv.onblur = () => { c.name = nameDiv.innerText; saveCallback(); };
+                nameDiv.onblur = () => { c.name = nameDiv.innerText; saveCallback(); syncToFirebase(); };
                 nameDiv.onkeydown = (e) => { if(e.key === 'Enter') { e.preventDefault(); nameDiv.blur(); } };
             }
 
@@ -375,7 +459,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
         panelData.combatants.splice(index, 1);
         if (index < panelData.activeTurnIndex) panelData.activeTurnIndex--;
         if (panelData.activeTurnIndex >= panelData.combatants.length) panelData.activeTurnIndex = 0;
-        saveCallback(); renderList();
+        saveCallback(); syncToFirebase(); renderList();
     }
 
     // --- HOMEBREW (ÖZEL CANAVAR) FORMU (TÜM STATLAR EKLENDİ) ---
