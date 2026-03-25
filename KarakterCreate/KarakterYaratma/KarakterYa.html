@@ -846,6 +846,9 @@
                                 </template>
                             </span>
                         </button>
+                        <button id="btn-join-combat" class="btn btn-icon-text" style="background-color: #b52b2b; color: white; border: 1px solid #ff4444; margin-left: 5px; box-shadow: 0 0 10px rgba(181,43,43,0.3);" title="Savaş Odasına Katıl">
+                            ⚔️ <span class="hide-on-mobile">Savaşa Katıl</span>
+                        </button>
                     </div>
                 </div>
 
@@ -1942,7 +1945,32 @@
             </div>
         </div>
 
+        <div id="player-combat-widget" class="pcw-container" style="display: none;">
+            <div class="pcw-header" id="pcw-drag-handle">
+                <span class="pcw-title">⚔️ Savaş Odası: <span id="pcw-room-code-display">---</span></span>
+                <div class="pcw-window-controls">
+                    <button id="pcw-minimize-btn" title="Küçült/Büyüt">−</button>
+                    <button id="pcw-leave-btn" title="Savaştan Çık">✕</button>
+                </div>
+            </div>
+        
+            <div class="pcw-body" id="pcw-body">
+                <div id="pcw-join-overlay" class="pcw-join-overlay">
+                    <p>Odadaki düşmanları görüyorsunuz. Savaşa dahil olmak için inisiyatif atın!</p>
+                    <button id="pcw-roll-init-btn" class="pcw-glowing-btn">🎲 İnisiyatif At ve Katıl</button>
+                </div>
+                
+                <div class="pcw-info-bar">
+                    <span id="pcw-round-display">Tur: 1</span>
+                </div>
+                
+                <div id="pcw-list" class="pcw-list"></div>
+            </div>
+        </div>
+
     </div>
+
+    <script type="module" src="src/combatPlayer.js"></script>
     <script type="module" src="./appKarYa.js"></script>
     <script>
         function toggleMenu() {

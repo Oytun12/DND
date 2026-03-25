@@ -1,5 +1,5 @@
 /* ============================================================
-   SAVAŞ TAKİPÇİSİ (FAZ 1.8 - TAM STAT KONTROLÜ & STAT ZARLARI)
+   SAVAŞ TAKİPÇİSİ (FAZ 2.1 - HATA DÜZELTMELERİ & OYUNCU DETAYLARI)
    ============================================================ */
 
 window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
@@ -15,32 +15,10 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
     if (typeof panelData.activeTurnIndex === 'undefined') panelData.activeTurnIndex = -1;
 
     const ACTIVE_SOURCES = [
-        "bestiary-aatm.json", "bestiary-ai.json", "bestiary-aitfr-isf.json", "bestiary-aitfr-thp.json",
-        "bestiary-aitfr-dn.json", "bestiary-aitfr-fcd.json", "bestiary-awm.json", "bestiary-bam.json",
-        "bestiary-bgdia.json", "bestiary-bgg.json", "bestiary-bmt.json", "bestiary-cm.json",
-        "bestiary-coa.json", "bestiary-cos.json", "bestiary-crcotn.json", "bestiary-dc.json",
-        "bestiary-dip.json", "bestiary-ditlcot.json", "bestiary-dmg.json", "bestiary-dod.json",
-        "bestiary-dosi.json", "bestiary-dsotdq.json", "bestiary-egw.json", "bestiary-erlw.json",
-        "bestiary-ftd.json", "bestiary-ggr.json", "bestiary-gos.json", "bestiary-hat-tg.json",
-        "bestiary-hftt.json", "bestiary-hotdq.json", "bestiary-idrotf.json", "bestiary-imr.json",
-        "bestiary-jttrc.json", "bestiary-kftgv.json", "bestiary-kkw.json", "bestiary-llk.json",
-        "bestiary-lmop.json", "bestiary-lox.json", "bestiary-lr.json", "bestiary-lrdt.json",
-        "bestiary-mabjov.json", "bestiary-mcv1sc.json", "bestiary-mcv2dc.json", "bestiary-mcv3mc.json",
-        "bestiary-mcv4ec.json", "bestiary-mismv1.json", "bestiary-mff.json", "bestiary-mgelft.json",
-        "bestiary-mm.json", "bestiary-mpmm.json", "bestiary-mpp.json", "bestiary-mot.json",
-        "bestiary-mtf.json", "bestiary-oota.json", "bestiary-oow.json", "bestiary-pabtso.json",
-        "bestiary-ps-a.json", "bestiary-ps-d.json", "bestiary-ps-i.json", "bestiary-ps-k.json",
-        "bestiary-ps-x.json", "bestiary-ps-z.json", "bestiary-pota.json", "bestiary-qftis.json",
-        "bestiary-rmbre.json", "bestiary-rot.json", "bestiary-sads.json", "bestiary-scc.json",
-        "bestiary-sdw.json", "bestiary-skt.json", "bestiary-tce.json", "bestiary-ttp.json",
-        "bestiary-tftyp.json", "bestiary-toa.json", "bestiary-tofw.json", "bestiary-vd.json",
-        "bestiary-veor.json", "bestiary-vgm.json", "bestiary-vrgr.json", "bestiary-wbtw.json",
-        "bestiary-wdh.json", "bestiary-wdmm.json"
+        "bestiary-mm.json", "bestiary-mpmm.json", "bestiary-phb.json" // Sadece ana kaynaklar
     ];
 
     let MONSTER_DB = [];
-    let FLUFF_DICT = {};
-
     const fetchPromises = ACTIVE_SOURCES.map(async (filename) => {
         try {
             const res = await fetch(`../Data/bestiary/${filename}`);
@@ -76,10 +54,10 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
     }
 
     // ==========================================
-    // FAZ 2: FIREBASE KÖPRÜSÜ (BULUT SENKRONİZASYONU)
+    // FIREBASE KÖPRÜSÜ (UNDEFINED HATASI ÇÖZÜLDÜ)
     // ==========================================
     let unsubscribeSnapshot = null;
-    let isRemoteUpdate = false; // Sonsuz döngü (loop) engeli
+    let isRemoteUpdate = false; 
 
     async function syncToFirebase() {
         if (!window.db || isRemoteUpdate) return;
@@ -88,13 +66,22 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
         try {
             const roomRef = window.doc(window.db, "combat_sessions", panelData.roomCode);
             
-            // Oyunculara gidecek "Güvenli Liste" (Canavarların canı ve gizli bilgileri yollanmaz)
             const safeCombatants = panelData.combatants.map(c => {
                 let safeObj = {
-                    id: c.id, name: c.name, initTotal: c.initTotal, isMonster: c.isMonster, isGroup: c.isGroup, token: c.token
+                    id: c.id, 
+                    name: c.name, 
+                    initTotal: c.initTotal, 
+                    // Zar değerleri yoksa Total'e eşitle (Undefined engelle)
+                    initRoll: c.initRoll !== undefined ? c.initRoll : c.initTotal,
+                    initMod: c.initMod !== undefined ? c.initMod : 0,
+                    isMonster: c.isMonster, 
+                    isGroup: c.isGroup, 
+                    token: c.token
                 };
-                // Meta Koruması kontrolü
-                safeObj.ac = panelData.isMetaHidden ? "?" : c.ac;
+                // AC undefined gelirse "?" yap (Crash engelle)
+                let tempAc = c.ac !== undefined ? c.ac : "?";
+                safeObj.ac = panelData.isMetaHidden ? "?" : tempAc;
+                
                 return safeObj;
             });
 
@@ -103,10 +90,10 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 round: panelData.round,
                 activeTurnIndex: panelData.activeTurnIndex,
                 isMetaHidden: panelData.isMetaHidden,
-                lastUpdatedBy: "DM", // Değişikliği kimin yaptığını bilmek için
+                lastUpdatedBy: "DM", 
                 timestamp: Date.now()
             });
-            console.log("🔥 Buluta (Firebase) senkronize edildi!");
+            console.log("🔥 Savaş verisi buluta başarıyla kaydedildi.");
         } catch (e) {
             console.error("Firebase senkronizasyon hatası:", e);
         }
@@ -122,18 +109,22 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 
-                // Sadece son değişikliği OYUNCU yaptıysa yerel listemizi güncelliyoruz
                 if (data.lastUpdatedBy === "Player") {
-                    isRemoteUpdate = true; // Kalkanı aç (Tekrar Firebase'e itmemesi için)
+                    isRemoteUpdate = true; 
                     
                     data.combatants.forEach(remoteC => {
                         const localIndex = panelData.combatants.findIndex(lc => lc.id === remoteC.id);
                         if (localIndex === -1 && !remoteC.isMonster) {
-                            // Yeni bir oyuncu katılmış! Masaya dahil et
                             panelData.combatants.push({
-                                id: remoteC.id, name: remoteC.name, 
-                                initTotal: remoteC.initTotal, initRoll: remoteC.initTotal, initMod: 0, 
-                                isMonster: false, isGroup: false, token: remoteC.token || '../../img/SariZar.svg'
+                                id: remoteC.id, 
+                                name: remoteC.name, 
+                                initTotal: remoteC.initTotal, 
+                                initRoll: remoteC.initRoll !== undefined ? remoteC.initRoll : remoteC.initTotal, 
+                                initMod: remoteC.initMod !== undefined ? remoteC.initMod : 0, 
+                                ac: remoteC.ac !== undefined ? remoteC.ac : "?",
+                                isMonster: false, 
+                                isGroup: false, 
+                                token: remoteC.token || '../../img/SariZar.svg'
                             });
                         }
                     });
@@ -142,8 +133,8 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                     saveCallback();
                     renderList();
                     
-                    isRemoteUpdate = false; // Kalkanı kapat
-                    syncToFirebase(); // Hakem (DM) olarak masanın son halini tekrar buluta sabitle
+                    isRemoteUpdate = false; 
+                    syncToFirebase(); 
                 }
             }
         });
@@ -163,8 +154,8 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 panelData.roomCode = `${prefixes[Math.floor(Math.random() * prefixes.length)]}-${Math.floor(Math.random() * 900) + 100}`;
                 panelData.isCombatActive = true;
                 saveCallback(); 
-                syncToFirebase(); // YENİ
-                listenToFirebaseRoom(); // YENİ
+                syncToFirebase(); 
+                listenToFirebaseRoom(); 
                 renderApp();
             };
         } else {
@@ -205,7 +196,6 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
             if (!unsubscribeSnapshot && window.db && panelData.isCombatActive) {
                 listenToFirebaseRoom();
             }
-
         }
     }
 
@@ -218,20 +208,15 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
         const modalOverlay = wrapper.querySelector('#ct-modal-container');
         const modalClose = wrapper.querySelector('.ct-modal-close');
 
-        // Çarpı butonuna basılınca kapat
         modalClose.onclick = () => modalOverlay.classList.remove('active');
-        
-        // YENİ: Siyah arka plana (modal dışına) tıklanınca kapat
-        modalOverlay.onclick = (e) => {
-            if (e.target === modalOverlay) modalOverlay.classList.remove('active');
-        };
+        modalOverlay.onclick = (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('active'); };
 
         metaBtn.onclick = () => { panelData.isMetaHidden = !panelData.isMetaHidden; saveCallback(); syncToFirebase(); renderApp(); };
 
         clearBtn.onclick = () => {
             if(confirm("Savaşı bitirip odayı kapatmak istediğinize emin misiniz?")) {
                 panelData.isCombatActive = false; panelData.combatants = []; panelData.round = 0; panelData.activeTurnIndex = -1;
-                saveCallback(); renderApp();
+                saveCallback(); syncToFirebase(); renderApp();
             }
         };
 
@@ -260,6 +245,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 dropdown.appendChild(dropItem);
             }
 
+            // DM Manuel Oyuncu Ekleme (AC ve Zar düzeltmesi eklendi)
             const playerMatch = val.match(/^([A-Za-zğüşıöçĞÜŞİÖÇ\s]+)\s+(\d+)$/);
             if (playerMatch && !val.match(/^\d+/)) { 
                 const pName = playerMatch[1].trim(); const pInit = parseInt(playerMatch[2]);
@@ -267,7 +253,11 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 const dropItem = document.createElement('div'); dropItem.className = 'ct-drop-item';
                 dropItem.innerHTML = `<span><strong>+</strong> Oyuncu Ekle: ${pName} (${pInit})</span>`;
                 dropItem.onclick = () => {
-                    addCombatant({ id: Date.now(), name: pName, initTotal: pInit, initRoll: pInit, initMod: 0, isMonster: false, isGroup: false, token: '../../img/SariZar.svg' });
+                    addCombatant({ 
+                        id: Date.now(), name: pName, 
+                        initTotal: pInit, initRoll: pInit, initMod: 0, ac: "?", 
+                        isMonster: false, isGroup: false, token: '../../img/SariZar.svg' 
+                    });
                     input.value = ''; dropdown.classList.remove('active');
                 };
                 dropdown.appendChild(dropItem);
@@ -329,7 +319,6 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                     dropdown.appendChild(dropItem);
                 });
             }
-
             if (dropdown.innerHTML !== '') dropdown.classList.add('active');
             else dropdown.classList.remove('active');
         });
@@ -345,6 +334,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
         renderList();
     }
 
+    // --- RENDER LIST (ARTIK OYUNCULARIN DA ZAR VE AC'Sİ GÖZÜKÜYOR) ---
     function renderList() {
         const listDiv = wrapper.querySelector('.ct-combatants-list');
         if (!listDiv) return;
@@ -354,12 +344,16 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
             let isDead = c.isMonster ? (c.isGroup ? c.members.length === 0 || c.members.every(m => m.hp <= 0) : c.hp <= 0) : false;
             const isActiveTurn = panelData.round > 0 && index === panelData.activeTurnIndex;
             
+            // İnisiyatif Kutusu Artık Hem Oyuncu Hem Canavar İçin Zar Detayı Gösteriyor (Meta Kapalıysa)
             let initHtml = `<div class="ct-init-box">${c.initTotal}</div>`;
-            if (c.isMonster && !panelData.isMetaHidden) {
+            if (!panelData.isMetaHidden) {
                 let modStr = c.initMod >= 0 ? `+${c.initMod}` : c.initMod;
                 initHtml = `<div class="ct-init-box" title="Zar: ${c.initRoll}, Bonus: ${modStr}"><small>${c.initRoll}${modStr}</small>${c.initTotal}</div>`;
             }
-            let acHtml = c.isMonster ? (panelData.isMetaHidden ? `<div class="ct-ac" title="Gizli">🛡️ ?</div>` : `<div class="ct-ac">🛡️ ${c.ac}</div>`) : '';
+            
+            // AC Artık Hem Oyuncu Hem Canavar İçin Gözüküyor (Oyuncunun AC'si varsa göster, yoksa ?)
+            let acText = c.ac !== undefined ? c.ac : "?";
+            let acHtml = panelData.isMetaHidden ? `<div class="ct-ac" title="Gizli">🛡️ ?</div>` : `<div class="ct-ac">🛡️ ${acText}</div>`;
 
             const card = document.createElement('div');
             card.className = `ct-card ${isActiveTurn ? 'active-turn' : ''} ${isDead ? 'dead' : ''}`;
@@ -462,7 +456,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
         saveCallback(); syncToFirebase(); renderList();
     }
 
-    // --- HOMEBREW (ÖZEL CANAVAR) FORMU (TÜM STATLAR EKLENDİ) ---
+    // --- HOMEBREW (ÖZEL CANAVAR) FORMU ---
     function openCustomMonsterCreator() {
         const modal = wrapper.querySelector('#ct-modal-container');
         const title = wrapper.querySelector('#ct-modal-title');
@@ -608,7 +602,6 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
         return mod >= 0 ? `+${mod}` : `${mod}`;
     }
 
-    // --- ŞIK STAT BLOĞU VE ATILABİLİR STAT KUTULARI ---
     function openMonsterStatBlock(baseName) {
         const modal = wrapper.querySelector('#ct-modal-container');
         const title = wrapper.querySelector('#ct-modal-title');
@@ -657,20 +650,17 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
         html += `</div>`;
         body.innerHTML = html;
         
-        // Modaldaki Statlara ve Metin İçindeki Zarlara Olay Atama
         attachDiceRollListeners(body);
         modal.classList.add('active');
     }
 
-    // --- HIZLI ZAR MOTORU (TOAST) ---
     let toastTimeout;
     function attachDiceRollListeners(container) {
-        // Hem metin içindeki zarları (.ct-rollable) hem de Stat Kutularını (.ct-stat-roll) yakala
         container.querySelectorAll('.ct-rollable, .ct-stat-roll').forEach(btn => {
             btn.onclick = (e) => {
                 e.stopPropagation();
                 let formula = btn.dataset.roll;
-                let titleText = btn.dataset.title || "Zar Sonucu"; // Stat kutusuna özel başlık için
+                let titleText = btn.dataset.title || "Zar Sonucu"; 
 
                 let clean = formula.replace(/\s+/g, '').toLowerCase();
                 let total = 0;
