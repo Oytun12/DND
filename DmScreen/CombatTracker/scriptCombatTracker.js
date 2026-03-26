@@ -67,18 +67,37 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
             const roomRef = window.doc(window.db, "combat_sessions", panelData.roomCode);
             
             const safeCombatants = panelData.combatants.map(c => {
+                // Ölüm kontrolü
+                let isDead = false;
+                if (c.isMonster) {
+                    if (c.isGroup) {
+                        isDead = !c.members || c.members.length === 0 || c.members.every(m => m.hp <= 0);
+                    } else {
+                        isDead = c.hp <= 0;
+                    }
+                }
+
+                // undefined hatalarını önlemek için || "" ve || 0 kullanıyoruz
                 let safeObj = {
                     id: c.id, 
-                    name: c.name, 
-                    initTotal: c.initTotal, 
-                    // Zar değerleri yoksa Total'e eşitle (Undefined engelle)
-                    initRoll: c.initRoll !== undefined ? c.initRoll : c.initTotal,
+                    name: c.name || "Bilinmeyen", 
+                    baseName: c.baseName || "", // Hatanın ana kaynağı burasıydı, düzeltildi.
+                    initTotal: c.initTotal || 0, 
+                    initRoll: c.initRoll !== undefined ? c.initRoll : (c.initTotal || 0),
                     initMod: c.initMod !== undefined ? c.initMod : 0,
-                    isMonster: c.isMonster, 
-                    isGroup: c.isGroup, 
-                    token: c.token
+                    isMonster: !!c.isMonster, 
+                    isGroup: !!c.isGroup, 
+                    token: c.token || '../../img/SariZar.svg',
+                    isDead: isDead
                 };
-                // AC undefined gelirse "?" yap (Crash engelle)
+                
+                if (c.isGroup && c.members) {
+                    safeObj.members = c.members.map(m => ({
+                        num: m.num || 0,
+                        isDead: m.hp <= 0
+                    }));
+                }
+
                 let tempAc = c.ac !== undefined ? c.ac : "?";
                 safeObj.ac = panelData.isMetaHidden ? "?" : tempAc;
                 
@@ -87,9 +106,9 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
 
             await window.setDoc(roomRef, {
                 combatants: safeCombatants,
-                round: panelData.round,
-                activeTurnIndex: panelData.activeTurnIndex,
-                isMetaHidden: panelData.isMetaHidden,
+                round: panelData.round || 0,
+                activeTurnIndex: panelData.activeTurnIndex || 0,
+                isMetaHidden: !!panelData.isMetaHidden,
                 lastUpdatedBy: "DM", 
                 timestamp: Date.now()
             });
@@ -102,7 +121,6 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
     function listenToFirebaseRoom() {
         if (!window.db || !panelData.roomCode) return;
         const roomRef = window.doc(window.db, "combat_sessions", panelData.roomCode);
-        
         if (unsubscribeSnapshot) unsubscribeSnapshot(); 
         
         unsubscribeSnapshot = window.onSnapshot(roomRef, (docSnap) => {
@@ -112,6 +130,14 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 if (data.lastUpdatedBy === "Player") {
                     isRemoteUpdate = true; 
                     
+                    // 1. HAYALET AVI: Oyuncu savaştan çıktıysa DM'in listesinden de anında SİL
+                    panelData.combatants = panelData.combatants.filter(localC => {
+                        if (localC.isMonster) return true; // Canavarlara dokunma, onlar bizim
+                        // Oyuncu Firebase'de hala var mı? Yoksa sil!
+                        return data.combatants.some(remoteC => remoteC.id === localC.id);
+                    });
+
+                    // 2. Yeni Oyuncuları Ekle
                     data.combatants.forEach(remoteC => {
                         const localIndex = panelData.combatants.findIndex(lc => lc.id === remoteC.id);
                         if (localIndex === -1 && !remoteC.isMonster) {
@@ -213,11 +239,56 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
 
         metaBtn.onclick = () => { panelData.isMetaHidden = !panelData.isMetaHidden; saveCallback(); syncToFirebase(); renderApp(); };
 
+        // ODA KODUNU KOPYALAMA İŞLEMİ
+        const roomCodeDiv = wrapper.querySelector('.ct-room-code');
+        if (roomCodeDiv && panelData.roomCode) {
+            roomCodeDiv.title = "Kodu kopyalamak için tıklayın";
+            roomCodeDiv.onclick = () => {
+                navigator.clipboard.writeText(panelData.roomCode).then(() => {
+                    const span = roomCodeDiv.querySelector('span');
+                    const originalText = panelData.roomCode;
+                    
+                    // Geçici olarak Kopyalandı yazısı göster ve rengini yeşil yap
+                    span.innerText = "Kopyalandı!";
+                    span.style.color = "#2ecc71";
+                    
+                    // 1.5 saniye sonra eski haline döndür
+                    setTimeout(() => {
+                        span.innerText = originalText;
+                        span.style.color = "#e67e22";
+                    }, 1500);
+                }).catch(err => {
+                    console.error("Kopyalama başarısız:", err);
+                });
+            };
+        }
+
         clearBtn.onclick = () => {
-            if(confirm("Savaşı bitirip odayı kapatmak istediğinize emin misiniz?")) {
-                panelData.isCombatActive = false; panelData.combatants = []; panelData.round = 0; panelData.activeTurnIndex = -1;
-                saveCallback(); syncToFirebase(); renderApp();
-            }
+            window.showCustomModal('confirm', "Savaşı bitirip odayı kapatmak istediğinize emin misiniz?", async (confirmed) => {
+                if(confirmed) {
+                    const roomToDelete = panelData.roomCode;
+                    
+                    panelData.isCombatActive = false; 
+                    panelData.combatants = []; 
+                    panelData.round = 0; 
+                    panelData.activeTurnIndex = -1;
+                    panelData.roomCode = ""; 
+                    saveCallback(); 
+                    
+                    if (unsubscribeSnapshot) {
+                        unsubscribeSnapshot();
+                        unsubscribeSnapshot = null;
+                    }
+
+                    if (window.db && roomToDelete && window.deleteDoc) {
+                        try {
+                            const roomRef = window.doc(window.db, "combat_sessions", roomToDelete);
+                            await window.deleteDoc(roomRef);
+                        } catch (e) { console.error("Oda silinirken hata:", e); }
+                    }
+                    renderApp();
+                }
+            });
         };
 
         nextBtn.onclick = () => {
@@ -344,14 +415,12 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
             let isDead = c.isMonster ? (c.isGroup ? c.members.length === 0 || c.members.every(m => m.hp <= 0) : c.hp <= 0) : false;
             const isActiveTurn = panelData.round > 0 && index === panelData.activeTurnIndex;
             
-            // İnisiyatif Kutusu Artık Hem Oyuncu Hem Canavar İçin Zar Detayı Gösteriyor (Meta Kapalıysa)
             let initHtml = `<div class="ct-init-box">${c.initTotal}</div>`;
             if (!panelData.isMetaHidden) {
                 let modStr = c.initMod >= 0 ? `+${c.initMod}` : c.initMod;
                 initHtml = `<div class="ct-init-box" title="Zar: ${c.initRoll}, Bonus: ${modStr}"><small>${c.initRoll}${modStr}</small>${c.initTotal}</div>`;
             }
             
-            // AC Artık Hem Oyuncu Hem Canavar İçin Gözüküyor (Oyuncunun AC'si varsa göster, yoksa ?)
             let acText = c.ac !== undefined ? c.ac : "?";
             let acHtml = panelData.isMetaHidden ? `<div class="ct-ac" title="Gizli">🛡️ ?</div>` : `<div class="ct-ac">🛡️ ${acText}</div>`;
 
@@ -392,12 +461,30 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 `;
 
                 card.querySelector('.group-delete').onclick = () => { deleteCombatant(index); };
-                card.querySelectorAll('.hp-minus').forEach(btn => btn.onclick = () => { let m = c.members[btn.dataset.mindex]; m.hp = Math.max(0, m.hp - 1); saveCallback(); renderList(); });
-                card.querySelectorAll('.hp-plus').forEach(btn => btn.onclick = () => { let m = c.members[btn.dataset.mindex]; m.hp++; saveCallback(); renderList(); });
-                card.querySelectorAll('.hp-val').forEach(inp => inp.onchange = (e) => { let m = c.members[inp.dataset.mindex]; m.hp = parseInt(e.target.value) || 0; saveCallback(); renderList(); });
+                
+                // --- MİNYONLAR İÇİN KUSURSUZ HP BUTONLARI ---
+                card.querySelectorAll('.hp-minus').forEach(btn => btn.onclick = () => { 
+                    let m = c.members[btn.dataset.mindex]; 
+                    m.hp = Math.max(0, m.hp - 1); 
+                    saveCallback(); syncToFirebase(); renderList(); // Anında buluta fırlat!
+                });
+                
+                card.querySelectorAll('.hp-plus').forEach(btn => btn.onclick = () => { 
+                    let m = c.members[btn.dataset.mindex]; 
+                    m.hp++; 
+                    saveCallback(); syncToFirebase(); renderList(); 
+                });
+                
+                card.querySelectorAll('.hp-val').forEach(inp => inp.onchange = (e) => { 
+                    let m = c.members[inp.dataset.mindex]; 
+                    m.hp = parseInt(e.target.value) || 0; 
+                    saveCallback(); syncToFirebase(); renderList(); 
+                });
+                
                 card.querySelectorAll('.member-delete').forEach(btn => btn.onclick = () => { 
                     c.members.splice(btn.dataset.mindex, 1); 
-                    if(c.members.length === 0) deleteCombatant(index); else { saveCallback(); syncToFirebase(); renderList(); }
+                    if(c.members.length === 0) deleteCombatant(index); 
+                    else { saveCallback(); syncToFirebase(); renderList(); }
                 });
 
             } else {
@@ -428,10 +515,21 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 `;
 
                 card.querySelector('.group-delete').onclick = () => { deleteCombatant(index); };
+                
+                // --- TEKİL CANAVARLAR İÇİN KUSURSUZ HP BUTONLARI ---
                 if (c.isMonster) {
-                    card.querySelector('.hp-minus').onclick = () => { c.hp = Math.max(0, c.hp - 1); saveCallback(); renderList(); };
-                    card.querySelector('.hp-plus').onclick = () => { c.hp++; saveCallback(); renderList(); };
-                    card.querySelector('.hp-val').onchange = (e) => { c.hp = parseInt(e.target.value) || 0; saveCallback(); renderList(); };
+                    card.querySelector('.hp-minus').onclick = () => { 
+                        c.hp = Math.max(0, c.hp - 1); 
+                        saveCallback(); syncToFirebase(); renderList(); 
+                    };
+                    card.querySelector('.hp-plus').onclick = () => { 
+                        c.hp++; 
+                        saveCallback(); syncToFirebase(); renderList(); 
+                    };
+                    card.querySelector('.hp-val').onchange = (e) => { 
+                        c.hp = parseInt(e.target.value) || 0; 
+                        saveCallback(); syncToFirebase(); renderList(); 
+                    };
                 }
             }
 
@@ -603,6 +701,8 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
     }
 
     function openMonsterStatBlock(baseName) {
+        if (!baseName) return;
+
         const modal = wrapper.querySelector('#ct-modal-container');
         const title = wrapper.querySelector('#ct-modal-title');
         const body = wrapper.querySelector('#ct-modal-body');

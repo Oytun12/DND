@@ -28,20 +28,20 @@ window.initDiceRoller = function(panelEl, panelData, saveCallback) {
                 </button>
             `).join('')}
         </div>
-        
-        <div class="dice-controls">
-            <div class="adv-toggle-group">
-                <button class="adv-btn" data-state="dis">Dezavantaj</button>
-                <button class="adv-btn active" data-state="norm">Normal</button>
-                <button class="adv-btn" data-state="adv">Avantaj</button>
-            </div>
-            <div class="mod-group">
-                <label>Bonus Mod:</label>
-                <input type="number" class="mod-input" value="0">
-            </div>
-        </div>
 
         <div class="dice-workspace">
+            <div class="dice-controls">
+                <div class="adv-toggle-group">
+                    <button class="adv-btn" data-state="dis">Dezavantaj</button>
+                    <button class="adv-btn active" data-state="norm">Normal</button>
+                    <button class="adv-btn" data-state="adv">Avantaj</button>
+                </div>
+                <div class="mod-group">
+                    <label>Bonus Mod:</label>
+                    <input type="number" class="mod-input" value="0">
+                </div>
+            </div>
+
             <div class="custom-roll-builder">
                 <input type="text" class="builder-input" id="b-name" placeholder="Örn: Ateş Topu" style="width:110px;">
                 <input type="number" class="builder-input" id="b-qty" value="1" min="1" max="50" style="width:40px;">
@@ -133,25 +133,28 @@ window.initDiceRoller = function(panelEl, panelData, saveCallback) {
     function rollDice(name, qty, sides, mod, advState) {
         let results = [];
         let total = 0;
-        let dropped = null;
         let isCritSuccess = false;
         let isCritFail = false;
 
-        if (sides === 20 && qty === 1 && advState !== 'norm') {
-            let r1 = Math.floor(Math.random() * 20) + 1;
-            let r2 = Math.floor(Math.random() * 20) + 1;
+        // Avantaj/Dezavantaj durumu genellikle tek zar (qty=1) için geçerlidir
+        if (qty === 1 && advState !== 'norm') {
+            let r1 = Math.floor(Math.random() * sides) + 1;
+            let r2 = Math.floor(Math.random() * sides) + 1;
             
+            let kept, dropped;
             if (advState === 'adv') {
-                total = Math.max(r1, r2);
+                kept = Math.max(r1, r2);
                 dropped = Math.min(r1, r2);
             } else {
-                total = Math.min(r1, r2);
+                kept = Math.min(r1, r2);
                 dropped = Math.max(r1, r2);
             }
-            results = [total, dropped]; 
+            total = kept;
+            results = [kept, dropped]; 
             
-            if (total === 20) isCritSuccess = true;
-            if (total === 1) isCritFail = true;
+            // Tek zarda sağdaki toplam kutusunun parlaması için global kontrol
+            if (kept === sides) isCritSuccess = true;
+            if (kept === 1) isCritFail = true;
             
         } else {
             for (let i = 0; i < qty; i++) {
@@ -159,8 +162,11 @@ window.initDiceRoller = function(panelEl, panelData, saveCallback) {
                 results.push(val);
                 total += val;
                 
-                if (sides === 20 && val === 20) isCritSuccess = true;
-                if (sides === 20 && val === 1) isCritFail = true;
+                // Eğer tek zar atıldıysa toplam kutusu parlasın
+                if (qty === 1) {
+                    if (val === sides) isCritSuccess = true;
+                    if (val === 1) isCritFail = true;
+                }
             }
         }
 
@@ -172,16 +178,17 @@ window.initDiceRoller = function(panelEl, panelData, saveCallback) {
             name: name,
             formula: `${qty}d${sides} ${mod !== 0 ? (mod > 0 ? '+'+mod : mod) : ''}`,
             results: results,
+            sides: sides, // YENİ: Zarın kaçlık olduğunu render işlemi için kaydediyoruz
             mod: mod,
             total: grandTotal,
             advState: advState,
             time: timeString,
-            isCritSuccess,
-            isCritFail
+            isCritSuccess: isCritSuccess,
+            isCritFail: isCritFail
         };
 
         panelData.diceHistory.unshift(historyObj);
-        if (panelData.diceHistory.length > 50) panelData.diceHistory.pop(); // Limiti 50'ye çıkardık
+        if (panelData.diceHistory.length > 50) panelData.diceHistory.pop(); 
         
         saveCallback();
         renderHistory();
@@ -233,13 +240,24 @@ window.initDiceRoller = function(panelEl, panelData, saveCallback) {
 
         panelData.diceHistory.forEach(h => {
             const item = document.createElement('div');
+            // Global kutu parlaması (Sadece tek zarlarda çalışır)
             item.className = `history-item ${h.isCritSuccess ? 'crit-success' : ''} ${h.isCritFail ? 'crit-fail' : ''}`;
             
+            // YENİ: İçerideki sayıları Max/Min kontrolünden geçirip renklendiren minik fonksiyon
+            const formatDie = (val) => {
+                if (val === h.sides) return `<span style="color:#2ecc71; font-weight:bold; text-shadow: 0 0 5px rgba(46,204,113,0.4);" title="Maksimum!">${val}</span>`;
+                if (val === 1) return `<span style="color:#e74c3c; font-weight:bold; text-shadow: 0 0 5px rgba(231,76,60,0.4);" title="Minimum!">${val}</span>`;
+                return val;
+            };
+
             let arrayHtml = '';
-            if (h.advState !== 'norm') {
-                arrayHtml = `[${h.results[0]}, <span class="dropped">${h.results[1]}</span>]`;
+            // Avantaj/Dezavantaj durumu (ilk sayı kept, ikincisi dropped)
+            if (h.advState !== 'norm' && h.results.length === 2) {
+                arrayHtml = `[${formatDie(h.results[0])}, <span class="dropped" style="opacity:0.5;">${formatDie(h.results[1])}</span>]`;
             } else {
-                arrayHtml = `[${h.results.join(', ')}]`;
+                // Normal çoklu zar durumu (her zarı formatDie filtresinden geçirir)
+                const formattedResults = h.results.map(val => formatDie(val));
+                arrayHtml = `[${formattedResults.join(', ')}]`;
             }
 
             let modHtml = h.mod !== 0 ? ` ${h.mod > 0 ? '+' : '-'} ${Math.abs(h.mod)}` : '';
@@ -255,7 +273,7 @@ window.initDiceRoller = function(panelEl, panelData, saveCallback) {
                         <div class="hi-formula">${h.formula}</div>
                         <div class="hi-rolls-array">${arrayHtml}${modHtml}</div>
                     </div>
-                    <div class="hi-total" title="Kritik Durumu: ${h.isCritSuccess ? 'Başarılı' : (h.isCritFail ? 'Başarısız' : 'Yok')}">${h.total}</div>
+                    <div class="hi-total" title="Toplam Sonuç">${h.total}</div>
                 </div>
             `;
             historySection.appendChild(item);

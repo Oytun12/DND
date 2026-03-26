@@ -102,25 +102,28 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    overflow-y: auto; /* YENİ: Bütün ekranın aşağı kayabilmesini sağlar */
+    overflow-x: hidden;
 }
 
 .custom-rolls-section {
-    padding: 15px;
+    padding: 15px 15px; 
     border-bottom: 1px dashed #333;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* YENİDEN AKTİF: Zarlar sığmayınca alt satıra iner */
     gap: 12px;
     background: #151515;
     
-    /* ESKİ max-height: 200px'i silebilir veya çok fazla zar eklendiğinde
-       tüm ekranı kaplamaması için 40vh gibi esnek bir sınır koyabilirsin */
-    max-height: 40vh; 
-    overflow-y: auto; 
-    align-items: flex-start;
+    /* İŞTE SİHİR BURADA: Yüksekliği sadece 1 satır zar sığacak kadar sabitliyoruz */
+    max-height: 100px; /* Zar butonlarının büyüklüğüne göre burayı 60px - 75px arası değiştirebilirsin */
     
-    /* İŞTE HAYAT KURTARAN KOD: Alt taraftaki geçmiş dolduğunda bu kutunun ezilmesini YASAKLAR */
-    flex-shrink: 0; 
+    /* Kaydırma Ayarları */
+    overflow-y: auto;   /* İçerik 65px'i aşarsa (alt satıra inerlerse) dikey scroll açılır */
+    overflow-x: hidden; /* Yatay scroll'u yasaklar */
+    align-items: flex-start; 
+    
+    flex-shrink: 0; /* Ekran küçülse bile bu 65px'lik şeridin ezilmesini engeller */
 }
 
 /* YENİ: Geçmiş Başlığı ve Temizle Butonu */
@@ -128,7 +131,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px 0;
+    padding: 10px 15px;
     
     /* Başlık satırının da ezilip kaybolmasını engelliyoruz */
     flex-shrink: 0; 
@@ -149,12 +152,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; 
     gap: 4px;
     transition: 0.2s;
     box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-    width: 75px; 
-    height: 75px;
+    width: 65px; 
+    height: 55px;
     text-align: center;
 }
 .custom-roll-btn span { font-size: 0.75em; line-height: 1.2; word-wrap: break-word; color: #aaa; }
@@ -196,8 +199,8 @@
     font-size: 0.8em;
     font-weight: bold;
     transition: 0.2s;
-    width: 75px; 
-    height: 75px;
+    width: 65px; 
+    height: 55px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -243,6 +246,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    
+    overflow-y: visible; /* YENİ: Kendi içindeki scroll'u iptal eder */
+    height: auto;        /* YENİ: İçindeki yazılar kadar aşağı uzamasını sağlar */
 }
 
 .history-item {
@@ -270,3 +276,27 @@
 .hi-total { font-size: 1.8em; font-weight: bold; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 .crit-success .hi-total { color: #2ecc71; text-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
 .crit-fail .hi-total { color: #e74c3c; text-shadow: 0 0 10px rgba(231, 76, 60, 0.4); }
+
+/* ============================================================
+   DAR PANELLER İÇİN AKILLI GİZLEME (CONTAINER QUERIES)
+   ============================================================ */
+
+/* 1. Tüm zar modülünü saran ana çerçeveyi bir "Konteyner" olarak tanımlıyoruz */
+.premium-dice-wrapper {
+    container-type: inline-size;
+    container-name: dicePanel;
+}
+
+/* 2. Eğer bu panelin genişliği 380px'in altına düşerse (daralırsa) tetiklenecek kurallar */
+@container dicePanel (max-width: 380px) {
+    /* Bonus Mod grubunu tamamen gizle */
+    .dice-controls .mod-group {
+        display: none !important;
+    }
+    
+    /* Avantaj/Dezavantaj butonlarını ortalayarak kalan tüm alanı kaplamasını sağla */
+    .dice-controls .adv-toggle-group {
+        width: 100%;
+        justify-content: center;
+    }
+}

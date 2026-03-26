@@ -12,8 +12,18 @@
 .ct-main-screen { display: flex; flex-direction: column; height: 100%; }
 
 .ct-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #222; border-bottom: 2px solid #b52b2b; flex-shrink: 0; }
-.ct-room-code { font-weight: bold; color: #888; font-size: 0.9em; letter-spacing: 1px; }
-.ct-room-code span { color: #e67e22; }
+.ct-room-code { 
+    font-weight: bold; 
+    color: #888; 
+    font-size: 0.9em; 
+    letter-spacing: 1px; 
+    cursor: pointer; /* Tıklanabilir el işareti */
+    transition: 0.2s; 
+    user-select: none; /* Metnin maviyle seçilmesini engeller */
+}
+.ct-room-code:hover { color: #ccc; }
+.ct-room-code span { color: #e67e22; transition: 0.2s; }
+.ct-room-code:hover span { text-shadow: 0 0 8px rgba(230, 126, 34, 0.6); }
 .ct-controls { display: flex; gap: 10px; align-items: center; }
 
 /* Meta Koruması Butonu */
@@ -63,8 +73,9 @@
 .ct-row-left { display: flex; align-items: center; gap: 10px; flex-grow: 1; min-width: 200px; }
 .ct-row-right { display: flex; align-items: center; gap: 10px; }
 
-.ct-token { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #555; background: #111; cursor: pointer; transition: 0.2s; }
-.ct-token:hover { border-color: #b52b2b; transform: scale(1.1); }
+.ct-token { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #555; background: #111; transition: 0.2s; cursor: default; }.ct-token:hover { border-color: #b52b2b; transform: scale(1.1); }
+.ct-token.view-stats-btn { cursor: pointer; }
+.ct-token.view-stats-btn:hover { border-color: #b52b2b; transform: scale(1.1); }
 .ct-name { font-weight: bold; font-size: 1em; color: #eee; padding: 2px 4px; border-radius: 4px; transition: 0.2s; outline: none; cursor: pointer; }
 .ct-name:hover { color: #b52b2b; }
 .ct-name[contenteditable="true"]:hover { background: rgba(255,255,255,0.1); cursor: text; color: #eee; }

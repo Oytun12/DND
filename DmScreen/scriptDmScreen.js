@@ -2,10 +2,48 @@
    SCRIPT-DMSCREEN.JS - Çoklu Ekran (Multi-Monitor) Grid Motoru
    ============================================================ */
 
+// --- EVRENSEL ÖZEL UYARI PENCERESİ MOTORU ---
+window.showCustomModal = function(type, message, callback) {
+    const overlay = document.createElement('div');
+    overlay.className = 'dm-custom-modal-overlay';
+    let inputHtml = type === 'prompt' ? `<input type="text" class="dm-custom-modal-input" placeholder="...">` : '';
+    let cancelBtnHtml = (type === 'prompt' || type === 'confirm') ? `<button class="dm-custom-modal-btn cancel">İptal</button>` : '';
+
+    overlay.innerHTML = `
+        <div class="dm-custom-modal-box">
+            <div class="dm-custom-modal-msg">${message}</div>
+            ${inputHtml}
+            <div class="dm-custom-modal-btns">
+                ${cancelBtnHtml}
+                <button class="dm-custom-modal-btn confirm">Tamam</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const inputEl = overlay.querySelector('.dm-custom-modal-input');
+    if (inputEl) inputEl.focus();
+
+    const btnConfirm = overlay.querySelector('.confirm');
+    const btnCancel = overlay.querySelector('.cancel');
+
+    if (inputEl) inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') btnConfirm.click(); });
+
+    btnConfirm.onclick = () => {
+        let val = true;
+        if (type === 'prompt') val = inputEl.value;
+        overlay.remove();
+        if(callback) callback(val);
+    };
+
+    if (btnCancel) btnCancel.onclick = () => { overlay.remove(); if(callback) callback(null); };
+};
+
 let SCREENS = [];
 let currentScreenIndex = 0;
 let editingPanelId = null;
 let activeAddTarget = null; 
+let transformPanelId = null; // YENİ: Dönüştürülecek panelin kimliğini aklımızda tutar
 
 // 1. WIDGET SÖZLÜĞÜ (Tüm sayfaların adresleri burada)
 const WIDGETS = {
@@ -145,14 +183,17 @@ function setupControls() {
         animateGridSwap('right', () => { updateModalInputs(); renderGrid(); });
     };
 
+    // setupControls fonksiyonu içindeki tüm ekranı silme tuşu
     document.getElementById('delete-screen-btn').onclick = () => {
         if (SCREENS.length <= 1) return;
-        if (confirm("Bu ekranı (ve içindeki tüm panelleri) silmek istediğine emin misin?")) {
-            SCREENS.splice(currentScreenIndex, 1);
-            if (currentScreenIndex >= SCREENS.length) currentScreenIndex = SCREENS.length - 1;
-            updateModalInputs();
-            renderGrid();
-        }
+        window.showCustomModal('confirm', "Bu ekranı (ve içindeki tüm panelleri) silmek istediğine emin misin?", (confirmed) => {
+            if (confirmed) {
+                SCREENS.splice(currentScreenIndex, 1);
+                if (currentScreenIndex >= SCREENS.length) currentScreenIndex = SCREENS.length - 1;
+                updateModalInputs();
+                renderGrid();
+            }
+        });
     };
 
     document.getElementById('build-grid-btn').onclick = () => {
@@ -195,12 +236,36 @@ function setupControls() {
 
 function setupModal() {
     const typeModal = document.getElementById('panel-type-modal');
-    document.querySelector('.close-type-btn').onclick = () => typeModal.classList.remove('open');
+    
+    // Çarpıya basıp çıkarsak hafızayı temizle
+    document.querySelector('.close-type-btn').onclick = () => {
+        transformPanelId = null;
+        activeAddTarget = null;
+        typeModal.classList.remove('open');
+    };
     
     typeModal.querySelectorAll('.type-opt-btn').forEach(btn => {
         btn.onclick = () => {
-            if (activeAddTarget) {
-                SCREENS[currentScreenIndex].panels.push({
+            const activeScreen = SCREENS[currentScreenIndex];
+            
+            // DURUM 1: DÖNÜŞTÜRME İŞLEMİ (Boyut ve konum korunur, içerik değişir)
+            if (transformPanelId) {
+                const p = activeScreen.panels.find(x => x.id === transformPanelId);
+                if (p) {
+                    // Eski DOM elementini arayüzden siliyoruz ki yeni tipiyle baştan çizilebilsin
+                    const oldEl = document.getElementById('dm-grid').querySelector(`.dm-panel[data-id="${p.id}"]`);
+                    if(oldEl) oldEl.remove();
+                    
+                    p.type = btn.dataset.type;
+                    p.content = ""; // Eski uygulamanın notlarını temizle
+                }
+                transformPanelId = null;
+                typeModal.classList.remove('open');
+                renderGrid();
+            } 
+            // DURUM 2: YENİ EKLEME İŞLEMİ (Artı tuşuna basıldıysa)
+            else if (activeAddTarget) {
+                activeScreen.panels.push({
                     id: Date.now(),
                     r: activeAddTarget.r,
                     c: activeAddTarget.c,
@@ -209,6 +274,7 @@ function setupModal() {
                     content: "", 
                     zoom: 1 
                 });
+                activeAddTarget = null;
                 typeModal.classList.remove('open');
                 renderGrid();
             }
@@ -283,6 +349,7 @@ function renderGrid() {
                 empty.innerHTML = '<button class="add-content-btn" title="Yeni Panel Ekle">+</button>';
                 
                 empty.querySelector('.add-content-btn').onclick = () => {
+                    transformPanelId = null; // YENİ: Dönüştürme işlemini iptal et
                     activeAddTarget = { r: i, c: j };
                     document.getElementById('panel-type-modal').classList.add('open');
                 };
@@ -358,6 +425,7 @@ function createNewPanelDOM(p) {
             <div class="panel-controls">
                 <button class="panel-control-btn zoom-out-btn" title="Küçült" style="font-weight:bold; font-size:1.3em; margin-top:-2px;">-</button>
                 <button class="panel-control-btn zoom-in-btn" title="Büyüt" style="font-weight:bold; font-size:1.1em;">+</button>
+                <button class="panel-control-btn transform-panel-btn" title="İçeriği Değiştir">⟲</button>
                 <button class="panel-control-btn edit-panel-btn" title="Genişlet & Taşı">⤡</button>
                 <button class="panel-control-btn remove-panel-btn" title="Kapat">✕</button>
             </div>
@@ -365,10 +433,54 @@ function createNewPanelDOM(p) {
         <div class="panel-content${extraClass}" ${inlineStyle}>${contentHtml}</div>
     `;
 
+    // DÖNÜŞTÜR BUTONU İŞLEVİ
+    panelEl.querySelector('.transform-panel-btn').onclick = () => {
+        // Eğer dönüştürdüğümüz şey aktif bir savaş odasıysa veritabanını temizle!
+        if (p.type === 'combattracker' && p.isCombatActive && p.roomCode) {
+            window.showCustomModal('confirm', "Modülü değiştirirseniz aktif savaş odası da veritabanından silinecektir. Onaylıyor musunuz?", async (confirmed) => {
+                if (!confirmed) return;
+                
+                if (window.db && window.deleteDoc) {
+                    try {
+                        const roomRef = window.doc(window.db, "combat_sessions", p.roomCode);
+                        await window.deleteDoc(roomRef);
+                    } catch(e) { console.error("Oda silinirken hata:", e); }
+                }
+                
+                // Savaş özelliklerini sıfırla ki yeni modüle bulaşmasın
+                p.isCombatActive = false;
+                p.roomCode = "";
+                
+                transformPanelId = p.id;
+                document.getElementById('panel-type-modal').classList.add('open');
+            });
+        } else {
+            transformPanelId = p.id;
+            document.getElementById('panel-type-modal').classList.add('open');
+        }
+    };
+
+    // createNewPanelDOM fonksiyonu içindeki panel silme tuşu
     panelEl.querySelector('.remove-panel-btn').onclick = () => {
-        const activeScreen = SCREENS[currentScreenIndex];
-        activeScreen.panels = activeScreen.panels.filter(x => x.id !== p.id);
-        renderGrid();
+        if (p.type === 'combattracker' && p.isCombatActive && p.roomCode) {
+            window.showCustomModal('confirm', "Modülü kapatırsanız aktif savaş odası da veritabanından silinecektir. Onaylıyor musunuz?", async (confirmed) => {
+                if (!confirmed) return;
+                
+                if (window.db && window.deleteDoc) {
+                    try {
+                        const roomRef = window.doc(window.db, "combat_sessions", p.roomCode);
+                        await window.deleteDoc(roomRef);
+                    } catch(e) { console.error("Oda silinirken hata:", e); }
+                }
+                const activeScreen = SCREENS[currentScreenIndex];
+                activeScreen.panels = activeScreen.panels.filter(x => x.id !== p.id);
+                renderGrid();
+            });
+        } else {
+            const activeScreen = SCREENS[currentScreenIndex];
+            activeScreen.panels = activeScreen.panels.filter(x => x.id !== p.id);
+            renderGrid();
+        }
     };
 
     panelEl.querySelector('.edit-panel-btn').onclick = () => {

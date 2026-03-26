@@ -978,13 +978,13 @@
                                           stroke-linecap="round" 
                                           stroke-linejoin="round"/>
                                 </svg>
-                                <span class="shield-text">{{ calculatedAC }}</span>
+                                <span id="player-live-ac" class="shield-text">{{ calculatedAC }}</span>
                             </div>
                         </div>
                         <div class="c-stat-box clickable-stat" 
                              @click="rollD20('İnisiyatif', Math.floor((finalAbilityScores.dex - 10) / 2))">
                             <span class="label">İnisiyatif</span>
-                            <span class="value" style="padding-bottom: 13px;">{{ Math.floor((finalAbilityScores.dex - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((finalAbilityScores.dex - 10) / 2) }}</span>
+                            <span id="player-live-init" class="value" style="padding-bottom: 13px;">{{ Math.floor((finalAbilityScores.dex - 10) / 2) >= 0 ? '+' : '' }}{{ Math.floor((finalAbilityScores.dex - 10) / 2) }}</span>
                         </div>
                         <div class="c-stat-box">
                             <span class="label">HIZ</span>
