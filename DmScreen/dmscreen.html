@@ -15,9 +15,59 @@
     <link rel="stylesheet" href="CombatTracker/stylesCombatTracker.css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DM Screen">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="DM Screen">
+
+    <script>
+        (function() {
+            // Tarayıcı hafızasında 512x512 şeffaf bir tuval (canvas) oluştur
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            // 1. Arka Planı Boya (Ana temanın rengi)
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, 512, 512);
+
+            // 2. Kızıl Bordürü Çiz (Senin link-card tasarımının aynısı)
+            ctx.lineWidth = 30;
+            ctx.strokeStyle = '#b52b2b';
+            ctx.beginPath();
+            ctx.roundRect(30, 30, 452, 452, 60); // 60px köşe yuvarlaklığı
+            ctx.stroke();
+
+            // 3. Emojiyi Ortala
+            ctx.font = '240px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Emojiler bazen fontlardan dolayı dikeyde tam ortalanmaz, Y ekseninde (280) ufak bir optik düzeltme var
+            ctx.fillText('🖥️', 256, 280); 
+
+            // Tuvali PNG resmine dönüştür
+            const iconUrl = canvas.toDataURL('image/png');
+
+            // iOS ve diğer platformlar için ikon etiketlerini head'e enjekte et
+            const appleIcon = document.createElement('link');
+            appleIcon.rel = 'apple-touch-icon';
+            appleIcon.href = iconUrl;
+            document.head.appendChild(appleIcon);
+
+            const standardIcon = document.createElement('link');
+            standardIcon.rel = 'icon';
+            standardIcon.type = 'image/png';
+            standardIcon.href = iconUrl;
+            document.head.appendChild(standardIcon);
+        })();
+    </script>
+
 </head>
 
-<body>
+<body> 
     <header class="main-header">
         <div class="header-container">
             <div class="brand-area">

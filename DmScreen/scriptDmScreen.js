@@ -458,7 +458,7 @@ function createNewPanelDOM(p) {
             transformPanelId = p.id;
             document.getElementById('panel-type-modal').classList.add('open');
         }
-    };
+    }; 
 
     // createNewPanelDOM fonksiyonu içindeki panel silme tuşu
     panelEl.querySelector('.remove-panel-btn').onclick = () => {
@@ -635,24 +635,45 @@ window.rollDice = function(sides) {
     });
 }
 
+
 function setupFullscreen() {
     const fsBtn = document.getElementById('fullscreen-toggle-btn');
     if (!fsBtn) return;
 
+    // Cihazın Dokunmatik (iPad/Mobil) olup olmadığını KESİN anlayan sistem
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia("(max-width: 1366px)").matches;
+
     fsBtn.addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.error(`Tam ekran hatası: ${err.message}`);
-            });
+        if (isTouchDevice) {
+            // DURUM 1: IPAD / MOBİL (Yalancı Tam Ekran - Sadece Header'ı Gizler)
+            if (document.body.classList.contains('fullscreen-mode')) {
+                document.body.classList.remove('fullscreen-mode');
+                fsBtn.innerHTML = '⛶'; 
+                fsBtn.title = "Arayüzü Gizle";
+            } else {
+                document.body.classList.add('fullscreen-mode');
+                fsBtn.innerHTML = 'X'; 
+                fsBtn.title = "Arayüzü Göster";
+            }
         } else {
-            document.exitFullscreen();
+            // DURUM 2: MASAÜSTÜ (Gerçek Tam Ekran)
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Tam ekran hatası: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
         }
     });
 
+    // Masaüstü tam ekran değişikliklerini (ESC'ye basılma durumunu) dinlemeye devam et
     document.addEventListener('fullscreenchange', () => {
+        if (isTouchDevice) return; // Mobil/iPad ise yalancı tam ekranı bozmasına izin verme
+
         if (document.fullscreenElement) {
             document.body.classList.add('fullscreen-mode');
-            fsBtn.innerHTML = '🗗'; 
+            fsBtn.innerHTML = 'X'; 
             fsBtn.title = "Tam Ekrandan Çık (ESC)";
         } else {
             document.body.classList.remove('fullscreen-mode');
@@ -663,45 +684,17 @@ function setupFullscreen() {
 }
 
 /* ============================================================
-   MOBİL İÇİN EKRAN KAYDIRMA (SWIPE) MOTORU
+   iOS/IPAD TAM EKRAN KORUMASI (ANTI-BOUNCE & AKILLI SCROLL)
    ============================================================ */
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
+document.addEventListener('touchmove', function(e) {
+    // 1. Kaydırılabilir olması muhtemel kutuyu bul
+    const scrollableContainer = e.target.closest('.dice-workspace, .custom-rolls-section, .dice-history, .ct-combatants-list, .rich-text-editor, .ct-dropdown, .ct-modal-content');
 
-document.addEventListener('touchstart', function(e) {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-}, { passive: true });
-
-document.addEventListener('touchend', function(e) {
-    // Kullanıcı bir yazı alanına (HP girişi, Not defteri vs) tıklıyorsa kaydırmayı iptal et
-    const t = e.target;
-    if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable) return;
-    
-    // Zar veya buton tıklamalarını kaydırma olarak algılama
-    if (t.closest('button') || t.closest('.ct-rollable')) return;
-
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-}, { passive: true });
-
-function handleSwipe() {
-    const diffX = touchEndX - touchStartX;
-    const diffY = touchEndY - touchStartY;
-    
-    // Yatay kaydırma hareketi dikeyden büyükse ve en az 60px kaydırılmışsa tetikle
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 60) {
-        if (diffX < 0) {
-            // Sola Kaydırma (Sonraki Ekran -> Sağ Ok)
-            const nextBtn = document.querySelector('.nav-btn.next-screen');
-            if (nextBtn) nextBtn.click();
-        } else {
-            // Sağa Kaydırma (Önceki Ekran -> Sol Ok)
-            const prevBtn = document.querySelector('.nav-btn.prev-screen');
-            if (prevBtn) prevBtn.click();
-        }
+    if (!scrollableContainer) {
+        e.preventDefault(); 
+        return;
     }
-}
+    if (scrollableContainer.scrollHeight <= scrollableContainer.clientHeight) {
+        e.preventDefault();
+    }
+}, { passive: false });

@@ -662,7 +662,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
             res = res.replace(/{@sense (.*?)(?:\|.*?)?}/gi, '<em>$1</em>');
             res = res.replace(/{@item (.*?)(?:\|.*?)?}/gi, '<em>$1</em>');
             
-            res = res.replace(/(?<!data-roll=")\b(\d+d\d+(?:\s*[+-]\s*\d+)?)\b(?![^<]*>)/gi, '<strong class="ct-rollable" data-roll="$1" title="Hızlı Zar At">🎲 $1</strong>');
+            res = res.replace(/(?<!data-roll=")\b(\d+d\d+(?:\s*[+-]\s*\d+)?)\b(?![^<]*>)/gi, '<strong class="ct-rollable" data-roll="$1" title="Hızlı Zar At">$1</strong>');
             res = res.replace(/{@\w+\s+([^}|]+)(?:\|[^}]+)?}/g, '$1');
             return res;
         }
