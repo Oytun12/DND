@@ -18,6 +18,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    // URL'de '?widget=true' var mı kontrol et
+    if (window.location.search.includes('widget=true')) {
+        // Varsa, sayfadaki Header'ı (Menüyü) gizle
+        const header = document.querySelector('.main-header');
+        if (header) header.style.display = 'none';
+
+        // İsteğe bağlı: Yukarı Dön butonunu gizle (Çünkü widget'ın içi kısadır)
+        const scrollBtn = document.querySelector('.scroll-to-top');
+        if (scrollBtn) scrollBtn.style.display = 'none';
+        
+        // Widget içinde padding'leri sıfırla ki güzel görünsün
+        const mainContainer = document.querySelector('.main-container');
+        if (mainContainer) {
+            mainContainer.style.margin = '0';
+            mainContainer.style.padding = '10px';
+        }
+    }
+});
+
 
 
 import { createApp, ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'; 
@@ -320,6 +340,36 @@ const app = createApp({
                     }, 300);
                 });
             }
+        };
+
+        const customAvatarUrl = ref('');
+
+        const applyCustomAvatar = () => {
+            // Linkin geçerli bir internet linki olup olmadığını basitçe kontrol et
+            if (!customAvatarUrl.value || (!customAvatarUrl.value.startsWith('http://') && !customAvatarUrl.value.startsWith('https://'))) {
+                showToast("Lütfen 'http' veya 'https' ile başlayan geçerli bir link girin.", "⚠️");
+                return;
+            }
+            
+            // Linki store'a kaydet. HTML'deki mevcut mantık http ile başladığını görüp bunu kullanacak.
+            store.meta.avatar = customAvatarUrl.value;
+            
+            // Kütüphaneyi kapatıp kutuyu temizle
+            isGalleryExpanded.value = false;
+            customAvatarUrl.value = '';
+            
+            showToast("Özel avatar başarıyla uygulandı!", "🖼️");
+            
+            // Başlık vb. sayfa meta verilerini yeni linke göre güncelle
+            updatePageMeta();
+            
+            // Sayfayı yeni avatarın olduğu en üst alana kaydır
+            nextTick(() => {
+                const frame = document.querySelector('.hero-avatar-frame');
+                if (frame) {
+                    frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
         };
 
         // --- YENİ EKLENECEK KISIM BURADAN BAŞLIYOR ---
@@ -1465,6 +1515,9 @@ const app = createApp({
             isProfileModalOpen,    
             openProfileModal,      
             handleProfileSlotSelect,
+
+            customAvatarUrl,
+            applyCustomAvatar,
 
         };
     }

@@ -160,15 +160,25 @@
 
                         <div ref="galleryContainer" :class="['avatar-gallery-container', 'gallery-drawer', { 'open': isGalleryExpanded }]">
                             
-                            <div v-if="isGalleryExpanded" class="avatar-grid-large">
-                                
-                                <div v-for="(img, index) in avatarList" 
-                                     :key="index" 
-                                     class="avatar-option"
-                                     :class="{ 'selected': store.meta.avatar === '../../img/avatars/' + img }"
-                                     @click="selectAvatar(img)">
-                                    
-                                    <img :src="'../../img/avatars/' + img" loading="lazy" alt="Avatar">
+                            <div v-if="isGalleryExpanded">
+
+                                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border: 1px dashed #444; margin-bottom: 15px; animation: fadeIn 0.3s ease;">
+                                    <p style="margin: 0 0 10px 0; color: #ccc; font-size: 0.85em;">İnternetten Görsel Linki Yapıştır</p>
+                                    <div style="display: flex; gap: 10px;">
+                                        <input v-model="customAvatarUrl" type="text" placeholder="https://... ile başlayan linki yapıştır" class="mini-select" style="flex: 1; font-family: monospace; font-size: 0.9em; background: #0f0f0f; border: 1px solid #333; color: #ccc;">
+                                        <button @click="applyCustomAvatar" class="btn btn-secondary" style="padding: 0 25px; border: 1px solid #444;">Görseli Uygula</button>
+                                    </div>
+                                </div>
+
+                                <div class="avatar-grid-large">
+                                    <div v-for="(img, index) in avatarList" 
+                                         :key="index" 
+                                         class="avatar-option"
+                                         :class="{ 'selected': store.meta.avatar === '../../img/avatars/' + img }"
+                                         @click="selectAvatar(img)">
+
+                                        <img :src="'../../img/avatars/' + img" loading="lazy" alt="Avatar">
+                                    </div>
                                 </div>
 
                             </div>
