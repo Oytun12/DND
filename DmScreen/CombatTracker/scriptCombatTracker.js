@@ -87,7 +87,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                     initMod: c.initMod !== undefined ? c.initMod : 0,
                     isMonster: !!c.isMonster, 
                     isGroup: !!c.isGroup, 
-                    token: c.token || '../../img/SariZar.svg',
+                    token: c.token || '../../img/avatars/default-avatar.png',
                     isDead: isDead
                 };
                 
@@ -150,7 +150,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                                 ac: remoteC.ac !== undefined ? remoteC.ac : "?",
                                 isMonster: false, 
                                 isGroup: false, 
-                                token: remoteC.token || '../../img/SariZar.svg'
+                                token: remoteC.token || '../../img/avatars/default-avatar.png'
                             });
                         }
                     });
@@ -327,7 +327,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                     addCombatant({ 
                         id: Date.now(), name: pName, 
                         initTotal: pInit, initRoll: pInit, initMod: 0, ac: "?", 
-                        isMonster: false, isGroup: false, token: '../../img/SariZar.svg' 
+                        isMonster: false, isGroup: false, token: '../../img/avatars/default-avatar.png' 
                     });
                     input.value = ''; dropdown.classList.remove('active');
                 };
@@ -355,7 +355,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                         const hp = m.hp && m.hp.average ? m.hp.average : (m.hp || 10);
                         const ac = m.ac && m.ac[0] ? (typeof m.ac[0] === 'object' ? m.ac[0].ac : m.ac[0]) : 10;
                         
-                        let tokenUrl = '../../img/SariZar.svg';
+                        let tokenUrl = '../../img/avatars/default-avatar.png';
                         if (m.isCustom && m.customImg) {
                             tokenUrl = m.customImg;
                         } else if (!m.isCustom && m.source) {
@@ -433,7 +433,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                     membersHtml += `
                         <div class="ct-member-row ${m.hp <= 0 ? 'dead' : ''}">
                             <div class="ct-row-left">
-                                <img src="${c.token}" class="ct-token view-stats-btn" data-basename="${c.baseName}" title="Özellikleri Gör" onerror="this.src='../../img/SariZar.svg'">
+                                <img src="${c.token}" class="ct-token view-stats-btn" data-basename="${c.baseName}" title="Özellikleri Gör" onerror="this.src='../../img/avatars/default-avatar.png'">
                                 <div class="ct-name" title="Minyon #${m.num}">#${m.num} ${c.baseName}</div>
                                 ${acHtml}
                             </div>
@@ -503,7 +503,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                     <div class="ct-member-row">
                         <div class="ct-row-left">
                             ${initHtml}
-                            <img src="${c.token}" class="ct-token ${c.isMonster ? 'view-stats-btn' : ''}" data-basename="${c.baseName}" title="${c.isMonster ? 'Özellikleri Gör' : 'Oyuncu'}" onerror="this.src='../../img/SariZar.svg'">
+                            <img src="${c.token}" class="ct-token ${c.isMonster ? 'view-stats-btn' : ''}" data-basename="${c.baseName}" title="${c.isMonster ? 'Özellikleri Gör' : 'Oyuncu'}" onerror="this.src='../../img/avatars/default-avatar.png'">
                             <div class="ct-name" contenteditable="true" spellcheck="false">${c.name}</div>
                             ${acHtml}
                         </div>
@@ -633,7 +633,7 @@ window.initCombatTracker = async function(panelEl, panelData, saveCallback) {
                 id: Date.now(), name: name, baseName: name,
                 initRoll: initRoll, initMod: dexMod, initTotal: initRoll + dexMod,
                 isMonster: true, isGroup: false, ac: acVal, hp: hpVal, maxHp: hpVal,
-                token: imgVal || '../../img/SariZar.svg'
+                token: imgVal || '../../img/avatars/default-avatar.png'
             });
             modal.classList.remove('active');
         };

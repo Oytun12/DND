@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ac: acScore,
             isMonster: false,
             isGroup: false,
-            token: store.meta?.avatar || '../../img/SariZar.svg'
+            token: store.meta?.avatar || '../../img/avatars/default-avatar.png'
         };
 
         try {
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Kendi kartımızı bulmak için hafızadaki ID'yi kullanıyoruz
                     const isMe = c.id === myCombatantId;
                     
-                    let tokenSrc = c.token || '../../img/SariZar.svg';
+                    let tokenSrc = c.token || '../../img/avatars/default-avatar.png';
                     if (tokenSrc.includes('../img/')) { tokenSrc = tokenSrc.replace('../img/', '../../img/'); }
                     
                     let acHtml = c.ac && c.ac !== "?" ? `<span class="pcw-ac">🛡️ ${c.ac}</span>` : `<span class="pcw-ac">🛡️ ?</span>`;
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             c.members.forEach(m => {
                                 membersHtml += `
                                     <div class="pcw-member-row ${m.isDead ? 'dead' : ''}">
-                                        <img src="${tokenSrc}" class="pcw-token" onerror="this.src='../../img/SariZar.svg'">
+                                        <img src="${tokenSrc}" class="pcw-token" onerror="this.src='../../img/avatars/default-avatar.png'">
                                         <div class="pcw-name">#${m.num} ${c.baseName || 'Minyon'}</div>
                                         ${acHtml}
                                     </div>
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Tekil Canavar veya Oyuncu (Eski hali)
                         card.innerHTML = `
                             <div class="pcw-init">${c.initTotal}</div>
-                            <img src="${tokenSrc}" class="pcw-token" onerror="this.src='../../img/SariZar.svg'">
+                            <img src="${tokenSrc}" class="pcw-token" onerror="this.src='../../img/avatars/default-avatar.png'">
                             <div class="pcw-name">${c.name} ${isMe ? '(Sen)' : ''}</div>
                             ${acHtml}
                         `;
