@@ -1,5 +1,4 @@
 import { createApp, ref, onMounted } from 'vue';
-
 import { 
     auth, db, signInWithPopup, googleProvider, signOut, onAuthStateChanged, 
     collection, getDocs, collectionGroup, query, getDoc, doc 
@@ -16,17 +15,24 @@ createApp({
         const currentUser = ref(null);
         const users = ref([]);
         const loading = ref(false);
+        const activeTab = ref('analytics'); // Yeni: Sekme Kontrolü
+        const stats = ref({}); // Yeni: Analiz Verileri
+        
+        // Bugünün tarihini YYYY-MM-DD formatında al (Yerel saate göre)
+        const todayStr = ref(new Date().toLocaleDateString('tr-TR').split('.').reverse().join('-')); 
 
         onMounted(() => {
             onAuthStateChanged(auth, (user) => {
                 if (user && ADMIN_EMAILS.includes(user.email)) {
                     currentUser.value = user;
                     isAdmin.value = true;
-                    fetchAllData();
+                    fetchAllData(); // Oyuncuları Çek
+                    fetchAnalytics(); // İstatistikleri Çek
                 } else {
                     currentUser.value = null;
                     isAdmin.value = false;
                     users.value = [];
+                    stats.value = {};
                 }
             });
         });
@@ -35,7 +41,7 @@ createApp({
             try {
                 const res = await signInWithPopup(auth, googleProvider);
                 if (!ADMIN_EMAILS.includes(res.user.email)) {
-                    alert("Yetkisiz Giriş!");
+                    alert("Yetkisiz Giriş! Bu alan sadece DM'ler içindir.");
                     await signOut(auth);
                 }
             } catch (e) { console.error(e); }
@@ -46,12 +52,29 @@ createApp({
             window.location.reload();
         };
 
+        // --- YENİ: ANALİZ VERİLERİNİ ÇEKME MOTORU ---
+        const fetchAnalytics = async () => {
+            try {
+                // Sadece 1 adet döküman okuyoruz! (Maliyet: Günlük 1 Read)
+                const docRef = doc(db, "site_analytics", todayStr.value);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    stats.value = docSnap.data();
+                } else {
+                    stats.value = { total_views: 0, unique_visitors: 0, mobile_users: 0, desktop_users: 0, pages: {} };
+                }
+            } catch (error) {
+                console.error("Analizler çekilemedi:", error);
+            }
+        };
+
+        // --- ESKİ: OYUNCU VERİTABANI MOTORU ---
         const fetchAllData = async () => {
             loading.value = true;
             try {
                 const allCharsQuery = query(collectionGroup(db, 'characters'));
                 const querySnapshot = await getDocs(allCharsQuery);
-                
                 const usersMap = {}; 
 
                 for (const charDoc of querySnapshot.docs) {
@@ -60,31 +83,23 @@ createApp({
                     if (!userRef) continue; 
                     const userId = userRef.id;
 
-                    // Karakter bilgileri
                     const charName = charData.meta?.name || charData.n || charData.name || "İsimsiz";
                     const charAvatar = charData.meta?.avatar || charData.av || charData.avatar || "";
-                    
-                    // Ana profil yoksa karakteri kaydedenin adını (owner) kullan
                     const ownerName = charData.owner || "Bilinmeyen Oyuncu";
 
                     if (!usersMap[userId]) {
                         usersMap[userId] = {
                             id: userId,
                             displayName: ownerName, 
-                            email: "Bilgi yok",
+                            email: "Google Auth Gizli",
                             photoURL: "",
                             characterList: []
                         };
                     }
 
-                    usersMap[userId].characterList.push({
-                        id: charDoc.id,
-                        name: charName,
-                        avatar: charAvatar
-                    });
+                    usersMap[userId].characterList.push({ id: charDoc.id, name: charName, avatar: charAvatar });
                 }
 
-                // Varsa güncel profil dosyalarını çek
                 const userIDs = Object.keys(usersMap);
                 await Promise.all(userIDs.map(async (uid) => {
                     try {
@@ -95,14 +110,13 @@ createApp({
                             usersMap[uid].email = uData.email || usersMap[uid].email;
                             usersMap[uid].photoURL = uData.photoURL || "";
                         }
-                    } catch (e) { console.log("Profil detayı yok:", uid); }
+                    } catch (e) { }
                 }));
                 
                 users.value = Object.values(usersMap);
 
             } catch (error) {
                 console.error("Hata:", error);
-                alert("Veri çekilemedi: " + error.message);
             } finally {
                 loading.value = false;
             }
@@ -115,7 +129,8 @@ createApp({
 
         return {
             isAdmin, currentUser, users, loading,
-            login, logout, openCharacter
+            activeTab, stats, todayStr,
+            login, logout, openCharacter, fetchAnalytics
         };
     }
 }).mount('#adminApp');

@@ -757,18 +757,3 @@ function setupFullscreen() {
     });
 }
 
-/* ============================================================
-   iOS/IPAD TAM EKRAN KORUMASI (ANTI-BOUNCE & AKILLI SCROLL)
-   ============================================================ */
-document.addEventListener('touchmove', function(e) {
-    // 1. Kaydırılabilir olması muhtemel kutuyu bul
-    const scrollableContainer = e.target.closest('.dice-workspace, .custom-rolls-section, .dice-history, .ct-combatants-list, .rich-text-editor, .ct-dropdown, .ct-modal-content');
-
-    if (!scrollableContainer) {
-        e.preventDefault(); 
-        return;
-    }
-    if (scrollableContainer.scrollHeight <= scrollableContainer.clientHeight) {
-        e.preventDefault();
-    }
-}, { passive: false });
