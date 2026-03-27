@@ -44,6 +44,7 @@ let currentScreenIndex = 0;
 let editingPanelId = null;
 let activeAddTarget = null; 
 let transformPanelId = null; // YENİ: Dönüştürülecek panelin kimliğini aklımızda tutar
+window.isDraggingPanel = false; // YENİ EKLENDİ: Sürükleme durumu takipçisi
 
 // 1. WIDGET SÖZLÜĞÜ (Tüm sayfaların adresleri burada)
 const WIDGETS = {
@@ -221,6 +222,10 @@ function setupControls() {
             const confirmArea = document.getElementById('reset-confirm-area');
             if (confirmArea) confirmArea.style.display = 'none';
         }
+
+        // YENİ EKLENDİ: Sürükleme işlemi yeni bittiyse hayalet tıklamaları yoksay!
+        if (window.isDraggingPanel) return; 
+
         if (editingPanelId !== null) {
             const isResizeHandle = e.target.classList.contains('resize-handle');
             const isDragHandle = e.target.classList.contains('drag-handle-center');
@@ -363,7 +368,7 @@ function renderGrid() {
                     const draggedP = activeScreen.panels.find(x => x.id == id);
                     if (draggedP && canPlacePanel(draggedP.id, i, j, draggedP.w, draggedP.h)) {
                         draggedP.r = i; draggedP.c = j;
-                        editingPanelId = null;
+                        // Modun açık kalması için satır silindi editingPanelId = null;
                         renderGrid(); 
                     }
                 };
@@ -531,6 +536,7 @@ function manageEditOverlay(panelEl, p) {
             overlay = document.createElement('div');
             overlay.className = 'edit-overlay';
             
+            // YENİ: draggable="true" HTML'den silindi
             overlay.innerHTML = `
                 <button class="finish-edit-btn" title="Düzenlemeyi Bitir">✓</button>
                 <div class="resize-handle top" data-dir="top"></div>
@@ -541,7 +547,7 @@ function manageEditOverlay(panelEl, p) {
                 <div class="resize-handle top-right" data-dir="top-right"></div>
                 <div class="resize-handle bottom-left" data-dir="bottom-left"></div>
                 <div class="resize-handle bottom-right" data-dir="bottom-right"></div>
-                <div class="drag-handle-center" draggable="true" title="Sürükle ve Başka Yuvaya Bırak">✥</div>
+                <div class="drag-handle-center" title="Sürükle ve Başka Yuvaya Bırak">✥</div>
             `;
 
             overlay.querySelector('.finish-edit-btn').onclick = () => {
@@ -550,7 +556,18 @@ function manageEditOverlay(panelEl, p) {
             };
 
             const centerHandle = overlay.querySelector('.drag-handle-center');
-            centerHandle.ondragstart = (e) => { e.dataTransfer.setData('text/plain', p.id); };
+            
+            // YENİ: Mobil ve Masaüstü Uyumlu Evrensel Pointer Sürükleme Motoru!
+            centerHandle.onpointerdown = (e) => startDrag(e, p);
+
+            overlay.querySelectorAll('.resize-handle').forEach(handle => {
+                handle.onpointerdown = (e) => startResize(e, p, handle.dataset.dir);
+            });
+            
+            // Sürükleme bittiğinde (Tıklama olayının geçmesi için çok kısa bir süre bekleyip) kalkanı kapat
+            centerHandle.ondragend = (e) => {
+                setTimeout(() => { window.isDraggingPanel = false; }, 150);
+            };
 
             overlay.querySelectorAll('.resize-handle').forEach(handle => {
                 handle.onpointerdown = (e) => startResize(e, p, handle.dataset.dir);
@@ -577,6 +594,10 @@ function canPlacePanel(ignoreId, r, c, w, h) {
 
 function startResize(e, panel, direction) {
     e.preventDefault();
+    
+    // YENİ EKLENDİ: Boyutlandırma başladığında tıklama kalkanını aç
+    window.isDraggingPanel = true; 
+    
     const startX = e.clientX, startY = e.clientY;
     const startR = panel.r, startC = panel.c, startW = panel.w, startH = panel.h;
     
@@ -617,6 +638,59 @@ function startResize(e, panel, direction) {
     const onUp = () => {
         document.removeEventListener('pointermove', onMove);
         document.removeEventListener('pointerup', onUp);
+        
+        // YENİ EKLENDİ: Boyutlandırma bitince o hayalet tıklamayı savuşturmak için kısa süre sonra kalkanı kapat
+        setTimeout(() => { window.isDraggingPanel = false; }, 150);
+    };
+
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup', onUp);
+}
+
+function startDrag(e, panel) {
+    e.preventDefault();
+    
+    // Boyutlandırmada kullandığımız kalkanı burada da açıyoruz
+    window.isDraggingPanel = true; 
+    
+    const startX = e.clientX, startY = e.clientY;
+    const startR = panel.r, startC = panel.c;
+    
+    const gridEl = document.getElementById('dm-grid');
+    const activeScreen = SCREENS[currentScreenIndex];
+    // Izgaradaki her bir hücrenin fiziksel boyunu hesapla
+    const cellW = gridEl.getBoundingClientRect().width / activeScreen.cols;
+    const cellH = gridEl.getBoundingClientRect().height / activeScreen.rows;
+
+    const onMove = (moveEv) => {
+        // Fare / Parmak ne kadar mesafe kat etti?
+        const dx = moveEv.clientX - startX;
+        const dy = moveEv.clientY - startY;
+        
+        // Bu mesafe kaç "Hücreye" denk geliyor?
+        const deltaC = Math.round(dx / cellW);
+        const deltaR = Math.round(dy / cellH);
+        
+        const newC = startC + deltaC;
+        const newR = startR + deltaR;
+
+        // Gidilmek istenen yuva boşsa ve sınırlar içindeyse
+        if (canPlacePanel(panel.id, newR, newC, panel.w, panel.h)) {
+            // Panel yer değiştirmişse sistemi anında güncelle (Canlı Önizleme)
+            if (panel.r !== newR || panel.c !== newC) {
+                panel.r = newR; 
+                panel.c = newC;
+                renderGrid(); 
+            }
+        }
+    };
+
+    const onUp = () => {
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', onUp);
+        
+        // Sürükleme bitince kalkanı yavaşça kapat
+        setTimeout(() => { window.isDraggingPanel = false; }, 150);
     };
 
     document.addEventListener('pointermove', onMove);
